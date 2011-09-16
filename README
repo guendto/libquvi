@@ -1,0 +1,31 @@
+
+
+General
+=======
+
+libquvi is a cross-platform library for parsing flash media stream
+URLs with C API.
+
+Home  : <http://quvi.sourceforge.net/>
+gitweb: <http://repo.or.cz/w/libquvi.git>
+
+
+License
+=======
+
+libquvi is free software, licensed under the LGPLv2.1+. The lua scripts
+that libquvi uses are considered as programs and using the lua scripts
+is *linking*.
+
+
+Motivation
+==========
+
+libquvi originates from the idea of allowing users to view the videos
+without having to install or use flash. It is a "workaround", not an
+"alternative" to flash.
+
+Read also:
+  * <http://en.wikipedia.org/wiki/Adobe_Flash#Performance>
+  * <http://en.wikipedia.org/wiki/Adobe_Flash#Flash_client_security>
+  * <http://en.wikipedia.org/wiki/Adobe_Flash#Alternatives_to_Flash>
