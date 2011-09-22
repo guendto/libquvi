@@ -37,8 +37,9 @@ LT_PREREQ([2.2])
 # Checks for programs.
 AC_PROG_CC
 
-AC_PATH_PROGS([ND], [naturaldocs NaturalDocs], [no])
-AM_CONDITIONAL([HAVE_ND], [test "x$ND" != "xno"])
+AC_PATH_PROGS([ND], [naturaldocs NaturalDocs], [],
+  [$ND_PATH$PATH_SEPARATOR$PATH])
+AM_CONDITIONAL([HAVE_ND], [test -n "$ND"])
 
 # Checks for libraries.
 PKG_CHECK_MODULES([liblua], [lua >= 5.1], [], [
@@ -86,7 +87,7 @@ ND_FORMAT=HTML
 AC_ARG_WITH([nd-output],
   [AS_HELP_STRING([--with-nd-output=FORMAT],
     [NaturalDocs output format (HTML or FramedHTML)])], [
-    AS_IF([test x"$ND" = "xno" ], [
+    AS_IF([test -z "$ND"], [
       AC_MSG_ERROR([NaturalDocs not found. No use in setting output format])])
     case $withval in
       HTML|FramedHTML)
