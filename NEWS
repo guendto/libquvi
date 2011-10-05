@@ -1,0 +1,14 @@
+
+0.4.0  Wed Oct 05 2011  Toni Gundogdu
+
+Changes:
+  - Split from "quvi", new repo at <http://repo.or.cz/w/libquvi.git>
+  - Make QUVIPROTO_ALL new default (#43), this was previously QUVIPROTO_HTTP
+  - Rename env. variables, refer to documentation for new ones
+  - Remove deprecated API features (#42)
+    - See <http://quvi.sf.net/doc/> for "API: Deprecated" and "quvi.h"
+  - Remove the neglected symbol versioning
+  - Add QUVI_VERSION_SCRIPTS
+
+Fixes:
+  - Compilation errors with examples/Makefile.am
