@@ -1,5 +1,5 @@
 if WITH_EXAMPLES
-noinst_PROGRAMS=	simple version parse
+noinst_PROGRAMS=	simple version parse supported
 
 simple_SOURCES=		simple.c common.c common.h
 simple_CPPFLAGS=	-I$(top_srcdir)/src/libquvi $(AM_CPPFLAGS)
@@ -15,6 +15,11 @@ parse_SOURCES=		parse.c
 parse_CPPFLAGS=		-I$(top_srcdir)/src/libquvi $(AM_CPPFLAGS)
 parse_CFLAGS=		$(AM_CFLAGS)
 parse_LDFLAGS=		$(top_builddir)/src/libquvi/libquvi.la $(AM_LDFLAGS)
+
+supported_SOURCES=	supported.c
+supported_CPPFLAGS=	-I$(top_srcdir)/src/libquvi $(AM_CPPFLAGS)
+supported_CFLAGS=	$(AM_CFLAGS)
+supported_LDFLAGS=	$(top_builddir)/src/libquvi/libquvi.la $(AM_LDFLAGS)
 
 if WITH_SOUP
 noinst_PROGRAMS+=	callback_libsoup
