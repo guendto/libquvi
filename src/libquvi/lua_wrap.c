@@ -415,7 +415,7 @@ int init_lua(_quvi_t quvi)
 {
   QUVIcode rc;
 
-  quvi->lua = (lua_State *) lua_open();
+  quvi->lua = luaL_newstate();
   if (!quvi->lua)
     return (QUVI_LUAINIT);
 
