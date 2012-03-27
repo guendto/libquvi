@@ -32,9 +32,12 @@ for a in `git log --format='%an' "$t"..HEAD | sort | uniq`; do
   c=`git log --format="  - %s [%h]" --author="$a" "$t"..HEAD | sort -h`
   b="$b$a:
 $c
-
 "
 done
+b="$b
+`git diff --stat-width=72 "$t"..HEAD`
+
+"
 n=`cat NEWS`
 F=NEWS
 echo "$b"  >"$F" ; echo "$n" >>"$F"
