@@ -63,22 +63,6 @@ AS_IF([test -z "$versionfile"], [
 AC_DEFINE_UNQUOTED([SCRIPTSDIR], ["$scriptsdir"], [We have scriptsdir])
 AC_DEFINE_UNQUOTED([VERSIONFILE], ["$versionfile"], [We have versionfile])
 
-AC_ARG_WITH([soup],
-  AS_HELP_STRING([--with-soup], [Build (examples) with libsoup]))
-
-AS_IF([test "x$with_soup" = "xyes"], [
-  # Either libsoup-gnome or libsoup.
-  PKG_CHECK_MODULES([libsoup_gnome], [libsoup-gnome-2.4 >= 2.26], [
-    AC_DEFINE([HAVE_LIBSOUP_GNOME], [1], [Have libsoup-gnome])
-    libsoup_CFLAGS="$libsoup_gnome_CFLAGS"
-    libsoup_LIBS="$libsoup_gnome_LIBS"], [
-      PKG_CHECK_MODULES([libsoup], [libsoup-2.4 >= 2.26])])
-  AC_SUBST([libsoup_CFLAGS])
-  AC_SUBST([libsoup_LIBS])
-])
-
-AM_CONDITIONAL([WITH_SOUP], [test x"$with_soup" = "xyes"])
-
 # Checks for header files.
 AC_CHECK_HEADERS(
   [memory.h stdarg.h stddef.h stdint.h stdlib.h string.h unistd.h])
