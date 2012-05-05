@@ -1,1 +1,1 @@
-SUBDIRS=	libquvi
+SUBDIRS=
