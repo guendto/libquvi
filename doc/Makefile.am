@@ -1,4 +1,4 @@
-EXTRA_DIST=	nd
+EXTRA_DIST=
 if WITH_MANUAL
 SUBDIRS=	man3
 endif
