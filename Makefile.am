@@ -8,14 +8,8 @@ SUBDIRS=	src examples doc
 
 .PHONY: doc distdoc ChangeLog VERSION
 doc:
-if HAVE_ND
-	@test -d $(top_builddir)/doc/libquvi-@VERSION@ || \
-		mkdir $(top_builddir)/doc/libquvi-@VERSION@
-	@test -d $(top_builddir)/doc/nd_temp || \
-		mkdir $(top_builddir)/doc/nd_temp
-	@@ND@ -i $(top_srcdir)/doc/ -i $(top_srcdir)/src/ \
-		-o $(ND_FORMAT) $(top_builddir)/doc/libquvi-@VERSION@/ \
-		-p $(top_builddir)/doc/nd_temp/ && echo See doc/libquvi-@VERSION@
+if HAVE_DOXYGEN
+	@echo "error: TODO" && exit 1
 else
 	@echo "error: configure did not find NaturalDocs" && exit 1
 endif
