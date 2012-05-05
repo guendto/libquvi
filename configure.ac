@@ -37,10 +37,6 @@ LT_PREREQ([2.2])
 # Checks for programs.
 AC_PROG_CC
 
-AC_PATH_PROGS([ND], [naturaldocs NaturalDocs], [],
-  [$ND_PATH$PATH_SEPARATOR$PATH])
-AM_CONDITIONAL([HAVE_ND], [test -n "$ND"])
-
 # Checks for libraries.
 PKG_CHECK_MODULES([liblua], [lua >= 5.1], [], [
   PKG_CHECK_MODULES([liblua], [lua51 >= 5.1], [], [
@@ -82,21 +78,6 @@ AS_IF([test "x$with_soup" = "xyes"], [
 ])
 
 AM_CONDITIONAL([WITH_SOUP], [test x"$with_soup" = "xyes"])
-
-ND_FORMAT=HTML
-AC_ARG_WITH([nd-output],
-  [AS_HELP_STRING([--with-nd-output=FORMAT],
-    [NaturalDocs output format (HTML or FramedHTML)])], [
-    AS_IF([test -z "$ND"], [
-      AC_MSG_ERROR([NaturalDocs not found. No use in setting output format])])
-    case $withval in
-      HTML|FramedHTML)
-        ND_FORMAT=$withval ;;
-      *)
-        AC_MSG_ERROR([NaturalDocs does not support $withval output format]) ;;
-    esac
-  ])
-AC_SUBST([ND_FORMAT])
 
 # Checks for header files.
 AC_CHECK_HEADERS(
