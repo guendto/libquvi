@@ -146,7 +146,6 @@ AC_CONFIG_FILES([
   examples/Makefile
   src/Makefile
   src/libquvi/Makefile
-  src/libquvi/quvi/Makefile
   libquvi.pc])
 AC_OUTPUT
 
