@@ -105,7 +105,6 @@ AC_CONFIG_FILES([
   doc/man3/Makefile
   examples/Makefile
   src/Makefile
-  src/libquvi/Makefile
   libquvi.pc])
 AC_OUTPUT
 
