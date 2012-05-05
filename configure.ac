@@ -79,11 +79,6 @@ AC_CHECK_FUNCS([getcwd memset strdup strerror strrchr strstr])
 AC_FUNC_REALLOC
 AC_FUNC_MALLOC
 
-have_asprintf=no
-AC_CHECK_FUNCS([vasprintf], [
-  AC_CHECK_FUNCS([asprintf], [have_asprintf=yes])])
-AM_CONDITIONAL([NO_ASPRINTF], [test x"$have_asprintf" != "xyes"])
-
 # Version.
 VN=`$srcdir/gen-ver.sh $srcdir`
 AC_DEFINE_UNQUOTED([VN], ["$VN"], [We have version number from gen-ver.sh])
