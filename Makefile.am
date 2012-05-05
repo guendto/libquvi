@@ -8,11 +8,8 @@ SUBDIRS=	src examples doc
 
 .PHONY: doc distdoc ChangeLog VERSION
 doc:
-if HAVE_DOXYGEN
 	@echo "error: TODO" && exit 1
-else
-	@echo "error: configure did not find NaturalDocs" && exit 1
-endif
+
 distdoc: doc
 	@tar chof - $(top_builddir)/doc/libquvi-@VERSION@ | \
 			GZIP=--best gzip -c >libquvi-doc-@VERSION@.tar.gz \
