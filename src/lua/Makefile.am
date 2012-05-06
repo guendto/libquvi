@@ -1,13 +1,26 @@
 
 src=\
-  quvi/resolve.c\
-  quvi/fetch.c\
+  util/exec_util_convert_entities.c\
+  util/exec_util_to_file_ext.c\
+  exec_media_script_query_formats.c\
+  exec_playlist_script_ident.c\
+  exec_playlist_script_parse.c\
+  exec_media_script_ident.c\
+  exec_media_script_parse.c\
+  match_url_to_playlist_script.c\
+  match_url_to_media_script.c\
+  load_util_script.c\
   modify_pkgpath.c\
   getfield.c\
-  init.c
+  setfield.c\
+  init.c\
+  quvi/resolve.c\
+  quvi/fetch.c
 
 hdr=\
+  load_util_script.h\
   getfield.h\
+  setfield.h\
   exec.h\
   def.h
 

@@ -1,5 +1,6 @@
 
 src=\
+  verify_media_stream.c\
   resolve.c\
   handle.c\
   fetch.c\

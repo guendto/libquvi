@@ -1,6 +1,7 @@
 
 src=\
   resolve.c\
+  verify.c\
   close.c\
   fetch.c\
   init.c\
