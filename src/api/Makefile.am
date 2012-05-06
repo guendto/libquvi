@@ -1,17 +1,20 @@
 
 src=\
+  query_formats_next_format.c\
+  query_formats_free.c\
+  query_formats_new.c\
+  resolve_destination_url.c\
+  resolve_forwarded.c\
+  resolve_free.c\
+  resolve_new.c\
+  media_free.c\
+  media_new.c\
+  media_get.c\
   free.c\
   new.c\
   set.c\
   get.c\
-  ok.c\
-  media_free.c\
-  media_new.c\
-  media_get.c\
-  resolve_destination_url.c\
-  resolve_forwarded.c\
-  resolve_free.c\
-  resolve_new.c
+  ok.c
 
 noinst_LTLIBRARIES=libconvenience_api.la
 libconvenience_api_la_SOURCES=$(src)
