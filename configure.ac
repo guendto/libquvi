@@ -23,10 +23,11 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([config.aux])
 AC_CONFIG_MACRO_DIR([m4])
 
-AC_CANONICAL_SYSTEM
+AC_CANONICAL_TARGET
 AC_GNU_SOURCE
 
 AC_DEFINE_UNQUOTED([CANONICAL_TARGET], "$target", [...])
+AC_DEFINE_UNQUOTED([CANONICAL_BUILD], "$build", [...])
 AC_DEFINE_UNQUOTED([CANONICAL_HOST], "$host", [...])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2 dist-xz])
@@ -112,16 +113,19 @@ AC_CONFIG_FILES([
 AC_OUTPUT
 
 AC_MSG_NOTICE([
-  version:        ${VERSION} (${VN})
-  host setup:     ${host}
-  prefix:         ${prefix}
-  cflags:         ${CFLAGS}
-  compiler:       ${CC}
-libquvi-scripts.pc:
-  modversion:     ${scriptsmodver}
-  scriptsdir:     ${scriptsdir}
-  versionfile:    ${versionfile}
-Options:
-  build libquvi:  shared=${enable_shared} static=${enable_static}
-  build examples: ${with_examples}
-  install manual: ${with_manual}])
+  version         ${VERSION} (${VN})
+  prefix          ${prefix}
+  compiler        ${CC}
+  cflags          ${CFLAGS}
+System types
+  target          ${target}
+  build           ${build}
+  host            ${host}
+Options
+  build examples  ${with_examples}
+  install manual  ${with_manual}
+  build libquvi   shared=${enable_shared} static=${enable_static}
+libquvi-scripts.pc
+  versionfile     ${versionfile}
+  modversion      ${scriptsmodver}
+  scriptsdir      ${scriptsdir}])
