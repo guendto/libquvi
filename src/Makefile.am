@@ -28,6 +28,7 @@ libquvi_1_0_la_LDFLAGS=\
   -version-info $(LT_CUR):$(LT_REV):$(LT_AGE)\
   $(top_builddir)/src/misc/libconvenience_misc.la\
   $(top_builddir)/src/curl/libconvenience_curl.la\
+  $(top_builddir)/src/net/libconvenience_net.la\
   $(top_builddir)/src/lua/libconvenience_lua.la\
   $(top_builddir)/src/api/libconvenience_api.la\
   $(libcurl_LIBS)\
