@@ -112,7 +112,7 @@ AC_CONFIG_FILES([
   src/quvi-1.0/quvi/Makefile
   src/quvi-1.0/Makefile
   src/Makefile
-  libquvi.pc])
+  libquvi-1.0.pc])
 AC_OUTPUT
 
 AC_MSG_NOTICE([

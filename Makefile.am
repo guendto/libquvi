@@ -1,8 +1,8 @@
 ACLOCAL_AMFLAGS=-I m4
-EXTRA_DIST=libquvi.pc.in gen-ver.sh VERSION
+EXTRA_DIST=libquvi-1.0.pc.in gen-ver.sh VERSION
 
 pkgconfigdir=	$(libdir)/pkgconfig
-pkgconfig_DATA=	libquvi.pc
+pkgconfig_DATA=	libquvi-1.0.pc
 
 SUBDIRS=	src examples doc
 
