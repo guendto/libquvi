@@ -2,6 +2,8 @@
 src=\
   free.c\
   new.c\
+  set.c\
+  get.c\
   ok.c\
   resolve_destination_url.c\
   resolve_forwarded.c\
