@@ -1,0 +1,51 @@
+/* libquvi
+ * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301, USA.
+ */
+
+#include "config.h"
+
+#include <glib.h>
+
+#define _W "libquvi: %s: %s"
+
+gboolean m_match(const gchar *s, const gchar *p)
+{
+  GError *err = NULL;
+  GRegex *re = g_regex_new(p, G_REGEX_MULTILINE, 0, &err);
+  GMatchInfo *m = NULL;
+  gboolean r = FALSE;
+
+  if (err != NULL)
+    {
+      g_warning(_W, __func__, err->message);
+      g_error_free(err);
+      return (FALSE);
+    }
+
+  r = g_regex_match(re, s, 0, &m);
+
+  g_match_info_free(m);
+  m = NULL;
+
+  g_regex_unref(re);
+  re = NULL;
+
+  return (r);
+}
+
+/* vim: set ts=2 sw=2 tw=72 expandtab: */
