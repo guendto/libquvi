@@ -5,17 +5,18 @@ AC_PREREQ([2.67])
 
 m4_include([m4/version.m4])
 
-AC_INIT([libquvi], [_LIBQUVI_VERSION],
-  [http://sourceforge.net/apps/trac/quvi/], [],
-  [http://quvi.sourceforge.net/])
+AC_INIT([libquvi], [libquvi_lt_rel], [http://sourceforge.net/apps/trac/quvi/],
+        [], [http://quvi.sourceforge.net/])
 
 # Interface:
-LIBQUVI_CURRENT=_LIBQUVI_CURRENT
-LIBQUVI_REVISION=_LIBQUVI_REVISION
-LIBQUVI_AGE=_LIBQUVI_AGE
-AC_SUBST([LIBQUVI_CURRENT])
-AC_SUBST([LIBQUVI_REVISION])
-AC_SUBST([LIBQUVI_AGE])
+LT_REL=libquvi_lt_rel
+LT_CUR=libquvi_lt_cur
+LT_REV=libquvi_lt_rev
+LT_AGE=libquvi_lt_age
+AC_SUBST([LT_REL])
+AC_SUBST([LT_CUR])
+AC_SUBST([LT_REV])
+AC_SUBST([LT_AGE])
 
 AC_CONFIG_SRCDIR([src/api/new.c])
 AC_CONFIG_HEADERS([config.h])
