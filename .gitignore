@@ -29,5 +29,12 @@ m4/ltsugar.m4
 m4/ltversion.m4
 m4/lt~obsolete.m4
 src/Makefile.in
+src/net/Makefile.in
+src/lua/Makefile.in
+src/curl/Makefile.in
+src/api/Makefile.in
+src/misc/Makefile.in
+src/quvi-1.0/quvi/Makefile.in
+src/quvi-1.0/Makefile.in
 ChangeLog
 VERSION
