@@ -3,6 +3,10 @@ src=\
   query_formats_next_format.c\
   query_formats_free.c\
   query_formats_new.c\
+  playlist_next_media_url.c\
+  playlist_free.c\
+  playlist_new.c\
+  playlist_get.c\
   resolve_destination_url.c\
   resolve_forwarded.c\
   resolve_free.c\

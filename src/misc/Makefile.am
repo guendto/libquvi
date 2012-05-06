@@ -1,6 +1,8 @@
 
 src=\
+  match_playlist_script.c\
   match_media_script.c\
+  playlist_new.c\
   scan_scripts.c\
   script_free.c\
   media_new.c\
@@ -12,7 +14,9 @@ src=\
   trim.c
 
 hdr=\
+  match_playlist_script.h\
   match_media_script.h\
+  playlist_new.h\
   script_free.h\
   media_new.h\
   resolve.h\
