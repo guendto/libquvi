@@ -17,7 +17,7 @@ AC_SUBST([LIBQUVI_CURRENT])
 AC_SUBST([LIBQUVI_REVISION])
 AC_SUBST([LIBQUVI_AGE])
 
-AC_CONFIG_SRCDIR([src/libquvi/quvi_api.c])
+AC_CONFIG_SRCDIR([src/api/new.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([config.aux])
 AC_CONFIG_MACRO_DIR([m4])
@@ -101,9 +101,16 @@ AM_CONDITIONAL([WITH_MANUAL], [test x"$with_manual" != "xno"])
 
 AC_CONFIG_FILES([
   Makefile
-  doc/Makefile
   doc/man3/Makefile
+  doc/Makefile
   examples/Makefile
+  src/misc/Makefile
+  src/curl/Makefile
+  src/net/Makefile
+  src/api/Makefile
+  src/lua/Makefile
+  src/quvi-1.0/quvi/Makefile
+  src/quvi-1.0/Makefile
   src/Makefile
   libquvi.pc])
 AC_OUTPUT
