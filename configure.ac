@@ -65,20 +65,15 @@ AC_DEFINE_UNQUOTED([SCRIPTSDIR], ["$scriptsdir"], [We have scriptsdir])
 AC_DEFINE_UNQUOTED([VERSIONFILE], ["$versionfile"], [We have versionfile])
 
 # Checks for header files.
-AC_CHECK_HEADERS(
-  [memory.h stdarg.h stddef.h stdint.h stdlib.h string.h unistd.h])
+AC_CHECK_HEADERS([stdint.h string.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_CHECK_TYPES([ptrdiff_t])
 AC_TYPE_UINT32_T
 AC_TYPE_UINT64_T
 AC_TYPE_UINT8_T
-AC_TYPE_SIZE_T
 
 # Checks for library functions.
-AC_CHECK_FUNCS([getcwd memset strdup strerror strrchr strstr])
-AC_FUNC_REALLOC
-AC_FUNC_MALLOC
+AC_CHECK_FUNCS([strrchr])
 
 # Version.
 VN=`$srcdir/gen-ver.sh $srcdir`
