@@ -5,6 +5,9 @@ src=\
   set.c\
   get.c\
   ok.c\
+  media_free.c\
+  media_new.c\
+  media_get.c\
   resolve_destination_url.c\
   resolve_forwarded.c\
   resolve_free.c\

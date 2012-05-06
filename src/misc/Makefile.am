@@ -1,7 +1,9 @@
 
 src=\
+  match_media_script.c\
   scan_scripts.c\
   script_free.c\
+  media_new.c\
   capture.c\
   resolve.c\
   to_utf8.c\
@@ -10,7 +12,9 @@ src=\
   trim.c
 
 hdr=\
+  match_media_script.h\
   script_free.h\
+  media_new.h\
   resolve.h\
   sort.h\
   re.h

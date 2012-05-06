@@ -8,6 +8,7 @@ src=\
 
 hdr=\
   getfield.h\
+  exec.h\
   def.h
 
 noinst_LTLIBRARIES=libconvenience_lua.la
