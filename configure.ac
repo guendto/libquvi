@@ -5,8 +5,8 @@ AC_PREREQ([2.67])
 
 m4_include([m4/version.m4])
 
-AC_INIT([libquvi], [libquvi_lt_rel], [http://sourceforge.net/apps/trac/quvi/],
-        [], [http://quvi.sourceforge.net/])
+AC_INIT([libquvi], [libquvi_lt_rel], [http://quvi.sf.net/bugs/],
+        [], [http://quvi.sf.net/])
 
 # Interface:
 LT_REL=libquvi_lt_rel
