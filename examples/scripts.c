@@ -25,6 +25,7 @@ extern void cleanup();
 
 static QuviScriptType t = QUVI_SCRIPT_TYPE_MEDIA;
 
+quvi_query_formats_t qqf = NULL;
 quvi_media_t qm = NULL;
 quvi_t q = NULL;
 

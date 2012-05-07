@@ -20,6 +20,7 @@
 #include <glib.h>
 #include "quvi.h"
 
+quvi_query_formats_t qqf = NULL;
 quvi_media_t qm = NULL;
 quvi_t q = NULL;
 

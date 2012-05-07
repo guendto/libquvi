@@ -21,6 +21,7 @@
 #include <glib.h>
 #include <quvi.h>
 
+extern quvi_query_formats_t qqf;
 extern quvi_media_t qm;
 extern quvi_t q;
 

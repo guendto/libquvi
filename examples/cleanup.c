@@ -20,11 +20,15 @@
 #include <glib.h>
 #include <quvi.h>
 
+extern quvi_query_formats_t qqf;
 extern quvi_media_t qm;
 extern quvi_t q;
 
 void cleanup()
 {
+  quvi_query_formats_free(qqf);
+  qqf = NULL;
+
   quvi_media_free(qm);
   qm = NULL;
 
