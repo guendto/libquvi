@@ -29,6 +29,7 @@ extern void exit_if_error();
 extern void cleanup();
 
 quvi_query_formats_t qqf = NULL;
+quvi_playlist_t qp = NULL;
 quvi_media_t qm = NULL;
 quvi_t q = NULL;
 

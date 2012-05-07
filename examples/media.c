@@ -18,17 +18,18 @@
  */
 
 #include <glib.h>
-#include "quvi.h"
-
-quvi_query_formats_t qqf = NULL;
-quvi_media_t qm = NULL;
-quvi_t q = NULL;
+#include <quvi.h>
 
 extern void exit_if_error();
 extern void cleanup();
 
 static const gchar URL[] =
   "http://www.break.com/index/happy-easter-from-kate-upton-2316293";
+
+quvi_query_formats_t qqf = NULL;
+quvi_playlist_t qp = NULL;
+quvi_media_t qm = NULL;
+quvi_t q = NULL;
 
 int main(int argc, char **argv)
 {

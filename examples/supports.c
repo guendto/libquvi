@@ -36,7 +36,8 @@ static QuviSupportsMode m = QUVI_SUPPORTS_MODE_ONLINE;
 static QuviSupportsType t = QUVI_SUPPORTS_TYPE_ANY;
 
 quvi_query_formats_t qqf = NULL;
-quvi_media_t qm = NULL; /* Unused by this example. Define for cleanup. */
+quvi_playlist_t qp = NULL;
+quvi_media_t qm = NULL;
 quvi_t q = NULL;
 
 int main(int argc, char **argv)

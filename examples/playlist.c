@@ -17,13 +17,18 @@
  * 02110-1301, USA.
  */
 
+#include <stdlib.h>
 #include <glib.h>
 #include <quvi.h>
 
+static void usage()
+{
+  g_printerr("Usage: playlist <URL>\n");
+  exit(0);
+}
+
 extern void exit_if_error();
 extern void cleanup();
-
-static QuviScriptType t = QUVI_SCRIPT_TYPE_MEDIA;
 
 quvi_query_formats_t qqf = NULL;
 quvi_playlist_t qp = NULL;
@@ -32,35 +37,25 @@ quvi_t q = NULL;
 
 int main(int argc, char **argv)
 {
+  if (argc < 2)
+    usage();
+
   q = quvi_new();
   exit_if_error();
+  qp = quvi_playlist_new(q, (gchar*) argv[1]);
+  exit_if_error();
+  {
+    gchar *s = NULL;
 
-  if (argc >2)
-    {
-      if (argv[1][0] == '-')
-        {
-          switch (argv[1][1])
-            {
-            case 'p':
-              t = QUVI_SCRIPT_TYPE_PLAYLIST;
-              break;
-            case 'm':
-            default:
-              t = QUVI_SCRIPT_TYPE_MEDIA;
-              break;
-            case 's':
-              t = QUVI_SCRIPT_TYPE_SCAN;
-              break;
-            }
-        }
-    }
+    quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &s);
+    g_print("id=%s\n", s);
 
-  while (quvi_script_next(q, t) == QUVI_TRUE)
-    {
-      gchar *s = NULL;
-      quvi_script_get(q, t, QUVI_SCRIPT_PROPERTY_DOMAIN, &s);
-      g_print("%s\n", s);
-    }
+    while (quvi_playlist_next_media_url(qp) == QUVI_TRUE)
+      {
+        quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_MEDIA_URL, &s);
+        g_print("%s\n", s);
+      }
+  }
 
   cleanup();
 
