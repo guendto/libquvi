@@ -11,6 +11,8 @@ src=\
   resolve_forwarded.c\
   resolve_free.c\
   resolve_new.c\
+  script_next.c\
+  script_get.c\
   media_free.c\
   media_new.c\
   media_get.c\
