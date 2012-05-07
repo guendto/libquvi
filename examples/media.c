@@ -17,14 +17,21 @@
  * 02110-1301, USA.
  */
 
+#include <stdlib.h>
 #include <glib.h>
 #include <quvi.h>
 
+static void usage()
+{
+  g_printerr("Usage: media <URL>\n");
+  exit(0);
+}
+
+extern QuviError status(glong, gpointer);
 extern void exit_if_error();
 extern void cleanup();
 
-static const gchar URL[] =
-  "http://www.break.com/index/happy-easter-from-kate-upton-2316293";
+typedef quvi_callback_status qcs;
 
 quvi_query_formats_t qqf = NULL;
 quvi_playlist_t qp = NULL;
@@ -33,9 +40,15 @@ quvi_t q = NULL;
 
 int main(int argc, char **argv)
 {
+  if (argc < 2)
+    usage();
+
   q = quvi_new();
   exit_if_error();
-  qm = quvi_media_new(q, (gchar*) URL);
+
+  quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) status);
+
+  qm = quvi_media_new(q, argv[1]);
   exit_if_error();
   {
     gchar *s = NULL;

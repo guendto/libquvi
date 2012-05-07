@@ -29,8 +29,11 @@ static void usage()
   exit(0);
 }
 
+extern QuviError status(glong, gpointer);
 extern void exit_if_error();
 extern void cleanup();
+
+typedef quvi_callback_status qcs;
 
 static QuviSupportsMode m = QUVI_SUPPORTS_MODE_ONLINE;
 static QuviSupportsType t = QUVI_SUPPORTS_TYPE_ANY;
@@ -72,6 +75,9 @@ int main(int argc, char **argv)
 
   q = quvi_new();
   exit_if_error();
+
+  quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) status);
+
   {
     QuviBoolean r = quvi_supports(q, url, m, t);
     g_print("%s : %s\n", url, (r == QUVI_TRUE) ? "yes":"no");

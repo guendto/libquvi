@@ -25,8 +25,11 @@ static void usage()
   exit(0);
 }
 
+extern QuviError status(glong, gpointer);
 extern void exit_if_error();
 extern void cleanup();
+
+typedef quvi_callback_status qcs;
 
 quvi_query_formats_t qqf = NULL;
 quvi_playlist_t qp = NULL;
@@ -40,6 +43,9 @@ int main(int argc, char **argv)
 
   q = quvi_new();
   exit_if_error();
+
+  quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) status);
+
   {
     qqf = quvi_query_formats_new(q, argv[1]);
     exit_if_error();
