@@ -6,6 +6,7 @@ src=\
   scan_scripts.c\
   script_free.c\
   media_new.c\
+  scan_new.c\
   capture.c\
   resolve.c\
   to_utf8.c\
@@ -19,6 +20,7 @@ hdr=\
   playlist_new.h\
   script_free.h\
   media_new.h\
+  scan_new.h\
   resolve.h\
   sort.h\
   re.h

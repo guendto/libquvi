@@ -16,6 +16,9 @@ src=\
   media_free.c\
   media_new.c\
   media_get.c\
+  scan_next_media_url.c\
+  scan_free.c\
+  scan_new.c\
   supports.c\
   version.c\
   errmsg.c\

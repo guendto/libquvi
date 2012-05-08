@@ -8,6 +8,7 @@ hdr=\
   _quvi_net_opt_s.h\
   _quvi_script_s.h\
   _quvi_media_s.h\
+  _quvi_scan_s.h\
   _quvi_net_s.h\
   _quvi_macro.h\
   _quvi_s.h
