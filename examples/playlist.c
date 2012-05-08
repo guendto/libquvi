@@ -33,13 +33,14 @@ extern void cleanup();
 
 typedef quvi_callback_status qcs;
 
-quvi_query_formats_t qqf = NULL;
-quvi_playlist_t qp = NULL;
-quvi_media_t qm = NULL;
-quvi_t q = NULL;
+extern quvi_playlist_t qp;
+extern quvi_t q;
 
 int main(int argc, char **argv)
 {
+  g_assert(qp == NULL);
+  g_assert(q == NULL);
+
   if (argc < 2)
     usage();
 
@@ -64,6 +65,9 @@ int main(int argc, char **argv)
   }
 
   cleanup();
+
+  g_assert(qp == NULL);
+  g_assert(q == NULL);
 
   return (0);
 }

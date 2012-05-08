@@ -25,13 +25,12 @@ extern void cleanup();
 
 static QuviScriptType t = QUVI_SCRIPT_TYPE_MEDIA;
 
-quvi_query_formats_t qqf = NULL;
-quvi_playlist_t qp = NULL;
-quvi_media_t qm = NULL;
-quvi_t q = NULL;
+extern quvi_t q;
 
 int main(int argc, char **argv)
 {
+  g_assert(q == NULL);
+
   q = quvi_new();
   exit_if_error();
 
@@ -63,6 +62,7 @@ int main(int argc, char **argv)
     }
 
   cleanup();
+  g_assert(q == NULL);
 
   return (0);
 }

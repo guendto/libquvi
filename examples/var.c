@@ -17,49 +17,12 @@
  * 02110-1301, USA.
  */
 
-#include <stdlib.h>
-#include <glib.h>
+#include <stdio.h>
 #include <quvi.h>
 
-static void usage()
-{
-  g_printerr("Usage: media <URL>\n");
-  exit(0);
-}
-
-extern QuviError status(glong, gpointer);
-extern void exit_if_error();
-extern void cleanup();
-
-typedef quvi_callback_status qcs;
-
-extern quvi_media_t qm;
-extern quvi_t q;
-
-int main(int argc, char **argv)
-{
-  g_assert(qm == NULL);
-  g_assert(q == NULL);
-
-  if (argc < 2)
-    usage();
-
-  q = quvi_new();
-  exit_if_error();
-
-  quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) status);
-
-  qm = quvi_media_new(q, argv[1]);
-  exit_if_error();
-  {
-    gchar *s = NULL;
-    quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &s);
-    g_print("%s\n", s);
-  }
-  cleanup();
-  g_assert(qm == NULL);
-  g_assert(q == NULL);
-  return (0);
-}
+quvi_query_formats_t qqf = NULL;
+quvi_playlist_t qp = NULL;
+quvi_media_t qm = NULL;
+quvi_t q = NULL;
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

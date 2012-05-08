@@ -60,19 +60,19 @@ static void update_type(gchar c)
       break;
     default:
       g_printerr("[%s]: ignored `%c': unknown type\n", __func__, c);
+      break;
     }
 }
 
-quvi_query_formats_t qqf = NULL;
-quvi_playlist_t qp = NULL;
-quvi_media_t qm = NULL;
-quvi_t q = NULL;
+extern quvi_t q;
 
 int main(int argc, char **argv)
 {
   gchar *url = NULL;
   gint rc = 0;
   gint i = 1;
+
+  g_assert(q == NULL);
 
   if (argc <2)
     usage();
@@ -127,6 +127,7 @@ int main(int argc, char **argv)
     rc = (r == QUVI_TRUE) ? 1:0;
   }
   cleanup();
+  g_assert(q == NULL);
 
   return (rc);
 }
