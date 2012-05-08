@@ -17,6 +17,7 @@
  * 02110-1301, USA.
  */
 
+#include <string.h>
 #include <glib.h>
 #include <quvi.h>
 
@@ -34,22 +35,28 @@ int main(int argc, char **argv)
   q = quvi_new();
   exit_if_error();
 
-  if (argc >2)
+  if (argc >1)
     {
       if (argv[1][0] == '-')
         {
-          switch (argv[1][1])
+          if (strlen(argv[1]) >1)
             {
-            case 'p':
-              t = QUVI_SCRIPT_TYPE_PLAYLIST;
-              break;
-            case 'm':
-            default:
-              t = QUVI_SCRIPT_TYPE_MEDIA;
-              break;
-            case 's':
-              t = QUVI_SCRIPT_TYPE_SCAN;
-              break;
+              const gchar c = argv[1][1];
+              switch (c)
+                {
+                case 'p':
+                  t = QUVI_SCRIPT_TYPE_PLAYLIST;
+                  break;
+                case 'm':
+                  t = QUVI_SCRIPT_TYPE_MEDIA;
+                  break;
+                case 's':
+                  t = QUVI_SCRIPT_TYPE_SCAN;
+                  break;
+                default:
+                  g_printerr("[%s]: `%c': unknown type\n", __func__, c);
+                  break;
+                }
             }
         }
     }
@@ -57,7 +64,7 @@ int main(int argc, char **argv)
   while (quvi_script_next(q, t) == QUVI_TRUE)
     {
       gchar *s = NULL;
-      quvi_script_get(q, t, QUVI_SCRIPT_PROPERTY_DOMAIN, &s);
+      quvi_script_get(q, t, QUVI_SCRIPT_PROPERTY_FILEPATH, &s);
       g_print("%s\n", s);
     }
 
