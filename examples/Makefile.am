@@ -25,4 +25,9 @@ playlist_SOURCES=playlist.c exit_if_error.c cleanup.c status.c var.c
 playlist_CPPFLAGS=-I$(top_srcdir)/src/quvi-1.0/ $(glib_CFLAGS) $(AM_CPPFLAGS)
 playlist_CFLAGS=$(AM_CFLAGS)
 playlist_LDFLAGS=$(top_builddir)/src/libquvi-1.0.la $(AM_LDFLAGS)
+
+version_SOURCES=version.c
+version_CPPFLAGS=-I$(top_srcdir)/src/quvi-1.0/ $(AM_CPPFLAGS)
+version_CFLAGS=$(AM_CFLAGS)
+version_LDFLAGS=$(top_builddir)/src/libquvi-1.0.la $(AM_LDFLAGS)
 endif # WITH_EXAMPLES
