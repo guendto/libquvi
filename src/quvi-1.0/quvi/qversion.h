@@ -26,8 +26,8 @@
 typedef enum
 {
   QUVI_VERSION,
-  QUVI_VERSION_BUILD,
-  QUVI_VERSION_SCRIPTS
+  QUVI_VERSION_BUILD,   /**< Target build */
+  QUVI_VERSION_SCRIPTS  /**< libquvi-scripts version */
 } QuviVersion;
 
 #endif /* qversion_h */
