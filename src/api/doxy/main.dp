@@ -1,0 +1,33 @@
+/** @mainpage
+
+@author Toni Gundogdu
+@version 1.0
+@date 2012
+
+@section intro Introduction
+
+libquvi is a small C library that can be used to parse flash media
+stream URLs.
+
+@li Parse media properties (stream URL, title, ID, ...)
+@li Parse playlist properties (media URL, ID)
+@li C API is uncomplicated and simple to use
+@li C library: Fast and low system footprint
+@li Support for 50+ websites and growing
+@li Supports Linux, *BSD systems
+
+@section programming Programming
+@li @subpage getting_started
+@li @subpage parse_media
+@li @subpage parse_playlist
+
+@section p_advanced Programming: Advanced topics
+@li @subpage scan_media
+@li @subpage chk_support
+@li @subpage query_formats
+@li @subpage scripts
+
+@section misc Other
+@li @subpage env
+@li @subpage glossary
+*/

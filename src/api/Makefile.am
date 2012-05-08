@@ -1,4 +1,19 @@
 
+EXTRA_DIST=\
+  doxy/chk_support.dp\
+  doxy/env.dp\
+  doxy/getting_started.dp\
+  doxy/glossary.dp\
+  doxy/glossary_scripts.dp\
+  doxy/glossary_termino.dp\
+  doxy/groups.dp\
+  doxy/main.dp\
+  doxy/parse_media.dp\
+  doxy/parse_playlist.dp\
+  doxy/query_formats.dp\
+  doxy/scan_media.dp\
+  doxy/scripts.dp
+
 src=\
   query_formats_next_format.c\
   query_formats_free.c\

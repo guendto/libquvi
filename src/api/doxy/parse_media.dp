@@ -1,0 +1,20 @@
+/** @page parse_media Parsing media properties
+
+libquvi uses media scripts for parsing the media properties, these may
+be accessed using the @ref mediaprop functions.
+
+@code
+quvi_media_t m = quvi_media_new(q, URL);
+abort_if_error();
+{
+  char *s = NULL;
+  quvi_media_get(m, QUVI_MEDIA_PROPERTY_TITLE, &s);
+  puts(s);
+}
+quvi_media_free(m); /* Release when done using it. */
+m = NULL;
+@endcode
+
+@sa @ref query_formats
+@sa QuviMediaProperty
+*/

@@ -1,0 +1,14 @@
+/** @page scan_media Scanning URL contents for embedded media URLs
+
+@code
+quvi_scan_t qs = quvi_scan_new(q, URL);
+abort_if_error();
+{
+  char *s = NULL;
+  while ((s = quvi_scan_next_media_url(qs)) != NULL)
+    puts(s);
+}
+quvi_scan_free(qs);
+qs = NULL;
+@endcode
+*/

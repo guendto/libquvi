@@ -1,0 +1,9 @@
+/**
+@defgroup queryformats Query available media formats
+@defgroup convenience Convenience functions
+@defgroup playlistprop Playlist property
+@defgroup mediaprop Media property
+@defgroup scan Scan property
+@defgroup script Scripts
+@defgroup lib Library
+*/
