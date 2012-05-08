@@ -54,20 +54,35 @@ PKG_CHECK_MODULES([libcurl], [libcurl >= 7.18.2])
 PKG_CHECK_MODULES([glib], [glib-2.0 >= 2.24])
 
 # Checks for scripts.
-PKG_CHECK_MODULES([libquvi_scripts], [libquvi-scripts >= 0.4.0])
-
-scriptsdir=`$PKG_CONFIG --variable scriptsdir libquvi-scripts 2>/dev/null`
-versionfile=`$PKG_CONFIG --variable versionfile libquvi-scripts 2>/dev/null`
-scriptsmodver=`$PKG_CONFIG --modversion libquvi-scripts 2>/dev/null`
+AC_ARG_WITH([scriptsdir],
+  [AS_HELP_STRING([--with-scriptsdir=DIR],
+    [Set libquvi-scripts directory to DIR. Overrides the libquvi-scripts
+    package check.  DIR is expected to contain all of the libquvi-scripts
+    as well as the "version" file containing the libquvi-scripts version
+    string.])],
+  [scriptsdir=$withval
+   versionfile=$scriptsdir/version],
+  [PKG_CHECK_MODULES([libquvi_scripts], [libquvi-scripts >= 0.4.0])
+    scriptsdir=`$PKG_CONFIG --variable scriptsdir libquvi-scripts 2>/dev/null`
+    versionfile=`$PKG_CONFIG --variable versionfile libquvi-scripts 2>/dev/null`
+    scriptsmodver=`$PKG_CONFIG --modversion libquvi-scripts 2>/dev/null`])
 
 AS_IF([test -z "$scriptsdir"], [
-  AC_MSG_ERROR([libquvi-scripts.pc: scriptsdir: variable not found])])
+  AC_MSG_ERROR([scriptsdir: variable not found])])
+
+AS_IF([ ! test -d "$scriptsdir"], [
+  AC_MSG_ERROR([$scriptsdir: does not exist or is not a directory])])
 
 AS_IF([test -z "$versionfile"], [
-  AC_MSG_ERROR([libquvi-scripts.pc: versionfile: variable not found])])
+  AC_MSG_ERROR([versionfile: variable not found])])
+
+AS_IF([ ! test -f "$versionfile"], [
+  AC_MSG_ERROR([$versionfile: does not exist or is not not a regular file])])
 
 AC_DEFINE_UNQUOTED([SCRIPTSDIR], ["$scriptsdir"], [We have scriptsdir])
 AC_DEFINE_UNQUOTED([VERSIONFILE], ["$versionfile"], [We have versionfile])
+
+scriptsver=`head -n1 "$versionfile" 2>/dev/null`
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdint.h string.h])
@@ -131,7 +146,8 @@ Options
   build examples  ${with_examples}
   install manual  ${with_manual}
   build libquvi   shared=${enable_shared} static=${enable_static}
-libquvi-scripts.pc
+libquvi-scripts
+  .pc modversion  ${scriptsmodver}
   versionfile     ${versionfile}
-  modversion      ${scriptsmodver}
+    version       ${scriptsver}
   scriptsdir      ${scriptsdir}])
