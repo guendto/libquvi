@@ -47,14 +47,12 @@ int main(int argc, char **argv)
 
   quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) status);
 
+  qqf = quvi_query_formats_new(q, argv[1]);
+  exit_if_error();
   {
-    qqf = quvi_query_formats_new(q, argv[1]);
-    exit_if_error();
-    {
-      const gchar *s = NULL;
-      while ((s = quvi_query_formats_next_format(qqf)) != NULL)
-        g_print("%s\n", s);
-    }
+    const gchar *s = NULL;
+    while ((s = quvi_query_formats_next_format(qqf)) != NULL)
+      g_print("%s\n", s);
   }
   cleanup();
 

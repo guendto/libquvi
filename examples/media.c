@@ -57,8 +57,10 @@ int main(int argc, char **argv)
     g_print("%s\n", s);
   }
   cleanup();
+
   g_assert(qm == NULL);
   g_assert(q == NULL);
+
   return (0);
 }
 
