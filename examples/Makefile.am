@@ -1,5 +1,5 @@
 if WITH_EXAMPLES
-noinst_PROGRAMS=media supports scripts query_formats playlist version
+noinst_PROGRAMS=media supports scripts query_formats playlist version scan
 
 media_SOURCES=media.c exit_if_error.c cleanup.c status.c var.c
 media_CPPFLAGS=-I$(top_srcdir)/src/quvi-1.0/ $(glib_CFLAGS) $(AM_CPPFLAGS)
@@ -30,4 +30,9 @@ version_SOURCES=version.c
 version_CPPFLAGS=-I$(top_srcdir)/src/quvi-1.0/ $(AM_CPPFLAGS)
 version_CFLAGS=$(AM_CFLAGS)
 version_LDFLAGS=$(top_builddir)/src/libquvi-1.0.la $(AM_LDFLAGS)
+
+scan_SOURCES=scan.c exit_if_error.c cleanup.c status.c var.c
+scan_CPPFLAGS=-I$(top_srcdir)/src/quvi-1.0/ $(glib_CFLAGS) $(AM_CPPFLAGS)
+scan_CFLAGS=$(AM_CFLAGS)
+scan_LDFLAGS=$(top_builddir)/src/libquvi-1.0.la $(AM_LDFLAGS)
 endif # WITH_EXAMPLES

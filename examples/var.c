@@ -23,6 +23,7 @@
 quvi_query_formats_t qqf = NULL;
 quvi_playlist_t qp = NULL;
 quvi_media_t qm = NULL;
+quvi_scan_t qs = NULL;
 quvi_t q = NULL;
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

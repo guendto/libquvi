@@ -17,31 +17,52 @@
  * 02110-1301, USA.
  */
 
+#include <stdlib.h>
 #include <glib.h>
 #include <quvi.h>
 
-extern quvi_query_formats_t qqf;
-extern quvi_playlist_t qp;
-extern quvi_media_t qm;
+static void usage()
+{
+  g_printerr("Usage: scan <URL>\n");
+  exit(0);
+}
+
+extern QuviError status(glong, gpointer);
+extern void exit_if_error();
+extern void cleanup();
+
+typedef quvi_callback_status qcs;
+
 extern quvi_scan_t qs;
 extern quvi_t q;
 
-void cleanup()
+int main(int argc, char **argv)
 {
-  quvi_scan_free(qs);
-  qs = NULL;
+  g_assert(qs == NULL);
+  g_assert(q == NULL);
 
-  quvi_playlist_free(qp);
-  qp = NULL;
+  if (argc < 2)
+    usage();
 
-  quvi_query_formats_free(qqf);
-  qqf = NULL;
+  q = quvi_new();
+  exit_if_error();
 
-  quvi_media_free(qm);
-  qm = NULL;
+  quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) status);
 
-  quvi_free(q);
-  q = NULL;
+  qs = quvi_scan_new(q, argv[1]);
+  exit_if_error();
+  {
+    const gchar *s = NULL;
+    while ((s = quvi_scan_next_media_url(qs)) != NULL)
+      g_print("%s\n", s);
+  }
+
+  cleanup();
+
+  g_assert(qs == NULL);
+  g_assert(q == NULL);
+
+  return (0);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
