@@ -6,14 +6,14 @@ pkgconfig_DATA=	libquvi-1.0.pc
 
 SUBDIRS=	src examples doc
 
-.PHONY: doc distdoc ChangeLog VERSION
+.PHONY: doc distdoc distdoc-html ChangeLog VERSION
 doc:
-	@echo "error: TODO" && exit 1
+	@make -C $(top_builddir)/doc/dox/ doc
 
-distdoc: doc
-	@tar chof - $(top_builddir)/doc/libquvi-@VERSION@ | \
-			GZIP=--best gzip -c >libquvi-doc-@VERSION@.tar.gz \
-			&& echo Created libquvi-doc-@VERSION@.tar.gz
+distdoc-html:
+	@make -C $(top_builddir)/doc/dox/ distdoc-html
+
+distdoc: distdoc-html
 
 VERSION:
 	@if test -d "$(top_srcdir)/.git" -o -f "$(top_srcdir)/.git"; then \

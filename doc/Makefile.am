@@ -1,4 +1,8 @@
 EXTRA_DIST=
+SUBDIRS=
 if WITH_MANUAL
-SUBDIRS=	man3
+SUBDIRS+=man3
+endif
+if HAVE_DOXYGEN
+SUBDIRS+=dox
 endif

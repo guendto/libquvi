@@ -39,6 +39,10 @@ LT_PREREQ([2.2])
 # Checks for programs.
 AC_PROG_CC
 
+AC_PATH_PROG([DOXYGEN], [doxygen], [no])
+AM_CONDITIONAL([HAVE_DOXYGEN], [test x"$DOXYGEN" != "xno"])
+AC_SUBST([DOXYGEN])
+
 # Checks for libraries.
 PKG_CHECK_MODULES([liblua], [lua >= 5.1], [], [
   PKG_CHECK_MODULES([liblua], [lua51 >= 5.1], [], [
@@ -99,6 +103,8 @@ AM_CONDITIONAL([WITH_MANUAL], [test x"$with_manual" != "xno"])
 AC_CONFIG_FILES([
   Makefile
   doc/man3/Makefile
+  doc/dox/Makefile
+  doc/dox/Doxyfile
   doc/Makefile
   examples/Makefile
   src/misc/Makefile
