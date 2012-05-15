@@ -35,7 +35,7 @@
 @sa @ref parse_media
 @ingroup mediaprop
 */
-quvi_media_t quvi_media_new(quvi_t handle, char *url)
+quvi_media_t quvi_media_new(quvi_t handle, const char *url)
 {
   _quvi_t q = (_quvi_t) handle;
   _quvi_media_t m = NULL;
@@ -44,7 +44,7 @@ quvi_media_t quvi_media_new(quvi_t handle, char *url)
   g_return_val_if_fail(handle != NULL, NULL);
   g_return_val_if_fail(url != NULL, NULL);
 
-  q->status.rc = m_match_media_script(q, &m, (const gchar*) url,
+  q->status.rc = m_match_media_script(q, &m, url,
                                       QM_MATCH_MS_PARSE, NULL);
   return (m);
 }

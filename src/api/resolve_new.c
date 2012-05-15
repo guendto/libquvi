@@ -35,7 +35,7 @@
 @note @ref quvi_resolve_free the handle when done using it
 @ingroup resolve
 */
-quvi_resolve_t quvi_resolve_new(quvi_t handle, char *url,
+quvi_resolve_t quvi_resolve_new(quvi_t handle, const char *url,
                                 QuviBoolean ignore_noresolve_flag)
 {
   _quvi_t q = (_quvi_t) handle;

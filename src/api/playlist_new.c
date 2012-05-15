@@ -35,7 +35,7 @@
 @sa @ref parse_playlist
 @ingroup playlistprop
 */
-quvi_playlist_t quvi_playlist_new(quvi_t handle, char *url)
+quvi_playlist_t quvi_playlist_new(quvi_t handle, const char *url)
 {
   _quvi_t q = (_quvi_t) handle;
   _quvi_playlist_t p = NULL;
@@ -44,7 +44,7 @@ quvi_playlist_t quvi_playlist_new(quvi_t handle, char *url)
   g_return_val_if_fail(handle != NULL, NULL);
   g_return_val_if_fail(url != NULL, NULL);
 
-  q->status.rc = m_match_playlist_script(q, &p, (const gchar*) url,
+  q->status.rc = m_match_playlist_script(q, &p, url,
                                          QM_MATCH_PS_PARSE, NULL);
   return (p);
 }

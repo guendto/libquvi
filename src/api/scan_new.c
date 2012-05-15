@@ -68,7 +68,7 @@ static void _exec_scan_script(gpointer p, gpointer userdata)
 @sa @ref scan_media
 @ingroup scan
 */
-quvi_scan_t quvi_scan_new(quvi_t handle, char *url)
+quvi_scan_t quvi_scan_new(quvi_t handle, const char *url)
 {
   _quvi_t q = (_quvi_t) handle;
   _quvi_scan_t s = NULL;

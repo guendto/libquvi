@@ -52,7 +52,7 @@ static gpointer _query_formats_new(gchar *fmts)
 @sa @ref query_formats
 @ingroup queryformats
 */
-quvi_query_formats_t quvi_query_formats_new(quvi_t handle, char *url)
+quvi_query_formats_t quvi_query_formats_new(quvi_t handle, const char *url)
 {
   _quvi_query_formats_t qf = NULL;
   _quvi_t q = (_quvi_t) handle;
@@ -63,7 +63,7 @@ quvi_query_formats_t quvi_query_formats_new(quvi_t handle, char *url)
   g_return_val_if_fail(handle != NULL, NULL);
   g_return_val_if_fail(url != NULL, NULL);
 
-  q->status.rc = m_match_media_script(q, &m, (const gchar*) url,
+  q->status.rc = m_match_media_script(q, &m, url,
                                       QM_MATCH_MS_QUERY_FORMATS,
                                       &fmts /* Must be g_free'd */);
   if (m != NULL)

@@ -37,14 +37,14 @@ extern "C" {
 
   /* Media */
 
-  quvi_media_t quvi_media_new(quvi_t, char*);
+  quvi_media_t quvi_media_new(quvi_t, const char*);
   void quvi_media_free(quvi_media_t);
 
   void quvi_media_get(quvi_media_t, QuviMediaProperty, ...);
 
   /* Convenience */
 
-  QuviBoolean quvi_supports(quvi_t, char*,
+  QuviBoolean quvi_supports(quvi_t, const char*,
                             QuviSupportsMode, QuviSupportsType);
 
   const char *quvi_version(QuviVersion);
@@ -54,14 +54,14 @@ extern "C" {
 
   /* Query formats */
 
-  quvi_query_formats_t quvi_query_formats_new(quvi_t, char*);
+  quvi_query_formats_t quvi_query_formats_new(quvi_t, const char*);
   void quvi_query_formats_free(quvi_query_formats_t);
 
   const char *quvi_query_formats_next_format(quvi_query_formats_t);
 
   /* Playlist */
 
-  quvi_playlist_t quvi_playlist_new(quvi_t, char*);
+  quvi_playlist_t quvi_playlist_new(quvi_t, const char*);
   void quvi_playlist_free(quvi_playlist_t);
 
   void quvi_playlist_get(quvi_playlist_t, QuviPlaylistProperty, ...);
@@ -69,14 +69,14 @@ extern "C" {
 
   /* Scan */
 
-  quvi_scan_t quvi_scan_new(quvi_t, char*);
+  quvi_scan_t quvi_scan_new(quvi_t, const char*);
   void quvi_scan_free(quvi_scan_t);
 
   const char *quvi_scan_next_media_url(quvi_scan_t);
 
   /* Resolve */
 
-  quvi_resolve_t quvi_resolve_new(quvi_t, char*, QuviBoolean);
+  quvi_resolve_t quvi_resolve_new(quvi_t, const char*, QuviBoolean);
   void quvi_resolve_free(quvi_resolve_t);
 
   QuviBoolean quvi_resolve_forwarded(quvi_resolve_t);

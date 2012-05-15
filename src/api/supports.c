@@ -90,7 +90,7 @@ quvi_supports(q, URL, QUVI_SUPPORTS_OFFLINE,
 
 @ingroup convenience
 */
-QuviBoolean quvi_supports(quvi_t handle, char *url,
+QuviBoolean quvi_supports(quvi_t handle, const char *url,
                           QuviSupportsMode mode, QuviSupportsType type)
 {
   _quvi_t q = (_quvi_t) handle;
