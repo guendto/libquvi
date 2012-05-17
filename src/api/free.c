@@ -28,7 +28,6 @@
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_script_s.h"
-#include "_quvi_util_script_s.h"
 /* -- */
 #include "misc/script_free.h"
 
@@ -85,9 +84,9 @@ void quvi_free(quvi_t handle)
   q->scripts.scan = NULL;
 
 #ifdef HAVE_GLIB_2_28
-  g_slist_free_full(q->scripts.util, m_util_script_free);
+  g_slist_free_full(q->scripts.util, m_script_free);
 #else
-  g_slist_foreach(q->scripts.util, m_util_script_free, NULL);
+  g_slist_foreach(q->scripts.util, m_script_free, NULL);
   g_slist_free(q->scripts.util);
 #endif
   q->scripts.util = NULL;

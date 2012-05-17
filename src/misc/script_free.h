@@ -20,7 +20,6 @@
 #ifndef m_script_free_h
 #define m_script_free_h
 
-void m_util_script_free(gpointer, gpointer);
 void m_script_free(gpointer, gpointer);
 
 #endif /* m_script_free_h */

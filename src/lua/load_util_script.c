@@ -26,7 +26,7 @@
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_media_s.h"
-#include "_quvi_util_script_s.h"
+#include "_quvi_script_s.h"
 /* -- */
 #include "lua/def.h"
 #include "lua/setfield.h"
@@ -36,8 +36,8 @@ static GSList *_match_util_script(_quvi_media_t m, const gchar *w)
   GSList *s = m->handle.quvi->scripts.util;
   while (s != NULL)
     {
-      const _quvi_util_script_t us = (_quvi_util_script_t) s->data;
-      gchar *bname = g_path_get_basename(us->fpath->str);
+      const _quvi_script_t qs = (_quvi_script_t) s->data;
+      gchar *bname = g_path_get_basename(qs->fpath->str);
       const gboolean r = (gboolean) g_strcmp0(bname, w) == 0;
       g_free(bname);
       if (r == TRUE)
@@ -51,7 +51,7 @@ QuviError l_load_util_script(_quvi_media_t m,
                              const gchar *script_fname,
                              const gchar *script_func)
 {
-  _quvi_util_script_t us = NULL;
+  _quvi_script_t qs = NULL;
   _quvi_t q = m->handle.quvi;
   lua_State *l = q->handle.lua;
   GSList *s = _match_util_script(m, script_fname);
@@ -62,12 +62,12 @@ QuviError l_load_util_script(_quvi_media_t m,
                  script_fname);
     }
 
-  us = (_quvi_util_script_t) s->data;
+  qs = (_quvi_script_t) s->data;
 
   lua_pushnil(l);
   lua_getglobal(l, script_func);
 
-  if (luaL_dofile(l, us->fpath->str))
+  if (luaL_dofile(l, qs->fpath->str))
     luaL_error(l, "%s", lua_tostring(l, -1));
 
   lua_getglobal(l, script_func);
@@ -75,7 +75,7 @@ QuviError l_load_util_script(_quvi_media_t m,
   if (!lua_isfunction(l, -1))
     {
       luaL_error(l, "%s: %s: function not found",
-                 us->fpath->str, script_func);
+                 qs->fpath->str, script_func);
     }
 
   lua_newtable(l);

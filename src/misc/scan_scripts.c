@@ -26,7 +26,6 @@
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_script_s.h"
-#include "_quvi_util_script_s.h"
 /* -- */
 #include "misc/script_free.h"
 #include "misc/sort.h"
@@ -272,9 +271,9 @@ static gpointer _new_scan_script(const gchar *path, const gchar *fname)
 /* New utility script. */
 static gpointer _new_util_script(const gchar *path, const gchar *fname)
 {
-  _quvi_util_script_t us = NULL;
   GString *fpath = _get_fpath(path, fname);
   GString *c = _contents(fpath);
+  _quvi_script_t qs = NULL;
 
   if (c != NULL)
     {
@@ -282,15 +281,16 @@ static gpointer _new_util_script(const gchar *path, const gchar *fname)
         (m_match(c->str, "^\\-\\-\\s+libquvi\\-scripts") == TRUE);
 
       if (OK == TRUE)
-        {
-          us = g_new0(struct _quvi_util_script_s, 1);
-          us->fpath = g_string_new(fpath->str);
-          us->fname = g_string_new(fname);
-          us->sha1 = _file_sha1(c);
-        }
+        qs = script_new(fpath->str, fname, c);
 
       g_string_free(c, TRUE);
       c = NULL;
+
+      if (OK == FALSE)
+        {
+          m_script_free(qs, NULL);
+          qs = NULL;
+        }
     }
 
   if (fpath != NULL)
@@ -299,7 +299,7 @@ static gpointer _new_util_script(const gchar *path, const gchar *fname)
       fpath = NULL;
     }
 
-  return (us);
+  return (qs);
 }
 
 /* Check for duplicate script. */
@@ -310,21 +310,6 @@ static gboolean _chkdup_script(_quvi_t q, gpointer script, GSList *l)
   while (curr != NULL)
     {
       const _quvi_script_t b = (_quvi_script_t) curr->data;
-      if (g_string_equal(a->sha1, b->sha1) == TRUE)
-        return (TRUE);
-      curr = g_slist_next(curr);
-    }
-  return (FALSE);
-}
-
-/* Check for duplicate utility script. */
-static gboolean _chkdup_util_script(_quvi_t q, gpointer script, GSList *l)
-{
-  const _quvi_util_script_t a = (_quvi_util_script_t) script;
-  GSList *curr = l;
-  while (curr != NULL)
-    {
-      const _quvi_util_script_t b = (_quvi_util_script_t) curr->data;
       if (g_string_equal(a->sha1, b->sha1) == TRUE)
         return (TRUE);
       curr = g_slist_next(curr);
@@ -447,8 +432,6 @@ static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
       new_cb = _new_scan_script;
       break;
     case GLOB_UTIL_SCRIPTS:
-      chkdup_cb = _chkdup_util_script;
-      free_cb = m_util_script_free;
       new_cb = _new_util_script;
       break;
     default:

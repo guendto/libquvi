@@ -25,7 +25,6 @@
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_script_s.h"
-#include "_quvi_util_script_s.h"
 /* -- */
 #include "misc/script_free.h"
 
@@ -57,26 +56,6 @@ void m_script_free(gpointer p, gpointer userdata)
 
   g_string_free(qs->sha1, TRUE);
   qs->sha1 = NULL;
-
-  g_free(p);
-  p = NULL;
-}
-
-void m_util_script_free(gpointer p, gpointer userdata)
-{
-  _quvi_util_script_t us = (_quvi_util_script_t) p;
-
-  if (p == NULL)
-    return;
-
-  g_string_free(us->fpath, TRUE);
-  us->fpath = NULL;
-
-  g_string_free(us->fname, TRUE);
-  us->fname = NULL;
-
-  g_string_free(us->sha1, TRUE);
-  us->sha1 = NULL;
 
   g_free(p);
   p = NULL;
