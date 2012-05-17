@@ -17,6 +17,7 @@
  * 02110-1301, USA.
  */
 
+#include <glib.h>
 #include <quvi.h>
 
 int main(int argc, char **argv)
