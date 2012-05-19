@@ -340,7 +340,7 @@ static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
   const gchar *fname = NULL;
   GDir *dir = NULL;
 
-  if (show_dir != NULL)
+  if (show_dir != NULL && strlen(show_dir) >0)
     g_message("libquvi: %s: %s", __func__, path);
 
   dir = g_dir_open(path, 0, NULL);
@@ -356,7 +356,7 @@ static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
             {
               /* Either file read failed or this is not a valid
                * libquvi-script. */
-              if (show_script != NULL)
+              if (show_script != NULL && strlen(show_script) >0)
                 {
                   g_message("libquvi: %s: rejected: %s [INVALID]",
                             __func__, fname);
@@ -375,7 +375,7 @@ static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
                   s = NULL;
                 }
 
-              if (show_script != NULL)
+              if (show_script != NULL && strlen(show_script) >0)
                 {
                   g_message("libquvi: %s: %s: %s [%s]",
                             __func__,
@@ -441,7 +441,7 @@ static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
   {
     /* LIBQUVI_SCRIPTS_DIR (excl.) */
 
-    if (scripts_dir != NULL)
+    if (scripts_dir != NULL && strlen(scripts_dir) >0)
       {
         gboolean r = FALSE;
 
@@ -511,7 +511,7 @@ static void chk_common_scripts(_quvi_t q)
   {
     /* LIBQUVI_SCRIPTS_DIR (excl.) */
 
-    if (scripts_dir != NULL)
+    if (scripts_dir != NULL && strlen(scripts_dir) >0)
       {
         path = g_build_path(G_DIR_SEPARATOR_S,
                             scripts_dir, Q_COMMON_DIR, NULL);

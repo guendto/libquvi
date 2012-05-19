@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <string.h>
 #include <glib.h>
 
 #include "quvi.h"
@@ -65,7 +66,7 @@ quvi_t quvi_new()
   if (q->status.rc == QUVI_OK)
     {
       const gchar *v = g_getenv("LIBQUVI_VERBOSE_SCRIPTS");
-      if (v != NULL)
+      if (v != NULL && strlen(v) >0)
         q->opt.scripts.verbose = TRUE;
     }
 
