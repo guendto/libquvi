@@ -32,12 +32,14 @@ AC_DEFINE_UNQUOTED([CANONICAL_HOST], "$host", [...])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2 dist-xz])
 AM_SILENT_RULES([yes])
+#AM_PROG_AR
 
 LT_INIT()
 LT_PREREQ([2.2])
 
 # Checks for programs.
 AC_PROG_CC
+AM_PROG_CC_C_O
 
 AC_PATH_PROG([DOXYGEN], [doxygen], [no])
 AM_CONDITIONAL([HAVE_DOXYGEN], [test x"$DOXYGEN" != "xno"])
