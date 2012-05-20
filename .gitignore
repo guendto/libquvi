@@ -18,6 +18,7 @@ config.aux/install-sh
 config.aux/ltmain.sh
 config.aux/missing
 config.aux/compile
+config.aux/ar-lib
 config.h.in
 configure
 doc/Makefile.in
