@@ -26,6 +26,8 @@ libconvenience_net_la_CPPFLAGS=\
 libconvenience_net_la_CFLAGS=$(AM_CFLAGS)
 
 libconvenience_net_la_LDFLAGS=\
-  $(liblua_LIBS)\
-  $(glib_LIBS)\
   $(AM_LDFLAGS)
+
+libconvenience_net_la_LIBADD=\
+  $(liblua_LIBS)\
+  $(glib_LIBS)

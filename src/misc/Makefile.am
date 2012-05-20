@@ -37,5 +37,7 @@ libconvenience_misc_la_CPPFLAGS=\
 libconvenience_misc_la_CFLAGS=$(AM_CFLAGS)
 
 libconvenience_misc_la_LDFLAGS=\
-  $(glib_LIBS)\
   $(AM_LDFLAGS)
+
+libconvenience_misc_la_LIBADD=\
+  $(glib_LIBS)

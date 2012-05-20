@@ -23,6 +23,8 @@ libconvenience_curl_la_CPPFLAGS=\
 libconvenience_curl_la_CFLAGS=$(AM_CFLAGS)
 
 libconvenience_curl_la_LDFLAGS=\
-  $(libcurl_LIBS)\
-  $(glib_LIBS)\
   $(AM_LDFLAGS)
+
+libconvenience_curl_la_LIBADD=\
+  $(libcurl_LIBS)\
+  $(glib_LIBS)

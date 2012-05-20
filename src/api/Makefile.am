@@ -56,6 +56,8 @@ libconvenience_api_la_CPPFLAGS=\
 libconvenience_api_la_CFLAGS=$(AM_CFLAGS)
 
 libconvenience_api_la_LDFLAGS=\
-  $(liblua_LIBS)\
-  $(glib_LIBS)\
   $(AM_LDFLAGS)
+
+libconvenience_api_la_LIBADD=\
+  $(liblua_LIBS)\
+  $(glib_LIBS)

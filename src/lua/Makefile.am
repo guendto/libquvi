@@ -38,6 +38,8 @@ libconvenience_lua_la_CPPFLAGS=\
 libconvenience_lua_la_CFLAGS=$(AM_CFLAGS)
 
 libconvenience_lua_la_LDFLAGS=\
-  $(liblua_LIBS)\
-  $(glib_LIBS)\
   $(AM_LDFLAGS)
+
+libconvenience_lua_la_LIBADD=\
+  $(liblua_LIBS)\
+  $(glib_LIBS)
