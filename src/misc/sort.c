@@ -54,14 +54,13 @@ gint m_sort_scripts(gconstpointer a, gconstpointer b, gpointer p)
       /* Any */
     case QUVI_SCRIPT_SORT_BY_FILENAME:
       return (_cmp(qsa->fname->str, qsb->fname->str, o));
+    default:
     case QUVI_SCRIPT_SORT_BY_FILEPATH:
       return (_cmp(qsa->fpath->str, qsb->fpath->str, o));
     case QUVI_SCRIPT_SORT_BY_DOMAIN:
       return (_cmp(qsa->domain->str, qsb->domain->str, o));
     case QUVI_SCRIPT_SORT_BY_SHA1:
       return (_cmp(qsa->sha1->str, qsb->sha1->str, o));
-    default:
-      break;
     }
 
   return (-1);
