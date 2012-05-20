@@ -27,6 +27,9 @@ libquvi_1_0_la_CFLAGS=$(AM_CFLAGS)
 
 libquvi_1_0_la_LDFLAGS=\
   -version-info $(LT_CUR):$(LT_REV):$(LT_AGE)\
+  $(AM_LDFLAGS)
+
+libquvi_1_0_la_LIBADD=\
   $(top_builddir)/src/misc/libconvenience_misc.la\
   $(top_builddir)/src/curl/libconvenience_curl.la\
   $(top_builddir)/src/net/libconvenience_net.la\
@@ -34,5 +37,4 @@ libquvi_1_0_la_LDFLAGS=\
   $(top_builddir)/src/api/libconvenience_api.la\
   $(libcurl_LIBS)\
   $(liblua_LIBS)\
-  $(glib_LIBS)\
-  $(AM_LDFLAGS)
+  $(glib_LIBS)
