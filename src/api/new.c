@@ -32,8 +32,6 @@ static gpointer _quvi_new()
 {
   _quvi_t q = g_new0(struct _quvi_s, 1);
   q->opt.scripts.category = QUVI_MEDIA_SCRIPT_PROTOCOL_CATEGORY_ALL;
-  q->opt.scripts.sort_order = QUVI_SCRIPT_SORT_ORDER_ASCEND;
-  q->opt.scripts.sort_by = QUVI_SCRIPT_SORT_BY_FILEPATH;
   q->opt.format = g_string_new("default");
   q->status.errmsg = g_string_new(NULL);
   q->opt.resolve = TRUE;

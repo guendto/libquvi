@@ -40,11 +40,8 @@ struct _quvi_s
     GString *format;
     struct
     {
-      gboolean update_order;
       gboolean verbose; /* LIBQUVI_VERBOSE_SCRIPTS */
-      glong sort_order;
       glong category;
-      glong sort_by;
     } scripts;
   } opt;
   struct

@@ -11,7 +11,6 @@ src=\
   resolve.c\
   to_utf8.c\
   match.c\
-  sort.c\
   trim.c
 
 hdr=\
@@ -22,7 +21,6 @@ hdr=\
   media_new.h\
   scan_new.h\
   resolve.h\
-  sort.h\
   re.h
 
 noinst_LTLIBRARIES=libconvenience_misc.la

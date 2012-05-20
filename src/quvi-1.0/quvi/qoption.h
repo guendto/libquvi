@@ -36,10 +36,6 @@ typedef enum
    * fields which would otherwise remain unset.  Default: QUVI_TRUE
    * @note Negates @ref QUVI_SUPPORTS_MODE_ONLINE */
   QUVI_OPTION_VERIFY_MEDIA_STREAM_URL,
-  /** Default: QUVI_SCRIPT_SORT_ORDER_ASCEND */
-  QUVI_OPTION_SCRIPT_SORT_ORDER,
-  /** Default: QUVI_SCRIPT_SORT_ORDER_BY_FILEPATH */
-  QUVI_OPTION_SCRIPT_SORT_BY,
   /** Default: None */
   QUVI_OPTION_CALLBACK_STATUS,
   /** Tells the media script(s) to get the requested format if available.

@@ -28,7 +28,6 @@
 #include "_quvi_script_s.h"
 /* -- */
 #include "misc/script_free.h"
-#include "misc/sort.h"
 #include "misc/re.h"
 
 /* Return path to script file. */
@@ -324,6 +323,14 @@ static gint _lua_files_only(const gchar *fpath)
   return (fpath[0] != '.' && ext != NULL && strcmp(ext, ".lua") == 0);
 }
 
+/* Sort scripts alphabetically by filepath. */
+static gint _sort(gconstpointer a, gconstpointer b)
+{
+  const _quvi_script_t qsa = (_quvi_script_t) a;
+  const _quvi_script_t qsb = (_quvi_script_t) b;
+  return (g_strcmp0(qsa->fpath->str, qsb->fpath->str) >0);
+}
+
 typedef gpointer (*new_script_callback)(const gchar*, const gchar*);
 typedef gboolean (*chkdup_script_callback)(_quvi_t, gpointer, GSList*);
 typedef void (*free_script_callback)(gpointer, gpointer);
@@ -390,7 +397,7 @@ static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
   dir = NULL;
 
   if (*dst != NULL)
-    *dst = g_slist_sort_with_data(*dst, m_sort_scripts, q);
+    *dst = g_slist_sort(*dst, _sort);
 
   return (*dst != NULL);
 }

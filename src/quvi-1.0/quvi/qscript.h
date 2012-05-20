@@ -50,24 +50,6 @@ typedef enum
   QUVI_SCRIPT_PROPERTY_SITE /**< Media script specific */
 } QuviScriptProperty;
 
-/** @enum QuviScriptSortBy */
-typedef enum
-{
-  QUVI_SCRIPT_SORT_BY_CATEGORIES,
-  QUVI_SCRIPT_SORT_BY_FILEPATH,
-  QUVI_SCRIPT_SORT_BY_FILENAME,
-  QUVI_SCRIPT_SORT_BY_DOMAIN,
-  QUVI_SCRIPT_SORT_BY_SHA1,
-  QUVI_SCRIPT_SORT_BY_SITE
-} QuviScriptSortBy;
-
-/** @enum QuviScriptSortOrder */
-typedef enum
-{
-  QUVI_SCRIPT_SORT_ORDER_DESCEND,
-  QUVI_SCRIPT_SORT_ORDER_ASCEND
-} QuviScriptSortOrder;
-
 #endif /* qscript_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

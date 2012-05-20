@@ -29,16 +29,6 @@ static void usage()
           "  -p           .. Dump playlist scripts\n"
           "  -m           .. Dump media scripts [default]\n"
           "  -s           .. Dump scan scripts\n"
-          "Sort by\n"
-          "  -C           .. Sort by categories (media only)\n"
-          "  -P           .. Sort by file path [default]\n"
-          "  -N           .. Sort by file name\n"
-          "  -D           .. Sort by domain (playlist, media only)\n"
-          "  -S           .. Sort by SHA1\n"
-          "  -I           .. Sort by site (media only)\n"
-          "Sort order\n"
-          "  -d           .. Sort in descending order [default]\n"
-          "  -a           .. Sort in ascending order \n"
           "Printing\n"
           "  -t<arg> =pd  .. Property mask, where 'c', 'i', 'd'\n"
           "                   'p', 'n' and 's' are accepted\n"
@@ -46,8 +36,6 @@ static void usage()
   exit(0);
 }
 
-static QuviScriptSortOrder order = QUVI_SCRIPT_SORT_ORDER_ASCEND;
-static QuviScriptSortBy by = QUVI_SCRIPT_SORT_BY_FILEPATH;
 static QuviScriptType type = QUVI_SCRIPT_TYPE_MEDIA;
 static GString *mask = NULL;
 
@@ -98,32 +86,6 @@ static void parse_args(gint argc, gchar **argv)
           break;
         case 's':
           type = QUVI_SCRIPT_TYPE_SCAN;
-          break;
-          /* Sort by */
-        case 'C':
-          by = QUVI_SCRIPT_SORT_BY_CATEGORIES;
-          break;
-        case 'P':
-          by = QUVI_SCRIPT_SORT_BY_FILEPATH;
-          break;
-        case 'N':
-          by = QUVI_SCRIPT_SORT_BY_FILENAME;
-          break;
-        case 'D':
-          by = QUVI_SCRIPT_SORT_BY_DOMAIN;
-          break;
-        case 'S':
-          by = QUVI_SCRIPT_SORT_BY_SHA1;
-          break;
-        case 'I':
-          by = QUVI_SCRIPT_SORT_BY_SITE;
-          break;
-          /* Sort order */
-        case 'd':
-          order = QUVI_SCRIPT_SORT_ORDER_DESCEND;
-          break;
-        case 'a':
-          order = QUVI_SCRIPT_SORT_ORDER_ASCEND;
           break;
           /* Property mask */
         case 't':
@@ -196,15 +158,11 @@ int main(int argc, char **argv)
   if (mask == NULL)
     mask = g_string_new("pd"); /* Default. */
 
-  g_printerr("[%s] mask=%s, order=%d, type=%d, by=%d\n",
-             __func__, mask->str, order, type, by);
+  g_printerr("[%s] mask=%s, type=%d\n", __func__, mask->str, type);
 
   g_assert(q == NULL);
   q = quvi_new();
   exit_if_error();
-
-  quvi_set(q, QUVI_OPTION_SCRIPT_SORT_ORDER, order);
-  quvi_set(q, QUVI_OPTION_SCRIPT_SORT_BY, by);
 
   while (quvi_script_next(q, type) == QUVI_TRUE)
     dump_script(q);

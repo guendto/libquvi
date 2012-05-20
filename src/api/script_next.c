@@ -26,8 +26,6 @@
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
-/* -- */
-#include "misc/sort.h"
 
 /** @cond NODOC */
 #define _W "libquvi: %s: %d"
@@ -61,27 +59,6 @@ QuviBoolean quvi_script_next(quvi_t handle, QuviScriptType type)
     case QUVI_SCRIPT_TYPE_SCAN:
       l = q->scripts.scan;
       break;
-    }
-
-  if (q->opt.scripts.update_order == TRUE)
-    {
-      l = g_slist_sort_with_data(l, m_sort_scripts, q);
-      q->opt.scripts.update_order = FALSE;
-      switch (type) /* Reset */
-        {
-        case QUVI_SCRIPT_TYPE_PLAYLIST:
-          q->scripts.curr.playlist = NULL;
-          break;
-
-        case QUVI_SCRIPT_TYPE_MEDIA:
-        default:
-          q->scripts.curr.media = NULL;
-          break;
-
-        case QUVI_SCRIPT_TYPE_SCAN:
-          q->scripts.curr.scan = NULL;
-          break;
-        }
     }
 
   switch (type)
