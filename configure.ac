@@ -30,12 +30,12 @@ AC_DEFINE_UNQUOTED([CANONICAL_TARGET], "$target", [...])
 AC_DEFINE_UNQUOTED([CANONICAL_BUILD], "$build", [...])
 AC_DEFINE_UNQUOTED([CANONICAL_HOST], "$host", [...])
 
-AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2 dist-xz])
+AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
 AM_SILENT_RULES([yes])
 #AM_PROG_AR
 
-LT_INIT()
-LT_PREREQ([2.2])
+LT_INIT([disable-static])
+LT_PREREQ([2.2.6])
 
 # Checks for programs.
 AC_PROG_CC
@@ -147,7 +147,6 @@ System types
 Options
   build examples  ${with_examples}
   install manual  ${with_manual}
-  build libquvi   shared=${enable_shared} static=${enable_static}
 libquvi-scripts
   .pc modversion  ${scriptsmodver}
   versionfile     ${versionfile}
