@@ -27,6 +27,7 @@ gen_manual()
 {
   echo "Generate manual..."
   MAN=doc/man3/libquvi.3 ; POD=$MAN.pod ; VN=`./gen-ver.sh`
+  podchecker "$POD" || exit $?
   pod2man -c "libquvi manual" -n libquvi -s 3 -r "$VN" "$POD" "$MAN"
   return $?
 }
