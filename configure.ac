@@ -64,7 +64,7 @@ AC_ARG_WITH([scriptsdir],
     string.])],
   [scriptsdir=$withval
    versionfile=$scriptsdir/version],
-  [PKG_CHECK_MODULES([libquvi_scripts], [libquvi-scripts >= 0.4.0])
+  [PKG_CHECK_MODULES([libquvi_scripts], [libquvi-scripts-1.0 >= 1.0])
     scriptsdir=`$PKG_CONFIG --variable scriptsdir libquvi-scripts 2>/dev/null`
     versionfile=`$PKG_CONFIG --variable versionfile libquvi-scripts 2>/dev/null`
     scriptsmodver=`$PKG_CONFIG --modversion libquvi-scripts 2>/dev/null`])
