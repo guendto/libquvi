@@ -3,9 +3,6 @@
 The library provides limited access to the script properties.
 
 @code
-quvi_set(q, QUVI_OPTION_SCRIPT_SORT_ORDER, QUVI_SCRIPT_SORT_ORDER_DESCEND);
-quvi_set(q, QUVI_OPTION_SCRIPT_SORT_BY, QUVI_SCRIPT_SORT_BY_SHA1);
-
 while (quvi_media_script_next(q, QUVI_SCRIPT_TYPE_MEDIA) == QUVI_TRUE)
   {
     char *s = NULL;
@@ -14,8 +11,6 @@ while (quvi_media_script_next(q, QUVI_SCRIPT_TYPE_MEDIA) == QUVI_TRUE)
   }
 @endcode
  
-@sa QuviScriptSortOrder
-@sa QuviScriptSortBy
 @sa QuviScriptType
 @sa @ref m_script
 */
