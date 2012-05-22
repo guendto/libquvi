@@ -69,47 +69,89 @@ static GString *_contents(GString *fpath)
   return (NULL);
 }
 
+static const gchar *scripts_dir = NULL;
+static const gchar *show_script = NULL;
+static const gchar *show_dir = NULL;
+
 extern gchar *m_capture(const gchar*, const gchar*);
 
 /* Extract the "categories" string from the media script. */
 static void _chk_categories(_quvi_script_t qs, const GString *s, gboolean *ok)
 {
-  gchar *c = m_capture(s->str, "\\w+\\.categories\\s+=\\s+(.*)");
+  static const gchar *p = "\\w+\\.categories\\s+=\\s+(.*)";
+  gchar *c = m_capture(s->str, p);
 
   *ok = FALSE;
 
   if (c != NULL)
     {
-      gchar *t = m_trim(c, "\\w+\\.proto_(\\w+)", "\\1");
+      static const gchar *p2 = "\\w+\\.proto_(\\w+)";
+      gchar *t = m_trim(c, p2, "\\1");
+
       g_free(c);
       c = NULL;
+
       if (t != NULL)
         {
           c = m_trim(t, "\\s", "");
+
           g_free(t);
           t = NULL;
+
           if (c != NULL)
             {
               g_string_assign(qs->media.categories, c);
               *ok = TRUE;
+
               g_free(c);
               c = NULL;
             }
         }
+      else
+        {
+          if (show_script != NULL && strlen(show_script) >0)
+            g_message("[%s] no match: `%s'", __func__, p2);
+        }
     }
+  else
+    {
+      if (show_script != NULL && strlen(show_script) >0)
+        g_message("[%s] no match: `%s'", __func__, p);
+    }
+}
+
+/* Check if a pattern matches in a string. */
+static gboolean _chk(const gchar *s, const gchar *p)
+{
+  const gboolean r = m_match(s, p);
+  if (show_script != NULL && strlen(show_script) >0)
+    {
+      if (r == FALSE)
+        g_message("[%s] no match: `%s'", __func__, p);
+    }
+  return (r);
 }
 
 /* Extract the "site" string from the media script. */
 static void _chk_site(_quvi_script_t qs, const GString *s, gboolean *ok)
 {
-  gchar *c = m_capture(s->str, "\\w+\\.site\\s+=\\s+[\"'](.*?)[\"']");
+  static const gchar *p = "\\w+\\.site\\s+=\\s+[\"'](.*?)[\"']";
+  gchar *c = m_capture(s->str, p);
+
   *ok = FALSE;
+
   if (c != NULL)
     {
       g_string_assign(qs->media.site, c);
       *ok = TRUE;
+
       g_free(c);
       c = NULL;
+    }
+  else
+    {
+      if (show_script != NULL && strlen(show_script) >0)
+        g_message("[%s] no match: `%s'", __func__, p);
     }
 }
 
@@ -118,20 +160,31 @@ extern gchar *m_trim_lua_esc(const gchar*);
 /* Extract the domain (pattern) from the script. */
 static void _chk_domain(_quvi_script_t qs, const GString *s, gboolean *ok)
 {
-  gchar *c = m_capture(s->str, "domain\\s+=\\s+[\"'](.*?)[\"']");
+  static const gchar *p = "domain\\s+=\\s+[\"'](.*?)[\"']";
+  gchar *c = m_capture(s->str, p);
+
   *ok = FALSE;
+
   if (c != NULL)
     {
       gchar *t = m_trim_lua_esc(c);
+
       g_free(c);
       c = NULL;
+
       if (t != NULL)
         {
           g_string_assign(qs->domain, t);
           *ok = TRUE;
+
           g_free(t);
           t = NULL;
         }
+    }
+  else
+    {
+      if (show_script != NULL && strlen(show_script) >0)
+        g_message("[%s] no match: `%s'", __func__, p);
     }
 }
 
@@ -159,10 +212,10 @@ static gpointer _new_media_script(const gchar *path, const gchar *fname)
   if (c != NULL)
     {
       gboolean OK =
-        (m_match(c->str, "^\\-\\-\\s+libquvi\\-scripts") == TRUE
-         && m_match(c->str, "^function ident") == TRUE
-         && m_match(c->str, "^function query_formats") == TRUE
-         && m_match(c->str, "^function parse") == TRUE);
+        (_chk(c->str, "^\\-\\-\\s+libquvi\\-scripts") == TRUE
+         && _chk(c->str, "^function ident") == TRUE
+         && _chk(c->str, "^function query_formats") == TRUE
+         && _chk(c->str, "^function parse") == TRUE);
 
       if (OK == TRUE)
         {
@@ -203,9 +256,9 @@ static gpointer _new_playlist_script(const gchar *path, const gchar *fname)
   if (c != NULL)
     {
       gboolean OK =
-        (m_match(c->str, "^\\-\\-\\s+libquvi\\-scripts") == TRUE
-         && m_match(c->str, "^function ident") == TRUE
-         && m_match(c->str, "^function parse") == TRUE);
+        (_chk(c->str, "^\\-\\-\\s+libquvi\\-scripts") == TRUE
+         && _chk(c->str, "^function ident") == TRUE
+         && _chk(c->str, "^function parse") == TRUE);
 
       if (OK == TRUE)
         {
@@ -242,8 +295,8 @@ static gpointer _new_scan_script(const gchar *path, const gchar *fname)
   if (c != NULL)
     {
       gboolean OK =
-        (m_match(c->str, "^\\-\\-\\s+libquvi\\-scripts") == TRUE
-         && m_match(c->str, "^function parse") == TRUE);
+        (_chk(c->str, "^\\-\\-\\s+libquvi\\-scripts") == TRUE
+         && _chk(c->str, "^function parse") == TRUE);
 
       if (OK == TRUE)
         qs = script_new(fpath->str, fname, c);
@@ -277,7 +330,7 @@ static gpointer _new_util_script(const gchar *path, const gchar *fname)
   if (c != NULL)
     {
       const gboolean OK =
-        (m_match(c->str, "^\\-\\-\\s+libquvi\\-scripts") == TRUE);
+        (_chk(c->str, "^\\-\\-\\s+libquvi\\-scripts") == TRUE);
 
       if (OK == TRUE)
         qs = script_new(fpath->str, fname, c);
@@ -334,10 +387,6 @@ static gint _sort(gconstpointer a, gconstpointer b)
 typedef gpointer (*new_script_callback)(const gchar*, const gchar*);
 typedef gboolean (*chkdup_script_callback)(_quvi_t, gpointer, GSList*);
 typedef void (*free_script_callback)(gpointer, gpointer);
-
-static const gchar *scripts_dir = NULL;
-static const gchar *show_script = NULL;
-static const gchar *show_dir = NULL;
 
 static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
                                   new_script_callback new_cb,
