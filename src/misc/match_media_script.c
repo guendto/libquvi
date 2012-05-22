@@ -33,6 +33,17 @@
 #include "net/handle.h"
 #include "lua/exec.h"
 
+static gboolean _chk_goto_url(_quvi_media_t m)
+{
+  if (m->url.redirect_to->len >0)
+    {
+      g_string_assign(m->url.input, m->url.redirect_to->str);
+      g_string_assign(m->url.redirect_to, "");
+      return (TRUE);
+    }
+  return (FALSE);
+}
+
 extern QuviError l_match_url_to_media_script(_quvi_media_t, GSList**);
 extern QuviError n_verify_media_stream(_quvi_media_t);
 
@@ -47,7 +58,8 @@ QuviError m_match_media_script(_quvi_t q, _quvi_media_t *m,
                                 : FALSE;
   QuviError rc = QUVI_OK;
 
-  *m = m_media_new(q, url);
+  if (*m == NULL)
+    *m = m_media_new(q, url);
 
   if (resolve_flag == TRUE) /* Resolve URL redirection. */
     {
@@ -83,12 +95,23 @@ QuviError m_match_media_script(_quvi_t q, _quvi_media_t *m,
       case QM_MATCH_MS_PARSE:
         rc = l_exec_media_script_parse(*m, s);
         if (rc == QUVI_OK)
-          rc = n_verify_media_stream(*m);
+          {
+            /* Check if goto_url was set. */
+            if (_chk_goto_url(*m) == TRUE)
+              return (m_match_media_script(q, m, url, mode, result));
+            rc = n_verify_media_stream(*m);
+          }
         break;
 
       case QM_MATCH_MS_QUERY_FORMATS:
         g_return_val_if_fail(result != NULL, QUVI_ERROR_INVALID_ARG);
         rc = l_exec_media_script_query_formats(*m, s, result);
+        if (rc == QUVI_OK)
+          {
+            /* Check if goto_url was set. */
+            if (_chk_goto_url(*m) == TRUE)
+              return (m_match_media_script(q, m, url, mode, result));
+          }
         break;
 
       case QM_MATCH_MS_SUPPORTED_OFFLINE:
