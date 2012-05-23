@@ -42,9 +42,6 @@ static QuviError _verify(_quvi_media_t m)
   QuviError rc = QUVI_OK;
   _quvi_net_t n = NULL;
 
-  if (g_str_has_prefix(m->url.stream->str, "htt") == FALSE)
-    return (QUVI_OK); /* Ignore non-HTTP(s) media stream URLs */
-
   n = n_new(m->handle.quvi, m->url.stream->str);
 
   if (lua_istable(l, 2))
@@ -95,6 +92,9 @@ static QuviError _verify(_quvi_media_t m)
 QuviError n_verify_media_stream(_quvi_media_t m)
 {
   _quvi_t q = m->handle.quvi;
+
+  if (g_str_has_prefix(m->url.stream->str, "htt") == FALSE)
+    return (QUVI_OK); /* Ignore non-HTTP(s) media stream URLs */
 
   if (q->opt.verify == FALSE)
     return (QUVI_OK); /* Skip check if the flag is set. */
