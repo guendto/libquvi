@@ -33,6 +33,7 @@
 static const gchar script_fname[]= "convert_entities.lua";
 static const gchar script_func[] = "convert_entities";
 
+/* Convert HTML entities in the media title. */
 QuviError l_exec_util_convert_entities(_quvi_media_t m)
 {
   _quvi_t q = m->handle.quvi;
