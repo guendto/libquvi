@@ -56,6 +56,7 @@ PKG_CHECK_MODULES([libcurl], [libcurl >= 7.18.2])
 PKG_CHECK_MODULES([glib], [glib-2.0 >= 2.24])
 
 # Checks for scripts.
+pkg_scripts=libquvi-scripts-1.0
 AC_ARG_WITH([scriptsdir],
   [AS_HELP_STRING([--with-scriptsdir=DIR],
     [Set libquvi-scripts directory to DIR. Overrides the libquvi-scripts
@@ -65,9 +66,9 @@ AC_ARG_WITH([scriptsdir],
   [scriptsdir=$withval
    versionfile=$scriptsdir/version],
   [PKG_CHECK_MODULES([libquvi_scripts], [libquvi-scripts-1.0 >= 1.0])
-    scriptsdir=`$PKG_CONFIG --variable scriptsdir libquvi-scripts 2>/dev/null`
-    versionfile=`$PKG_CONFIG --variable versionfile libquvi-scripts 2>/dev/null`
-    scriptsmodver=`$PKG_CONFIG --modversion libquvi-scripts 2>/dev/null`])
+    scriptsdir=`$PKG_CONFIG --variable scriptsdir $pkg_scripts 2>/dev/null`
+    versionfile=`$PKG_CONFIG --variable versionfile $pkg_scripts 2>/dev/null`
+    scriptsmodver=`$PKG_CONFIG --modversion $pkg_scripts 2>/dev/null`])
 
 AS_IF([test -z "$scriptsdir"], [
   AC_MSG_ERROR([scriptsdir: variable not found])])
