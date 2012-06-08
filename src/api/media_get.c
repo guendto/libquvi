@@ -71,7 +71,7 @@ static QuviError _media_get(_quvi_media_t m, QuviMediaProperty n, ...)
     case QUVI_MEDIA_PROPERTY_SITE:
       *sp = m->id.site->str;
       break;
-    case QUVI_MEDIA_PROPERTY_MEDIA_URL:
+    case QUVI_MEDIA_PROPERTY_URL:
       *sp = m->url.input->str;
       break;
     case QUVI_MEDIA_PROPERTY_TITLE:
