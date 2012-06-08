@@ -67,9 +67,6 @@ void quvi_media_free(quvi_media_t handle)
   g_string_free(m->content_type, TRUE);
   m->content_type = NULL;
 
-  g_string_free(m->start_time, TRUE);
-  m->start_time = NULL;
-
   g_string_free(m->file_ext, TRUE);
   m->file_ext= NULL;
 

@@ -41,7 +41,7 @@ struct _quvi_media_s
   /* Other */
   GString *content_type;
   gdouble length_bytes;
-  GString *start_time;
+  gdouble start_time;
   gdouble duration_ms;
   GString *file_ext;
   GString *title;

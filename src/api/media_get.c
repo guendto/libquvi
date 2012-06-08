@@ -93,7 +93,7 @@ static QuviError _media_get(_quvi_media_t m, QuviMediaProperty n, ...)
       *sp = m->file_ext->str;
       break;
     case QUVI_MEDIA_PROPERTY_START_TIME:
-      *sp = m->start_time->str;
+      *dp = m->start_time;
       break;
     case QUVI_MEDIA_PROPERTY_THUMBNAIL_URL:
       *sp = m->url.thumbnail->str;

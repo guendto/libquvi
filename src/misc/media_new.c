@@ -43,7 +43,6 @@ gpointer m_media_new(_quvi_t q, const gchar *url)
   m->handle.quvi = q;
   /* Other */
   m->content_type = g_string_new(NULL);
-  m->start_time = g_string_new(NULL);
   m->file_ext = g_string_new(NULL);
   m->title = g_string_new(NULL);
   return (m);
