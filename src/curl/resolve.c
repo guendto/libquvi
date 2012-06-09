@@ -37,6 +37,11 @@ static void _set_opts(_quvi_net_resolve_t r, _c_temp_t t, CURL *c)
   curl_easy_setopt(c, CURLOPT_WRITEFUNCTION, (cwc) c_temp_wrcb); /* tmp.c */
   curl_easy_setopt(c, CURLOPT_URL, r->url.addr->str);
   curl_easy_setopt(c, CURLOPT_FOLLOWLOCATION, 0L);
+#ifdef SET_MAXREDIRS
+  /* Set it to -1 for an infinite number of redirects (which is the
+   * default). -- http://is.gd/kFsvE4 */
+  curl_easy_setopt(c, CURLOPT_MAXREDIRS, -1);
+#endif
   curl_easy_setopt(c, CURLOPT_WRITEDATA, t);
 }
 
