@@ -36,7 +36,7 @@ typedef quvi_callback_status qcs;
 extern quvi_playlist_t qp;
 extern quvi_t q;
 
-int main(int argc, char **argv)
+gint main(gint argc, gchar **argv)
 {
   g_assert(qp == NULL);
   g_assert(q == NULL);

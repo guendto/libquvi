@@ -151,7 +151,7 @@ extern void cleanup();
 
 extern quvi_t q;
 
-int main(int argc, char **argv)
+gint main(gint argc, gchar **argv)
 {
   parse_args(argc, argv);
 

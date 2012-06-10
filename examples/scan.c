@@ -36,7 +36,7 @@ typedef quvi_callback_status qcs;
 extern quvi_scan_t qs;
 extern quvi_t q;
 
-int main(int argc, char **argv)
+gint main(gint argc, gchar **argv)
 {
   g_assert(qs == NULL);
   g_assert(q == NULL);

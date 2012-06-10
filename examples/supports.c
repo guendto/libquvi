@@ -66,7 +66,7 @@ static void update_type(gchar c)
 
 extern quvi_t q;
 
-int main(int argc, char **argv)
+gint main(gint argc, gchar **argv)
 {
   gchar *url = NULL;
   gint rc = 0;

@@ -34,7 +34,7 @@ typedef quvi_callback_status qcs;
 extern quvi_query_formats_t qqf;
 extern quvi_t q;
 
-int main(int argc, char **argv)
+gint main(gint argc, gchar **argv)
 {
   g_assert(qqf == NULL);
   g_assert(q == NULL);
