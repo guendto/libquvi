@@ -26,29 +26,25 @@
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_net_resolve_s.h"
-/* -- */
-#include "curl/temp.h"
 
 /* Set cURL options. */
-static void _set_opts(_quvi_net_resolve_t r, _c_temp_t t, CURL *c)
+static void _set_opts(_quvi_net_resolve_t r, CURL *c)
 {
-  typedef curl_write_callback cwc;
-
-  curl_easy_setopt(c, CURLOPT_WRITEFUNCTION, (cwc) c_temp_wrcb); /* tmp.c */
   curl_easy_setopt(c, CURLOPT_URL, r->url.addr->str);
   curl_easy_setopt(c, CURLOPT_FOLLOWLOCATION, 0L);
+  /* Use HEAD request: we're only interested in the header metadata. */
+  curl_easy_setopt(c, CURLOPT_NOBODY, 1L); /* GET -> HEAD. */
 #ifdef SET_MAXREDIRS
   /* Set it to -1 for an infinite number of redirects (which is the
    * default). -- http://is.gd/kFsvE4 */
   curl_easy_setopt(c, CURLOPT_MAXREDIRS, -1);
 #endif
-  curl_easy_setopt(c, CURLOPT_WRITEDATA, t);
 }
 
 static void _reset_opts(CURL *c)
 {
   curl_easy_setopt(c, CURLOPT_FOLLOWLOCATION, 1L);
-  curl_easy_setopt(c, CURLOPT_HTTPGET, 1L);
+  curl_easy_setopt(c, CURLOPT_HTTPGET, 1L); /* HEAD -> GET. */
 }
 
 /* Check whether the server returned a redirection URL. */
@@ -82,16 +78,12 @@ static QuviError _chk_redir(_quvi_net_resolve_t r, CURL *c)
 /* Resolve an URL redirection if needed. */
 QuviError c_resolve(_quvi_t q, _quvi_net_resolve_t r)
 {
-  _c_temp_t t = c_temp_new();
   CURL *c = q->handle.curl;
   QuviError rc = QUVI_OK;
 
-  _set_opts(r, t, c);
+  _set_opts(r, c);
   rc = _chk_redir(r, c);
   _reset_opts(c);
-
-  c_temp_free(t);
-  t = NULL;
 
   return (rc);
 }
