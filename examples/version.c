@@ -20,7 +20,7 @@
 #include <glib.h>
 #include <quvi.h>
 
-int main(int argc, char **argv)
+gint main(gint argc, gchar **argv)
 {
   g_print("libquvi %s\n", quvi_version(QUVI_VERSION));
   g_print("  build for %s\n", quvi_version(QUVI_VERSION_BUILD));

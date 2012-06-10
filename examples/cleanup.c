@@ -22,6 +22,7 @@
 
 extern quvi_query_formats_t qqf;
 extern quvi_playlist_t qp;
+extern quvi_resolve_t qr;
 extern quvi_media_t qm;
 extern quvi_scan_t qs;
 extern quvi_t q;
@@ -36,6 +37,9 @@ void cleanup()
 
   quvi_query_formats_free(qqf);
   qqf = NULL;
+
+  quvi_resolve_free(qr);
+  qr = NULL;
 
   quvi_media_free(qm);
   qm = NULL;

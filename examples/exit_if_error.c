@@ -32,7 +32,7 @@ void exit_if_error()
   if (quvi_ok(q) == QUVI_TRUE)
     return;
 
-  g_printerr("[%s] error: %s\n", __func__, quvi_errmsg(q));
+  g_printerr("\n[%s] error: %s\n", __func__, quvi_errmsg(q));
   quvi_get(q, QUVI_INFO_ERROR_CODE, &rc);
 
   cleanup();
