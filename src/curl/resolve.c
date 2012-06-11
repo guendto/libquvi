@@ -31,19 +31,12 @@
 static void _set_opts(_quvi_net_resolve_t r, CURL *c)
 {
   curl_easy_setopt(c, CURLOPT_URL, r->url.addr->str);
-  curl_easy_setopt(c, CURLOPT_FOLLOWLOCATION, 0L);
   /* Use HEAD request: we're only interested in the header metadata. */
   curl_easy_setopt(c, CURLOPT_NOBODY, 1L); /* GET -> HEAD. */
-#ifdef SET_MAXREDIRS
-  /* Set it to -1 for an infinite number of redirects (which is the
-   * default). -- http://is.gd/kFsvE4 */
-  curl_easy_setopt(c, CURLOPT_MAXREDIRS, -1);
-#endif
 }
 
 static void _reset_opts(CURL *c)
 {
-  curl_easy_setopt(c, CURLOPT_FOLLOWLOCATION, 1L);
   curl_easy_setopt(c, CURLOPT_HTTPGET, 1L); /* HEAD -> GET. */
 }
 
@@ -55,21 +48,31 @@ static QuviError _chk_redir(_quvi_net_resolve_t r, CURL *c)
 
   curl_easy_getinfo(c, CURLINFO_RESPONSE_CODE, &r->status.resp_code);
 
-  if (curlcode == CURLE_OK)
+  if (curlcode == CURLE_OK && r->status.resp_code == 200)
     {
-      if (r->status.resp_code >= 301 && r->status.resp_code <= 303)
-        {
-          gchar *s = NULL;
-          curl_easy_getinfo(c, CURLINFO_REDIRECT_URL, &s);
-          g_string_assign(r->url.dst, s);
-        }
+      gchar *u = NULL;
+      curl_easy_getinfo(c, CURLINFO_EFFECTIVE_URL, &u);
+
+      if (g_strcmp0(r->url.addr->str, u) != 0)
+        g_string_assign(r->url.dst, u);
     }
   else
     {
-      g_string_printf(r->status.errmsg, "%s (HTTP/%03ld, cURL=0x%03x)",
-                      curl_easy_strerror(curlcode),
-                      r->status.resp_code,
-                      curlcode);
+      if (curlcode == CURLE_OK)
+        {
+#define _EOK "server responded with code %03ld"
+          g_string_printf(r->status.errmsg, _EOK, r->status.resp_code);
+#undef _EOK
+        }
+      else
+        {
+          const gchar *s = curl_easy_strerror(curlcode);
+          const glong rc = r->status.resp_code;
+          const gint cc = curlcode;
+#define _ENO "%s (HTTP/%03ld, cURL=0x%03x)"
+          g_string_printf(r->status.errmsg, _ENO, s, rc, cc);
+#undef _ENO
+        }
       rc = QUVI_ERROR_CALLBACK;
     }
   return (rc);
