@@ -93,7 +93,7 @@ static QuviError _fetch(_quvi_net_t n, CURL *c)
   curl_easy_getinfo(c, CURLINFO_RESPONSE_CODE, &n->status.resp_code);
 
   if (curlcode == CURLE_OK && n->status.resp_code == 200)
-    rc = QUVI_OK;
+    ;
   else
     {
       if (curlcode == CURLE_OK)
@@ -105,10 +105,10 @@ static QuviError _fetch(_quvi_net_t n, CURL *c)
       else
         {
           const gchar *s = curl_easy_strerror(curlcode);
-          const glong rc = n->status.resp_code;
+          const glong c = n->status.resp_code;
           const gint cc = curlcode;
 #define _ENO "%s (HTTP/%03ld, cURL=0x%03x)"
-          g_string_printf(n->status.errmsg, _ENO, s, rc, cc);
+          g_string_printf(n->status.errmsg, _ENO, s, c, cc);
 #undef _ENO
         }
       rc = QUVI_ERROR_CALLBACK;

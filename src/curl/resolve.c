@@ -55,8 +55,6 @@ static QuviError _chk_redir(_quvi_net_resolve_t r, CURL *c)
 
       if (g_strcmp0(r->url.addr->str, u) != 0)
         g_string_assign(r->url.dst, u);
-
-      rc = QUVI_OK;
     }
   else
     {
@@ -69,10 +67,10 @@ static QuviError _chk_redir(_quvi_net_resolve_t r, CURL *c)
       else
         {
           const gchar *s = curl_easy_strerror(curlcode);
-          const glong rc = r->status.resp_code;
+          const glong c = r->status.resp_code;
           const gint cc = curlcode;
 #define _ENO "%s (HTTP/%03ld, cURL=0x%03x)"
-          g_string_printf(r->status.errmsg, _ENO, s, rc, cc);
+          g_string_printf(r->status.errmsg, _ENO, s, c, cc);
 #undef _ENO
         }
       rc = QUVI_ERROR_CALLBACK;
