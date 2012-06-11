@@ -55,6 +55,8 @@ static QuviError _chk_redir(_quvi_net_resolve_t r, CURL *c)
 
       if (g_strcmp0(r->url.addr->str, u) != 0)
         g_string_assign(r->url.dst, u);
+
+      rc = QUVI_OK;
     }
   else
     {
