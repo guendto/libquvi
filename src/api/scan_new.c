@@ -64,7 +64,6 @@ static void _exec_scan_script(gpointer p, gpointer userdata)
 /** @endcond */
 
 /** @brief Scan URL contents for supported embedded media URLs
-@note Resolves always regardless of @ref QUVI_OPTION_RESOLVE_URL_REDIRECTIONS
 @note @ref quvi_scan_free the handle when done using it
 @sa @ref scan_media
 @ingroup scan
@@ -80,7 +79,7 @@ quvi_scan_t quvi_scan_new(quvi_t handle, const char *url)
 
   s = m_scan_new(q, url);
   {
-    quvi_resolve_t r = quvi_resolve_new(q, url, FALSE);
+    quvi_resolve_t r = quvi_resolve_new(q, url);
     if (q->status.rc == QUVI_OK)
       {
         _quvi_net_t n = NULL;

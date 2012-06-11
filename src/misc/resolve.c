@@ -27,12 +27,10 @@
 
 /* Convenience function that wraps URL redirection check.
  * - Returns either new destination (must be freed) or NULL
- * - Honors the QUVI_OPTION_RESOLVE_URL_REDIRECTIONS
  * - Check quvi_ok after calling this function */
-gchar *m_resolve(_quvi_t q, const gchar *url,
-                 QuviBoolean ignore_noresolve_flag)
+gchar *m_resolve(_quvi_t q, const gchar *url)
 {
-  quvi_resolve_t r = quvi_resolve_new(q, (gchar*) url, ignore_noresolve_flag);
+  quvi_resolve_t r = quvi_resolve_new(q, (gchar*) url);
   gchar *u = NULL;
 
   if (quvi_ok(q) == QUVI_TRUE)

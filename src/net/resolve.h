@@ -19,7 +19,7 @@
 #ifndef n_resolve_h
 #define n_resolve_h
 
-QuviError n_resolve(_quvi_t, _quvi_net_resolve_t, gboolean);
+QuviError n_resolve(_quvi_t, _quvi_net_resolve_t);
 
 #endif /* n_resolve_h */
 

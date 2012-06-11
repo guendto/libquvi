@@ -76,7 +76,7 @@ extern "C" {
 
   /* Resolve */
 
-  quvi_resolve_t quvi_resolve_new(quvi_t, const char*, QuviBoolean);
+  quvi_resolve_t quvi_resolve_new(quvi_t, const char*);
   void quvi_resolve_free(quvi_resolve_t);
 
   QuviBoolean quvi_resolve_forwarded(quvi_resolve_t);

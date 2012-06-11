@@ -28,9 +28,6 @@ QuviBoolean r = quvi_supports(q, URL,
                               QUVI_SUPPORTS_TYPE_ANY);
 @endcode
 
-@note If @ref QUVI_OPTION_RESOLVE_URL_REDIRECTIONS is set to QUVI_FALSE,
-the library ignores the @ref QUVI_SUPPORTS_MODE_ONLINE flag
-
 @sa QuviSupportsMode
 @sa QuviSupportsType
 */

@@ -28,9 +28,6 @@ typedef enum
 {
   /** Default: QUVI_OPTION_MEDIA_SCRIPT_PROTOCOL_CATEGORY_ALL */
   QUVI_OPTION_MEDIA_SCRIPT_PROTOCOL_CATEGORY,
-  /** Resolve URL redirections, e.g. "shortned URLs" before passing them
-   * to the media scripts. Default: QUVI_TRUE */
-  QUVI_OPTION_RESOLVE_URL_REDIRECTIONS,
   /** This setting applies to HTTP media stream URLs only. Additionally,
    * this causes the library parse the HTTP content-type and content-length
    * fields which would otherwise remain unset.  Default: QUVI_TRUE

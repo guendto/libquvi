@@ -20,7 +20,7 @@
 #ifndef m_resolve_h
 #define m_resolve_h
 
-gchar *m_resolve(_quvi_t, const gchar*, QuviBoolean);
+gchar *m_resolve(_quvi_t, const gchar*);
 
 #endif /* m_resolve_h */
 

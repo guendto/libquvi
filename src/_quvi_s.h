@@ -35,7 +35,6 @@ struct _quvi_s
   } cb;
   struct
   {
-    gboolean resolve;
     gboolean verify;
     GString *format;
     struct

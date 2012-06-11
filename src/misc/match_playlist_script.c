@@ -50,7 +50,7 @@ QuviError m_match_playlist_script(_quvi_t q, _quvi_playlist_t *p,
 
   if (resolve_flag == TRUE) /* Resolve URL redirection. */
     {
-      gchar *r_url = m_resolve(q, url, FALSE);
+      gchar *r_url = m_resolve(q, url);
 
       if (quvi_ok(q) == QUVI_FALSE)
         return (q->status.rc);

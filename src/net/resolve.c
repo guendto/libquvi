@@ -32,7 +32,7 @@
 
 extern QuviError c_resolve(_quvi_t, _quvi_net_resolve_t);
 
-static QuviError _resolve(_quvi_t q, _quvi_net_resolve_t r)
+QuviError n_resolve(_quvi_t q, _quvi_net_resolve_t r)
 {
   QuviError rc = QUVI_OK;
 
@@ -74,20 +74,6 @@ static QuviError _resolve(_quvi_t q, _quvi_net_resolve_t r)
   q->status.resp_code = r->status.resp_code;
 
   return (rc);
-}
-
-QuviError n_resolve(_quvi_t q, _quvi_net_resolve_t r,
-                    gboolean ignore_noresolve_flag)
-{
-  QuviError rc = QUVI_OK;
-
-  if (ignore_noresolve_flag == FALSE)
-    {
-      if (q->opt.resolve == FALSE)
-        return (rc);
-    }
-
-  return (_resolve(q, r));
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

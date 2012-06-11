@@ -76,8 +76,6 @@ Check if any of the scripts accepts the URL. Both offline and online
 checking is supported.
 
 @note
- - Ignores @ref QUVI_SUPPORTS_MODE_ONLINE unless @ref
-   QUVI_OPTION_RESOLVE_URL_REDIRECTIONS is QUVI_TRUE
  - Offline check will fail with most shortened URLs
  - Online check will resolve shortened URLs
 

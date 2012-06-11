@@ -32,15 +32,14 @@
 #include "net/handle.h"
 #include "misc/resolve.h"
 
-/* quvi.resolve is callable from the Lua scripts.
- * Ignores the QUVI_OPTION_RESOLVE_URL_REDIRECTIONS value. */
+/* quvi.resolve is callable from the Lua scripts. */
 gint l_quvi_resolve(lua_State *l)
 {
   _quvi_t q = (_quvi_t) l_get_reg_userdata(l, USERDATA_QUVI_T);
   const gchar *url = luaL_checkstring(l, 1);
-  gchar *r_url = m_resolve(q, url, TRUE /* See comment above. */);
-  gint c = 0; /* Count of returned (pushed) values. */
+  gchar *r_url = m_resolve(q, url);
   const QuviBoolean ok = quvi_ok(q);
+  gint c = 0; /* Count of returned (pushed) values. */
 
   if (ok == QUVI_TRUE)
     {

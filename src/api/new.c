@@ -34,7 +34,6 @@ static gpointer _quvi_new()
   q->opt.scripts.category = QUVI_MEDIA_SCRIPT_PROTOCOL_CATEGORY_ALL;
   q->opt.format = g_string_new("default");
   q->status.errmsg = g_string_new(NULL);
-  q->opt.resolve = TRUE;
   q->opt.verify = TRUE;
   return (q);
 }
