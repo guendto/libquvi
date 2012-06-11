@@ -79,6 +79,12 @@ static void _set_opts(_quvi_net_t n, _c_temp_t t, CURL *c)
   _apply_media_script_opts(n, c);
 }
 
+static void _reset_opts(CURL *c)
+{
+  curl_easy_setopt(c, CURLOPT_WRITEFUNCTION, NULL);
+  curl_easy_setopt(c, CURLOPT_WRITEDATA, NULL);
+}
+
 static QuviError _fetch(_quvi_net_t n, CURL *c)
 {
   CURLcode curlcode = curl_easy_perform(c);
@@ -99,10 +105,10 @@ static QuviError _fetch(_quvi_net_t n, CURL *c)
       else
         {
           const gchar *s = curl_easy_strerror(curlcode);
-          const glong r = n->status.resp_code;
-          const gint c = curlcode;
+          const glong rc = n->status.resp_code;
+          const gint cc = curlcode;
 #define _ENO "%s (HTTP/%03ld, cURL=0x%03x)"
-          g_string_printf(n->status.errmsg, _ENO, s, r, c);
+          g_string_printf(n->status.errmsg, _ENO, s, rc, cc);
 #undef _ENO
         }
       rc = QUVI_ERROR_CALLBACK;
@@ -118,6 +124,7 @@ QuviError c_fetch(_quvi_net_t n)
 
   _set_opts(n, t, c);
   rc = _fetch(n, c);
+  _reset_opts(c);
 
   if (rc == QUVI_OK)
     g_string_assign(n->fetch.content, t->p);
