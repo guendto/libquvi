@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <locale.h>
 #include <stdlib.h>
 #include <glib.h>
 #include <quvi.h>
@@ -38,6 +39,8 @@ gint main(gint argc, gchar **argv)
 {
   g_assert(qqf == NULL);
   g_assert(q == NULL);
+
+  setlocale(LC_ALL, "");
 
   if (argc < 2)
     usage();

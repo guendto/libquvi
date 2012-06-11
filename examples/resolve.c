@@ -19,6 +19,7 @@
 
 /* Check whether URL redirects to a new location. */
 
+#include <locale.h>
 #include <stdlib.h>
 #include <glib.h>
 #include <quvi.h>
@@ -57,6 +58,8 @@ gint main(gint argc, gchar **argv)
   g_assert(qr == NULL);
   g_assert(q == NULL);
 
+  setlocale(LC_ALL, "");
+
   q = quvi_new();
   exit_if_error();
 
@@ -81,7 +84,7 @@ gint main(gint argc, gchar **argv)
 
   g_printerr("[%s] url=%s\n", __func__, url);
 
-  qr = quvi_resolve_new(q, url, QUVI_TRUE);
+  qr = quvi_resolve_new(q, url);
   exit_if_error();
 
   if (quvi_resolve_forwarded(qr) == QUVI_TRUE)

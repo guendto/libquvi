@@ -17,6 +17,7 @@
  * 02110-1301, USA.
  */
 
+#include <locale.h>
 #include <stdlib.h>
 #include <string.h>
 #include <glib.h>
@@ -153,6 +154,7 @@ extern quvi_t q;
 
 gint main(gint argc, gchar **argv)
 {
+  setlocale(LC_ALL, "");
   parse_args(argc, argv);
 
   if (mask == NULL)
