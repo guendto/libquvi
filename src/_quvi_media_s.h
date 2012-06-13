@@ -40,8 +40,8 @@ struct _quvi_media_s
   } handle;
   /* Other */
   GString *content_type;
+  gdouble start_time_ms;
   gdouble length_bytes;
-  gdouble start_time;
   gdouble duration_ms;
   GString *file_ext;
   GString *title;

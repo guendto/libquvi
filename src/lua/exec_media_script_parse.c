@@ -83,8 +83,8 @@ QuviError l_exec_media_script_parse(gpointer p, GSList *sl)
   l_setfield_s(l, MS_INPUT_URL,   m->url.input->str);
   l_setfield_s(l, MS_GOTO_URL,    MS_EMPTY);
   l_setfield_s(l, MS_THUMB_URL,   MS_EMPTY);
-  l_setfield_n(l, MS_DURATION_MS, 0);
-  l_setfield_n(l, MS_START_TIME,  0);
+  l_setfield_n(l, MS_START_TIME_MS, 0);
+  l_setfield_n(l, MS_DURATION_MS,   0);
 
   if (lua_pcall(l, 1, 1, 0))
     {
@@ -115,8 +115,8 @@ QuviError l_exec_media_script_parse(gpointer p, GSList *sl)
         _get(l, MS_SITE,       (gpointer) m->id.site,       String, p);
         _get(l, MS_ID,         (gpointer) m->id.media,      String, p);
 
+        m->start_time_ms = _get(l, MS_START_TIME_MS, NULL, Number, p);
         m->duration_ms = _get(l, MS_DURATION_MS, NULL, Number, p);
-        m->start_time = _get(l, MS_START_TIME, NULL, Number, p);
 
         if (rc == QUVI_OK)
           rc = l_exec_util_convert_entities(m);

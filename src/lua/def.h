@@ -30,9 +30,9 @@
 
 #define MS_DOMAIN_PATTERN   "domain"        /* Domain (lua) pattern */
 #define MS_AVAIL_FORMATS    "avail_formats" /* Available formats to URL */
+#define MS_START_TIME_MS    "start_time_ms" /* Start streaming at */
 #define MS_DURATION_MS      "duration_ms"   /* Media duration in ms */
 #define MS_CATEGORIES       "categories"    /* Protocol categories */
-#define MS_START_TIME       "start_time"    /* Start streaming at */
 #define MS_STREAM_URL       "stream_url"    /* Media stream URL */
 #define MS_REQ_FORMAT       "req_format"    /* User requested format */
 #define MS_INPUT_URL        "input_url"     /* App req. URL */
