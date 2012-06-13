@@ -27,9 +27,8 @@
 /* -- */
 #include "_quvi_s.h"
 
-static QuviError _get(_quvi_t q, QuviInfo info, ...)
+static void _get(_quvi_t q, QuviInfo info, ...)
 {
-  QuviError rc = QUVI_OK;
   gpointer *vp = NULL;
   gdouble *dp = NULL;
   gchar **sp = NULL;
@@ -44,49 +43,38 @@ static QuviError _get(_quvi_t q, QuviInfo info, ...)
     {
     case QUVI_INFO_TYPE_DOUBLE:
       dp = va_arg(arg, gdouble*);
-      if (dp == NULL)
-        rc = QUVI_ERROR_INVALID_ARG;
       break;
     case QUVI_INFO_TYPE_STRING:
       sp = va_arg(arg, gchar**);
-      if (sp == NULL)
-        rc = QUVI_ERROR_INVALID_ARG;
       break;
     case QUVI_INFO_TYPE_LONG:
       lp = va_arg(arg, glong*);
-      if (lp == NULL)
-        rc = QUVI_ERROR_INVALID_ARG;
       break;
     case QUVI_INFO_TYPE_VOID:
       vp = va_arg(arg, gpointer*);
-      if (vp == NULL)
-        rc = QUVI_ERROR_INVALID_ARG;
       break;
     default:
-      rc = QUVI_ERROR_INVALID_ARG;
       break;
     }
   va_end(arg);
 
-  if (rc != QUVI_OK)
-    return (rc);
-
   switch (info)
     {
     case QUVI_INFO_RESPONSE_CODE:
-      *lp = q->status.resp_code;
+      if (lp != NULL)
+        *lp = q->status.resp_code;
       break;
     case QUVI_INFO_ERROR_CODE:
-      *lp = q->status.rc;
+      if (lp != NULL)
+        *lp = q->status.rc;
       break;
     case QUVI_INFO_CURL_HANDLE:
-      *vp = q->handle.curl;
+      if (vp != NULL)
+        *vp = q->handle.curl;
       break;
     default:
-      rc = QUVI_ERROR_INVALID_ARG;
       break;
     }
-  return (rc);
 }
 
 /** @brief Return information about the library handle
@@ -106,7 +94,7 @@ void quvi_get(quvi_t handle, QuviInfo info, ...)
   p = va_arg(arg, gpointer);
   va_end(arg);
 
-  q->status.rc = _get(handle, info, p);
+  _get(q, info, p);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
