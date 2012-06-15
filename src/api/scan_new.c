@@ -79,31 +79,20 @@ quvi_scan_t quvi_scan_new(quvi_t handle, const char *url)
 
   s = m_scan_new(q, url);
   {
-    quvi_resolve_t r = quvi_resolve_new(q, url);
-    if (q->status.rc == QUVI_OK)
+    _quvi_net_t n = NULL;
+    n_fetch(q, &n, s->url.input->str);
+
+    if (quvi_ok(q) == QUVI_TRUE)
       {
-        _quvi_net_t n = NULL;
+        struct _exec_scan_script_s e;
 
-        /* Make redirection URL new input URL. */
-        if (quvi_resolve_forwarded(r) == QUVI_TRUE)
-          g_string_assign(s->url.input, quvi_resolve_destination_url(r));
+        e.handle.scan = s;
+        e.handle.net = n;
 
-        n_fetch(q, &n, s->url.input->str);
-
-        if (quvi_ok(q) == QUVI_TRUE)
-          {
-            struct _exec_scan_script_s e;
-
-            e.handle.scan = s;
-            e.handle.net = n;
-
-            g_slist_foreach(q->scripts.scan, _exec_scan_script, &e);
-          }
-        n_free(n);
-        n = NULL;
+        g_slist_foreach(q->scripts.scan, _exec_scan_script, &e);
       }
-    quvi_resolve_free(r);
-    r = NULL;
+    n_free(n);
+    n = NULL;
   }
   return (s);
 }

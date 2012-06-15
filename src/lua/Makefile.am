@@ -1,5 +1,6 @@
 
 src=\
+  util/exec_util_resolve_redirections.c\
   util/exec_util_convert_entities.c\
   util/exec_util_to_file_ext.c\
   chk_accepts.c\

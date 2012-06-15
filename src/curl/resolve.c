@@ -52,9 +52,8 @@ static QuviError _chk_redir(_quvi_net_resolve_t r, CURL *c)
     {
       gchar *u = NULL;
       curl_easy_getinfo(c, CURLINFO_EFFECTIVE_URL, &u);
-
-      if (g_strcmp0(r->url.addr->str, u) != 0)
-        g_string_assign(r->url.dst, u);
+      /* Leave comparison for resolve_redirections.lua */
+      g_string_assign(r->url.dst, u);
     }
   else
     {

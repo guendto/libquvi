@@ -25,24 +25,19 @@
 /* -- */
 #include "_quvi_s.h"
 
-/* Convenience function that wraps URL redirection check.
- * - Returns either new destination (must be freed) or NULL
- * - Check quvi_ok after calling this function */
-gchar *m_resolve(_quvi_t q, const gchar *url)
+extern gchar *l_exec_util_resolve_redirections(_quvi_t, const gchar*);
+
+/* Caller should always check the q->status.rc value after calling this. */
+void m_resolve(_quvi_t q, const gchar *url, GString *dst)
 {
-  quvi_resolve_t r = quvi_resolve_new(q, (gchar*) url);
-  gchar *u = NULL;
-
-  if (quvi_ok(q) == QUVI_TRUE)
-    {
-      if (quvi_resolve_forwarded(r) == QUVI_TRUE)
-        u = g_strdup(quvi_resolve_destination_url(r));
-    }
-
-  quvi_resolve_free(r);
-  r = NULL;
-
-  return (u);
+  gchar *r = l_exec_util_resolve_redirections(q, url);
+  g_assert(dst != NULL);
+  if (r != NULL)
+  {
+    g_string_assign(dst, r);
+    g_free(r);
+    r = NULL;
+  }
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

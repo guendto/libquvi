@@ -50,17 +50,9 @@ QuviError m_match_playlist_script(_quvi_t q, _quvi_playlist_t *p,
 
   if (resolve_flag == TRUE) /* Resolve URL redirection. */
     {
-      gchar *r_url = m_resolve(q, url);
-
+      m_resolve(q, url, (*p)->url.input);
       if (quvi_ok(q) == QUVI_FALSE)
         return (q->status.rc);
-
-      if (r_url != NULL) /* Make redirection URL new input URL. */
-        {
-          g_string_assign((*p)->url.input, r_url);
-          g_free(r_url);
-          r_url = NULL;
-        }
     }
 
   {

@@ -25,15 +25,14 @@
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
-#include "_quvi_media_s.h"
 #include "_quvi_script_s.h"
 /* -- */
 #include "lua/def.h"
 #include "lua/setfield.h"
 
-static GSList *_match_util_script(_quvi_media_t m, const gchar *w)
+static GSList *_match_util_script(_quvi_t q, const gchar *w)
 {
-  GSList *s = m->handle.quvi->scripts.util;
+  GSList *s = q->scripts.util;
   while (s != NULL)
     {
       const _quvi_script_t qs = (_quvi_script_t) s->data;
@@ -47,14 +46,12 @@ static GSList *_match_util_script(_quvi_media_t m, const gchar *w)
   return (s);
 }
 
-QuviError l_load_util_script(_quvi_media_t m,
-                             const gchar *script_fname,
+QuviError l_load_util_script(_quvi_t q, const gchar *script_fname,
                              const gchar *script_func)
 {
   _quvi_script_t qs = NULL;
-  _quvi_t q = m->handle.quvi;
   lua_State *l = q->handle.lua;
-  GSList *s = _match_util_script(m, script_fname);
+  GSList *s = _match_util_script(q, script_fname);
 
   if (s == NULL)
     {
@@ -79,6 +76,7 @@ QuviError l_load_util_script(_quvi_media_t m,
     }
 
   lua_newtable(l);
+  l_set_reg_userdata(l, USERDATA_QUVI_T, (gpointer) q);
   l_setfield_b(l, GS_VERBOSE, q->opt.scripts.verbose);
 
   return (QUVI_OK);

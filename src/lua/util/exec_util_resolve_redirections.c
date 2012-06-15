@@ -27,40 +27,54 @@
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_media_s.h"
-#include "_quvi_net_s.h"
 /* -- */
 #include "lua/load_util_script.h"
+#include "lua/setfield.h"
+#include "lua/def.h"
 
-static const gchar script_fname[]= "to_file_ext.lua";
-static const gchar script_func[] = "to_file_ext";
+static const gchar script_fname[]= "resolve_redirections.lua";
+static const gchar script_func[] = "resolve_redirections";
 
-QuviError l_exec_util_to_file_ext(_quvi_media_t m, _quvi_net_t n)
+/* Resolve URL redirections with exception rules. */
+gchar *l_exec_util_resolve_redirections(_quvi_t q, const gchar *url)
 {
-  _quvi_t q = m->handle.quvi;
   lua_State *l = q->handle.lua;
-  QuviError rc = l_load_util_script(q, script_fname, script_func);
+  q->status.rc = l_load_util_script(q, script_fname, script_func);
+  gchar *r = NULL;
 
-  if (rc != QUVI_OK)
-    return (rc);
+  if (quvi_ok(q) == QUVI_FALSE)
+    return (NULL);
 
-  lua_pushstring(l, n->verify.content_type->str);
+  l_setfield_s(l, US_INPUT_URL, url); /* Set qargs.input_url */
 
-  /* 2=qargs,title [qargs: set in l_load_util_script]
+  /* 1=qargs [qargs: set in l_load_util_script]
    * 1=returns a string */
-  if (lua_pcall(l, 2, 1, 0))
+  if (lua_pcall(l, 1, 1, 0))
     {
       g_string_assign(q->status.errmsg, lua_tostring(l, -1));
-      return (QUVI_ERROR_SCRIPT);
+
+      /* Keep error code if it was set by a callback: quvi.resolve
+       * calling the network callback responsible for resolving URL
+       * redirections. The error is most likely a network error. */
+      if (q->status.rc != QUVI_ERROR_CALLBACK)
+        q->status.rc = QUVI_ERROR_SCRIPT;
+
+      return (NULL);
     }
 
   if (lua_isstring(l, -1))
-    g_string_assign(m->file_ext, lua_tostring(l, -1));
+    {
+      const gchar *s = lua_tostring(l, -1);
+      if (g_strcmp0(s, url) != 0) /* Ignore, unless it is different. */
+        r = g_strdup(s);
+    }
   else
     luaL_error(l, "%s: did not return a string", script_func);
 
   lua_pop(l, 1);
 
-  return (rc);
+  /* quvi.resolve which is called from the script sets q->status.rc . */
+  return (r);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

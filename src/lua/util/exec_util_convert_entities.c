@@ -38,7 +38,7 @@ QuviError l_exec_util_convert_entities(_quvi_media_t m)
 {
   _quvi_t q = m->handle.quvi;
   lua_State *l = q->handle.lua;
-  QuviError rc = l_load_util_script(m, script_fname, script_func);
+  QuviError rc = l_load_util_script(q, script_fname, script_func);
 
   if (rc != QUVI_OK)
     return (rc);

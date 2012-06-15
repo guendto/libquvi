@@ -47,7 +47,6 @@ static QuviBoolean _supports_playlist(_quvi_t q, const gchar *url,
       quvi_playlist_free((quvi_playlist_t) p);
       p = NULL;
     }
-
   return (quvi_ok(q));
 }
 
@@ -66,7 +65,6 @@ static QuviBoolean _supports_media(_quvi_t q, const gchar *url,
       quvi_media_free((quvi_media_t) m);
       m = NULL;
     }
-
   return (quvi_ok(q));
 }
 
@@ -93,6 +91,7 @@ QuviBoolean quvi_supports(quvi_t handle, const char *url,
 {
   _quvi_t q = (_quvi_t) handle;
   QuviBoolean found = QUVI_FALSE;
+  q->status.rc = QUVI_OK;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_val_if_fail(handle != NULL, QUVI_FALSE);
@@ -101,12 +100,11 @@ QuviBoolean quvi_supports(quvi_t handle, const char *url,
   if (type & QUVI_SUPPORTS_TYPE_PLAYLIST)
     found = _supports_playlist(q, url, mode);
 
-  if (found == QUVI_FALSE)
+  if (q->status.rc == QUVI_OK || q->status.rc == QUVI_ERROR_NO_SUPPORT)
     {
       if (type & QUVI_SUPPORTS_TYPE_MEDIA)
         found = _supports_media(q, url, mode);
     }
-
   return (found);
 }
 

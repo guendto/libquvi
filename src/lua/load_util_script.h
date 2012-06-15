@@ -20,7 +20,7 @@
 #ifndef l_load_util_script_h
 #define l_load_util_script_h
 
-QuviError l_load_util_script(_quvi_media_t, const gchar*, const gchar*);
+QuviError l_load_util_script(_quvi_t, const gchar*, const gchar*);
 
 #endif /* l_load_util_script_h */
 

@@ -20,7 +20,7 @@
 #ifndef m_resolve_h
 #define m_resolve_h
 
-gchar *m_resolve(_quvi_t, const gchar*);
+void m_resolve(_quvi_t, const gchar*, GString*);
 
 #endif /* m_resolve_h */
 

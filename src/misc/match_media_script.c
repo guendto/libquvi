@@ -63,17 +63,9 @@ QuviError m_match_media_script(_quvi_t q, _quvi_media_t *m,
 
   if (resolve_flag == TRUE) /* Resolve URL redirection. */
     {
-      gchar *r_url = m_resolve(q, url);
-
+      m_resolve(q, url, (*m)->url.input);
       if (quvi_ok(q) == QUVI_FALSE)
         return (q->status.rc);
-
-      if (r_url != NULL) /* Make redirection URL new input URL. */
-        {
-          g_string_assign((*m)->url.input, r_url);
-          g_free(r_url);
-          r_url = NULL;
-        }
     }
 
   {

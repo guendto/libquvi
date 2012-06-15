@@ -58,6 +58,10 @@
 #define SS_MEDIA_URL  "media_url" /* Array of found media URLs */
 #define SS_CONTENT    "content"   /* Content to scan */
 
+/* Utility script */
+
+#define US_INPUT_URL "input_url" /* App req. URL */
+
 #endif /* l_def_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

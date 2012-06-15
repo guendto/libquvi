@@ -28,6 +28,7 @@
 #include "_quvi_s.h"
 #include "_quvi_net_resolve_s.h"
 /* -- */
+#include "misc/resolve.h"
 #include "net/resolve.h"
 #include "net/handle.h"
 
@@ -45,8 +46,7 @@ quvi_resolve_t quvi_resolve_new(quvi_t handle, const char *url)
   g_return_val_if_fail(url != NULL, NULL);
 
   r = n_resolve_new(q, url);
-
-  q->status.rc = n_resolve(q, r);
+  m_resolve(q, url, r->url.dst);
 
   return (r);
 }

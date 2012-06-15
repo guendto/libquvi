@@ -72,6 +72,7 @@ QuviError n_resolve(_quvi_t q, _quvi_net_resolve_t r)
     }
 
   q->status.resp_code = r->status.resp_code;
+  q->status.rc = rc;
 
   return (rc);
 }
