@@ -22,6 +22,7 @@
 #include <string.h>
 #include <glib.h>
 #include <quvi.h>
+#include <curl/curl.h>
 
 static void usage()
 {
@@ -67,6 +68,14 @@ static void update_type(gchar c)
 
 extern quvi_t q;
 
+static void enable_verbose()
+{
+  CURL *c = NULL;
+  quvi_get(q, QUVI_INFO_CURL_HANDLE, &c);
+  g_assert(c != NULL);
+  curl_easy_setopt(c, CURLOPT_VERBOSE, 1L);
+}
+
 gint main(gint argc, gchar **argv)
 {
   gchar *url = NULL;
@@ -79,6 +88,9 @@ gint main(gint argc, gchar **argv)
 
   if (argc <2)
     usage();
+
+  q = quvi_new();
+  exit_if_error();
 
   for (; i<argc; ++i)
     {
@@ -103,6 +115,9 @@ gint main(gint argc, gchar **argv)
               else
                 t = QUVI_SUPPORTS_TYPE_MEDIA;
               break;
+            case 'v':
+              enable_verbose();
+              break;
             }
         }
       else
@@ -119,9 +134,6 @@ gint main(gint argc, gchar **argv)
 
   g_printerr("[%s] mode=0x%x\n", __func__, (gint) m);
   g_printerr("[%s] type=0x%x\n", __func__, (gint) t);
-
-  q = quvi_new();
-  exit_if_error();
 
   quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) status);
   {
