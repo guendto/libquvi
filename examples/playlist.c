@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <glib.h>
 #include <quvi.h>
+#include <curl/curl.h>
 
 static void usage()
 {
@@ -37,8 +38,20 @@ typedef quvi_callback_status qcs;
 extern quvi_playlist_t qp;
 extern quvi_t q;
 
+static void enable_verbose()
+{
+  CURL *c = NULL;
+  g_assert(q != NULL);
+  quvi_get(q, QUVI_INFO_CURL_HANDLE, &c);
+  g_assert(c != NULL);
+  curl_easy_setopt(c, CURLOPT_VERBOSE, 1L);
+}
+
 gint main(gint argc, gchar **argv)
 {
+  gchar *url = NULL;
+  gint i = 1;
+
   g_assert(qp == NULL);
   g_assert(q == NULL);
 
@@ -50,9 +63,20 @@ gint main(gint argc, gchar **argv)
   q = quvi_new();
   exit_if_error();
 
+  for (; i<argc; ++i)
+    {
+      if (g_strcmp0("-v", argv[i]) == 0)
+        enable_verbose();
+      else
+        url = argv[i];
+    }
+
+  if (url == NULL)
+    usage();
+
   quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) status);
 
-  qp = quvi_playlist_new(q, (gchar*) argv[1]);
+  qp = quvi_playlist_new(q, url);
   exit_if_error();
   {
     gchar *s = NULL;
