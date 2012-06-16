@@ -71,6 +71,9 @@ gint main(gint argc, gchar **argv)
         url = argv[i];
     }
 
+  if (url == NULL)
+    usage();
+
   quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) status);
 
   qs = quvi_scan_new(q, url);
