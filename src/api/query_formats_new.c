@@ -34,13 +34,17 @@
 static gpointer _query_formats_new(gchar *fmts)
 {
   _quvi_query_formats_t qf = g_new0(struct _quvi_query_formats_s, 1);
-  gchar **r = g_strsplit(fmts, ",", 0);
+  gchar **r = NULL;
   gint i = -1;
 
-  while (r[++i] != NULL)
+  if (fmts != NULL)
+    r = g_strsplit(fmts, ",", 0);
+
+  while (r != NULL && r[++i] != NULL)
     qf->formats = g_slist_prepend(qf->formats, g_strdup(r[i]));
 
   qf->formats = g_slist_reverse(qf->formats);
+
   g_strfreev(r);
   r = NULL;
 
@@ -54,7 +58,7 @@ static gpointer _query_formats_new(gchar *fmts)
 */
 quvi_query_formats_t quvi_query_formats_new(quvi_t handle, const char *url)
 {
-  _quvi_query_formats_t qf = NULL;
+  _quvi_query_formats_t qqf = NULL;
   _quvi_t q = (_quvi_t) handle;
   _quvi_media_t m = NULL;
   gchar *fmts = NULL;
@@ -66,18 +70,16 @@ quvi_query_formats_t quvi_query_formats_new(quvi_t handle, const char *url)
   q->status.rc = m_match_media_script(q, &m, url,
                                       QM_MATCH_MS_QUERY_FORMATS,
                                       &fmts /* Must be g_free'd */);
-  if (m != NULL)
-    {
-      quvi_media_free((quvi_media_t) m);
-      m = NULL;
+  quvi_media_free((quvi_media_t) m);
+  m = NULL;
 
-      qf = _query_formats_new(fmts);
+  if (quvi_ok(q) == QUVI_TRUE)
+    qqf = _query_formats_new(fmts);
 
-      g_free(fmts);
-      fmts = NULL;
-    }
+  g_free(fmts);
+  fmts = NULL;
 
-  return (qf);
+  return (qqf);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
