@@ -28,6 +28,7 @@ static void usage()
 }
 
 extern QuviError status(glong, gpointer);
+extern void enable_verbose();
 extern void exit_if_error();
 extern void cleanup();
 
@@ -35,15 +36,6 @@ typedef quvi_callback_status qcs;
 
 extern quvi_query_formats_t qqf;
 extern quvi_t q;
-
-static void enable_verbose()
-{
-  CURL *c = NULL;
-  g_assert(q != NULL);
-  quvi_get(q, QUVI_INFO_CURL_HANDLE, &c);
-  g_assert(c != NULL);
-  curl_easy_setopt(c, CURLOPT_VERBOSE, 1L);
-}
 
 gint main(gint argc, gchar **argv)
 {

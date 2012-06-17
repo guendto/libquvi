@@ -66,15 +66,9 @@ static void update_type(gchar c)
     }
 }
 
-extern quvi_t q;
+extern void enable_verbose();
 
-static void enable_verbose()
-{
-  CURL *c = NULL;
-  quvi_get(q, QUVI_INFO_CURL_HANDLE, &c);
-  g_assert(c != NULL);
-  curl_easy_setopt(c, CURLOPT_VERBOSE, 1L);
-}
+extern quvi_t q;
 
 gint main(gint argc, gchar **argv)
 {

@@ -26,6 +26,7 @@
 #include <curl/curl.h>
 
 extern QuviError status(glong, gpointer);
+extern void enable_verbose();
 extern void exit_if_error();
 extern void cleanup();
 
@@ -33,13 +34,6 @@ typedef quvi_callback_status qcs;
 
 extern quvi_resolve_t qr;
 extern quvi_t q;
-
-static void enable_verbose()
-{
-  CURL *c = NULL;
-  quvi_get(q, QUVI_INFO_CURL_HANDLE, &c);
-  curl_easy_setopt(c, CURLOPT_VERBOSE, 1L);
-}
 
 static void help()
 {
