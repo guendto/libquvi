@@ -35,7 +35,10 @@ typedef enum
   QUVI_ERROR_CURL_INIT,
   QUVI_ERROR_LUA_INIT,
   QUVI_ERROR_NO_SUPPORT = 0x40,
-  QUVI_ERROR_CALLBACK, /**< Error occurred in callback */
+  QUVI_ERROR_CALLBACK,
+  /**< Error occurred in callback, this could be either a network error
+   * (network callback function returned an error) or a status callback
+   * function returned an error. */
   QUVI_ERROR_SCRIPT
 } QuviError;
 
