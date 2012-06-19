@@ -61,6 +61,7 @@ static void _get(_quvi_t q, QuviInfo info, ...)
   switch (info)
     {
     case QUVI_INFO_RESPONSE_CODE:
+    default:
       if (lp != NULL)
         *lp = q->status.resp_code;
       break;
@@ -71,8 +72,6 @@ static void _get(_quvi_t q, QuviInfo info, ...)
     case QUVI_INFO_CURL_HANDLE:
       if (vp != NULL)
         *vp = q->handle.curl;
-      break;
-    default:
       break;
     }
 }
