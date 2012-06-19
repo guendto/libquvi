@@ -5,8 +5,8 @@ AC_PREREQ([2.67])
 
 m4_include([m4/version.m4])
 
-AC_INIT([libquvi], [libquvi_lt_rel], [http://quvi.sf.net/bugs/],
-        [], [http://quvi.sf.net/])
+AC_INIT([libquvi],[libquvi_lt_rel],
+        [http://quvi.sf.net/bugs/],[],[http://quvi.sf.net/])
 
 # Interface:
 LT_REL=libquvi_lt_rel
@@ -24,7 +24,7 @@ AC_CONFIG_AUX_DIR([config.aux])
 AC_CONFIG_MACRO_DIR([m4])
 
 AC_CANONICAL_TARGET
-AC_GNU_SOURCE
+AC_USE_SYSTEM_EXTENSIONS
 
 AC_DEFINE_UNQUOTED([CANONICAL_TARGET], "$target", [...])
 AC_DEFINE_UNQUOTED([CANONICAL_BUILD], "$build", [...])
