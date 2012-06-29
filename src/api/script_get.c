@@ -98,18 +98,12 @@ static QuviError _get(_quvi_t q, QuviScriptType stype,
     case QUVI_SCRIPT_PROPERTY_CATEGORIES:
       *sp = qs->media.categories->str;
       break;
-    case QUVI_SCRIPT_PROPERTY_SITE:
-      *sp = qs->media.site->str;
-      break;
       /* Any */
     case QUVI_SCRIPT_PROPERTY_FILEPATH:
       *sp = qs->fpath->str;
       break;
     case QUVI_SCRIPT_PROPERTY_FILENAME:
       *sp = qs->fname->str;
-      break;
-    case QUVI_SCRIPT_PROPERTY_DOMAIN:
-      *sp = qs->domain->str;
       break;
     case QUVI_SCRIPT_PROPERTY_SHA1:
       *sp = qs->sha1->str;

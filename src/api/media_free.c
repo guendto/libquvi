@@ -54,14 +54,6 @@ void quvi_media_free(quvi_media_t handle)
   g_string_free(m->url.input, TRUE);
   m->url.input = NULL;
 
-  /* IDs */
-
-  g_string_free(m->id.media, TRUE);
-  m->id.media = NULL;
-
-  g_string_free(m->id.site, TRUE);
-  m->id.site = NULL;
-
   /* Other */
 
   g_string_free(m->content_type, TRUE);
@@ -72,6 +64,9 @@ void quvi_media_free(quvi_media_t handle)
 
   g_string_free(m->title, TRUE);
   m->title = NULL;
+
+  g_string_free(m->id, TRUE);
+  m->id = NULL;
 
   g_free(m);
   m = NULL;

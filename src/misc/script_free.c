@@ -40,9 +40,6 @@ void m_script_free(gpointer p, gpointer userdata)
   g_string_free(qs->media.categories, TRUE);
   qs->media.categories = NULL;
 
-  g_string_free(qs->media.site, TRUE);
-  qs->media.site = NULL;
-
   /* Any */
 
   g_string_free(qs->fpath, TRUE);
@@ -50,9 +47,6 @@ void m_script_free(gpointer p, gpointer userdata)
 
   g_string_free(qs->fname, TRUE);
   qs->fname = NULL;
-
-  g_string_free(qs->domain, TRUE);
-  qs->domain = NULL;
 
   g_string_free(qs->sha1, TRUE);
   qs->sha1 = NULL;

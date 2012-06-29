@@ -36,15 +36,13 @@ gpointer m_media_new(_quvi_t q, const gchar *url)
   m->url.thumbnail = g_string_new(NULL);
   m->url.stream = g_string_new(NULL);
   m->url.input = g_string_new(url);
-  /* ID */
-  m->id.media = g_string_new(NULL);
-  m->id.site  = g_string_new(NULL);
   /* Handle */
   m->handle.quvi = q;
   /* Other */
   m->content_type = g_string_new(NULL);
   m->file_ext = g_string_new(NULL);
   m->title = g_string_new(NULL);
+  m->id = g_string_new(NULL);
   return (m);
 }
 

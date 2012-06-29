@@ -123,17 +123,9 @@ static void dump_script(quvi_t q)
           qsp = QUVI_SCRIPT_PROPERTY_FILENAME;
           g_string_append(o, "  n=");
           break;
-        case 'd':
-          qsp = QUVI_SCRIPT_PROPERTY_DOMAIN;
-          g_string_append(o, "  d=");
-          break;
         case 's':
           qsp = QUVI_SCRIPT_PROPERTY_SHA1;
           g_string_append(o, "  s=");
-          break;
-        case 'i':
-          qsp = QUVI_SCRIPT_PROPERTY_SITE;
-          g_string_append(o, "  i=");
           break;
         default:
           g_warning("Invalid property mask character `%c'\n", prop[i]);

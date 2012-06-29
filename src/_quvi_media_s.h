@@ -31,11 +31,6 @@ struct _quvi_media_s
   } url;
   struct
   {
-    GString *media;
-    GString *site;
-  } id;
-  struct
-  {
     _quvi_t quvi;
   } handle;
   /* Other */
@@ -45,6 +40,7 @@ struct _quvi_media_s
   gdouble duration_ms;
   GString *file_ext;
   GString *title;
+  GString *id;
 };
 
 typedef struct _quvi_media_s *_quvi_media_t;

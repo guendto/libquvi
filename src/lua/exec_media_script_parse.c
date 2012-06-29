@@ -112,8 +112,7 @@ QuviError l_exec_media_script_parse(gpointer p, GSList *sl)
         _get(l, MS_STREAM_URL, (gpointer) m->url.stream,    String, p);
         _get(l, MS_THUMB_URL,  (gpointer) m->url.thumbnail, String, p);
         _get(l, MS_TITLE,      (gpointer) m->title,         String, p);
-        _get(l, MS_SITE,       (gpointer) m->id.site,       String, p);
-        _get(l, MS_ID,         (gpointer) m->id.media,      String, p);
+        _get(l, MS_ID,         (gpointer) m->id,            String, p);
 
         m->start_time_ms = _get(l, MS_START_TIME_MS, NULL, Number, p);
         m->duration_ms = _get(l, MS_DURATION_MS, NULL, Number, p);

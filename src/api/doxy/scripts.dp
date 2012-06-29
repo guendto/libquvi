@@ -6,7 +6,7 @@ The library provides limited access to the script properties.
 while (quvi_media_script_next(q, QUVI_SCRIPT_TYPE_MEDIA) == QUVI_TRUE)
   {
     char *s = NULL;
-    quvi_media_script_get(q, QUVI_SCRIPT_PROPERTY_DOMAIN, &s);
+    quvi_media_script_get(q, QUVI_SCRIPT_PROPERTY_SHA1, &s);
     puts(s);
   }
 @endcode

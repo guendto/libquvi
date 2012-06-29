@@ -28,7 +28,6 @@
 
 /* Media script */
 
-#define MS_DOMAIN_PATTERN   "domain"        /* Domain (lua) pattern */
 #define MS_AVAIL_FORMATS    "avail_formats" /* Available formats to URL */
 #define MS_START_TIME_MS    "start_time_ms" /* Start streaming at */
 #define MS_DURATION_MS      "duration_ms"   /* Media duration in ms */
@@ -40,14 +39,12 @@
 #define MS_GOTO_URL         "goto_url"      /* Redirect to URL */
 #define MS_ACCEPTS          "accepts"       /* Script accepts URL */
 #define MS_TITLE            "title"         /* Media title */
-#define MS_SITE             "site"          /* Site (domain) string */
 #define MS_ID               "id"            /* Media ID */
 
 #define MS_EMPTY         ""
 
 /* Playlist script */
 
-#define PS_DOMAIN_PATTERN "domain"    /* Domain (lua) pattern */
 #define PS_INPUT_URL      "input_url" /* App req. URL */
 #define PS_MEDIA_URL      "media_url" /* Array of found media URLs */
 #define PS_ACCEPTS        "accepts"   /* Script accepts URL */

@@ -132,70 +132,12 @@ static gboolean _chk(const gchar *s, const gchar *p)
   return (r);
 }
 
-/* Extract the "site" string from the media script. */
-static void _chk_site(_quvi_script_t qs, const GString *s, gboolean *ok)
-{
-  static const gchar *p = "\\w+\\.site\\s+=\\s+[\"'](.*?)[\"']";
-  gchar *c = m_capture(s->str, p);
-
-  *ok = FALSE;
-
-  if (c != NULL)
-    {
-      g_string_assign(qs->media.site, c);
-      *ok = TRUE;
-
-      g_free(c);
-      c = NULL;
-    }
-  else
-    {
-      if (show_script != NULL && strlen(show_script) >0)
-        g_message("[%s] no match: `%s'", __func__, p);
-    }
-}
-
-extern gchar *m_trim_lua_esc(const gchar*);
-
-/* Extract the domain (pattern) from the script. */
-static void _chk_domain(_quvi_script_t qs, const GString *s, gboolean *ok)
-{
-  static const gchar *p = "domain\\s+=\\s+[\"'](.*?)[\"']";
-  gchar *c = m_capture(s->str, p);
-
-  *ok = FALSE;
-
-  if (c != NULL)
-    {
-      gchar *t = m_trim_lua_esc(c);
-
-      g_free(c);
-      c = NULL;
-
-      if (t != NULL)
-        {
-          g_string_assign(qs->domain, t);
-          *ok = TRUE;
-
-          g_free(t);
-          t = NULL;
-        }
-    }
-  else
-    {
-      if (show_script != NULL && strlen(show_script) >0)
-        g_message("[%s] no match: `%s'", __func__, p);
-    }
-}
-
 /* New script */
 static gpointer script_new(const gchar *fpath, const gchar *fname,
                            const GString *c)
 {
   _quvi_script_t qs = g_new0(struct _quvi_script_s, 1);
   qs->media.categories = g_string_new(NULL);
-  qs->media.site = g_string_new(NULL);
-  qs->domain = g_string_new(NULL);
   qs->fpath = g_string_new(fpath);
   qs->fname = g_string_new(fname);
   qs->sha1 = _file_sha1(c);
@@ -221,10 +163,6 @@ static gpointer _new_media_script(const gchar *path, const gchar *fname)
         {
           qs = script_new(fpath->str, fname, c);
           _chk_categories(qs, c, &OK);
-          if (OK == TRUE)
-            _chk_site(qs, c, &OK);
-          if (OK == TRUE)
-            _chk_domain(qs, c, &OK);
         }
 
       g_string_free(c, TRUE);
@@ -261,10 +199,7 @@ static gpointer _new_playlist_script(const gchar *path, const gchar *fname)
          && _chk(c->str, "^function parse") == TRUE);
 
       if (OK == TRUE)
-        {
-          qs = script_new(fpath->str, fname, c);
-          _chk_domain(qs, c, &OK);
-        }
+        qs = script_new(fpath->str, fname, c);
 
       g_string_free(c, TRUE);
       c = NULL;
