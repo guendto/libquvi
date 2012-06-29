@@ -78,7 +78,7 @@ extern gchar *m_capture(const gchar*, const gchar*);
 /* Extract the "categories" string from the media script. */
 static void _chk_categories(_quvi_script_t qs, const GString *s, gboolean *ok)
 {
-  static const gchar *p = "\\w+\\.categories\\s+=\\s+(.*)";
+  static const gchar *p = "categories\\s+=\\s+(.*)";
   gchar *c = m_capture(s->str, p);
 
   *ok = FALSE;
