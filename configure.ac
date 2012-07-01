@@ -52,7 +52,7 @@ PKG_CHECK_MODULES([liblua], [lua >= 5.1], [], [
       PKG_CHECK_MODULES(liblua, [lua-5.1 >= 5.1])])
   ])
 ])
-PKG_CHECK_MODULES([libcurl], [libcurl >= 7.18.2])
+PKG_CHECK_MODULES([libcurl], [libcurl >= 7.21])
 PKG_CHECK_MODULES([glib], [glib-2.0 >= 2.24])
 
 # Checks for scripts.
