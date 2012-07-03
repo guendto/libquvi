@@ -25,15 +25,9 @@
 #include <quvi.h>
 #include <curl/curl.h>
 
-extern QuviError status(glong, gpointer);
-extern void enable_verbose();
-extern void exit_if_error();
-extern void cleanup();
+#include "examples.h"
 
 typedef quvi_callback_status qcs;
-
-extern quvi_resolve_t qr;
-extern quvi_t q;
 
 static void help()
 {

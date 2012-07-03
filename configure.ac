@@ -125,6 +125,7 @@ AC_CONFIG_FILES([
   doc/dox/Doxyfile
   doc/Makefile
   examples/Makefile
+  examples/lib/Makefile
   src/misc/Makefile
   src/curl/Makefile
   src/net/Makefile

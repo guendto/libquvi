@@ -23,6 +23,8 @@
 #include <glib.h>
 #include <quvi.h>
 
+#include "examples.h"
+
 static void usage()
 {
   g_print("Usage: script [options]\n"
@@ -146,11 +148,6 @@ static void dump_script(quvi_t q)
   g_print("%s", o->str);
   g_string_free(o, TRUE);
 }
-
-extern void exit_if_error();
-extern void cleanup();
-
-extern quvi_t q;
 
 gint main(gint argc, gchar **argv)
 {

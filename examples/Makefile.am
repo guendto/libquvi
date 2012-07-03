@@ -1,64 +1,83 @@
 if WITH_EXAMPLES
-noinst_PROGRAMS=\
-  query_formats\
-  supports\
-  playlist\
-  version\
-  resolve\
-  script\
-  media\
-  scan
 
-CPF=-I$(top_srcdir)/src/quvi-1.0/ $(glib_CFLAGS) $(AM_CPPFLAGS)
-LDF= $(AM_LDFLAGS)
-LDA=$(top_builddir)/src/libquvi-1.0.la
-CMC=exit_if_error.c cleanup.c status.c var.c enable_verbose.c
+SUBDIRS=lib
+noinst_PROGRAMS=$(EXAMPLE_PROGS)
 
-query_formats_SOURCES=query_formats.c $(CMC)
-query_formats_CPPFLAGS=$(CPF)
+examples_common_cppflags=\
+  -I$(top_srcdir)/examples/lib\
+  -I$(top_srcdir)/src/quvi-1.0/\
+  $(glib_CFLAGS)\
+  $(AM_CPPFLAGS)
+
+examples_common_ldflags=\
+  $(AM_LDFLAGS)
+
+examples_common_ldadd=\
+  $(top_builddir)/examples/lib/libconvenience_example.la\
+  $(top_builddir)/src/libquvi-1.0.la
+
+EXAMPLE_PROGS=query_formats
+
+query_formats_SOURCES=query_formats.c
+query_formats_CPPFLAGS=$(examples_common_cppflags)
+query_formats_LDFLAGS=$(examples_common_ldflags)
+query_formats_LDADD=$(examples_common_ldadd)
 query_formats_CFLAGS=$(AM_CFLAGS)
-query_formats_LDFLAGS=$(LDF)
-query_formats_LDADD=$(LDA)
 
-supports_SOURCES=supports.c $(CMC)
-supports_CPPFLAGS=$(CPF)
+EXAMPLE_PROGS+=supports
+
+supports_SOURCES=supports.c
+supports_CPPFLAGS=$(examples_common_cppflags)
+supports_LDFLAGS=$(examples_common_ldflags)
+supports_LDADD=$(examples_common_ldadd)
 supports_CFLAGS=$(AM_CFLAGS)
-supports_LDFLAGS=$(LDF)
-supports_LDADD=$(LDA)
 
-playlist_SOURCES=playlist.c $(CMC)
-playlist_CPPFLAGS=$(CPF)
+EXAMPLE_PROGS+=playlist
+
+playlist_SOURCES=playlist.c
+playlist_CPPFLAGS=$(examples_common_cppflags)
+playlist_LDFLAGS=$(examples_common_ldflags)
+playlist_LDADD=$(examples_common_ldadd)
 playlist_CFLAGS=$(AM_CFLAGS)
-playlist_LDFLAGS=$(LDF)
-playlist_LDADD=$(LDA)
+
+EXAMPLE_PROGS+=version
 
 version_SOURCES=version.c
-version_CPPFLAGS=$(CPF)
+version_CPPFLAGS=$(examples_common_cppflags)
+version_LDFLAGS=$(examples_common_ldflags)
+version_LDADD=$(examples_common_ldadd)
 version_CFLAGS=$(AM_CFLAGS)
-version_LDFLAGS=$(LDF)
-version_LDADD=$(LDA)
 
-resolve_SOURCES=resolve.c $(CMC)
-resolve_CPPFLAGS=$(CPF)
+EXAMPLE_PROGS+=resolve
+
+resolve_SOURCES=resolve.c
+resolve_CPPFLAGS=$(examples_common_cppflags)
+resolve_LDFLAGS=$(examples_common_ldflags)
+resolve_LDADD=$(examples_common_ldadd)
 resolve_CFLAGS=$(AM_CFLAGS)
-resolve_LDFLAGS=$(LDF)
-resolve_LDADD=$(LDA)
 
-script_SOURCES=script.c $(CMC)
-script_CPPFLAGS=$(CPF)
+EXAMPLE_PROGS+=script
+
+script_SOURCES=script.c
+script_CPPFLAGS=$(examples_common_cppflags)
+script_LDFLAGS=$(examples_common_ldflags)
+script_LDADD=$(examples_common_ldadd)
 script_CFLAGS=$(AM_CFLAGS)
-script_LDFLAGS=$(LDF)
-script_LDADD=$(LDA)
 
-media_SOURCES=media.c $(CMC)
-media_CPPFLAGS=$(CPF)
+EXAMPLE_PROGS+=media
+
+media_SOURCES=media.c
+media_CPPFLAGS=$(examples_common_cppflags)
+media_LDFLAGS=$(examples_common_ldflags)
+media_LDADD=$(examples_common_ldadd)
 media_CFLAGS=$(AM_CFLAGS)
-media_LDFLAGS=$(LDF)
-media_LDADD=$(LDA)
 
-scan_SOURCES=scan.c $(CMC)
-scan_CPPFLAGS=$(CPF)
+EXAMPLE_PROGS+=scan
+
+scan_SOURCES=scan.c
+scan_CPPFLAGS=$(examples_common_cppflags)
+scan_LDFLAGS=$(examples_common_ldflags)
+scan_LDADD=$(examples_common_ldadd)
 scan_CFLAGS=$(AM_CFLAGS)
-scan_LDFLAGS=$(LDF)
-scan_LDADD=$(LDA)
+
 endif # WITH_EXAMPLES

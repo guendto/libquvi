@@ -24,6 +24,8 @@
 #include <quvi.h>
 #include <curl/curl.h>
 
+#include "examples.h"
+
 static void usage()
 {
   g_printerr(
@@ -37,10 +39,6 @@ static void usage()
     "\nNote: Checking online resolves shortened URLs, e.g. redirections\n");
   exit(0);
 }
-
-extern QuviError status(glong, gpointer);
-extern void exit_if_error();
-extern void cleanup();
 
 typedef quvi_callback_status qcs;
 
@@ -66,10 +64,7 @@ static void update_type(gchar c)
     }
 }
 
-extern void enable_verbose();
-
-extern quvi_t q;
-
+/* Exit status: 1=error or nosupport, otherwise 0. */
 gint main(gint argc, gchar **argv)
 {
   gchar *url = NULL;
@@ -77,7 +72,6 @@ gint main(gint argc, gchar **argv)
   gint i = 1;
 
   g_assert(q == NULL);
-
   setlocale(LC_ALL, "");
 
   if (argc <2)
@@ -89,30 +83,26 @@ gint main(gint argc, gchar **argv)
   for (; i<argc; ++i)
     {
       const gchar *arg = argv[i];
-      if (arg[0] == '-')
+
+      if (g_strcmp0("-s", arg) == 0)
+        m = QUVI_SUPPORTS_MODE_ONLINE;
+
+      else if (g_strcmp0("-v", arg) == 0)
+        enable_verbose();
+
+      else if (g_str_has_prefix(arg, "-t") == TRUE)
         {
-          switch (arg[1])
+          if (strlen(arg) >1)
             {
-            case 's':
-              m = QUVI_SUPPORTS_MODE_ONLINE;
-              break;
-            case 't':
-              if (strlen(arg) >1)
+              gchar *p = (gchar*) &arg[2];
+              while (*p != '\0')
                 {
-                  gchar *p = (gchar*) &arg[2];
-                  while (*p != '\0')
-                    {
-                      update_type(*p);
-                      ++p;
-                    }
+                  update_type(*p);
+                  ++p;
                 }
-              else
-                t = QUVI_SUPPORTS_TYPE_MEDIA;
-              break;
-            case 'v':
-              enable_verbose();
-              break;
             }
+          else
+            t = QUVI_SUPPORTS_TYPE_MEDIA;
         }
       else
         url = (gchar*) arg;
@@ -121,6 +111,7 @@ gint main(gint argc, gchar **argv)
   if (url == NULL)
     {
       g_printerr("[%s] error: URL required\n", __func__);
+      cleanup();
       return (2);
     }
 
@@ -131,9 +122,21 @@ gint main(gint argc, gchar **argv)
 
   quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) status);
   {
-    QuviBoolean r = quvi_supports(q, url, m, t);
-    g_print("%s : %s\n", url, (r == QUVI_TRUE) ? "yes":"no");
-    rc = (r == QUVI_TRUE) ? 1:0;
+    const QuviBoolean r = quvi_supports(q, url, m, t);
+
+    /* Always check for any network errors with QUVI_SUPPORTS_MODE_ONLINE. */
+    if (r == FALSE && m == QUVI_SUPPORTS_MODE_ONLINE)
+      {
+        glong ec = 0;
+        quvi_get(q, QUVI_INFO_ERROR_CODE, &ec);
+
+        if (ec != QUVI_ERROR_NO_SUPPORT) /* Ignore "no support". */
+          g_printerr("\nerror: %s\n", quvi_errmsg(q));
+      }
+    else
+      g_print("%s : %s\n", url, (r == QUVI_TRUE) ? "yes":"no");
+
+    rc = (r == QUVI_TRUE) ? 0:1;
   }
   cleanup();
   g_assert(q == NULL);

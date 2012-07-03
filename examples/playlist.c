@@ -23,21 +23,15 @@
 #include <quvi.h>
 #include <curl/curl.h>
 
+#include "examples.h"
+
 static void usage()
 {
   g_printerr("Usage: playlist <URL>\n");
   exit(0);
 }
 
-extern QuviError status(glong, gpointer);
-extern void enable_verbose();
-extern void exit_if_error();
-extern void cleanup();
-
 typedef quvi_callback_status qcs;
-
-extern quvi_playlist_t qp;
-extern quvi_t q;
 
 gint main(gint argc, gchar **argv)
 {
