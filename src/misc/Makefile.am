@@ -5,11 +5,11 @@ src=\
   playlist_new.c\
   scan_scripts.c\
   script_free.c\
-  media_new.c\
   scan_new.c\
   capture.c\
   resolve.c\
   to_utf8.c\
+  media.c\
   match.c\
   trim.c
 
@@ -18,9 +18,9 @@ hdr=\
   match_media_script.h\
   playlist_new.h\
   script_free.h\
-  media_new.h\
   scan_new.h\
   resolve.h\
+  media.h\
   re.h
 
 noinst_LTLIBRARIES=libconvenience_misc.la

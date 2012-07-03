@@ -38,6 +38,7 @@
 #define MS_THUMB_URL        "thumb_url"     /* Image thumbnail URL */
 #define MS_GOTO_URL         "goto_url"      /* Redirect to URL */
 #define MS_ACCEPTS          "accepts"       /* Script accepts URL */
+#define MS_DOMAINS          "domains"       /* Accepted domains */
 #define MS_TITLE            "title"         /* Media title */
 #define MS_ID               "id"            /* Media ID */
 

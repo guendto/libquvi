@@ -27,6 +27,8 @@
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_media_s.h"
+/* -- */
+#include "misc/media.h"
 
 /** @brief Free all of memory used by a media handle
 @note If handle is NULL the function simply returns
@@ -35,41 +37,7 @@
 */
 void quvi_media_free(quvi_media_t handle)
 {
-  _quvi_media_t m = (_quvi_media_t) handle;
-
-  if (handle == NULL)
-    return;
-
-  /* URLs */
-
-  g_string_free(m->url.redirect_to, TRUE);
-  m->url.redirect_to = NULL;
-
-  g_string_free(m->url.thumbnail, TRUE);
-  m->url.thumbnail = NULL;
-
-  g_string_free(m->url.stream, TRUE);
-  m->url.stream = NULL;
-
-  g_string_free(m->url.input, TRUE);
-  m->url.input = NULL;
-
-  /* Other */
-
-  g_string_free(m->content_type, TRUE);
-  m->content_type = NULL;
-
-  g_string_free(m->file_ext, TRUE);
-  m->file_ext= NULL;
-
-  g_string_free(m->title, TRUE);
-  m->title = NULL;
-
-  g_string_free(m->id, TRUE);
-  m->id = NULL;
-
-  g_free(m);
-  m = NULL;
+  m_media_free(handle);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

@@ -37,8 +37,8 @@ void m_script_free(gpointer p, gpointer userdata)
 
   /* Media */
 
-  g_string_free(qs->media.categories, TRUE);
-  qs->media.categories = NULL;
+  g_string_free(qs->media.domains, TRUE);
+  qs->media.domains = NULL;
 
   /* Any */
 

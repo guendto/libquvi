@@ -24,7 +24,7 @@ struct _quvi_script_s
 {
   struct
   {
-    GString *categories;
+    GString *domains;
   } media;
   GString *fpath;
   GString *fname;

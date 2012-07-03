@@ -111,9 +111,9 @@ static void dump_script(quvi_t q)
       QuviScriptProperty qsp;
       switch (prop[i])
         {
-        case 'c':
-          qsp = QUVI_SCRIPT_PROPERTY_CATEGORIES;
-          g_string_append(o, "  c=");
+        case 'd':
+          qsp = QUVI_SCRIPT_PROPERTY_DOMAINS;
+          g_string_append(o, "  d=");
           break;
         case 'p':
           qsp = QUVI_SCRIPT_PROPERTY_FILEPATH;

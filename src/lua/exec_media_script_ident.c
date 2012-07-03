@@ -34,6 +34,47 @@
 
 static const gchar script_func[] = "ident";
 
+static gboolean _chk_accepts(lua_State *l, _quvi_script_t qs)
+{
+  gboolean r = FALSE;
+
+  lua_pushstring(l, MS_ACCEPTS);
+  lua_gettable(l, -2);
+
+  if (lua_istable(l, -1))
+    {
+      g_string_assign(qs->media.domains,
+                      l_getfield_s(l, MS_DOMAINS,
+                                   qs->fpath->str, script_func));
+      r = l_getfield_b(l, MS_ACCEPTS, qs->fpath->str, script_func);
+    }
+  else
+    {
+      luaL_error(l, "%s: %s: expected to return a table containing table `%s'",
+                 qs->fpath->str, script_func, MS_ACCEPTS);
+    }
+  lua_pop(l, 1);
+
+  return (r);
+}
+
+static QuviError _chk_results(lua_State *l, _quvi_script_t qs, _quvi_media_t m)
+{
+  QuviError rc = QUVI_ERROR_NO_SUPPORT;
+
+  if (_chk_accepts(l, qs) == TRUE)
+    {
+      const glong c = (glong) l_getfield_n(l, MS_CATEGORIES,
+                                           qs->fpath->str, script_func);
+      rc = (c & m->handle.quvi->opt.scripts.category)
+           ? QUVI_OK
+           : QUVI_ERROR_NO_SUPPORT;
+    }
+  lua_pop(l, 1);
+
+  return (rc);
+}
+
 QuviError l_exec_media_script_ident(gpointer p, GSList *sl)
 {
   const _quvi_script_t qs = (_quvi_script_t) sl->data;
@@ -65,27 +106,12 @@ QuviError l_exec_media_script_ident(gpointer p, GSList *sl)
     }
 
   if (lua_istable(l, -1))
-    {
-      const glong c = (glong) l_getfield_n(l, MS_CATEGORIES,
-                                           qs->fpath->str, script_func);
-      const gboolean r =
-        l_getfield_b(l, MS_ACCEPTS, qs->fpath->str, script_func);
-
-      if (r == TRUE)
-        {
-          rc = (c & m->handle.quvi->opt.scripts.category)
-               ? QUVI_OK
-               : QUVI_ERROR_NO_SUPPORT;
-        }
-    }
+    rc = _chk_results(l, qs, m);
   else
     {
       luaL_error(l, "%s: expected `%s' to return a table",
                  qs->fpath->str, script_func);
     }
-
-  lua_pop(l, 1);
-
   return (rc);
 }
 

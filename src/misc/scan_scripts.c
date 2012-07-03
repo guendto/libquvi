@@ -25,10 +25,13 @@
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
+#include "_quvi_media_s.h"
 #include "_quvi_script_s.h"
 /* -- */
 #include "misc/script_free.h"
+#include "misc/media.h"
 #include "misc/re.h"
+#include "lua/exec.h"
 
 /* Return path to script file. */
 static GString *_get_fpath(const gchar *path, const gchar *fname)
@@ -73,50 +76,30 @@ static const gchar *scripts_dir = NULL;
 static const gchar *show_script = NULL;
 static const gchar *show_dir = NULL;
 
-extern gchar *m_capture(const gchar*, const gchar*);
-
-/* Extract the "categories" string from the media script. */
-static void _chk_categories(_quvi_script_t qs, const GString *s, gboolean *ok)
+static void _chk_media_ident(_quvi_t q, _quvi_script_t qs, gboolean *ok)
 {
-  static const gchar *p = "categories\\s+=\\s+(.*)";
-  gchar *c = m_capture(s->str, p);
+  static const gchar URL[] = "http://foo";
 
-  *ok = FALSE;
+  _quvi_media_t m;
+  GSList *s = NULL;
+  QuviError rc;
 
-  if (c != NULL)
-    {
-      static const gchar *p2 = "\\w+\\.proto_(\\w+)";
-      gchar *t = m_trim(c, p2, "\\1");
+  m = m_media_new(q, URL);
+  s = g_slist_prepend(s, qs);
+  rc = l_exec_media_script_ident(m, s);
 
-      g_free(c);
-      c = NULL;
+  m_media_free(m);
+  m = NULL;
 
-      if (t != NULL)
-        {
-          c = m_trim(t, "\\s", "");
+  g_slist_free(s);
+  s = NULL;
 
-          g_free(t);
-          t = NULL;
-
-          if (c != NULL)
-            {
-              g_string_assign(qs->media.categories, c);
-              *ok = TRUE;
-
-              g_free(c);
-              c = NULL;
-            }
-        }
-      else
-        {
-          if (show_script != NULL && strlen(show_script) >0)
-            g_message("[%s] no match: `%s'", __func__, p2);
-        }
-    }
+  if (rc == QUVI_ERROR_NO_SUPPORT)
+    *ok = TRUE;
   else
     {
-      if (show_script != NULL && strlen(show_script) >0)
-        g_message("[%s] no match: `%s'", __func__, p);
+      g_critical("[%s] %s", __func__, q->status.errmsg->str);
+      *ok = FALSE;
     }
 }
 
@@ -137,7 +120,7 @@ static gpointer script_new(const gchar *fpath, const gchar *fname,
                            const GString *c)
 {
   _quvi_script_t qs = g_new0(struct _quvi_script_s, 1);
-  qs->media.categories = g_string_new(NULL);
+  qs->media.domains = g_string_new(NULL);
   qs->fpath = g_string_new(fpath);
   qs->fname = g_string_new(fname);
   qs->sha1 = _file_sha1(c);
@@ -145,7 +128,8 @@ static gpointer script_new(const gchar *fpath, const gchar *fname,
 }
 
 /* New media script. */
-static gpointer _new_media_script(const gchar *path, const gchar *fname)
+static gpointer _new_media_script(_quvi_t q, const gchar *path,
+                                  const gchar *fname)
 {
   _quvi_script_t qs = NULL;
   GString *fpath = _get_fpath(path, fname);
@@ -162,7 +146,7 @@ static gpointer _new_media_script(const gchar *path, const gchar *fname)
       if (OK == TRUE)
         {
           qs = script_new(fpath->str, fname, c);
-          _chk_categories(qs, c, &OK);
+          _chk_media_ident(q, qs, &OK);
         }
 
       g_string_free(c, TRUE);
@@ -185,7 +169,8 @@ static gpointer _new_media_script(const gchar *path, const gchar *fname)
 }
 
 /* New playlist script. */
-static gpointer _new_playlist_script(const gchar *path, const gchar *fname)
+static gpointer _new_playlist_script(_quvi_t q, const gchar *path,
+                                     const gchar *fname)
 {
   _quvi_script_t qs = NULL;
   GString *fpath = _get_fpath(path, fname);
@@ -221,7 +206,8 @@ static gpointer _new_playlist_script(const gchar *path, const gchar *fname)
 }
 
 /* New scan script. */
-static gpointer _new_scan_script(const gchar *path, const gchar *fname)
+static gpointer _new_scan_script(_quvi_t q, const gchar *path,
+                                 const gchar *fname)
 {
   GString *fpath = _get_fpath(path, fname);
   GString *c = _contents(fpath);
@@ -256,7 +242,8 @@ static gpointer _new_scan_script(const gchar *path, const gchar *fname)
 }
 
 /* New utility script. */
-static gpointer _new_util_script(const gchar *path, const gchar *fname)
+static gpointer _new_util_script(_quvi_t q, const gchar *path,
+                                 const gchar *fname)
 {
   GString *fpath = _get_fpath(path, fname);
   GString *c = _contents(fpath);
@@ -319,7 +306,7 @@ static gint _sort(gconstpointer a, gconstpointer b)
   return (g_strcmp0(qsa->fpath->str, qsb->fpath->str) >0);
 }
 
-typedef gpointer (*new_script_callback)(const gchar*, const gchar*);
+typedef gpointer (*new_script_callback)(_quvi_t, const gchar*, const gchar*);
 typedef gboolean (*chkdup_script_callback)(_quvi_t, gpointer, GSList*);
 typedef void (*free_script_callback)(gpointer, gpointer);
 
@@ -342,7 +329,7 @@ static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
     {
       if (_lua_files_only(fname) != 0)
         {
-          gpointer s = new_cb(path, fname);
+          gpointer s = new_cb(q, path, fname);
           if (s == NULL)
             {
               /* Either file read failed or this is not a valid
@@ -558,6 +545,8 @@ QuviError m_scan_scripts(_quvi_t q)
   show_script = g_getenv("LIBQUVI_SHOW_SCRIPT");
   show_dir = g_getenv("LIBQUVI_SHOW_DIR");
 
+  chk_common_scripts(q); /* Ignore what lua/common/ holds. */
+
   rc = _glob_scripts(q, GLOB_UTIL_SCRIPTS, &q->scripts.util)
        ? QUVI_OK
        : QUVI_ERROR_NO_UTIL_SCRIPTS;
@@ -582,9 +571,6 @@ QuviError m_scan_scripts(_quvi_t q)
            ? QUVI_OK
            : QUVI_ERROR_NO_SCAN_SCRIPTS;
     }
-
-  if (rc == QUVI_OK)
-    chk_common_scripts(q); /* Ignore what lua/common/ holds. */
 
   return (rc);
 }

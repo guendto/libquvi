@@ -17,11 +17,12 @@
  * 02110-1301, USA.
  */
 
-#ifndef m_media_new_h
-#define m_media_new_h
+#ifndef m_media_h
+#define m_media_h
 
 gpointer m_media_new(_quvi_t, const gchar*);
+void m_media_free(_quvi_media_t);
 
-#endif /* m_media_new_h */
+#endif /* m_media_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

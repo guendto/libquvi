@@ -26,7 +26,7 @@
 #include "_quvi_s.h"
 #include "_quvi_media_s.h"
 /* -- */
-#include "misc/media_new.h"
+#include "misc/media.h"
 
 gpointer m_media_new(_quvi_t q, const gchar *url)
 {
@@ -44,6 +44,43 @@ gpointer m_media_new(_quvi_t q, const gchar *url)
   m->title = g_string_new(NULL);
   m->id = g_string_new(NULL);
   return (m);
+}
+
+void m_media_free(_quvi_media_t m)
+{
+  if (m == NULL)
+    return;
+
+  /* URLs */
+
+  g_string_free(m->url.redirect_to, TRUE);
+  m->url.redirect_to = NULL;
+
+  g_string_free(m->url.thumbnail, TRUE);
+  m->url.thumbnail = NULL;
+
+  g_string_free(m->url.stream, TRUE);
+  m->url.stream = NULL;
+
+  g_string_free(m->url.input, TRUE);
+  m->url.input = NULL;
+
+  /* Other */
+
+  g_string_free(m->content_type, TRUE);
+  m->content_type = NULL;
+
+  g_string_free(m->file_ext, TRUE);
+  m->file_ext= NULL;
+
+  g_string_free(m->title, TRUE);
+  m->title = NULL;
+
+  g_string_free(m->id, TRUE);
+  m->id = NULL;
+
+  g_free(m);
+  m = NULL;
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

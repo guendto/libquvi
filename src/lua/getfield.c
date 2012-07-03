@@ -58,18 +58,7 @@ const gboolean l_getfield_b(lua_State *l, const gchar *k,
                             const gchar *script_path,
                             const gchar *script_func)
 {
-  gboolean r = FALSE;
-
-  lua_pushstring(l, k);
-  lua_gettable(l, -2);
-
-  if (!lua_isboolean(l, -1))
-    luaL_error(l, _E, script_path, script_func, k);
-
-  r = (gboolean) lua_toboolean(l, -1);
-  lua_pop(l, 1);
-
-  return (r);
+  _pop(boolean, gboolean, FALSE);
 }
 
 const gpointer l_get_reg_userdata(lua_State *l, const gchar *k)
