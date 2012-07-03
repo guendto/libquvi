@@ -102,14 +102,6 @@ AC_CHECK_FUNCS([strrchr])
 VN=`$srcdir/gen-ver.sh $srcdir`
 AC_DEFINE_UNQUOTED([VN], ["$VN"], [We have version number from gen-ver.sh])
 
-# --with-examples
-AC_ARG_WITH([examples],
-  [AS_HELP_STRING([--with-examples],
-    [build examples @<:@default=no@:>@])],
-  [],
-  [with_examples=no])
-AM_CONDITIONAL([WITH_EXAMPLES], [test x"$with_examples" != "xno"])
-
 # --with-manual
 AC_ARG_WITH([manual],
   [AS_HELP_STRING([--with-manual],
@@ -147,7 +139,6 @@ System types
   build           ${build}
   host            ${host}
 Options
-  build examples  ${with_examples}
   install manual  ${with_manual}
 libquvi-scripts
   .pc modversion  ${scriptsmodver}

@@ -1,5 +1,3 @@
-if WITH_EXAMPLES
-
 SUBDIRS=lib
 noinst_PROGRAMS=$(EXAMPLE_PROGS)
 
@@ -79,5 +77,3 @@ scan_CPPFLAGS=$(examples_common_cppflags)
 scan_LDFLAGS=$(examples_common_ldflags)
 scan_LDADD=$(examples_common_ldadd)
 scan_CFLAGS=$(AM_CFLAGS)
-
-endif # WITH_EXAMPLES
