@@ -2,6 +2,7 @@
 src=\
   util/exec_util_convert_entities.c\
   util/exec_util_to_file_ext.c\
+  chk_accepts.c\
   exec_media_script_query_formats.c\
   exec_playlist_script_ident.c\
   exec_playlist_script_parse.c\
@@ -19,6 +20,7 @@ src=\
   quvi/fetch.c
 
 hdr=\
+  chk_accepts.h\
   load_util_script.h\
   getfield.h\
   setfield.h\

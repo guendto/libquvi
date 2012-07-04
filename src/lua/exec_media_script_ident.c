@@ -28,41 +28,18 @@
 #include "_quvi_media_s.h"
 #include "_quvi_script_s.h"
 /* -- */
-#include "lua/def.h"
+#include "lua/chk_accepts.h"
 #include "lua/getfield.h"
 #include "lua/setfield.h"
+#include "lua/def.h"
 
 static const gchar script_func[] = "ident";
-
-static gboolean _chk_accepts(lua_State *l, _quvi_script_t qs)
-{
-  gboolean r = FALSE;
-
-  lua_pushstring(l, MS_ACCEPTS);
-  lua_gettable(l, -2);
-
-  if (lua_istable(l, -1))
-    {
-      g_string_assign(qs->media.domains,
-                      l_getfield_s(l, MS_DOMAINS,
-                                   qs->fpath->str, script_func));
-      r = l_getfield_b(l, MS_ACCEPTS, qs->fpath->str, script_func);
-    }
-  else
-    {
-      luaL_error(l, "%s: %s: expected to return a table containing table `%s'",
-                 qs->fpath->str, script_func, MS_ACCEPTS);
-    }
-  lua_pop(l, 1);
-
-  return (r);
-}
 
 static QuviError _chk_results(lua_State *l, _quvi_script_t qs, _quvi_media_t m)
 {
   QuviError rc = QUVI_ERROR_NO_SUPPORT;
 
-  if (_chk_accepts(l, qs) == TRUE)
+  if (l_chk_accepts(l, qs, MS_ACCEPTS, MS_DOMAINS, script_func) == TRUE)
     {
       const glong c = (glong) l_getfield_n(l, MS_CATEGORIES,
                                            qs->fpath->str, script_func);

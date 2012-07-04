@@ -28,7 +28,7 @@
 #include "_quvi_net_s.h"
 /* -- */
 #include "misc/match_playlist_script.h"
-#include "misc/playlist_new.h"
+#include "misc/playlist.h"
 #include "misc/resolve.h"
 #include "net/handle.h"
 #include "lua/exec.h"

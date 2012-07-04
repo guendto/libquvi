@@ -1,4 +1,4 @@
-/* $project
+/* libquvi
  * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
@@ -17,11 +17,12 @@
  * 02110-1301, USA.
  */
 
-#ifndef m_playlist_new_h
-#define m_playlist_new_h
+#ifndef m_playlist_h
+#define m_playlist_h
 
 gpointer m_playlist_new(_quvi_t, const gchar*);
+void m_playlist_free(_quvi_playlist_t);
 
-#endif /* m_playlist_new_h */
+#endif /* m_playlist_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

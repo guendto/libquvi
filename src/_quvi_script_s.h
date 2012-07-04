@@ -22,10 +22,7 @@
 
 struct _quvi_script_s
 {
-  struct
-  {
-    GString *domains;
-  } media;
+  GString *domains; /* Media, playlist. */
   GString *fpath;
   GString *fname;
   GString *sha1;

@@ -94,9 +94,9 @@ static QuviError _get(_quvi_t q, QuviScriptType stype,
 
   switch (n)
     {
-      /* Media */
+      /* Media, playlist. */
     case QUVI_SCRIPT_PROPERTY_DOMAINS:
-      *sp = qs->media.domains->str;
+      *sp = qs->domains->str;
       break;
       /* Any */
     case QUVI_SCRIPT_PROPERTY_FILEPATH:

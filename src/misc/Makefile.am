@@ -2,10 +2,10 @@
 src=\
   match_playlist_script.c\
   match_media_script.c\
-  playlist_new.c\
   scan_scripts.c\
   script_free.c\
   scan_new.c\
+  playlist.c\
   capture.c\
   resolve.c\
   to_utf8.c\
@@ -16,9 +16,9 @@ src=\
 hdr=\
   match_playlist_script.h\
   match_media_script.h\
-  playlist_new.h\
   script_free.h\
   scan_new.h\
+  playlist.h\
   resolve.h\
   media.h\
   re.h

@@ -35,10 +35,10 @@ void m_script_free(gpointer p, gpointer userdata)
   if (p == NULL)
     return;
 
-  /* Media */
+  /* Media, playlist. */
 
-  g_string_free(qs->media.domains, TRUE);
-  qs->media.domains = NULL;
+  g_string_free(qs->domains, TRUE);
+  qs->domains = NULL;
 
   /* Any */
 

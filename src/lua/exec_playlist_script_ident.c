@@ -28,11 +28,23 @@
 #include "_quvi_playlist_s.h"
 #include "_quvi_script_s.h"
 /* -- */
-#include "lua/def.h"
+#include "lua/chk_accepts.h"
 #include "lua/getfield.h"
 #include "lua/setfield.h"
+#include "lua/def.h"
 
 static const gchar script_func[] = "ident";
+
+static QuviError _chk_results(lua_State *l, _quvi_script_t qs)
+{
+  const QuviError rc = (l_chk_accepts(l, qs, PS_ACCEPTS,
+                                      PS_DOMAINS, script_func) == TRUE)
+                       ? QUVI_OK
+                       : QUVI_ERROR_NO_SUPPORT;
+  lua_pop(l, 1);
+
+  return (rc);
+}
 
 QuviError l_exec_playlist_script_ident(gpointer p, GSList *sl)
 {
@@ -65,22 +77,12 @@ QuviError l_exec_playlist_script_ident(gpointer p, GSList *sl)
     }
 
   if (lua_istable(l, -1))
-    {
-      const gboolean r =
-        l_getfield_b(l, PS_ACCEPTS, qs->fpath->str, script_func);
-
-      rc = (r == TRUE)
-           ? QUVI_OK
-           : QUVI_ERROR_NO_SUPPORT;
-    }
+    rc = _chk_results(l, qs);
   else
     {
       luaL_error(l, "%s: expected `%s' to return a table",
                  qs->fpath->str, script_func);
     }
-
-  lua_pop(l, 1);
-
   return (rc);
 }
 

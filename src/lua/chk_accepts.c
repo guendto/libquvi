@@ -17,27 +17,45 @@
  * 02110-1301, USA.
  */
 
-/** @file playlist_free.c */
-
 #include "config.h"
 
+#include <lauxlib.h>
 #include <glib.h>
 
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
-#include "_quvi_playlist_s.h"
+#include "_quvi_script_s.h"
 /* -- */
-#include "misc/playlist.h"
+#include "lua/chk_accepts.h"
+#include "lua/getfield.h"
 
-/** @brief Free all of memory used by a playlist handle
-@note If handle is NULL the function simply returns
-@sa @ref parse_playlist
-@ingroup playlistprop
-*/
-void quvi_playlist_free(quvi_playlist_t handle)
+gboolean l_chk_accepts(lua_State *l, _quvi_script_t qs,
+                       const gchar *k_accepts, const gchar *k_domains,
+                       const gchar *script_func)
 {
-  m_playlist_free(handle);
+  gboolean r = FALSE;
+
+  lua_pushstring(l, k_accepts);
+  lua_gettable(l, -2);
+
+  if (lua_istable(l, -1))
+    {
+      const gchar *s = l_getfield_s(l, k_domains,
+                                    qs->fpath->str, script_func);
+
+      g_string_assign(qs->domains, s);
+
+      r = l_getfield_b(l, k_accepts, qs->fpath->str, script_func);
+    }
+  else
+    {
+      luaL_error(l, "%s: %s: expected to return a table containing table `%s'",
+                 qs->fpath->str, script_func, k_accepts);
+    }
+  lua_pop(l, 1);
+
+  return (r);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

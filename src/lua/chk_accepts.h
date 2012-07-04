@@ -17,27 +17,12 @@
  * 02110-1301, USA.
  */
 
-#include "config.h"
+#ifndef l_chk_accepts_h
+#define l_chk_accepts_h
 
-#include <glib.h>
+gboolean l_chk_accepts(lua_State*, _quvi_script_t, const gchar*,
+                       const gchar*, const gchar*);
 
-#include "quvi.h"
-/* -- */
-#include "_quvi_s.h"
-#include "_quvi_playlist_s.h"
-/* -- */
-#include "misc/playlist_new.h"
-
-gpointer m_playlist_new(_quvi_t q, const gchar *url)
-{
-  _quvi_playlist_t p = g_new0(struct _quvi_playlist_s, 1);
-  /* URL */
-  p->url.input = g_string_new(url);
-  /* ID */
-  p->id.playlist = g_string_new(NULL);
-  /* Handle */
-  p->handle.quvi = q;
-  return (p);
-}
+#endif /* l_chk_accepts_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

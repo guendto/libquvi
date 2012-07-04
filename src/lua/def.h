@@ -49,6 +49,7 @@
 #define PS_INPUT_URL      "input_url" /* App req. URL */
 #define PS_MEDIA_URL      "media_url" /* Array of found media URLs */
 #define PS_ACCEPTS        "accepts"   /* Script accepts URL */
+#define PS_DOMAINS        "domains"   /* Accepted domains */
 #define PS_ID             "id"        /* Playlist ID */
 
 /* Scan script */

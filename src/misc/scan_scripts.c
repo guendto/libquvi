@@ -26,9 +26,11 @@
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_media_s.h"
+#include "_quvi_playlist_s.h"
 #include "_quvi_script_s.h"
 /* -- */
 #include "misc/script_free.h"
+#include "misc/playlist.h"
 #include "misc/media.h"
 #include "misc/re.h"
 #include "lua/exec.h"
@@ -76,24 +78,34 @@ static const gchar *scripts_dir = NULL;
 static const gchar *show_script = NULL;
 static const gchar *show_dir = NULL;
 
-static void _chk_media_ident(_quvi_t q, _quvi_script_t qs, gboolean *ok)
+typedef QuviError (*exec_script_ident_callback)(gpointer, GSList*);
+typedef gpointer (*new_ident_callback)(_quvi_t, const gchar*);
+typedef void (*free_ident_callback)(gpointer);
+
+/* Parses the values returned by the ident function. */
+static void _chk_script_ident(_quvi_t q, _quvi_script_t qs, gboolean *ok,
+                              new_ident_callback cb_new,
+                              exec_script_ident_callback cb_exec,
+                              free_ident_callback cb_free)
 {
   static const gchar URL[] = "http://foo";
 
-  _quvi_media_t m;
+  QuviError rc = QUVI_OK;
+  gpointer p = NULL;
   GSList *s = NULL;
-  QuviError rc;
 
-  m = m_media_new(q, URL);
+  p = cb_new(q, URL);
   s = g_slist_prepend(s, qs);
-  rc = l_exec_media_script_ident(m, s);
+  rc = cb_exec(p, s);
 
-  m_media_free(m);
-  m = NULL;
+  cb_free(p);
+  p = NULL;
 
   g_slist_free(s);
   s = NULL;
 
+  /* Script ident function should return "no support". If anything else
+   * is returned, there's something wrong with the script. */
   if (rc == QUVI_ERROR_NO_SUPPORT)
     *ok = TRUE;
   else
@@ -120,7 +132,7 @@ static gpointer script_new(const gchar *fpath, const gchar *fname,
                            const GString *c)
 {
   _quvi_script_t qs = g_new0(struct _quvi_script_s, 1);
-  qs->media.domains = g_string_new(NULL);
+  qs->domains = g_string_new(NULL);
   qs->fpath = g_string_new(fpath);
   qs->fname = g_string_new(fname);
   qs->sha1 = _file_sha1(c);
@@ -145,8 +157,13 @@ static gpointer _new_media_script(_quvi_t q, const gchar *path,
 
       if (OK == TRUE)
         {
+          typedef free_ident_callback fic;
+
           qs = script_new(fpath->str, fname, c);
-          _chk_media_ident(q, qs, &OK);
+
+          _chk_script_ident(q, qs, &OK, m_media_new,
+                            l_exec_media_script_ident,
+                            (fic) m_media_free);
         }
 
       g_string_free(c, TRUE);
@@ -184,7 +201,15 @@ static gpointer _new_playlist_script(_quvi_t q, const gchar *path,
          && _chk(c->str, "^function parse") == TRUE);
 
       if (OK == TRUE)
-        qs = script_new(fpath->str, fname, c);
+        {
+          typedef free_ident_callback fic;
+
+          qs = script_new(fpath->str, fname, c);
+
+          _chk_script_ident(q, qs, &OK, m_playlist_new,
+                            l_exec_playlist_script_ident,
+                            (fic) m_playlist_free);
+        }
 
       g_string_free(c, TRUE);
       c = NULL;
@@ -311,9 +336,9 @@ typedef gboolean (*chkdup_script_callback)(_quvi_t, gpointer, GSList*);
 typedef void (*free_script_callback)(gpointer, gpointer);
 
 static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
-                                  new_script_callback new_cb,
-                                  free_script_callback free_cb,
-                                  chkdup_script_callback chkdup_cb)
+                                  new_script_callback cb_new,
+                                  free_script_callback cb_free,
+                                  chkdup_script_callback cb_chkdup)
 {
   const gchar *fname = NULL;
   GDir *dir = NULL;
@@ -329,7 +354,7 @@ static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
     {
       if (_lua_files_only(fname) != 0)
         {
-          gpointer s = new_cb(q, path, fname);
+          gpointer s = cb_new(q, path, fname);
           if (s == NULL)
             {
               /* Either file read failed or this is not a valid
@@ -343,13 +368,13 @@ static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
           else
             {
               /* Valid libquvi-script file. */
-              const gboolean r = chkdup_cb(q, s, *dst);
+              const gboolean r = cb_chkdup(q, s, *dst);
 
               if (r == FALSE)
                 *dst = g_slist_prepend(*dst, s);
               else
                 {
-                  free_cb(s, NULL);
+                  cb_free(s, NULL);
                   s = NULL;
                 }
 
@@ -392,25 +417,25 @@ static const gchar *dir[] =
 
 static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
 {
-  chkdup_script_callback chkdup_cb = _chkdup_script;
-  free_script_callback free_cb = m_script_free;
-  new_script_callback new_cb = NULL;
+  chkdup_script_callback cb_chkdup = _chkdup_script;
+  free_script_callback cb_free = m_script_free;
+  new_script_callback cb_new = NULL;
   gchar *path = NULL;
   *dst = NULL;
 
   switch (m)
     {
     case GLOB_PLAYLIST_SCRIPTS:
-      new_cb = _new_playlist_script;
+      cb_new = _new_playlist_script;
       break;
     case GLOB_MEDIA_SCRIPTS:
-      new_cb = _new_media_script;
+      cb_new = _new_media_script;
       break;
     case GLOB_SCAN_SCRIPTS:
-      new_cb = _new_scan_script;
+      cb_new = _new_scan_script;
       break;
     case GLOB_UTIL_SCRIPTS:
-      new_cb = _new_util_script;
+      cb_new = _new_util_script;
       break;
     default:
       g_error("%s: %d: invalid mode", __func__, __LINE__);
@@ -424,7 +449,7 @@ static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
         gboolean r = FALSE;
 
         path = g_build_path(G_DIR_SEPARATOR_S, scripts_dir, dir[m], NULL);
-        r = _glob_scripts_dir(q, path, dst, new_cb, free_cb, chkdup_cb);
+        r = _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
 
         g_free(path);
         path = NULL;
@@ -442,7 +467,7 @@ static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
     g_free(cwd);
     cwd = NULL;
 
-    _glob_scripts_dir(q, path, dst, new_cb, free_cb, chkdup_cb);
+    _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
 
     g_free(path);
     path = NULL;
@@ -453,7 +478,7 @@ static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
     /* SCRIPTSDIR from config.h */
 
     path = g_build_path(G_DIR_SEPARATOR_S, SCRIPTSDIR, dir[m], NULL);
-    _glob_scripts_dir(q, path, dst, new_cb, free_cb, chkdup_cb);
+    _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
 
     g_free(path);
     path = NULL;
