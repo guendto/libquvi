@@ -29,12 +29,11 @@ static void usage()
 {
   g_print("Usage: script [options]\n"
           "Type\n"
-          "  -p           .. Dump playlist scripts\n"
-          "  -m           .. Dump media scripts [default]\n"
-          "  -s           .. Dump scan scripts\n"
+          "  -p          .. Dump playlist scripts\n"
+          "  -m          .. Dump media scripts [default]\n"
+          "  -s          .. Dump scan scripts\n"
           "Printing\n"
-          "  -t<arg> =pd  .. Property mask, where 'c', 'i', 'd'\n"
-          "                   'p', 'n' and 's' are accepted\n"
+          "  -t<arg> =pd .. Property mask, possible values: 'd','p','n','s'\n"
          );
   exit(0);
 }
@@ -55,8 +54,6 @@ static void parse_mask(gchar *arg)
     {
       switch (arg[i])
         {
-        case 'c':
-        case 'i':
         case 'd':
         case 'p':
         case 'n':
