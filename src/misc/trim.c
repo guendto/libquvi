@@ -55,22 +55,6 @@ gchar *m_trim(const gchar *s, const gchar *p, const gchar *w)
   return (r);
 }
 
-/*
- * Trim NULL-terminated string of Lua escape characters.
- *  Example: "video%.google%.%w+" -> "video.google.com"
- */
-gchar *m_trim_lua_esc(const gchar *s)
-{
-  gchar *u = NULL, *t = m_trim(s, "%w\\+", "com");
-  if (t != NULL)
-    {
-      u = m_trim(t, "%", "");
-      g_free(t);
-      t = NULL;
-    }
-  return (u);
-}
-
 /* Trim null-terminated string of extra whitespace. */
 gchar *m_trim_ws(const gchar *s)
 {
