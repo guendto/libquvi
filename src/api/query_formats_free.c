@@ -28,33 +28,22 @@
 #include "_quvi_s.h"
 #include "_quvi_query_formats_s.h"
 
-static void _format_free(gpointer p, gpointer userdata)
-{
-  g_free(p);
-  p = NULL;
-}
-
 /** @brief Free all of memory used by a query formats handle
 @note If handle is NULL the function simply returns
 @ingroup queryformats
 */
 void quvi_query_formats_free(quvi_query_formats_t handle)
 {
-  _quvi_query_formats_t qf = (_quvi_query_formats_t) handle;
+  _quvi_query_formats_t qqf = (_quvi_query_formats_t) handle;
 
-  if (qf == NULL)
+  if (qqf == NULL)
     return;
 
-#ifdef HAVE_GLIB_2_28
-  g_slist_free_full(qf->formats, _format_free);
-#else
-  g_slist_foreach(qf->formats, _format_free, NULL);
-  g_slist_free(qf->formats);
-#endif
-  qf->formats = NULL;
+  g_string_free(qqf->formats, TRUE);
+  qqf->formats = NULL;
 
-  g_free(qf);
-  qf = NULL;
+  g_free(qqf);
+  qqf = NULL;
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

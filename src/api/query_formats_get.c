@@ -17,7 +17,7 @@
  * 02110-1301, USA.
  */
 
-/** @file query_formats_next_format.c */
+/** @file query_formats_get.c */
 
 #include "config.h"
 
@@ -28,25 +28,19 @@
 #include "_quvi_s.h"
 #include "_quvi_query_formats_s.h"
 
-/** @return Next available format (NULL-terminated) string or NULL
+/** @return Comma-separated string containing the format strings
 @note Do not attempt to free the returned string
 @sa @ref query_formats
 @ingroup queryformats
 */
-const char *quvi_query_formats_next_format(quvi_query_formats_t handle)
+const char *quvi_query_formats_get(quvi_query_formats_t handle)
 {
   _quvi_query_formats_t qf = (_quvi_query_formats_t) handle;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_val_if_fail(handle != NULL, NULL);
 
-  qf->curr.format = (qf->curr.format != NULL)
-                    ? g_slist_next(qf->curr.format)
-                    : qf->formats;
-
-  return ((qf->curr.format != NULL)
-          ? qf->curr.format->data
-          : NULL);
+  return (qf->formats->str);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

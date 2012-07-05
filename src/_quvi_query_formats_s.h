@@ -22,11 +22,7 @@
 
 struct _quvi_query_formats_s
 {
-  struct
-  {
-    GSList *format;
-  } curr;
-  GSList *formats;
+  GString *formats;
 };
 
 typedef struct _quvi_query_formats_s *_quvi_query_formats_t;

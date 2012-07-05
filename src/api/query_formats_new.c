@@ -33,22 +33,9 @@
 
 static gpointer _query_formats_new(gchar *fmts)
 {
-  _quvi_query_formats_t qf = g_new0(struct _quvi_query_formats_s, 1);
-  gchar **r = NULL;
-  gint i = -1;
-
-  if (fmts != NULL)
-    r = g_strsplit(fmts, ",", 0);
-
-  while (r != NULL && r[++i] != NULL)
-    qf->formats = g_slist_prepend(qf->formats, g_strdup(r[i]));
-
-  qf->formats = g_slist_reverse(qf->formats);
-
-  g_strfreev(r);
-  r = NULL;
-
-  return (qf);
+  _quvi_query_formats_t qqf = g_new0(struct _quvi_query_formats_s, 1);
+  qqf->formats = g_string_new(fmts);
+  return (qqf);
 }
 
 /** @brief Query available media formats to an URL

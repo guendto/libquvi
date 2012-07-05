@@ -63,9 +63,12 @@ gint main(gint argc, gchar **argv)
   qqf = quvi_query_formats_new(q, url);
   exit_if_error();
   {
-    const gchar *s = NULL;
-    while ((s = quvi_query_formats_next_format(qqf)) != NULL)
-      g_print("%s\n", s);
+    gchar **r = g_strsplit(quvi_query_formats_get(qqf), ",", 0);
+    gint i = 0;
+    for (; r[i] != NULL; ++i)
+      g_print("%s\n", r[i]);
+    g_strfreev(r);
+    r = NULL;
   }
   cleanup();
 

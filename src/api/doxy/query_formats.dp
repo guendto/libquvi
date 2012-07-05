@@ -12,33 +12,32 @@ the application must query them first. This needs to be done with every
 media URL separately.
 
 @code
-quvi_query_formats_t qf = quvi_query_formats_new(q, URL);
+quvi_query_formats_t qqf = quvi_query_formats_new(q, URL);
 abort_if_error();
 {
-  char *fmt = NULL;
-  while ((fmt = quvi_query_formats_next_format(qf)) != NULL)
-    {
-      quvi_media_t m = NULL;
-      char *url = NULL;
+  char *fmts = quvi_query_formats_get(qqf);
+  /* omitted: for each format string in the returned array */
+  {
+    quvi_media_t m = NULL;
+    char *url = NULL;
 
-      quvi_set(q, QUVI_OPTION_REQUEST_FORMAT, fmt);
+    quvi_set(q, QUVI_OPTION_REQUEST_FORMAT, fmt);
 
-      m = quvi_media_new(q, URL);
-      abort_if_error();
+    m = quvi_media_new(q, URL);
+    abort_if_error();
 
-      quvi_media_get(m, QUVI_MEDIA_PROPERTY_STREAM_URL, &url);
-      stream_from(url);
+    quvi_media_get(m, QUVI_MEDIA_PROPERTY_STREAM_URL, &url);
+    stream_from(url);
 
-      quvi_media_free(m);
-      m = NULL;
-    }
+    quvi_media_free(m);
+    m = NULL;
+  }
 }
-quvi_query_formats_free(qf); /* Release when done using it. */
-qf = NULL;
+quvi_query_formats_free(qqf); /* Release when done using it. */
+qqf = NULL;
 @endcode
 
-@note Websites with only 1 format: @ref quvi_query_formats_next_format
-      returns always "default"
+@note @ref quvi_query_formats_get returns always at least "default"
 
 @sa @ref m_format
 */
