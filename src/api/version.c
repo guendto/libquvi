@@ -36,7 +36,8 @@ static const gchar *_version[] =
   PACKAGE_VERSION
 #endif
   ,
-  CANONICAL_TARGET
+  CANONICAL_TARGET,
+  BUILD_TIME
 };
 
 static gchar version_scripts[32];
@@ -71,8 +72,10 @@ const char *quvi_version(QuviVersion version)
     {
     case QUVI_VERSION_SCRIPTS:
       return (read_scripts_version());
-    case QUVI_VERSION_BUILD:
-      return ((gchar*) _version[QUVI_VERSION_BUILD]);
+    case QUVI_VERSION_BUILD_TARGET:
+      return ((gchar*) _version[QUVI_VERSION_BUILD_TARGET]);
+    case QUVI_VERSION_BUILD_TIME:
+      return ((gchar*) _version[QUVI_VERSION_BUILD_TIME]);
     default:
       break;
     }

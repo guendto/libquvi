@@ -23,7 +23,8 @@
 gint main(gint argc, gchar **argv)
 {
   g_print("libquvi %s\n", quvi_version(QUVI_VERSION));
-  g_print("  build for %s\n", quvi_version(QUVI_VERSION_BUILD));
+  g_print("  built for %s\n", quvi_version(QUVI_VERSION_BUILD_TARGET));
+  g_print("  built at %s\n", quvi_version(QUVI_VERSION_BUILD_TIME));
   g_print("libquvi-scripts %s\n", quvi_version(QUVI_VERSION_SCRIPTS));
   return (0);
 }
