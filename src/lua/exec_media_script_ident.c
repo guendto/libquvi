@@ -42,8 +42,6 @@ QuviError l_exec_media_script_ident(gpointer p, GSList *sl)
   QuviError rc = QUVI_ERROR_NO_SUPPORT;
 
   lua_pushnil(l);
-  lua_pushnil(l);
-  lua_setglobal(l, script_func);
 
   if (luaL_dofile(l, qs->fpath->str))
     luaL_error(l, "%s", lua_tostring(l, -1));

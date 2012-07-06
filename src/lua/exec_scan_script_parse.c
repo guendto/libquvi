@@ -50,8 +50,6 @@ QuviError l_exec_scan_script_parse(gpointer p, gpointer _qss,
   QuviError rc = QUVI_OK;
 
   lua_pushnil(l);
-  lua_pushnil(l);
-  lua_setglobal(l, script_func);
 
   if (luaL_dofile(l, qss->fpath->str))
     luaL_error(l, "%s", lua_tostring(l, -1));
