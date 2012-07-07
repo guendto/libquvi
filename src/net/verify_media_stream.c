@@ -93,11 +93,30 @@ QuviError n_verify_media_stream(_quvi_media_t m)
 {
   _quvi_t q = m->handle.quvi;
 
-  if (g_str_has_prefix(m->url.stream->str, "htt") == FALSE)
-    return (QUVI_OK); /* Ignore non-HTTP(s) media stream URLs */
-
   if (q->opt.verify == FALSE)
-    return (QUVI_OK); /* Skip check if the flag is set. */
+    return (QUVI_OK); /* Skip verification. */
+
+  {
+    /* Verify HTTP(S) media stream URLs only. */
+
+    gchar *s = g_uri_parse_scheme(m->url.stream->str);
+    if (s != NULL)
+      {
+        const gboolean r = (gboolean) g_strcmp0(s, "http") == 0
+                           || g_strcmp0(s, "https") == 0;
+
+        g_free(s);
+        s = NULL;
+
+        if (r == FALSE)
+          return (QUVI_OK); /* Skip verification. */
+      }
+    else
+      {
+        g_error("[%s] %s: unable to parse uri", __func__, m->url.stream->str);
+        return (QUVI_OK); /* Skip verification. */
+      }
+  }
 
   if (q->cb.status != NULL)
     {
