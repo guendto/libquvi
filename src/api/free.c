@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include <lualib.h>
+#include <proxy.h>
 #include <glib.h>
 
 #include "quvi.h"
@@ -97,6 +98,12 @@ void quvi_free(quvi_t handle)
     {
       lua_close(q->handle.lua);
       q->handle.lua = NULL;
+    }
+
+  if (q->handle.proxy != NULL)
+    {
+      px_proxy_factory_free(q->handle.proxy);
+      q->handle.proxy = NULL;
     }
 
   g_free(q);

@@ -36,6 +36,7 @@ static const gchar *msg[] =
   "'scan scripts' not found in the path",
   "'utility scripts' not found in the path",
   "Invalid argument to function",
+  "libproxy initialization failed",
   "cURL initialization failed",
   "Lua initialization failed"
 };

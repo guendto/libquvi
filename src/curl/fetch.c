@@ -29,8 +29,9 @@
 #include "_quvi_net_s.h"
 #include "_quvi_net_opt_s.h"
 /* -- */
-#include "net/def.h"
+#include "curl/autoproxy.h"
 #include "curl/temp.h"
+#include "net/def.h"
 
 extern const char *n_opt_name[];
 
@@ -76,6 +77,7 @@ static void _set_opts(_quvi_net_t n, _c_temp_t t, CURL *c)
   /* CURLOPT_ENCODING -> CURLOPT_ACCEPT_ENCODING 7.21.6+ */
   curl_easy_setopt(c, CURLOPT_ENCODING, "");
 
+  c_autoproxy(n->handle.quvi, n->url.addr->str);
   _apply_media_script_opts(n, c);
 }
 

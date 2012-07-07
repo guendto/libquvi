@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include <string.h>
+#include <proxy.h>
 #include <glib.h>
 
 #include "quvi.h"
@@ -59,6 +60,13 @@ quvi_t quvi_new()
 
   if (q->status.rc == QUVI_OK)
     q->status.rc = c_init(q);
+
+  if (q->status.rc == QUVI_OK)
+    {
+      q->handle.proxy = px_proxy_factory_new();
+      if (q->handle.proxy == NULL)
+        q->status.rc = QUVI_ERROR_PROXY_INIT;
+    }
 
   if (q->status.rc == QUVI_OK)
     {

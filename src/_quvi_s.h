@@ -35,6 +35,7 @@ struct _quvi_s
   } cb;
   struct
   {
+    gboolean autoproxy;
     gboolean verify;
     GString *format;
     struct
@@ -51,6 +52,7 @@ struct _quvi_s
   } status;
   struct
   {
+    gpointer proxy;
     gpointer curl;
     gpointer lua;
   } handle;

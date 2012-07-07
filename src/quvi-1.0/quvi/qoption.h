@@ -42,7 +42,14 @@ typedef enum
    *  - This option should be set only after @ref query_formats
    *  - Available formats may vary greatly depending on the website
    */
-  QUVI_OPTION_REQUEST_FORMAT
+  QUVI_OPTION_REQUEST_FORMAT,
+  /** Autodetect and set the proxy for new connections.
+   * Default: QUVI_FALSE. libquvi uses libproxy for detecting the settings.
+   * When enabled, libcurl option CURLOPT_PROXY is set explicitly to the
+   * value returned by libcurl.  See also libcurl documentation for
+   * CURLOPT_PROXY.
+   */
+  QUVI_OPTION_AUTOPROXY
 } QuviOption;
 
 #endif /* qoption_h */

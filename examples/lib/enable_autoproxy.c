@@ -17,32 +17,14 @@
  * 02110-1301, USA.
  */
 
-#ifndef qerror_h
-#define qerror_h
+#include <glib.h>
+#include <quvi.h>
 
-/** @file qerror.h */
+extern quvi_t q;
 
-/** @enum QuviError */
-typedef enum
+void enable_autoproxy()
 {
-  QUVI_OK,
-  QUVI_ERROR_CALLBACK_ABORTED, /**< Aborted by callback */
-  QUVI_ERROR_NO_PLAYLIST_SCRIPTS,
-  QUVI_ERROR_NO_MEDIA_SCRIPTS,
-  QUVI_ERROR_NO_SCAN_SCRIPTS,
-  QUVI_ERROR_NO_UTIL_SCRIPTS,
-  QUVI_ERROR_INVALID_ARG,
-  QUVI_ERROR_PROXY_INIT,
-  QUVI_ERROR_CURL_INIT,
-  QUVI_ERROR_LUA_INIT,
-  QUVI_ERROR_NO_SUPPORT = 0x40,
-  QUVI_ERROR_CALLBACK,
-  /**< Error occurred in callback, this could be either a network error
-   * (network callback function returned an error) or a status callback
-   * function returned an error. */
-  QUVI_ERROR_SCRIPT
-} QuviError;
-
-#endif /* qerror_h */
+  quvi_set(q, QUVI_OPTION_AUTOPROXY, QUVI_TRUE);
+}
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

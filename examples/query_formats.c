@@ -51,6 +51,8 @@ gint main(gint argc, gchar **argv)
     {
       if (g_strcmp0("-v", argv[i]) == 0)
         enable_verbose();
+      else if (g_strcmp0("-a", argv[i]) == 0)
+        enable_autoproxy();
       else
         url = argv[i];
     }

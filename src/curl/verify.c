@@ -29,8 +29,9 @@
 #include "_quvi_net_s.h"
 #include "_quvi_net_opt_s.h"
 /* -- */
-#include "net/def.h"
+#include "curl/autoproxy.h"
 #include "curl/temp.h"
+#include "net/def.h"
 
 static void _set_opts(_quvi_net_t n, _c_temp_t t, CURL *c)
 {
@@ -40,6 +41,8 @@ static void _set_opts(_quvi_net_t n, _c_temp_t t, CURL *c)
   curl_easy_setopt(c, CURLOPT_URL, n->url.addr->str);
   curl_easy_setopt(c, CURLOPT_WRITEDATA, t);
   curl_easy_setopt(c, CURLOPT_NOBODY, 1L); /* GET -> HEAD */
+
+  c_autoproxy(n->handle.quvi, n->url.addr->str);
 }
 
 static QuviError _verify(_quvi_net_t n, CURL *c)

@@ -28,6 +28,7 @@ extern quvi_scan_t qs;
 extern quvi_t q;
 
 QuviError status(glong param, gpointer p);
+void enable_autoproxy();
 void enable_verbose();
 void exit_if_error();
 void cleanup();

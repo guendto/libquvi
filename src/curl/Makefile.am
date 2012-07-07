@@ -1,5 +1,6 @@
 
 src=\
+  autoproxy.c\
   resolve.c\
   verify.c\
   close.c\
@@ -8,6 +9,7 @@ src=\
   temp.c
 
 hdr=\
+  autoproxy.h\
   temp.h
 
 noinst_LTLIBRARIES=libconvenience_curl.la
@@ -16,6 +18,7 @@ libconvenience_curl_la_SOURCES=$(src) $(hdr)
 libconvenience_curl_la_CPPFLAGS=\
   -I$(top_srcdir)/src/quvi-1.0/\
   -I$(top_srcdir)/src/\
+  $(libproxy_CFLAGS)\
   $(libcurl_CFLAGS)\
   $(glib_CFLAGS)\
   $(AM_CPPFLAGS)
@@ -26,5 +29,6 @@ libconvenience_curl_la_LDFLAGS=\
   $(AM_LDFLAGS)
 
 libconvenience_curl_la_LIBADD=\
+  $(libproxy_LIBS)\
   $(libcurl_LIBS)\
   $(glib_LIBS)

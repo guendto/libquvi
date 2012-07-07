@@ -49,6 +49,7 @@ libconvenience_api_la_SOURCES=$(src)
 libconvenience_api_la_CPPFLAGS=\
   -I$(top_srcdir)/src/quvi-1.0/\
   -I$(top_srcdir)/src/\
+  $(libproxy_CFLAGS)\
   $(liblua_CFLAGS)\
   $(glib_CFLAGS)\
   $(AM_CPPFLAGS)
@@ -59,5 +60,6 @@ libconvenience_api_la_LDFLAGS=\
   $(AM_LDFLAGS)
 
 libconvenience_api_la_LIBADD=\
+  $(libproxy_LIBS)\
   $(liblua_LIBS)\
   $(glib_LIBS)

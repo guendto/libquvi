@@ -1,4 +1,6 @@
-src=cleanup.c enable_verbose.c exit_if_error.c status.c var.c
+src=cleanup.c enable_verbose.c enable_autoproxy.c\
+  exit_if_error.c status.c var.c
+
 hdr=examples.h
 
 noinst_LTLIBRARIES=libconvenience_example.la

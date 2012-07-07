@@ -26,6 +26,8 @@
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_net_resolve_s.h"
+/* -- */
+#include "curl/autoproxy.h"
 
 /* Set cURL options. */
 static void _set_opts(_quvi_net_resolve_t r, CURL *c)
@@ -33,6 +35,8 @@ static void _set_opts(_quvi_net_resolve_t r, CURL *c)
   curl_easy_setopt(c, CURLOPT_URL, r->url.addr->str);
   /* Use HEAD request: we're only interested in the header metadata. */
   curl_easy_setopt(c, CURLOPT_NOBODY, 1L); /* GET -> HEAD. */
+
+  c_autoproxy(r->handle.quvi, r->url.addr->str);
 }
 
 static void _reset_opts(CURL *c)

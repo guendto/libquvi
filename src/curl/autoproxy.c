@@ -17,32 +17,38 @@
  * 02110-1301, USA.
  */
 
-#ifndef qerror_h
-#define qerror_h
+#include "config.h"
 
-/** @file qerror.h */
+#include <glib.h>
+#include <proxy.h>
+#include <curl/curl.h>
 
-/** @enum QuviError */
-typedef enum
+#include "quvi.h"
+/* -- */
+#include "_quvi_s.h"
+
+static void _set_proxy(_quvi_t q, const gchar *url)
 {
-  QUVI_OK,
-  QUVI_ERROR_CALLBACK_ABORTED, /**< Aborted by callback */
-  QUVI_ERROR_NO_PLAYLIST_SCRIPTS,
-  QUVI_ERROR_NO_MEDIA_SCRIPTS,
-  QUVI_ERROR_NO_SCAN_SCRIPTS,
-  QUVI_ERROR_NO_UTIL_SCRIPTS,
-  QUVI_ERROR_INVALID_ARG,
-  QUVI_ERROR_PROXY_INIT,
-  QUVI_ERROR_CURL_INIT,
-  QUVI_ERROR_LUA_INIT,
-  QUVI_ERROR_NO_SUPPORT = 0x40,
-  QUVI_ERROR_CALLBACK,
-  /**< Error occurred in callback, this could be either a network error
-   * (network callback function returned an error) or a status callback
-   * function returned an error. */
-  QUVI_ERROR_SCRIPT
-} QuviError;
+  pxProxyFactory *pf = (pxProxyFactory*) q->handle.proxy;
+  gchar **r = px_proxy_factory_get_proxies(pf, (gchar*) url);
+  if (r != NULL)
+    {
+      gint i = 0;
 
-#endif /* qerror_h */
+      for (; r[i] != NULL; ++i)
+        curl_easy_setopt(q->handle.curl, CURLOPT_PROXY, r[i]);
+
+      g_strfreev(r);
+      r = NULL;
+    }
+}
+
+void c_autoproxy(_quvi_t q, const gchar *url)
+{
+  if (q->opt.autoproxy != QUVI_TRUE || q->handle.proxy == NULL)
+    return;
+
+  _set_proxy(q, url);
+}
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
