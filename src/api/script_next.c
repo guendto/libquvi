@@ -28,7 +28,9 @@
 #include "_quvi_s.h"
 
 /** @cond NODOC */
+#ifdef _1
 #define _W "libquvi: %s: %d"
+#endif
 /** @endcond */
 
 /** @brief Traverse to next media script
@@ -53,7 +55,9 @@ QuviBoolean quvi_script_next(quvi_t handle, QuviScriptType type)
       break;
 
     default:
+#ifdef _1
       g_warning(_W, __func__, (gint) type);
+#endif
     case QUVI_SCRIPT_TYPE_MEDIA:
       l = q->scripts.media;
       break;

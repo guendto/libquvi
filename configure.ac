@@ -49,6 +49,10 @@ AC_PATH_PROG([DATE], [date], [no])
 AS_IF([test "$DATE" != x"$xno"], [build_time=`$DATE +"%F %T %z"`])
 AC_DEFINE_UNQUOTED([BUILD_TIME], ["$build_time"], [We have build time])
 
+AC_PATH_PROG([VALGRIND], [valgrind], [no])
+AM_CONDITIONAL([HAVE_VALGRIND], [test x"$VALGRIND" != "xno"])
+AC_SUBST([VALGRIND])
+
 # Checks for libraries.
 PKG_CHECK_MODULES([liblua], [lua >= 5.1], [], [
   PKG_CHECK_MODULES([liblua], [lua51 >= 5.1], [], [
@@ -131,6 +135,8 @@ AC_CONFIG_FILES([
   src/quvi-1.0/quvi/Makefile
   src/quvi-1.0/Makefile
   src/Makefile
+  tests/Makefile
+  tests/lib/Makefile
   libquvi-1.0.pc])
 AC_OUTPUT
 
