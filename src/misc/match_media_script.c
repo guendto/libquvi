@@ -53,10 +53,13 @@ QuviError m_match_media_script(_quvi_t q, _quvi_media_t *m,
                                const gchar *url, const _qm_mode mode,
                                gchar **result)
 {
-  const gboolean resolve_flag = (mode != QM_MATCH_MS_SUPPORTED_OFFLINE)
-                                ? TRUE
-                                : FALSE;
-  QuviError rc = QUVI_OK;
+  gboolean resolve_flag;
+  QuviError rc;
+  GSList *s;
+
+  resolve_flag = (mode != QM_MATCH_MS_SUPPORTED_OFFLINE)
+                 ? TRUE
+                 : FALSE;
 
   if (*m == NULL)
     *m = m_media_new(q, url);
@@ -68,49 +71,44 @@ QuviError m_match_media_script(_quvi_t q, _quvi_media_t *m,
         return (q->status.rc);
     }
 
-  {
-    /* Match input URL to a media script. */
+  rc = l_match_url_to_media_script(*m, &s);
 
-    GSList *s = NULL;
-
-    rc = l_match_url_to_media_script(*m, &s);
-    if (rc == QUVI_ERROR_NO_SUPPORT)
-      {
-        g_string_printf(q->status.errmsg, "no support: %s", url);
-        return (rc);
-      }
-    else if (rc != QUVI_OK)
+  if (rc == QUVI_ERROR_NO_SUPPORT)
+    {
+      g_string_printf(q->status.errmsg, "no support: %s", url);
       return (rc);
+    }
+  else if (rc != QUVI_OK)
+    return (rc);
 
-    switch (mode)
-      {
-      case QM_MATCH_MS_PARSE:
-        rc = l_exec_media_script_parse(*m, s);
-        if (rc == QUVI_OK)
-          {
-            /* Check if goto_url was set. */
-            if (_chk_goto_url(*m) == TRUE)
-              return (m_match_media_script(q, m, url, mode, result));
-            rc = n_verify_media_stream(*m);
-          }
-        break;
+  switch (mode)
+    {
+    case QM_MATCH_MS_PARSE:
+      rc = l_exec_media_script_parse(*m, s);
+      if (rc == QUVI_OK)
+        {
+          /* Check if goto_url was set. */
+          if (_chk_goto_url(*m) == TRUE)
+            return (m_match_media_script(q, m, url, mode, result));
+          rc = n_verify_media_stream(*m);
+        }
+      break;
 
-      case QM_MATCH_MS_QUERY_FORMATS:
-        g_return_val_if_fail(result != NULL, QUVI_ERROR_INVALID_ARG);
-        rc = l_exec_media_script_query_formats(*m, s, result);
-        if (rc == QUVI_OK)
-          {
-            /* Check if goto_url was set. */
-            if (_chk_goto_url(*m) == TRUE)
-              return (m_match_media_script(q, m, url, mode, result));
-          }
-        break;
+    case QM_MATCH_MS_QUERY_FORMATS:
+      g_return_val_if_fail(result != NULL, QUVI_ERROR_INVALID_ARG);
+      rc = l_exec_media_script_query_formats(*m, s, result);
+      if (rc == QUVI_OK)
+        {
+          /* Check if goto_url was set. */
+          if (_chk_goto_url(*m) == TRUE)
+            return (m_match_media_script(q, m, url, mode, result));
+        }
+      break;
 
-      case QM_MATCH_MS_SUPPORTED_OFFLINE:
-      case QM_MATCH_MS_SUPPORTED_ONLINE:
-        break;
-      }
-  }
+    case QM_MATCH_MS_SUPPORTED_OFFLINE:
+    case QM_MATCH_MS_SUPPORTED_ONLINE:
+      break;
+    }
   return (rc);
 }
 
