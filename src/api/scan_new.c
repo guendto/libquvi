@@ -64,7 +64,8 @@ static void _exec_scan_script(gpointer p, gpointer userdata)
 /** @endcond */
 
 /** @brief Scan URL contents for supported embedded media URLs
-@note @ref quvi_scan_free the handle when done using it
+@return New handle, @ref quvi_scan_free it when done using it
+@note Use @ref quvi_ok for checking if an error occurred
 @sa @ref scan_media
 @ingroup scan
 */

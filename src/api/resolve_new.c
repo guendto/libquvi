@@ -33,7 +33,8 @@
 #include "net/handle.h"
 
 /** @brief Resolve URL redirection
-@note @ref quvi_resolve_free the handle when done using it
+@return New handle, @ref quvi_resolve_free it when done using it
+@note Use @ref quvi_ok for checking if an error occurred
 @ingroup resolve
 */
 quvi_resolve_t quvi_resolve_new(quvi_t handle, const char *url)

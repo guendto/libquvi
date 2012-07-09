@@ -31,7 +31,8 @@
 #include "misc/match_playlist_script.h"
 
 /** @brief Parse playlist properties for URL
-@note @ref quvi_playlist_free the handle when done using it
+@return New handle, @ref quvi_playlist_free it when done using it
+@note Use @ref quvi_ok for checking if an error occurred
 @sa @ref parse_playlist
 @ingroup playlistprop
 */

@@ -31,7 +31,8 @@
 #include "misc/match_media_script.h"
 
 /** @brief Parse media properties for URL
-@note @ref quvi_media_free the handle when done using it
+@return New handle, @ref quvi_media_free it when done using it
+@note Use @ref quvi_ok for checking if an error occurred
 @sa @ref parse_media
 @ingroup mediaprop
 */

@@ -39,8 +39,7 @@ static gpointer _query_formats_new(gchar *fmts)
 }
 
 /** @brief Query available media formats to an URL
-@return New handle or NULL if an error occurred
-@note @ref quvi_query_formats_free the handle when done using it
+@return New handle, @ref quvi_query_formats_free it when done using it
 @note Use @ref quvi_ok for checking if an error occurred
 @sa @ref query_formats
 @ingroup queryformats

@@ -46,6 +46,8 @@ extern QuviError c_init(_quvi_t q);
 /** @endcond */
 
 /** @brief Create a new library handle
+@return New handle, @ref quvi_free it when done using it
+@note Use @ref quvi_ok for checking if an error occurred
 @sa @ref getting_started
 @ingroup lib
 */
