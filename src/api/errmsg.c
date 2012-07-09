@@ -50,17 +50,22 @@ static const gchar inv_code_msg[] = "Invalid error code";
 */
 const char *quvi_errmsg(quvi_t handle)
 {
-  _quvi_t q = (_quvi_t) handle;
-  const gchar *s = msg[0];
-  QuviError n = QUVI_OK;
-  gint i = 1;
+  const gchar *s;
+  QuviError c;
+  _quvi_t q;
+  gint i;
 
   if (handle == NULL)
-    return ((gchar*) msg[QUVI_ERROR_INVALID_ARG]);
+    return (msg[QUVI_ERROR_INVALID_ARG]);
 
-  for (n = q->status.rc; msg[i] != NULL; ++i);
+  q = (_quvi_t) handle;
+  c = q->status.rc;
 
-  if ((gint) n<0 || n>i)
+  for (i=1; msg[i] != NULL; ++i);
+
+  s = msg[0];
+
+  if (c<0 || c>i)
     {
       if (q->status.errmsg->len >0)
         s = q->status.errmsg->str;
@@ -68,7 +73,7 @@ const char *quvi_errmsg(quvi_t handle)
         s = inv_code_msg;
     }
   else
-    s = msg[n];
+    s = msg[c];
 
   return (s);
 }
