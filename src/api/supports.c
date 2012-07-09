@@ -77,7 +77,7 @@ checking is supported.
  - Offline check will fail with most shortened URLs
  - Online check will resolve shortened URLs
 
-Using a combination of types is supported.
+Type may be a combination.
 
 @code
 quvi_supports(q, URL, QUVI_SUPPORTS_OFFLINE,
@@ -89,13 +89,16 @@ quvi_supports(q, URL, QUVI_SUPPORTS_OFFLINE,
 QuviBoolean quvi_supports(quvi_t handle, const char *url,
                           QuviSupportsMode mode, QuviSupportsType type)
 {
-  _quvi_t q = (_quvi_t) handle;
-  QuviBoolean found = QUVI_FALSE;
-  q->status.rc = QUVI_OK;
+  QuviBoolean found;
+  _quvi_t q;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_val_if_fail(handle != NULL, QUVI_FALSE);
   g_return_val_if_fail(url != NULL, QUVI_FALSE);
+
+  q = (_quvi_t) handle;
+  q->status.rc = QUVI_OK;
+  found = QUVI_FALSE;
 
   if (type & QUVI_SUPPORTS_TYPE_PLAYLIST)
     found = _supports_playlist(q, url, mode);
