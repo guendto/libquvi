@@ -35,14 +35,18 @@
 
 gint l_quvi_fetch(lua_State *l)
 {
-  _quvi_t q = (_quvi_t) l_get_reg_userdata(l, USERDATA_QUVI_T);
-  gint c = 0; /* Count of returned (pushed) values. */
-  const gchar *url = luaL_checkstring(l, 1);
-  QuviBoolean ok = QUVI_FALSE;
-  _quvi_net_t n = NULL;
+  QuviBoolean ok;
+  _quvi_net_t n;
+  _quvi_t q;
+  gint c;
 
-  n_fetch(q, &n, url);
+  q = (_quvi_t) l_get_reg_userdata(l, USERDATA_QUVI_T);
+  n = NULL;
+
+  n_fetch(q, &n, luaL_checkstring(l, 1));
+
   ok = quvi_ok(q);
+  c = 0; /* No. of quvi.fetch returned values. */
 
   if (ok == QUVI_TRUE)
     {
