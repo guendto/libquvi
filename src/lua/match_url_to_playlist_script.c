@@ -28,14 +28,17 @@
 /* -- */
 #include "lua/exec.h"
 
-QuviError l_match_url_to_playlist_script(_quvi_playlist_t m, GSList **s)
+QuviError l_match_url_to_playlist_script(_quvi_playlist_t m, GSList **curr)
 {
-  *s = m->handle.quvi->scripts.playlist;
-  while (*s != NULL)
+  *curr = m->handle.quvi->scripts.playlist;
+  while (*curr != NULL)
     {
-      if (l_exec_playlist_script_ident(m, *s) == QUVI_OK)
-        return (QUVI_OK);
-      *s = g_slist_next(*s);
+      const QuviError rc = l_exec_playlist_script_ident(m, *curr);
+
+      if (rc == QUVI_OK)
+        return (rc);
+
+      *curr = g_slist_next(*curr);
     }
   return (QUVI_ERROR_NO_SUPPORT);
 }
