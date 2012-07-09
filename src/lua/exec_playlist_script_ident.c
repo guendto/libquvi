@@ -42,17 +42,19 @@ static QuviError _chk_results(lua_State *l, _quvi_script_t qs)
                        ? QUVI_OK
                        : QUVI_ERROR_NO_SUPPORT;
   lua_pop(l, 1);
-
   return (rc);
 }
 
 QuviError l_exec_playlist_script_ident(gpointer p, GSList *sl)
 {
-  const _quvi_script_t qs = (_quvi_script_t) sl->data;
-  _quvi_playlist_t pl = (_quvi_playlist_t) p;
-  lua_State *l = pl->handle.quvi->handle.lua;
-  QuviError rc = QUVI_ERROR_NO_SUPPORT;
+  _quvi_playlist_t pl;
+  _quvi_script_t qs;
+  lua_State *l;
 
+  pl = (_quvi_playlist_t) p;
+  l = pl->handle.quvi->handle.lua;
+
+  qs = (_quvi_script_t) sl->data;
   lua_pushnil(l);
 
   if (luaL_dofile(l, qs->fpath->str))
@@ -76,14 +78,12 @@ QuviError l_exec_playlist_script_ident(gpointer p, GSList *sl)
       return (QUVI_ERROR_SCRIPT);
     }
 
-  if (lua_istable(l, -1))
-    rc = _chk_results(l, qs);
-  else
+  if (!lua_istable(l, -1))
     {
       luaL_error(l, "%s: expected `%s' to return a table",
                  qs->fpath->str, script_func);
     }
-  return (rc);
+  return (_chk_results(l, qs));
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
