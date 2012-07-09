@@ -45,7 +45,7 @@ gsize c_temp_wrcb(gpointer p, gsize sz, gsize nmemb, gpointer d)
   const gsize rsize = sz*nmemb;
   gpointer *np;
   _c_temp_t ct;
-  
+
   ct = (_c_temp_t) d;
   np = g_realloc(ct->p, ct->size+rsize+1);
 
