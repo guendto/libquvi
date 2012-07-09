@@ -25,11 +25,14 @@
 
 gchar *m_capture(const gchar *s, const gchar *p)
 {
-  GError *err = NULL;
-  GRegex *re = g_regex_new(p, G_REGEX_MULTILINE, 0, &err);
-  GMatchInfo *m = NULL;
-  gchar *r = NULL;
+  GMatchInfo *m;
+  GError *err;
+  GRegex *re;
+  gchar *r;
 
+  err = NULL;
+
+  re = g_regex_new(p, G_REGEX_MULTILINE, 0, &err);
   if (err != NULL)
     {
       g_warning(_W, __func__, err->message);
@@ -37,6 +40,9 @@ gchar *m_capture(const gchar *s, const gchar *p)
       err = NULL;
       return (NULL);
     }
+
+  m = NULL;
+  r = NULL;
 
   if (g_regex_match(re, s, 0, &m) == TRUE)
     r = g_match_info_fetch(m, 1);
