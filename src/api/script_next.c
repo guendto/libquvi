@@ -37,9 +37,11 @@
 */
 QuviBoolean quvi_script_next(quvi_t handle, QuviScriptType type)
 {
-  _quvi_t q = (_quvi_t) handle;
-  QuviBoolean r = QUVI_FALSE;
-  GSList *l = NULL;
+  QuviBoolean r;
+  GSList *l;
+  _quvi_t q;
+
+  q = (_quvi_t) handle;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_val_if_fail(handle != NULL, QUVI_FALSE);
@@ -60,6 +62,8 @@ QuviBoolean quvi_script_next(quvi_t handle, QuviScriptType type)
       l = q->scripts.scan;
       break;
     }
+
+  r = QUVI_FALSE;
 
   switch (type)
     {
@@ -91,6 +95,7 @@ QuviBoolean quvi_script_next(quvi_t handle, QuviScriptType type)
           : QUVI_FALSE;
       break;
     }
+
   return (r);
 }
 
