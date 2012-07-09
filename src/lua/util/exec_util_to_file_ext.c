@@ -36,13 +36,17 @@ static const gchar script_func[] = "to_file_ext";
 
 QuviError l_exec_util_to_file_ext(_quvi_media_t m, _quvi_net_t n)
 {
-  _quvi_t q = m->handle.quvi;
-  lua_State *l = q->handle.lua;
-  QuviError rc = l_load_util_script(q, script_fname, script_func);
+  lua_State *l;
+  QuviError rc;
+  _quvi_t q;
+
+  q = m->handle.quvi;
+  rc = l_load_util_script(q, script_fname, script_func);
 
   if (rc != QUVI_OK)
     return (rc);
 
+  l = q->handle.lua;
   lua_pushstring(l, n->verify.content_type->str);
 
   /* 2=qargs,title [qargs: set in l_load_util_script]
@@ -53,14 +57,13 @@ QuviError l_exec_util_to_file_ext(_quvi_media_t m, _quvi_net_t n)
       return (QUVI_ERROR_SCRIPT);
     }
 
-  if (lua_isstring(l, -1))
-    g_string_assign(m->file_ext, lua_tostring(l, -1));
-  else
+  if (!lua_isstring(l, -1))
     luaL_error(l, "%s: did not return a string", script_func);
 
+  g_string_assign(m->file_ext, lua_tostring(l,-1));
   lua_pop(l, 1);
 
-  return (rc);
+  return (QUVI_OK);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
