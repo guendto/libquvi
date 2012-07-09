@@ -30,15 +30,21 @@
 
 static QuviError _media_get(_quvi_media_t m, QuviMediaProperty n, ...)
 {
-  QuviError rc = QUVI_OK;
-  gdouble *dp = NULL;
-  gchar **sp = NULL;
-  glong *lp = NULL;
-  gint type = 0;
+  QuviError rc;
+  gdouble *dp;
   va_list arg;
+  gchar **sp;
+  glong *lp;
+  gint type;
 
   va_start(arg, n);
   type = QUVI_MEDIA_PROPERTY_TYPE_MASK & (gint) n;
+
+  dp = NULL;
+  sp = NULL;
+  lp = NULL;
+  
+  rc = QUVI_OK;
 
   switch (type)
     {
@@ -108,10 +114,10 @@ static QuviError _media_get(_quvi_media_t m, QuviMediaProperty n, ...)
 */
 void quvi_media_get(quvi_media_t handle, QuviMediaProperty property, ...)
 {
-  _quvi_media_t m = (_quvi_media_t) handle;
-  _quvi_t q = m->handle.quvi;
-  gpointer p = NULL;
+  _quvi_media_t m;
   va_list arg;
+  gpointer p;
+  _quvi_t q;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_if_fail(handle != NULL);
@@ -119,6 +125,9 @@ void quvi_media_get(quvi_media_t handle, QuviMediaProperty property, ...)
   va_start(arg, property);
   p = va_arg(arg, gpointer);
   va_end(arg);
+  
+  m = (_quvi_media_t) handle;
+  q = m->handle.quvi;
 
   q->status.rc = _media_get(m, property, p);
 }
