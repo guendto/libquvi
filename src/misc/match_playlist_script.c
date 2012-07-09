@@ -41,10 +41,13 @@ QuviError m_match_playlist_script(_quvi_t q, _quvi_playlist_t *p,
                                   const gchar *url, const _qm_mode mode,
                                   gchar **result)
 {
-  const gboolean resolve_flag = (mode != QM_MATCH_PS_SUPPORTED_OFFLINE)
-                                ? TRUE
-                                : FALSE;
-  QuviError rc = QUVI_OK;
+  gboolean resolve_flag;
+  QuviError rc;
+  GSList *s;
+
+  resolve_flag = (mode != QM_MATCH_PS_SUPPORTED_OFFLINE)
+                 ? TRUE
+                 : FALSE;
 
   *p = m_playlist_new(q, url);
 
@@ -55,31 +58,25 @@ QuviError m_match_playlist_script(_quvi_t q, _quvi_playlist_t *p,
         return (q->status.rc);
     }
 
-  {
-    /* Match input URL to a playlist script. */
-
-    GSList *s = NULL;
-
-    rc = l_match_url_to_playlist_script(*p, &s);
-    if (rc == QUVI_ERROR_NO_SUPPORT)
-      {
-        g_string_printf((*p)->handle.quvi->status.errmsg,
-                        "no support: %s", url);
-        return (rc);
-      }
-    else if (rc != QUVI_OK)
+  rc = l_match_url_to_playlist_script(*p, &s);
+  if (rc == QUVI_ERROR_NO_SUPPORT)
+    {
+      g_string_printf((*p)->handle.quvi->status.errmsg,
+                      "no support: %s", url);
       return (rc);
+    }
+  else if (rc != QUVI_OK)
+    return (rc);
 
-    switch (mode)
-      {
-      case QM_MATCH_PS_PARSE:
-        rc = l_exec_playlist_script_parse(*p, s);
-        break;
-      case QM_MATCH_PS_SUPPORTED_OFFLINE:
-      case QM_MATCH_PS_SUPPORTED_ONLINE:
-        break;
-      }
-  }
+  switch (mode)
+    {
+    case QM_MATCH_PS_PARSE:
+      rc = l_exec_playlist_script_parse(*p, s);
+      break;
+    case QM_MATCH_PS_SUPPORTED_OFFLINE:
+    case QM_MATCH_PS_SUPPORTED_ONLINE:
+      break;
+    }
   return (rc);
 }
 
