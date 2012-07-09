@@ -44,11 +44,17 @@ static const gchar script_func[] = "parse";
 QuviError l_exec_scan_script_parse(gpointer p, gpointer _qss,
                                    const gchar *data)
 {
-  const _quvi_script_t qss = (_quvi_script_t) _qss;
-  _quvi_scan_t qs = (_quvi_scan_t) p;
-  lua_State *l = qs->handle.quvi->handle.lua;
-  QuviError rc = QUVI_OK;
+  typedef l_callback_getfield_table_iter_s cb;
 
+  _quvi_script_t qss;
+  _quvi_scan_t qs;
+  lua_State *l;
+  QuviError rc;
+
+  qss = (_quvi_script_t) _qss;
+  qs = (_quvi_scan_t) p;
+
+  l = qs->handle.quvi->handle.lua;
   lua_pushnil(l);
 
   if (luaL_dofile(l, qss->fpath->str))
@@ -80,15 +86,10 @@ QuviError l_exec_scan_script_parse(gpointer p, gpointer _qss,
                  qss->fpath->str, script_func);
     }
 
-  {
-    typedef l_callback_getfield_table_iter_s cb;
-    const gchar *s = qss->fpath->str;
-
-    rc = l_getfield_table_iter_s(l, qs, SS_MEDIA_URL, s,
-                                 script_func, (cb) _prepend_media_url);
-    if (rc == QUVI_OK)
-      qs->url.media = g_slist_reverse(qs->url.media);
-  }
+  rc = l_getfield_table_iter_s(l, qs, SS_MEDIA_URL, qss->fpath->str,
+                               script_func, (cb) _prepend_media_url);
+  if (rc == QUVI_OK)
+    qs->url.media = g_slist_reverse(qs->url.media);
 
   lua_pop(l, 1);
 
