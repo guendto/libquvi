@@ -66,11 +66,15 @@ extern QuviError l_exec_util_convert_entities(_quvi_media_t m);
 
 QuviError l_exec_media_script_parse(gpointer p, GSList *sl)
 {
-  const _quvi_script_t qs = (_quvi_script_t) sl->data;
-  _quvi_media_t m = (_quvi_media_t) p;
-  lua_State *l = m->handle.quvi->handle.lua;
-  QuviError rc = QUVI_OK;
+  _quvi_script_t qs;
+  _quvi_media_t m;
+  lua_State *l;
+  QuviError rc;
 
+  m = (_quvi_media_t) p;
+  l = m->handle.quvi->handle.lua;
+
+  qs = (_quvi_script_t) sl->data;
   lua_getglobal(l, script_func);
 
   if (!lua_isfunction(l, -1))
@@ -98,30 +102,26 @@ QuviError l_exec_media_script_parse(gpointer p, GSList *sl)
                  qs->fpath->str, script_func);
     }
 
-  {
-    /* Check if media script set a redirection. */
+  g_string_assign(m->url.redirect_to,
+                  l_getfield_s(l, MS_GOTO_URL,
+                               qs->fpath->str, script_func));
 
-    g_string_assign(m->url.redirect_to,
-                    l_getfield_s(l, MS_GOTO_URL,
-                                 qs->fpath->str, script_func));
+  rc = QUVI_OK;
 
-    if (m->url.redirect_to->len ==0) /* No. */
-      {
-        const gchar *p = qs->fpath->str;
+  if (m->url.redirect_to->len ==0) /* No new location ("goto_url"). */
+    {
+      const gchar *p = qs->fpath->str;
 
-        _get(l, MS_STREAM_URL, (gpointer) m->url.stream,    String, p);
-        _get(l, MS_THUMB_URL,  (gpointer) m->url.thumbnail, String, p);
-        _get(l, MS_TITLE,      (gpointer) m->title,         String, p);
-        _get(l, MS_ID,         (gpointer) m->id,            String, p);
+      _get(l, MS_STREAM_URL, (gpointer) m->url.stream,    String, p);
+      _get(l, MS_THUMB_URL,  (gpointer) m->url.thumbnail, String, p);
+      _get(l, MS_TITLE,      (gpointer) m->title,         String, p);
+      _get(l, MS_ID,         (gpointer) m->id,            String, p);
 
-        m->start_time_ms = _get(l, MS_START_TIME_MS, NULL, Number, p);
-        m->duration_ms = _get(l, MS_DURATION_MS, NULL, Number, p);
+      m->start_time_ms = _get(l, MS_START_TIME_MS, NULL, Number, p);
+      m->duration_ms = _get(l, MS_DURATION_MS, NULL, Number, p);
 
-        if (rc == QUVI_OK)
-          rc = l_exec_util_convert_entities(m);
-      }
-  }
-
+      rc = l_exec_util_convert_entities(m);
+    }
   lua_pop(l, 1);
 
   return (rc);
