@@ -43,7 +43,7 @@ static QuviError _media_get(_quvi_media_t m, QuviMediaProperty n, ...)
   dp = NULL;
   sp = NULL;
   lp = NULL;
-  
+
   rc = QUVI_OK;
 
   switch (type)
@@ -125,7 +125,7 @@ void quvi_media_get(quvi_media_t handle, QuviMediaProperty property, ...)
   va_start(arg, property);
   p = va_arg(arg, gpointer);
   va_end(arg);
-  
+ 
   m = (_quvi_media_t) handle;
   q = m->handle.quvi;
 
