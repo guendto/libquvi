@@ -25,10 +25,13 @@
 
 gboolean m_match(const gchar *s, const gchar *p)
 {
-  GError *err = NULL;
-  GRegex *re = g_regex_new(p, G_REGEX_MULTILINE, 0, &err);
-  GMatchInfo *m = NULL;
-  gboolean r = FALSE;
+  GMatchInfo *m;
+  GError *err;
+  GRegex *re;
+  gboolean r;
+
+  err = NULL;
+  re = g_regex_new(p, G_REGEX_MULTILINE, 0, &err);
 
   if (err != NULL)
     {
@@ -37,6 +40,7 @@ gboolean m_match(const gchar *s, const gchar *p)
       return (FALSE);
     }
 
+  m = NULL;
   r = g_regex_match(re, s, 0, &m);
 
   g_match_info_free(m);
