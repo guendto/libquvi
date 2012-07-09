@@ -36,10 +36,15 @@
 /* quvi.resolve is callable from the Lua scripts. */
 gint l_quvi_resolve(lua_State *l)
 {
-  _quvi_t q = (_quvi_t) l_get_reg_userdata(l, USERDATA_QUVI_T);
-  _quvi_net_resolve_t r = n_resolve_new(q, luaL_checkstring(l, 1));
+  _quvi_net_resolve_t r;
+  _quvi_t q;
+  gint c;
+
+  q = (_quvi_t) l_get_reg_userdata(l, USERDATA_QUVI_T);
+  r = n_resolve_new(q, luaL_checkstring(l, 1));
+
   q->status.rc = n_resolve(q, r);
-  gint c = 0; /* Number of returned (pushed) values. */
+  c = 0;  /* No. of quvi.resolve returned values. */
 
   if (quvi_ok(q) == QUVI_TRUE)
     {
