@@ -37,12 +37,14 @@ extern QuviError c_verify(_quvi_t, _quvi_net_t);
 
 static QuviError _verify(_quvi_media_t m)
 {
-  _quvi_t q = m->handle.quvi;
-  lua_State *l = q->handle.lua;
-  QuviError rc = QUVI_OK;
-  _quvi_net_t n = NULL;
+  _quvi_net_t n;
+  QuviError rc;
+  lua_State *l;
+  _quvi_t q;
 
   n = n_new(m->handle.quvi, m->url.stream->str);
+  q = m->handle.quvi;
+  l = q->handle.lua;
 
   if (lua_istable(l, 2))
     n_chk_callback_opts(n, l);
