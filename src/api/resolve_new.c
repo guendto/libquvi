@@ -39,14 +39,16 @@
 */
 quvi_resolve_t quvi_resolve_new(quvi_t handle, const char *url)
 {
-  _quvi_t q = (_quvi_t) handle;
-  _quvi_net_resolve_t r = NULL;
+  _quvi_net_resolve_t r;
+  _quvi_t q;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_val_if_fail(handle != NULL, NULL);
   g_return_val_if_fail(url != NULL, NULL);
 
+  q = (_quvi_t) handle;
   r = n_resolve_new(q, url);
+
   m_resolve(q, url, r->url.dst);
 
   return (r);
