@@ -32,37 +32,46 @@
 
 static GSList *_match_util_script(_quvi_t q, const gchar *w)
 {
-  GSList *s = q->scripts.util;
-  while (s != NULL)
+  _quvi_script_t qs;
+  GSList *curr;
+  gboolean r;
+  gchar *s;
+
+  curr = q->scripts.util;
+  while (curr != NULL)
     {
-      const _quvi_script_t qs = (_quvi_script_t) s->data;
-      gchar *bname = g_path_get_basename(qs->fpath->str);
-      const gboolean r = (gboolean) g_strcmp0(bname, w) == 0;
-      g_free(bname);
+      qs = (_quvi_script_t) curr->data;
+      s = g_path_get_basename(qs->fpath->str);
+      r = (g_strcmp0(s, w) == 0) ? TRUE:FALSE;
+
+      g_free(s);
+      s = NULL;
+
       if (r == TRUE)
         break;
-      s = g_slist_next(s);
+
+      curr = g_slist_next(curr);
     }
-  return (s);
+  return (curr);
 }
 
 QuviError l_load_util_script(_quvi_t q, const gchar *script_fname,
                              const gchar *script_func)
 {
-  _quvi_script_t qs = NULL;
-  lua_State *l = q->handle.lua;
-  GSList *s = _match_util_script(q, script_fname);
+  _quvi_script_t qs;
+  lua_State *l;
+  GSList *s;
+
+  s = _match_util_script(q, script_fname);
+  l = q->handle.lua;
 
   if (s == NULL)
-    {
-      luaL_error(l, "Could not find utility script %s from path",
-                 script_fname);
-    }
-
-  qs = (_quvi_script_t) s->data;
+    luaL_error(l, "Could not find utility script %s in path", script_fname);
 
   lua_pushnil(l);
   lua_getglobal(l, script_func);
+
+  qs = (_quvi_script_t) s->data;
 
   if (luaL_dofile(l, qs->fpath->str))
     luaL_error(l, "%s", lua_tostring(l, -1));
@@ -70,10 +79,7 @@ QuviError l_load_util_script(_quvi_t q, const gchar *script_fname,
   lua_getglobal(l, script_func);
 
   if (!lua_isfunction(l, -1))
-    {
-      luaL_error(l, "%s: %s: function not found",
-                 qs->fpath->str, script_func);
-    }
+    luaL_error(l, "%s: %s: function not found", qs->fpath->str, script_func);
 
   lua_newtable(l);
   l_set_reg_userdata(l, USERDATA_QUVI_T, (gpointer) q);
