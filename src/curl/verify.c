@@ -47,11 +47,15 @@ static void _set_opts(_quvi_net_t n, _c_temp_t t, CURL *c)
 
 static QuviError _verify(_quvi_net_t n, CURL *c)
 {
-  CURLcode curlcode = curl_easy_perform(c);
-  QuviError rc = QUVI_OK;
+  CURLcode curlcode;
+  QuviError rc;
+
+  curlcode = curl_easy_perform(c);
 
   curl_easy_setopt(c, CURLOPT_HTTPGET, 1L); /* HEAD -> GET */
   curl_easy_getinfo(c, CURLINFO_RESPONSE_CODE, &n->status.resp_code);
+
+  rc = QUVI_OK;
 
   if (curlcode == CURLE_OK)
     {
@@ -87,9 +91,12 @@ static QuviError _verify(_quvi_net_t n, CURL *c)
 
 QuviError c_verify(_quvi_t q, _quvi_net_t n)
 {
-  CURL *c = q->handle.curl;
-  _c_temp_t t = c_temp_new();
-  QuviError rc = QUVI_OK;
+  QuviError rc;
+  _c_temp_t t;
+  CURL *c;
+
+  c = q->handle.curl;
+  t = c_temp_new();
 
   _set_opts(n, t, c);
   rc = _verify(n, c);
