@@ -31,15 +31,21 @@
 static QuviError _playlist_get(_quvi_playlist_t p,
                                QuviPlaylistProperty n, ...)
 {
-  QuviError rc = QUVI_OK;
-  gdouble *dp = NULL;
-  gchar **sp = NULL;
-  glong *lp = NULL;
-  gint type = 0;
+  QuviError rc;
+  gdouble *dp;
   va_list arg;
+  gchar **sp;
+  glong *lp;
+  gint type;
 
   va_start(arg, n);
   type = QUVI_PLAYLIST_PROPERTY_TYPE_MASK & (gint) n;
+
+  dp = NULL;
+  sp = NULL;
+  lp = NULL;
+
+  rc = QUVI_OK;
 
   switch (type)
     {
@@ -89,10 +95,10 @@ static QuviError _playlist_get(_quvi_playlist_t p,
 void quvi_playlist_get(quvi_playlist_t handle,
                        QuviPlaylistProperty property, ...)
 {
-  _quvi_playlist_t pl = (_quvi_playlist_t) handle;
-  _quvi_t q = pl->handle.quvi;
-  gpointer p = NULL;
+  _quvi_playlist_t pl;
   va_list arg;
+  gpointer p;
+  _quvi_t q;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_if_fail(handle != NULL);
@@ -100,6 +106,9 @@ void quvi_playlist_get(quvi_playlist_t handle,
   va_start(arg, property);
   p = va_arg(arg, gpointer);
   va_end(arg);
+
+  pl = (_quvi_playlist_t) handle;
+  q = pl->handle.quvi;
 
   q->status.rc = _playlist_get(pl, property, p);
 }
