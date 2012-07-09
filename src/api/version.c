@@ -45,20 +45,23 @@ static gchar version_scripts[32];
 static gchar *read_scripts_version()
 {
   gchar *c = NULL;
-  version_scripts[0] = '\0';
 
   if (g_file_get_contents(VERSIONFILE, &c, NULL, NULL) == TRUE)
     {
-      g_snprintf(version_scripts, sizeof(version_scripts), "%s", c);
-      {
-        gchar *s = version_scripts;
-        const gsize n = strlen(s)-1;
-        if (n >0 && s[n] == '\n')
-          s[n] = '\0';
-      }
+      gchar *s;
+
+      s = g_strescape(g_strstrip(c), NULL);
+      g_snprintf(version_scripts, sizeof(version_scripts), "%s", s);
+
+      g_free(s);
+      s = NULL;
+
       g_free(c);
       c = NULL;
     }
+  else
+    version_scripts[0] = '\0';
+
   return ((gchar*) version_scripts);
 }
 
