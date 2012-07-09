@@ -37,12 +37,15 @@
 */
 quvi_playlist_t quvi_playlist_new(quvi_t handle, const char *url)
 {
-  _quvi_t q = (_quvi_t) handle;
-  _quvi_playlist_t p = NULL;
+  _quvi_playlist_t p;
+  _quvi_t q;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_val_if_fail(handle != NULL, NULL);
   g_return_val_if_fail(url != NULL, NULL);
+
+  q = (_quvi_t) handle;
+  p = NULL;
 
   q->status.rc = m_match_playlist_script(q, &p, url,
                                          QM_MATCH_PS_PARSE, NULL);
