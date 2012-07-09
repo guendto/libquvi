@@ -35,7 +35,7 @@
 
 static const gchar script_func[] = "parse";
 
-static void _get(lua_State *l, const gchar *k,
+static void _get_s(lua_State *l, const gchar *k,
                  gpointer dst, const gchar *script_path)
 {
   const gchar *s = l_getfield_s(l, k, script_path, script_func);
@@ -60,11 +60,17 @@ static gint _prepend_media_url(gpointer p, const gchar *url)
 
 QuviError l_exec_playlist_script_parse(gpointer p, GSList *sl)
 {
-  const _quvi_script_t qs = (_quvi_script_t) sl->data;
-  _quvi_playlist_t pl = (_quvi_playlist_t) p;
-  lua_State *l = pl->handle.quvi->handle.lua;
-  QuviError rc = QUVI_OK;
+  typedef l_callback_getfield_table_iter_s cb;
 
+  _quvi_playlist_t pl;
+  _quvi_script_t qs;
+  lua_State *l;
+  QuviError rc;
+
+  pl = (_quvi_playlist_t) p;
+  l = pl->handle.quvi->handle.lua;
+
+  qs = (_quvi_script_t) sl->data;
   lua_getglobal(l, script_func);
 
   if (!lua_isfunction(l, -1))
@@ -87,17 +93,12 @@ QuviError l_exec_playlist_script_parse(gpointer p, GSList *sl)
                  qs->fpath->str, script_func);
     }
 
-  {
-    typedef l_callback_getfield_table_iter_s cb;
-    const gchar *s = qs->fpath->str;
+  _get_s(l, PS_ID, (gpointer) pl->id.playlist, qs->fpath->str);
 
-    _get(l, PS_ID, (gpointer) pl->id.playlist, s);
-
-    rc = l_getfield_table_iter_s(l, pl, PS_MEDIA_URL, s,
-                                 script_func, (cb) _prepend_media_url);
-    if (rc == QUVI_OK)
-      pl->url.media = g_slist_reverse(pl->url.media);
-  }
+  rc = l_getfield_table_iter_s(l, pl, PS_MEDIA_URL, qs->fpath->str,
+                               script_func, (cb) _prepend_media_url);
+  if (rc == QUVI_OK)
+    pl->url.media = g_slist_reverse(pl->url.media);
 
   lua_pop(l, 1);
 
