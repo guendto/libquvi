@@ -28,9 +28,12 @@
 
 gchar *m_trim(const gchar *s, const gchar *p, const gchar *w)
 {
-  GError *err = NULL;
-  GRegex *re = g_regex_new(p, 0, 0, &err);
-  gchar *r = NULL;
+  GError *err;
+  GRegex *re;
+  gchar *r;
+
+  err = NULL;
+  re = g_regex_new(p, 0, 0, &err);
 
   if (err != NULL)
     {
@@ -58,7 +61,11 @@ gchar *m_trim(const gchar *s, const gchar *p, const gchar *w)
 /* Trim null-terminated string of extra whitespace. */
 gchar *m_trim_ws(const gchar *s)
 {
-  gchar *u = NULL, *t = m_trim(s, "^\\s*(.+?)\\s*$", "\\1");
+  gchar *u, *t;
+
+  u = NULL;
+  t = m_trim(s, "^\\s*(.+?)\\s*$", "\\1");
+
   if (t != NULL)
     {
       u = m_trim(t, "\\s\\s+", " ");
