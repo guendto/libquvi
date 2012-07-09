@@ -29,30 +29,41 @@
 
 static void _get(_quvi_t q, QuviInfo info, ...)
 {
-  gpointer *vp = NULL;
-  gdouble *dp = NULL;
-  gchar **sp = NULL;
-  glong *lp = NULL;
-  gint type = 0;
+  gpointer *vp;
   va_list arg;
+  glong *lp;
+  gint type;
+#ifdef _CURRENTLY_UNUSED
+  gdouble *dp;
+  gchar **sp;
+#endif
 
   va_start(arg, info);
   type = QUVI_INFO_TYPE_MASK & (gint) info;
 
+  vp = NULL;
+  lp = NULL;
+#ifdef _CURRENTLY_UNUSED
+  dp = NULL;
+  sp = NULL;
+#endif
+
   switch (type)
     {
-    case QUVI_INFO_TYPE_DOUBLE:
-      dp = va_arg(arg, gdouble*);
-      break;
-    case QUVI_INFO_TYPE_STRING:
-      sp = va_arg(arg, gchar**);
-      break;
     case QUVI_INFO_TYPE_LONG:
       lp = va_arg(arg, glong*);
       break;
     case QUVI_INFO_TYPE_VOID:
       vp = va_arg(arg, gpointer*);
       break;
+#ifdef _CURRENTLY_UNUSED
+    case QUVI_INFO_TYPE_DOUBLE:
+      dp = va_arg(arg, gdouble*);
+      break;
+    case QUVI_INFO_TYPE_STRING:
+      sp = va_arg(arg, gchar**);
+      break;
+#endif
     default:
       break;
     }
@@ -82,9 +93,8 @@ static void _get(_quvi_t q, QuviInfo info, ...)
 */
 void quvi_get(quvi_t handle, QuviInfo info, ...)
 {
-  _quvi_t q = (_quvi_t) handle;
-  gpointer p = NULL;
   va_list arg;
+  gpointer p;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_if_fail(handle != NULL);
@@ -93,7 +103,7 @@ void quvi_get(quvi_t handle, QuviInfo info, ...)
   p = va_arg(arg, gpointer);
   va_end(arg);
 
-  _get(q, info, p);
+  _get((_quvi_t) handle, info, p);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
