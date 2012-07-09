@@ -55,6 +55,7 @@ static QuviError _set(_quvi_t q, QuviOption o, va_list arg)
     default:
       return (QUVI_ERROR_INVALID_ARG);
     }
+
   return (QUVI_OK);
 }
 
@@ -64,16 +65,17 @@ static QuviError _set(_quvi_t q, QuviOption o, va_list arg)
 */
 void quvi_set(quvi_t handle, QuviOption option, ...)
 {
-  _quvi_t q = (_quvi_t) handle;
   va_list arg;
+  _quvi_t q;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_if_fail(handle != NULL);
+
+  q = (_quvi_t) handle;
 
   va_start(arg, option);
   q->status.rc = _set(handle, option, arg);
   va_end(arg);
 }
-
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
