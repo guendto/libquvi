@@ -37,8 +37,10 @@
 /* Return status type. Default to "page". */
 static glong _cb_status_type(lua_State *l)
 {
-  glong st = QUVI_CALLBACK_STATUS_FETCH_PAGE;
-  const gchar *s = NULL;
+  const gchar *s;
+  glong st;
+
+  st = QUVI_CALLBACK_STATUS_FETCH_PAGE;
 
   if (!lua_istable(l, 2))
     return (st);
