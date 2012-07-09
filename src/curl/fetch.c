@@ -89,10 +89,13 @@ static void _reset_opts(CURL *c)
 
 static QuviError _fetch(_quvi_net_t n, CURL *c)
 {
-  CURLcode curlcode = curl_easy_perform(c);
-  QuviError rc = QUVI_OK;
-
+  CURLcode curlcode;
+  QuviError rc;
+  
+  curlcode = curl_easy_perform(c);
   curl_easy_getinfo(c, CURLINFO_RESPONSE_CODE, &n->status.resp_code);
+
+  rc = QUVI_OK;
 
   if (curlcode == CURLE_OK && n->status.resp_code == 200)
     ;
@@ -120,9 +123,12 @@ static QuviError _fetch(_quvi_net_t n, CURL *c)
 
 QuviError c_fetch(_quvi_net_t n)
 {
-  CURL *c = n->handle.quvi->handle.curl;
-  _c_temp_t t = c_temp_new();
-  QuviError rc = QUVI_OK;
+  QuviError rc;
+  _c_temp_t t;
+  CURL *c;
+
+  c = n->handle.quvi->handle.curl;
+  t = c_temp_new();
 
   _set_opts(n, t, c);
   rc = _fetch(n, c);
