@@ -35,14 +35,14 @@ typedef _quvi_script_t _qs_t;
 static QuviError _get(_quvi_t q, QuviScriptType stype,
                       QuviScriptProperty n, ...)
 {
-  QuviError rc = QUVI_OK;
-  gpointer *vp = NULL;
-  gdouble *dp = NULL;
-  gchar **sp = NULL;
-  glong *lp = NULL;
-  _qs_t qs = NULL;
-  gint type = 0;
+  QuviError rc;
+  gpointer *vp;
+  gdouble *dp;
   va_list arg;
+  gchar **sp;
+  glong *lp;
+  gint type;
+  _qs_t qs;
 
   switch (stype)
     {
@@ -60,6 +60,13 @@ static QuviError _get(_quvi_t q, QuviScriptType stype,
 
   va_start(arg, n);
   type = QUVI_SCRIPT_PROPERTY_MASK & (gint) n;
+
+  dp = NULL;
+  sp = NULL;
+  vp = NULL;
+  lp = NULL;
+
+  rc = QUVI_OK;
 
   switch (type)
     {
@@ -121,9 +128,9 @@ static QuviError _get(_quvi_t q, QuviScriptType stype,
 void quvi_script_get(quvi_t handle, QuviScriptType type,
                      QuviScriptProperty id, ...)
 {
-  _quvi_t q = (_quvi_t) handle;
-  gpointer p = NULL;
   va_list arg;
+  gpointer p;
+  _quvi_t q;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_if_fail(handle != NULL);
@@ -131,6 +138,8 @@ void quvi_script_get(quvi_t handle, QuviScriptType type,
   va_start(arg, id);
   p = va_arg(arg, gpointer);
   va_end(arg);
+
+  q = (_quvi_t) handle;
 
   q->status.rc = _get(handle, type, id, p);
 }
