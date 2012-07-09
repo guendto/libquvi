@@ -54,12 +54,15 @@ static QuviError _chk_results(lua_State *l, _quvi_script_t qs, _quvi_media_t m)
 
 QuviError l_exec_media_script_ident(gpointer p, GSList *sl)
 {
-  const _quvi_script_t qs = (_quvi_script_t) sl->data;
-  _quvi_media_t m = (_quvi_media_t) p;
-  lua_State *l = m->handle.quvi->handle.lua;
-  QuviError rc = QUVI_ERROR_NO_SUPPORT;
+  _quvi_script_t qs;
+  _quvi_media_t m;
+  lua_State *l;
+
+  m = (_quvi_media_t) p;
+  l = m->handle.quvi->handle.lua;
 
   lua_pushnil(l);
+  qs = (_quvi_script_t) sl->data;
 
   if (luaL_dofile(l, qs->fpath->str))
     luaL_error(l, "%s", lua_tostring(l, -1));
@@ -82,14 +85,12 @@ QuviError l_exec_media_script_ident(gpointer p, GSList *sl)
       return (QUVI_ERROR_SCRIPT);
     }
 
-  if (lua_istable(l, -1))
-    rc = _chk_results(l, qs, m);
-  else
+  if (!lua_istable(l, -1))
     {
       luaL_error(l, "%s: expected `%s' to return a table",
                  qs->fpath->str, script_func);
     }
-  return (rc);
+  return (_chk_results(l, qs, m));
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
