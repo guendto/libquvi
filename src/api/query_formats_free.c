@@ -36,7 +36,7 @@ void quvi_query_formats_free(quvi_query_formats_t handle)
 {
   _quvi_query_formats_t qqf = (_quvi_query_formats_t) handle;
 
-  if (qqf == NULL)
+  if (handle == NULL)
     return;
 
   g_string_free(qqf->formats, TRUE);
