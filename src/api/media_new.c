@@ -37,12 +37,15 @@
 */
 quvi_media_t quvi_media_new(quvi_t handle, const char *url)
 {
-  _quvi_t q = (_quvi_t) handle;
-  _quvi_media_t m = NULL;
+  _quvi_media_t m;
+  _quvi_t q;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_val_if_fail(handle != NULL, NULL);
   g_return_val_if_fail(url != NULL, NULL);
+
+  q = (_quvi_t) handle;
+  m = NULL;
 
   q->status.rc = m_match_media_script(q, &m, url,
                                       QM_MATCH_MS_PARSE, NULL);
