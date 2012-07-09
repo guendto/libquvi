@@ -38,12 +38,15 @@ static const gchar script_func[] = "resolve_redirections";
 /* Resolve URL redirections with exception rules. */
 gchar *l_exec_util_resolve_redirections(_quvi_t q, const gchar *url)
 {
-  lua_State *l = q->handle.lua;
+  lua_State *l;
+  gchar *r;
+
   q->status.rc = l_load_util_script(q, script_fname, script_func);
-  gchar *r = NULL;
 
   if (quvi_ok(q) == QUVI_FALSE)
     return (NULL);
+
+  l = q->handle.lua;
 
   l_setfield_s(l, US_INPUT_URL, url); /* Set qargs.input_url */
 
@@ -61,6 +64,8 @@ gchar *l_exec_util_resolve_redirections(_quvi_t q, const gchar *url)
 
       return (NULL);
     }
+
+  r = NULL;
 
   if (lua_isstring(l, -1))
     {
