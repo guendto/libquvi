@@ -24,8 +24,7 @@
 
 _c_temp_t c_temp_new()
 {
-  _c_temp_t t = g_new0(struct _c_temp_s, 1);
-  return (t);
+  return g_new0(struct _c_temp_s, 1);
 }
 
 void c_temp_free(_c_temp_t p)
@@ -40,18 +39,22 @@ void c_temp_free(_c_temp_t p)
   p = NULL;
 }
 
-/* cURL write callback. Uses "tmp" handle for storing data. */
+/* cURL write callback. */
 gsize c_temp_wrcb(gpointer p, gsize sz, gsize nmemb, gpointer d)
 {
-  const gsize rsize = sz * nmemb;
-  _c_temp_t t = (_c_temp_t) d;
-  gpointer *tmp = g_realloc(t->p, t->size+rsize+1);
-  if (tmp != NULL)
+  const gsize rsize = sz*nmemb;
+  gpointer *np;
+  _c_temp_t ct;
+  
+  ct = (_c_temp_t) d;
+  np = g_realloc(ct->p, ct->size+rsize+1);
+
+  if (np != NULL)
     {
-      t->p = (gchar*) tmp;
-      memcpy(&(t->p[t->size]), p, rsize);
-      t->size += rsize;
-      t->p[t->size] = '\0';
+      ct->p = (gchar*) np;
+      memcpy(&(ct->p[ct->size]), p, rsize);
+      ct->size += rsize;
+      ct->p[ct->size] = '\0';
     }
   return (rsize);
 }
