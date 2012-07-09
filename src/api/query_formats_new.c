@@ -39,26 +39,34 @@ static gpointer _query_formats_new(gchar *fmts)
 }
 
 /** @brief Query available media formats to an URL
+@return New handle or NULL if an error occurred
 @note @ref quvi_query_formats_free the handle when done using it
+@note Use @ref quvi_ok for checking if an error occurred
 @sa @ref query_formats
 @ingroup queryformats
 */
 quvi_query_formats_t quvi_query_formats_new(quvi_t handle, const char *url)
 {
-  _quvi_query_formats_t qqf = NULL;
-  _quvi_t q = (_quvi_t) handle;
-  _quvi_media_t m = NULL;
-  gchar *fmts = NULL;
+  _quvi_query_formats_t qqf;
+  _quvi_media_t m;
+  gchar *fmts;
+  _quvi_t q;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_val_if_fail(handle != NULL, NULL);
   g_return_val_if_fail(url != NULL, NULL);
+
+  q = (_quvi_t) handle;
+  fmts = NULL;
+  m = NULL;
 
   q->status.rc = m_match_media_script(q, &m, url,
                                       QM_MATCH_MS_QUERY_FORMATS,
                                       &fmts /* Must be g_free'd */);
   quvi_media_free((quvi_media_t) m);
   m = NULL;
+
+  qqf = NULL;
 
   if (quvi_ok(q) == QUVI_TRUE)
     qqf = _query_formats_new(fmts);
