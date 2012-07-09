@@ -47,10 +47,13 @@ static void _reset_opts(CURL *c)
 /* Check whether the server returned a redirection URL. */
 static QuviError _chk_redir(_quvi_net_resolve_t r, CURL *c)
 {
-  gint curlcode = curl_easy_perform(c);
-  QuviError rc = QUVI_OK;
+  CURLcode curlcode;
+  QuviError rc;
 
+  curlcode = curl_easy_perform(c);
   curl_easy_getinfo(c, CURLINFO_RESPONSE_CODE, &r->status.resp_code);
+
+  rc = QUVI_OK;
 
   if (curlcode == CURLE_OK && r->status.resp_code == 200)
     {
@@ -84,8 +87,10 @@ static QuviError _chk_redir(_quvi_net_resolve_t r, CURL *c)
 /* Resolve an URL redirection if needed. */
 QuviError c_resolve(_quvi_t q, _quvi_net_resolve_t r)
 {
-  CURL *c = q->handle.curl;
-  QuviError rc = QUVI_OK;
+  QuviError rc;
+  CURL *c;
+
+  c = q->handle.curl;
 
   _set_opts(r, c);
   rc = _chk_redir(r, c);
