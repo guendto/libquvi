@@ -91,7 +91,7 @@ static QuviError _fetch(_quvi_net_t n, CURL *c)
 {
   CURLcode curlcode;
   QuviError rc;
-  
+
   curlcode = curl_easy_perform(c);
   curl_easy_getinfo(c, CURLINFO_RESPONSE_CODE, &n->status.resp_code);
 
