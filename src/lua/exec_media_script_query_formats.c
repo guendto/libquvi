@@ -35,12 +35,16 @@
 static const gchar script_func[] = "query_formats";
 
 QuviError
-l_exec_media_script_query_formats(gpointer p, GSList *sl, gchar **result)
+l_exec_media_script_query_formats(gpointer p, GSList *sl, gchar **fmts)
 {
-  const _quvi_script_t qs = (_quvi_script_t) sl->data;
-  _quvi_media_t m = (_quvi_media_t) p;
-  lua_State *l = m->handle.quvi->handle.lua;
+  _quvi_script_t qs;
+  _quvi_media_t m;
+  lua_State *l;
 
+  m = (_quvi_media_t) p;
+  l = m->handle.quvi->handle.lua;
+
+  qs = (_quvi_script_t) sl->data;
   lua_getglobal(l, script_func);
 
   if (!lua_isfunction(l, -1))
@@ -64,24 +68,18 @@ l_exec_media_script_query_formats(gpointer p, GSList *sl, gchar **result)
                  qs->fpath->str, script_func);
     }
 
-  {
-    /* Check if media script set a redirection. */
+  g_string_assign(m->url.redirect_to,
+                  l_getfield_s(l, MS_GOTO_URL,
+                               qs->fpath->str, script_func));
 
-    g_string_assign(m->url.redirect_to,
-                    l_getfield_s(l, MS_GOTO_URL,
-                                 qs->fpath->str, script_func));
-
-    if (m->url.redirect_to->len ==0) /* No. */
-      {
-        *result = g_strdup(l_getfield_s(l, MS_AVAIL_FORMATS,
-                                        qs->fpath->str, script_func));
-      }
-  }
-
+  if (m->url.redirect_to->len ==0) /* No new location ("goto_url"). */
+    {
+      *fmts = g_strdup(l_getfield_s(l, MS_AVAIL_FORMATS,
+                                    qs->fpath->str, script_func));
+    }
   lua_pop(l, 1);
 
   return (QUVI_OK);
 }
-
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
