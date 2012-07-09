@@ -38,10 +38,15 @@
 /* Return path to script file. */
 static GString *_get_fpath(const gchar *path, const gchar *fname)
 {
-  gchar *s = g_build_filename(path, fname, NULL);
-  GString *r = g_string_new(s);
+  GString *r;
+  gchar *s;
+
+  s = g_build_filename(path, fname, NULL);
+  r = g_string_new(s);
+
   g_free(s);
   s = NULL;
+
   return (r);
 }
 
@@ -90,11 +95,12 @@ static void _chk_script_ident(_quvi_t q, _quvi_script_t qs, gboolean *ok,
 {
   static const gchar URL[] = "http://foo";
 
-  QuviError rc = QUVI_OK;
-  gpointer p = NULL;
-  GSList *s = NULL;
+  QuviError rc;
+  gpointer p;
+  GSList *s;
 
   p = cb_new(q, URL);
+  s = NULL;
   s = g_slist_prepend(s, qs);
   rc = cb_exec(p, s);
 
@@ -143,9 +149,13 @@ static gpointer script_new(const gchar *fpath, const gchar *fname,
 static gpointer _new_media_script(_quvi_t q, const gchar *path,
                                   const gchar *fname)
 {
-  _quvi_script_t qs = NULL;
-  GString *fpath = _get_fpath(path, fname);
-  GString *c = _contents(fpath);
+  _quvi_script_t qs;
+  GString *fpath;
+  GString *c;
+
+  fpath = _get_fpath(path, fname);
+  c = _contents(fpath);
+  qs = NULL;
 
   if (c != NULL)
     {
@@ -189,9 +199,13 @@ static gpointer _new_media_script(_quvi_t q, const gchar *path,
 static gpointer _new_playlist_script(_quvi_t q, const gchar *path,
                                      const gchar *fname)
 {
-  _quvi_script_t qs = NULL;
-  GString *fpath = _get_fpath(path, fname);
-  GString *c = _contents(fpath);
+  _quvi_script_t qs;
+  GString *fpath;
+  GString *c;
+
+  fpath = _get_fpath(path, fname);
+  c = _contents(fpath);
+  qs = NULL;
 
   if (c != NULL)
     {
@@ -234,9 +248,13 @@ static gpointer _new_playlist_script(_quvi_t q, const gchar *path,
 static gpointer _new_scan_script(_quvi_t q, const gchar *path,
                                  const gchar *fname)
 {
-  GString *fpath = _get_fpath(path, fname);
-  GString *c = _contents(fpath);
-  _quvi_script_t qs = NULL;
+  _quvi_script_t qs;
+  GString *fpath;
+  GString *c;
+
+  fpath = _get_fpath(path, fname);
+  c = _contents(fpath);
+  qs = NULL;
 
   if (c != NULL)
     {
@@ -270,9 +288,13 @@ static gpointer _new_scan_script(_quvi_t q, const gchar *path,
 static gpointer _new_util_script(_quvi_t q, const gchar *path,
                                  const gchar *fname)
 {
-  GString *fpath = _get_fpath(path, fname);
-  GString *c = _contents(fpath);
-  _quvi_script_t qs = NULL;
+  _quvi_script_t qs;
+  GString *fpath;
+  GString *c;
+
+  fpath = _get_fpath(path, fname);
+  c = _contents(fpath);
+  qs = NULL;
 
   if (c != NULL)
     {
@@ -304,13 +326,19 @@ static gpointer _new_util_script(_quvi_t q, const gchar *path,
 /* Check for duplicate script. */
 static gboolean _chkdup_script(_quvi_t q, gpointer script, GSList *l)
 {
-  const _quvi_script_t a = (_quvi_script_t) script;
-  GSList *curr = l;
+  _quvi_script_t a, b;
+  GSList *curr;
+
+  a = (_quvi_script_t) script;
+  curr = l;
+
   while (curr != NULL)
     {
-      const _quvi_script_t b = (_quvi_script_t) curr->data;
+      b = (_quvi_script_t) curr->data;
+
       if (g_string_equal(a->sha1, b->sha1) == TRUE)
         return (TRUE);
+
       curr = g_slist_next(curr);
     }
   return (FALSE);
@@ -319,7 +347,7 @@ static gboolean _chkdup_script(_quvi_t q, gpointer script, GSList *l)
 /* Include '*.lua' files only. */
 static gint _lua_files_only(const gchar *fpath)
 {
-  const char *ext = strrchr(fpath, '.');
+  const gchar *ext = strrchr(fpath, '.');
   return (fpath[0] != '.' && ext != NULL && strcmp(ext, ".lua") == 0);
 }
 
@@ -340,8 +368,8 @@ static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
                                   free_script_callback cb_free,
                                   chkdup_script_callback cb_chkdup)
 {
-  const gchar *fname = NULL;
-  GDir *dir = NULL;
+  const gchar *fname;
+  GDir *dir;
 
   if (show_dir != NULL && strlen(show_dir) >0)
     g_message("libquvi: %s: %s", __func__, path);
@@ -417,10 +445,12 @@ static const gchar *dir[] =
 
 static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
 {
-  chkdup_script_callback cb_chkdup = _chkdup_script;
-  free_script_callback cb_free = m_script_free;
-  new_script_callback cb_new = NULL;
-  gchar *path = NULL;
+  chkdup_script_callback cb_chkdup;
+  free_script_callback cb_free;
+  new_script_callback cb_new;
+  gchar *path;
+
+  cb_new = NULL;
   *dst = NULL;
 
   switch (m)
@@ -440,6 +470,9 @@ static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
     default:
       g_error("%s: %d: invalid mode", __func__, __LINE__);
     }
+
+  cb_chkdup = _chkdup_script;
+  cb_free = m_script_free;
 
   {
     /* LIBQUVI_SCRIPTS_DIR (excl.) */
@@ -509,7 +542,7 @@ extern void l_modify_pkgpath(_quvi_t, const gchar*);
  * found. The library ignores the contents of the directory. */
 static void chk_common_scripts(_quvi_t q)
 {
-  gchar *path = NULL;
+  gchar *path;
 
   {
     /* LIBQUVI_SCRIPTS_DIR (excl.) */
@@ -564,7 +597,7 @@ static void chk_common_scripts(_quvi_t q)
 
 QuviError m_scan_scripts(_quvi_t q)
 {
-  QuviError rc = QUVI_OK;
+  QuviError rc;
 
   scripts_dir = g_getenv("LIBQUVI_SCRIPTS_DIR");
   show_script = g_getenv("LIBQUVI_SHOW_SCRIPT");
