@@ -35,6 +35,8 @@
 extern QuviError l_exec_util_to_file_ext(_quvi_media_t, _quvi_net_t);
 extern QuviError c_verify(_quvi_t, _quvi_net_t);
 
+static const gdouble MIN_LIKELY_MEDIA_LENGTH = 50*1024;
+
 static QuviError _verify(_quvi_media_t m)
 {
   _quvi_net_t n;
@@ -61,6 +63,16 @@ static QuviError _verify(_quvi_media_t m)
         {
           g_string_assign(m->content_type, n->verify.content_type->str);
           m->length_bytes = n->verify.content_length;
+
+          /* Sanity check. */
+          if (m->length_bytes <MIN_LIKELY_MEDIA_LENGTH)
+            {
+              g_string_printf(q->status.errmsg,
+                              "Content length (%.0f bytes) for media "
+                              "looks suspicious. This is most likely "
+                              "a bug. Please report it.", m->length_bytes);
+              rc = QUVI_ERROR_INVALID_CONTENT_LENGTH;
+            }
         }
 
       if (q->cb.status != NULL)
