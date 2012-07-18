@@ -28,4 +28,9 @@ q = NULL;
 
 @sa @ref parse_media
 @sa @ref env
+
+Compiling libquvi applications on UNIX:
+@code
+cc foo.c `pkg-config --cflags --libs libquvi-1.0` -o foo
+@endcode
 */
