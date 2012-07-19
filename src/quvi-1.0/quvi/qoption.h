@@ -44,10 +44,11 @@ typedef enum
    */
   QUVI_OPTION_REQUEST_FORMAT,
   /** Autodetect and set the proxy for new connections.
-   * Default: QUVI_FALSE. libquvi uses libproxy for detecting the settings.
-   * When enabled, libcurl option CURLOPT_PROXY is set explicitly to the
-   * value returned by libcurl.  See also libcurl documentation for
-   * CURLOPT_PROXY.
+   * Default: QUVI_FALSE. When enabled (QUVI_TRUE), libquvi uses libproxy
+   * to detect the system proxy settings and sets the CURLOPT_PROXY to the
+   * libproxy returned value. This is done for each new connection.
+   * @sa http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTPROXY
+   * @sa http://libproxy.googlecode.com/
    */
   QUVI_OPTION_AUTOPROXY
 } QuviOption;
