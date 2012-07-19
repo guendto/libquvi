@@ -26,12 +26,28 @@
 @brief Options to be used with @ref quvi_set */
 typedef enum
 {
-  /** Default: QUVI_OPTION_MEDIA_SCRIPT_PROTOCOL_CATEGORY_ALL */
+  /** Determines which of the media scripts of the protocol categories
+   * should be included when the library looks up the media scripts
+   * from the search paths.
+   *
+   * Normally, if an application could handle only some of the protocols,
+   * e.g. HTTP, it should set this option appropriately (e.g.
+   * QUVI_MEDIA_SCRIPT_PROTOCOL_CATEGORY_HTTP) to limit the media script
+   * support to those websites that return media stream URLs suitable to the
+   * application.
+   *
+   * Default: QUVI_MEDIA_SCRIPT_PROTOCOL_CATEGORY_ALL.
+   *
+   * @sa QuviMediaScriptProtocolCategory
+   * @sa @ref proto_cat */
   QUVI_OPTION_MEDIA_SCRIPT_PROTOCOL_CATEGORY,
-  /** This setting applies to HTTP media stream URLs only. Additionally,
-   * this causes the library parse the HTTP content-type and content-length
-   * fields which would otherwise remain unset.  Default: QUVI_TRUE
-   * @note Negates @ref QUVI_SUPPORTS_MODE_ONLINE */
+  /** Verify the media stream URL (HTTP and HTTPS only). Additionally,
+   * causes the library to parse and save the returned content-type and
+   * content-length metadata. The saved data is made available as media
+   * properties which would otherwise remain unset.  Default: QUVI_TRUE.
+   *
+   * @sa QuviMediaProperty
+   */
   QUVI_OPTION_VERIFY_MEDIA_STREAM_URL,
   /** Default: None */
   QUVI_OPTION_CALLBACK_STATUS,
@@ -41,6 +57,19 @@ typedef enum
    * @note
    *  - This option should be set only after @ref query_formats
    *  - Available formats may vary greatly depending on the website
+   *  - The value may be a comma-separated list of format strings
+   * @section comma_sep_list Comma-separated list of format strings
+   *
+   * Example values:
+   *
+   * @li "foo,bar,croak" - Unless either 'foo' or 'bar' is matched, exit
+   * with an error
+   * @li "foo,best" - Choose the 'best' available format (whatever the
+   * script deems this to be), unless 'foo' is matched
+   * @li "foo,bar" - Choose whatever script deems to be the default,
+   * unless either 'foo' or 'bar' is matched first
+   *
+   * @sa @ref query_formats
    */
   QUVI_OPTION_REQUEST_FORMAT,
   /** Autodetect and set the proxy for new connections.
