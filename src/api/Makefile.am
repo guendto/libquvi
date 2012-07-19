@@ -10,6 +10,7 @@ EXTRA_DIST=\
   doxy/main.dp\
   doxy/parse_media.dp\
   doxy/parse_playlist.dp\
+  doxy/proxy_support.dp\
   doxy/query_formats.dp\
   doxy/scan_media.dp\
   doxy/scripts.dp
