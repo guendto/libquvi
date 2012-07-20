@@ -27,4 +27,7 @@ p = NULL;
 @endcode
 
 @sa @ref parse_media
+
+The available @ref pl_script collection determines which
+websites are supported by the library.
 */
