@@ -2,36 +2,53 @@
 
 @section default Default behaviour
 
-By default, the library will return a media stream URL to the "default"
+By default, the library will return a @ref ms_url to the "default"
 media format -- whatever the media script determines it to be.
 
 @section multi Multiple formats
 
-Some websites provide >1 formats for the media. In order to use them,
-the application must query them first. This needs to be done with every
-media URL separately.
+Some of the websites provide >1 formats for the media. The number,
+and the quality of these media formats may vary greatly, depending on
+the website. Therefore, the application should first query the available
+formats to a @ref m_url , and then have either the user of the application
+or the application itself to choose which one to access.
+
+The example below shows how to query the formats. For added readability,
+it uses the GLib string utility functions (the 'g_str' prefix).
 
 @code
 quvi_query_formats_t qqf = quvi_query_formats_new(q, URL);
 abort_if_error();
 {
-  char *fmts = quvi_query_formats_get(qqf);
-  /* omitted: for each format string in the returned array */
-  {
-    quvi_media_t m = NULL;
-    char *url = NULL;
+  gchar *fmts;
+  gchar **r;
+  gint i;
 
-    quvi_set(q, QUVI_OPTION_REQUEST_FORMAT, fmt);
+  fmts = quvi_query_formats_get(qqf);
+  r = g_strsplit(fmts, ",", 0);
 
-    m = quvi_media_new(q, URL);
-    abort_if_error();
+  for (i=0; r[i] != NULL; ++i)
+    {
+      quvi_media_t m;
+      gchar *url;
 
-    quvi_media_get(m, QUVI_MEDIA_PROPERTY_STREAM_URL, &url);
-    stream_from(url);
+      /* Set the format string the application should access. */
+      quvi_set(q, QUVI_OPTION_REQUEST_FORMAT, r[i]);
 
-    quvi_media_free(m);
-    m = NULL;
-  }
+      /* Return the media properties for the media URL. */
+      m = quvi_media_new(q, URL);
+      abort_if_error();
+
+      /* Access the media stream URL for this format. */
+      quvi_media_get(m, QUVI_MEDIA_PROPERTY_STREAM_URL, &url);
+      stream_from(url);
+
+      quvi_media_free(m);
+      m = NULL;
+    }
+
+  g_strfreev(r);
+  r = NULL;
 }
 quvi_query_formats_free(qqf); /* Release when done using it. */
 qqf = NULL;
@@ -40,4 +57,7 @@ qqf = NULL;
 @note @ref quvi_query_formats_get returns always at least "default"
 
 @sa @ref m_format
+
+The available @ref m_script collection determines which
+websites are supported by the library.
 */
