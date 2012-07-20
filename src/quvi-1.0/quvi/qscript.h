@@ -44,7 +44,7 @@ typedef enum
   QUVI_SCRIPT_PROPERTY_FILEPATH=
   QUVI_SCRIPT_PROPERTY_TYPE_STRING+1,
   QUVI_SCRIPT_PROPERTY_FILENAME,
-  QUVI_SCRIPT_PROPERTY_DOMAINS, /** Unique to media scripts */
+  QUVI_SCRIPT_PROPERTY_DOMAINS, /**< Unique to @ref m_script and @ref pl_script */
   QUVI_SCRIPT_PROPERTY_SHA1
 } QuviScriptProperty;
 
