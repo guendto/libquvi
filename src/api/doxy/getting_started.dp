@@ -13,9 +13,13 @@ Start by creating a new library handle.
 
 @code
 quvi_t q = quvi_new();
-if (quvi_ok(q) == QUVI_FALSE)
+if (quvi_ok(q) == QUVI_FALSE) /* Check for errors. */
   {
-    puts(quvi_errmsg(q));
+    fprintf(stderr, "error: %s\n", quvi_errmsg(q));
+
+    quvi_free(q);
+    q = NULL;
+
     exit(1);
   }
 quvi_free(q); /* Release when done using it. */
