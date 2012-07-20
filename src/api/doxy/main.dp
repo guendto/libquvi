@@ -11,8 +11,10 @@ stream URLs.
 
 @li Parse media properties (stream URL, title, ID, ...)
 @li Parse playlist properties (media URL, ID)
-@li C API is uncomplicated and simple to use
-@li C library: Fast and low system footprint
+@li Scan an URL for embedded media URLs
+
+@li The library is fast and with low system footprint
+@li The C API is uncomplicated and simple to use
 @li Support for 50+ websites and growing
 @li Supports Linux, *BSD systems
 
