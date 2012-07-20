@@ -74,8 +74,8 @@ Check if any of the scripts accepts the URL. Both offline and online
 checking is supported.
 
 @note
- - Offline check will fail with most shortened URLs
- - Online check will resolve shortened URLs
+ - Offline check will fail with most @ref sh_url
+ - Online check will resolve @ref sh_url
 
 Type may be a combination.
 
