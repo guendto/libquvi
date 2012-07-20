@@ -12,5 +12,8 @@ while (quvi_media_script_next(q, QUVI_SCRIPT_TYPE_MEDIA) == QUVI_TRUE)
 @endcode
  
 @sa QuviScriptType
+@sa @ref pl_script
 @sa @ref m_script
+@sa @ref u_script
+@sa @ref scan_script
 */
