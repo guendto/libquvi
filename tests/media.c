@@ -33,7 +33,7 @@ static gchar *URLs[] =
 static gchar *TITLEs[] =
 {
   "1928 Henderson Deluxe - alt und mit der Patina des Alters aber läuft",
-  "1912 Harley Davidson - superschön restauriert Oldtimer",
+  "1912 Harley Davidson - superschön restauriert",
   NULL
 };
 
