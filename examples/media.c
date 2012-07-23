@@ -21,7 +21,6 @@
 #include <stdlib.h>
 #include <glib.h>
 #include <quvi.h>
-#include <curl/curl.h>
 
 #include "examples.h"
 
