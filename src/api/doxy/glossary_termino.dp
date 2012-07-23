@@ -49,4 +49,21 @@ A collection of @ref m_url s.
 
 An URL that has been "compressed", or "shortened", by a service such as
 is.gd or bit.ly .
+
+@section verification Verification of an URL
+
+Until libquvi 1.0 this was a process that took place @ref ms_url immediately
+after returning it from a @ref m_script . The purpose of this process was to
+retrieve the content-length, the content-type and the file extension
+(parsed from the content-type) values.
+
+This step was removed in libquvi 1.0, but an additional function set was
+added to the API that could be used if necessary.
+
+The "verification" is a loose term here, and is being called as such
+(in 1.0) for historical reasons.
+
+@note Works with HTTP(S) URLs only
+
+@sa quvi_verify_new
 */

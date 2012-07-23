@@ -43,8 +43,10 @@ QuviError n_verify(_quvi_verify_t);
 /** @endcond */
 
 /** @brief Verify URL
-@return New handle, @ref quvi_verify_free if when done using it
-@note Use @ref_quvi_ok for checking if an error occurred
+@return New handle, @ref quvi_verify_free when done using it
+@note
+ - Support for determining the file extension is very limited
+ - Use @ref quvi_ok for checking if an error occurred
 @ingroup verify
 */
 quvi_verify_t quvi_verify_new(quvi_t handle, const char *url)
