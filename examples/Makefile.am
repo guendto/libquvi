@@ -77,3 +77,11 @@ scan_CPPFLAGS=$(examples_common_cppflags)
 scan_LDFLAGS=$(examples_common_ldflags)
 scan_LDADD=$(examples_common_ldadd)
 scan_CFLAGS=$(AM_CFLAGS)
+
+EXAMPLE_PROGS+=verify
+
+verify_SOURCES=verify.c
+verify_CPPFLAGS=$(examples_common_cppflags)
+verify_LDFLAGS=$(examples_common_ldflags)
+verify_LDADD=$(examples_common_ldadd)
+verify_CFLAGS=$(AM_CFLAGS)

@@ -20,12 +20,7 @@
 #include <glib.h>
 #include <quvi.h>
 
-extern quvi_query_formats_t qqf;
-extern quvi_playlist_t qp;
-extern quvi_resolve_t qr;
-extern quvi_media_t qm;
-extern quvi_scan_t qs;
-extern quvi_t q;
+#include "examples.h"
 
 void cleanup()
 {
@@ -40,6 +35,9 @@ void cleanup()
 
   quvi_resolve_free(qr);
   qr = NULL;
+
+  quvi_verify_free(qv);
+  qv = NULL;
 
   quvi_media_free(qm);
   qm = NULL;

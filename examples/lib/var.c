@@ -23,6 +23,7 @@
 quvi_query_formats_t qqf = NULL;
 quvi_playlist_t qp = NULL;
 quvi_resolve_t qr = NULL;
+quvi_verify_t qv = NULL;
 quvi_media_t qm = NULL;
 quvi_scan_t qs = NULL;
 quvi_t q = NULL;
