@@ -90,6 +90,14 @@ goto_LDFLAGS=$(testsuite_common_ldflags)
 goto_LDADD=$(testsuite_common_ldadd)
 goto_CFLAGS=$(AM_CFLAGS)
 
+TEST_PROGS+=verify
+
+verify_SOURCES=verify.c
+verify_CPPFLAGS=$(testsuite_common_cppflags)
+verify_LDFLAGS=$(testsuite_common_ldflags)
+verify_LDADD=$(testsuite_common_ldadd)
+verify_CFLAGS=$(AM_CFLAGS)
+
 test: all
 	@ok=1; for t in $(TEST_PROGS); do \
 		(gtester $(TEST_OPTS) $(top_builddir)/tests/$$t -o $$t.xml) \
