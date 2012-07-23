@@ -17,53 +17,39 @@
  * 02110-1301, USA.
  */
 
+/** @file verify_free.c */
+
 #include "config.h"
 
-#include <lauxlib.h>
-#include <lualib.h>
 #include <glib.h>
 
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_verify_s.h"
-#include "_quvi_net_s.h"
-/* -- */
-#include "lua/load_util_script.h"
 
-static const gchar script_fname[]= "to_file_ext.lua";
-static const gchar script_func[] = "to_file_ext";
-
-QuviError l_exec_util_to_file_ext(_quvi_verify_t v, _quvi_net_t n)
+/** @brief Free all of memory used by a verify handle
+@note If handle is NULL the function simply returns
+@ingroup verify
+*/
+void quvi_verify_free(quvi_verify_t handle)
 {
-  lua_State *l;
-  QuviError rc;
-  _quvi_t q;
+  _quvi_verify_t v = (_quvi_verify_t) handle;
 
-  q = v->handle.quvi;
-  rc = l_load_util_script(q, script_fname, script_func);
+  if (handle == NULL)
+    return;
 
-  if (rc != QUVI_OK)
-    return (rc);
+  g_string_free(v->url.input, TRUE);
+  v->url.input = NULL;
 
-  l = q->handle.lua;
-  lua_pushstring(l, n->verify.content_type->str);
+  g_string_free(v->content_type, TRUE);
+  v->content_type = NULL;
 
-  /* 2=qargs,title [qargs: set in l_load_util_script]
-   * 1=returns a string */
-  if (lua_pcall(l, 2, 1, 0))
-    {
-      g_string_assign(q->status.errmsg, lua_tostring(l, -1));
-      return (QUVI_ERROR_SCRIPT);
-    }
+  g_string_free(v->file_ext, TRUE);
+  v->file_ext = NULL;
 
-  if (!lua_isstring(l, -1))
-    luaL_error(l, "%s: did not return a string", script_func);
-
-  g_string_assign(v->file_ext, lua_tostring(l,-1));
-  lua_pop(l, 1);
-
-  return (QUVI_OK);
+  g_free(v);
+  v = NULL;
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

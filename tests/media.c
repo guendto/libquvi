@@ -76,22 +76,19 @@ static void test_media()
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
   g_assert(qm != NULL);
 
-  quvi_media_get(qm, QUVI_MEDIA_PROPERTY_FILE_EXTENSION-1, &s);
+  quvi_media_get(qm, QUVI_MEDIA_PROPERTY_THUMBNAIL_URL-1, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
 
   quvi_media_get(qm, QUVI_MEDIA_PROPERTY_DURATION_MS+1, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
 
   /* string */
-  chk_len(QUVI_MEDIA_PROPERTY_FILE_EXTENSION);
   chk_len(QUVI_MEDIA_PROPERTY_THUMBNAIL_URL);
-  chk_len(QUVI_MEDIA_PROPERTY_CONTENT_TYPE);
   chk_len(QUVI_MEDIA_PROPERTY_STREAM_URL);
   chk_len(QUVI_MEDIA_PROPERTY_TITLE);
   chk_len(QUVI_MEDIA_PROPERTY_ID);
 
   /* double */
-  chk_val(QUVI_MEDIA_PROPERTY_LENGTH_BYTES);
   chk_val(QUVI_MEDIA_PROPERTY_START_TIME_MS);
   chk_val(QUVI_MEDIA_PROPERTY_DURATION_MS);
 

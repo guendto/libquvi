@@ -36,7 +36,6 @@ struct _quvi_s
   struct
   {
     gboolean autoproxy;
-    gboolean verify;
     GString *format;
     struct
     {

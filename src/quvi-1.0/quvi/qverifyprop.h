@@ -17,31 +17,31 @@
  * 02110-1301, USA.
  */
 
-#ifndef _quvi_media_s_h
-#define _quvi_media_s_h
+#ifndef qverifyprop_h
+#define qverifyprop_h
 
-struct _quvi_media_s
+/** @file qverifyprop.h */
+
+/** @cond NODOC */
+#define QUVI_VERIFY_PROPERTY_TYPE_STRING 0x100000
+#define QUVI_VERIFY_PROPERTY_TYPE_LONG   0x200000
+#define QUVI_VERIFY_PROPERTY_TYPE_DOUBLE 0x300000
+#define QUVI_VERIFY_PROPERTY_TYPE_VOID   0x400000
+#define QUVI_VERIFY_PROPERTY_TYPE_MASK   0xf00000
+/** @endcond */
+
+/** @enum QuviVerifyProperty */
+typedef enum
 {
-  struct
-  {
-    GString *redirect_to; /* Set in a media script ("goto_url") */
-    GString *thumbnail;
-    GString *stream;
-    GString *input; /* e.g. "http://youtube.com/?watch=foo" */
-  } url;
-  struct
-  {
-    _quvi_t quvi;
-  } handle;
-  /* Other */
-  gdouble start_time_ms;
-  gdouble duration_ms;
-  GString *title;
-  GString *id;
-};
+  /* string */
+  QUVI_VERIFY_PROPERTY_FILE_EXTENSION = QUVI_VERIFY_PROPERTY_TYPE_STRING+1,
+  QUVI_VERIFY_PROPERTY_CONTENT_TYPE,
+  /* double */
+  QUVI_VERIFY_PROPERTY_LENGTH_BYTES =
+  ((QUVI_VERIFY_PROPERTY_CONTENT_TYPE - QUVI_VERIFY_PROPERTY_TYPE_STRING)
+  + QUVI_VERIFY_PROPERTY_TYPE_DOUBLE + 0x20),
+} QuviVerifyProperty;
 
-typedef struct _quvi_media_s *_quvi_media_t;
-
-#endif /* _quvi_media_s_h */
+#endif /* qverifyprop_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

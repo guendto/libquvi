@@ -39,8 +39,6 @@ gpointer m_media_new(_quvi_t q, const gchar *url)
   /* Handle */
   m->handle.quvi = q;
   /* Other */
-  m->content_type = g_string_new(NULL);
-  m->file_ext = g_string_new(NULL);
   m->title = g_string_new(NULL);
   m->id = g_string_new(NULL);
   return (m);
@@ -66,12 +64,6 @@ void m_media_free(_quvi_media_t m)
   m->url.input = NULL;
 
   /* Other */
-
-  g_string_free(m->content_type, TRUE);
-  m->content_type = NULL;
-
-  g_string_free(m->file_ext, TRUE);
-  m->file_ext= NULL;
 
   g_string_free(m->title, TRUE);
   m->title = NULL;

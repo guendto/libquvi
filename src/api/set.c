@@ -34,9 +34,6 @@ static QuviError _set(_quvi_t q, QuviOption o, va_list arg)
     case QUVI_OPTION_MEDIA_SCRIPT_PROTOCOL_CATEGORY:
       q->opt.scripts.category = va_arg(arg, glong);
       break;
-    case QUVI_OPTION_VERIFY_MEDIA_STREAM_URL:
-      q->opt.verify = (gboolean) va_arg(arg, glong) >0;
-      break;
     case QUVI_OPTION_REQUEST_FORMAT:
       g_string_assign(q->opt.format, va_arg(arg, gchar*));
       break;

@@ -41,14 +41,6 @@ typedef enum
    * @sa QuviMediaScriptProtocolCategory
    * @sa @ref proto_cat */
   QUVI_OPTION_MEDIA_SCRIPT_PROTOCOL_CATEGORY,
-  /** Verify the media stream URL (HTTP and HTTPS only). Additionally,
-   * causes the library to parse and save the returned content-type and
-   * content-length metadata. The saved data is made available as media
-   * properties which would otherwise remain unset.  Default: QUVI_TRUE.
-   *
-   * @sa QuviMediaProperty
-   */
-  QUVI_OPTION_VERIFY_MEDIA_STREAM_URL,
   /** Default: None */
   QUVI_OPTION_CALLBACK_STATUS,
   /** Tells the media script(s) to get the requested format if available.

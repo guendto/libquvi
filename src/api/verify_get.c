@@ -17,7 +17,7 @@
  * 02110-1301, USA.
  */
 
-/** @file media_get.c */
+/** @file verify_get.c */
 
 #include "config.h"
 
@@ -26,39 +26,32 @@
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
-#include "_quvi_media_s.h"
+#include "_quvi_verify_s.h"
 
-static QuviError _media_get(_quvi_media_t m, QuviMediaProperty n, ...)
+static QuviError _verify_get(_quvi_verify_t v, QuviVerifyProperty n, ...)
 {
   QuviError rc;
   gdouble *dp;
   va_list arg;
   gchar **sp;
-  glong *lp;
   gint type;
 
   va_start(arg, n);
-  type = QUVI_MEDIA_PROPERTY_TYPE_MASK & (gint) n;
+  type = QUVI_VERIFY_PROPERTY_TYPE_MASK & (gint) n;
 
   dp = NULL;
   sp = NULL;
-  lp = NULL;
 
   rc = QUVI_OK;
 
   switch (type)
     {
-    case QUVI_MEDIA_PROPERTY_TYPE_STRING:
+    case QUVI_VERIFY_PROPERTY_TYPE_STRING:
       sp = va_arg(arg, gchar**);
       if (sp == NULL)
         rc = QUVI_ERROR_INVALID_ARG;
       break;
-    case QUVI_MEDIA_PROPERTY_TYPE_LONG:
-      lp = va_arg(arg, glong*);
-      if (lp == NULL)
-        rc = QUVI_ERROR_INVALID_ARG;
-      break;
-    case QUVI_MEDIA_PROPERTY_TYPE_DOUBLE:
+    case QUVI_VERIFY_PROPERTY_TYPE_DOUBLE:
       dp = va_arg(arg, gdouble*);
       if (dp == NULL)
         rc = QUVI_ERROR_INVALID_ARG;
@@ -74,23 +67,14 @@ static QuviError _media_get(_quvi_media_t m, QuviMediaProperty n, ...)
 
   switch (n)
     {
-    case QUVI_MEDIA_PROPERTY_TITLE:
-      *sp = m->title->str;
+    case QUVI_VERIFY_PROPERTY_FILE_EXTENSION:
+      *sp = v->file_ext->str;
       break;
-    case QUVI_MEDIA_PROPERTY_ID:
-      *sp = m->id->str;
+    case QUVI_VERIFY_PROPERTY_LENGTH_BYTES:
+      *dp = v->length_bytes;
       break;
-    case QUVI_MEDIA_PROPERTY_STREAM_URL:
-      *sp = m->url.stream->str;
-      break;
-    case QUVI_MEDIA_PROPERTY_START_TIME_MS:
-      *dp = m->start_time_ms;
-      break;
-    case QUVI_MEDIA_PROPERTY_THUMBNAIL_URL:
-      *sp = m->url.thumbnail->str;
-      break;
-    case QUVI_MEDIA_PROPERTY_DURATION_MS:
-      *dp = m->duration_ms;
+    case QUVI_VERIFY_PROPERTY_CONTENT_TYPE:
+      *sp = v->content_type->str;
       break;
     default:
       rc = QUVI_ERROR_INVALID_ARG;
@@ -99,13 +83,13 @@ static QuviError _media_get(_quvi_media_t m, QuviMediaProperty n, ...)
   return (rc);
 }
 
-/** @brief Return a media property
-@sa @ref parse_media
-@ingroup mediaprop
+/** @brief Return a verify property
+@sa @ref verify_url
+@ingroup verify
 */
-void quvi_media_get(quvi_media_t handle, QuviMediaProperty property, ...)
+void quvi_verify_get(quvi_verify_t handle, QuviVerifyProperty property, ...)
 {
-  _quvi_media_t m;
+  _quvi_verify_t v;
   va_list arg;
   gpointer p;
   _quvi_t q;
@@ -116,11 +100,11 @@ void quvi_media_get(quvi_media_t handle, QuviMediaProperty property, ...)
   va_start(arg, property);
   p = va_arg(arg, gpointer);
   va_end(arg);
- 
-  m = (_quvi_media_t) handle;
-  q = m->handle.quvi;
 
-  q->status.rc = _media_get(m, property, p);
+  v = (_quvi_verify_t) handle;
+  q = v->handle.quvi;
+
+  q->status.rc = _verify_get(v, property, p);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

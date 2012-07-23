@@ -17,31 +17,25 @@
  * 02110-1301, USA.
  */
 
-#ifndef _quvi_media_s_h
-#define _quvi_media_s_h
+#ifndef _quvi_verify_s_h
+#define _quvi_verify_s_h
 
-struct _quvi_media_s
+struct _quvi_verify_s
 {
-  struct
-  {
-    GString *redirect_to; /* Set in a media script ("goto_url") */
-    GString *thumbnail;
-    GString *stream;
-    GString *input; /* e.g. "http://youtube.com/?watch=foo" */
+  struct {
+    GString *input;
   } url;
   struct
   {
     _quvi_t quvi;
   } handle;
-  /* Other */
-  gdouble start_time_ms;
-  gdouble duration_ms;
-  GString *title;
-  GString *id;
+  GString *content_type;
+  gdouble length_bytes;
+  GString *file_ext;
 };
 
-typedef struct _quvi_media_s *_quvi_media_t;
+typedef struct _quvi_verify_s *_quvi_verify_t;
 
-#endif /* _quvi_media_s_h */
+#endif /* _quvi_verify_s_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

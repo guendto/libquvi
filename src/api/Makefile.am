@@ -29,6 +29,9 @@ src=\
   resolve_new.c\
   script_next.c\
   script_get.c\
+  verify_free.c\
+  verify_new.c\
+  verify_get.c\
   media_free.c\
   media_new.c\
   media_get.c\
