@@ -49,15 +49,10 @@ static void resolve(const quvi_word type)
 
 static void verify(const quvi_word type)
 {
-  switch (type)
-    {
-    default:
-      g_printerr("[%s] Verify media stream URL ...", __func__);
-      break;
-    case QUVI_CALLBACK_STATUS_DONE:
-      g_printerr("done.\n");
-      break;
-    }
+  if (type == QUVI_CALLBACK_STATUS_DONE)
+    g_printerr("done.\n");
+  else
+    g_printerr("[%s] Verify URL ...", __func__);
 }
 
 QuviError status(glong param, gpointer p)
