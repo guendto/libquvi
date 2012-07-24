@@ -20,7 +20,6 @@
 #include <stdio.h>
 #include <quvi.h>
 
-quvi_query_formats_t qqf = NULL;
 quvi_playlist_t qp = NULL;
 quvi_resolve_t qr = NULL;
 quvi_media_t qm = NULL;

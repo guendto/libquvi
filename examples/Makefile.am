@@ -14,15 +14,7 @@ examples_common_ldadd=\
   $(top_builddir)/examples/lib/libconvenience_example.la\
   $(top_builddir)/src/libquvi-1.0.la
 
-EXAMPLE_PROGS=query_fmts
-
-query_fmts_SOURCES=query_fmts.c
-query_fmts_CPPFLAGS=$(examples_common_cppflags)
-query_fmts_LDFLAGS=$(examples_common_ldflags)
-query_fmts_LDADD=$(examples_common_ldadd)
-query_fmts_CFLAGS=$(AM_CFLAGS)
-
-EXAMPLE_PROGS+=supports
+EXAMPLE_PROGS=supports
 
 supports_SOURCES=supports.c
 supports_CPPFLAGS=$(examples_common_cppflags)

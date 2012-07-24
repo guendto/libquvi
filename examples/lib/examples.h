@@ -20,7 +20,6 @@
 #ifndef examples_h
 #define examples_h
 
-extern quvi_query_formats_t qqf;
 extern quvi_playlist_t qp;
 extern quvi_resolve_t qr;
 extern quvi_media_t qm;
