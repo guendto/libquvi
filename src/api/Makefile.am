@@ -11,14 +11,10 @@ EXTRA_DIST=\
   doxy/parse_media.dp\
   doxy/parse_playlist.dp\
   doxy/proxy_support.dp\
-  doxy/query_formats.dp\
   doxy/scan_media.dp\
   doxy/scripts.dp
 
 src=\
-  query_formats_free.c\
-  query_formats_new.c\
-  query_formats_get.c\
   playlist_next_media_url.c\
   playlist_free.c\
   playlist_new.c\

@@ -55,7 +55,6 @@ typedef enum
    * Default: "default", can be "best" which causes the media script to
    * try to pick the best available format for the media.
    * @note
-   *  - This option should be set only after @ref query_formats
    *  - Available formats may vary greatly depending on the website
    *  - The value may be a comma-separated list of format strings
    * @section comma_sep_list Comma-separated list of format strings
@@ -68,8 +67,6 @@ typedef enum
    * script deems this to be), unless 'foo' is matched
    * @li "foo,bar" - Choose whatever script deems to be the default,
    * unless either 'foo' or 'bar' is matched first
-   *
-   * @sa @ref query_formats
    */
   QUVI_OPTION_REQUEST_FORMAT,
   /** Autodetect and set the proxy for new connections.

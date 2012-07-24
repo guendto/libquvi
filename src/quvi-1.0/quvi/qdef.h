@@ -24,7 +24,6 @@
 
 typedef int (*quvi_callback_status)(long,void*); /**< Status callback type */
 
-typedef void *quvi_query_formats_t; /**< Query formats type */
 typedef void *quvi_playlist_t; /**< Playlist script type */
 typedef void *quvi_resolve_t; /**< Resolve type */
 typedef void *quvi_media_t; /**< Media type */

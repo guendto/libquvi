@@ -15,7 +15,6 @@ quvi_media_free(m); /* Release when done using it. */
 m = NULL;
 @endcode
 
-@sa @ref query_formats
 @sa QuviMediaProperty
 
 The available @ref m_script collection determines which

@@ -20,7 +20,6 @@
 #ifndef l_exec_h
 #define l_exec_h
 
-QuviError l_exec_media_script_query_formats(gpointer, GSList*, gchar**);
 QuviError l_exec_media_script_ident(gpointer, GSList*);
 QuviError l_exec_media_script_parse(gpointer, GSList*);
 
