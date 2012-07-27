@@ -28,8 +28,22 @@
 #include "_quvi_s.h"
 #include "_quvi_media_s.h"
 
-static QuviError _media_get(_quvi_media_t m, QuviMediaProperty n, ...)
+/* Advances the current stream pointer to the first stream if undefined. */
+static void _chk_curr_stream(_quvi_media_t qm, _quvi_media_stream_t *qms)
 {
+  if (qm->curr.stream == NULL)
+    {
+      const QuviBoolean r = quvi_media_stream_next(qm);
+      g_assert(r == QUVI_TRUE); /* If the stream list is still empty,
+                                 * quvi_media_get is being used incorrectly.*/
+    }
+  g_assert(qm->curr.stream != NULL);
+  *qms = (_quvi_media_stream_t) qm->curr.stream->data;
+}
+
+static QuviError _media_get(_quvi_media_t qm, QuviMediaProperty n, ...)
+{
+  _quvi_media_stream_t qms;
   QuviError rc;
   gdouble *dp;
   va_list arg;
@@ -45,6 +59,7 @@ static QuviError _media_get(_quvi_media_t m, QuviMediaProperty n, ...)
   lp = NULL;
 
   rc = QUVI_OK;
+  qms = NULL;
 
   switch (type)
     {
@@ -75,23 +90,74 @@ static QuviError _media_get(_quvi_media_t m, QuviMediaProperty n, ...)
   switch (n)
     {
     case QUVI_MEDIA_PROPERTY_TITLE:
-      *sp = m->title->str;
+      *sp = qm->title->str;
       break;
     case QUVI_MEDIA_PROPERTY_ID:
-      *sp = m->id->str;
-      break;
-    case QUVI_MEDIA_PROPERTY_STREAM_URL:
-      *sp = m->url.stream->str;
+      *sp = qm->id->str;
       break;
     case QUVI_MEDIA_PROPERTY_START_TIME_MS:
-      *dp = m->start_time_ms;
+      *dp = qm->start_time_ms;
       break;
     case QUVI_MEDIA_PROPERTY_THUMBNAIL_URL:
-      *sp = m->url.thumbnail->str;
+      *sp = qm->url.thumbnail->str;
       break;
     case QUVI_MEDIA_PROPERTY_DURATION_MS:
-      *dp = m->duration_ms;
+      *dp = qm->duration_ms;
       break;
+
+      /*
+       * Stream properties.
+       *
+       * NOTE: These must advance current stream pointer if it is still
+       * set to NULL.
+       */
+
+    case QUVI_MEDIA_STREAM_PROPERTY_VIDEO_ENCODING:
+      _chk_curr_stream(qm, &qms);
+      g_assert(qms != NULL);
+      *sp = qms->video.encoding->str;
+      break;
+    case QUVI_MEDIA_STREAM_PROPERTY_AUDIO_ENCODING:
+      _chk_curr_stream(qm, &qms);
+      g_assert(qms != NULL);
+      *sp = qms->audio.encoding->str;
+      break;
+    case QUVI_MEDIA_STREAM_PROPERTY_CONTAINER:
+      _chk_curr_stream(qm, &qms);
+      g_assert(qms != NULL);
+      *sp = qms->container->str;
+      break;
+    case QUVI_MEDIA_STREAM_PROPERTY_FORMAT_ID:
+      _chk_curr_stream(qm, &qms);
+      g_assert(qms != NULL);
+      *sp = qms->fmt_id->str;
+      break;
+    case QUVI_MEDIA_STREAM_PROPERTY_URL:
+      _chk_curr_stream(qm, &qms);
+      g_assert(qms != NULL);
+      *sp = qms->url->str;
+      break;
+    case QUVI_MEDIA_STREAM_PROPERTY_VIDEO_BITRATE_KBIT_S:
+      _chk_curr_stream(qm, &qms);
+      g_assert(qms != NULL);
+      *dp = qms->video.bitrate_kbit_s;
+      break;
+    case QUVI_MEDIA_STREAM_PROPERTY_AUDIO_BITRATE_KBIT_S:
+      _chk_curr_stream(qm, &qms);
+      g_assert(qms != NULL);
+      *dp = qms->audio.bitrate_kbit_s;
+      break;
+    case QUVI_MEDIA_STREAM_PROPERTY_VIDEO_HEIGHT:
+      _chk_curr_stream(qm, &qms);
+      g_assert(qms != NULL);
+      *dp = qms->video.height;
+      break;
+    case QUVI_MEDIA_STREAM_PROPERTY_VIDEO_WIDTH:
+      _chk_curr_stream(qm, &qms);
+      g_assert(qms != NULL);
+      *dp = qms->video.width;
+      break;
+
     default:
       rc = QUVI_ERROR_INVALID_ARG;
       break;
@@ -102,10 +168,14 @@ static QuviError _media_get(_quvi_media_t m, QuviMediaProperty n, ...)
 /** @brief Return a media property
 @sa @ref parse_media
 @ingroup mediaprop
+@note Using any of the QUVI_MEDIA_STREAM_PROPERTY_* values will cause
+the library to advance to the first stream in the list, this will
+conflict with the use of @ref quvi_media_stream_next, causing it to
+continue from the second stream, not the first one
 */
 void quvi_media_get(quvi_media_t handle, QuviMediaProperty property, ...)
 {
-  _quvi_media_t m;
+  _quvi_media_t qm;
   va_list arg;
   gpointer p;
   _quvi_t q;
@@ -116,11 +186,11 @@ void quvi_media_get(quvi_media_t handle, QuviMediaProperty property, ...)
   va_start(arg, property);
   p = va_arg(arg, gpointer);
   va_end(arg);
- 
-  m = (_quvi_media_t) handle;
-  q = m->handle.quvi;
 
-  q->status.rc = _media_get(m, property, p);
+  qm = (_quvi_media_t) handle;
+  q = qm->handle.quvi;
+
+  q->status.rc = _media_get(qm, property, p);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

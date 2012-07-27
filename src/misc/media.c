@@ -34,7 +34,6 @@ gpointer m_media_new(_quvi_t q, const gchar *url)
   /* URL */
   m->url.redirect_to = g_string_new(NULL);
   m->url.thumbnail = g_string_new(NULL);
-  m->url.stream = g_string_new(NULL);
   m->url.input = g_string_new(url);
   /* Handle */
   m->handle.quvi = q;
@@ -44,10 +43,46 @@ gpointer m_media_new(_quvi_t q, const gchar *url)
   return (m);
 }
 
+static void _stream_free(gpointer p, gpointer userdata)
+{
+  _quvi_media_stream_t qms = (_quvi_media_stream_t) p;
+
+  if (p == NULL)
+    return;
+
+  g_string_free(qms->container, TRUE);
+  qms->container = NULL;
+
+  g_string_free(qms->fmt_id, TRUE);
+  qms->fmt_id = NULL;
+
+  g_string_free(qms->url, TRUE);
+  qms->url = NULL;
+
+  g_string_free(qms->video.encoding, TRUE);
+  qms->video.encoding = NULL;
+
+  g_string_free(qms->audio.encoding, TRUE);
+  qms->audio.encoding = NULL;
+
+  g_free(qms);
+  qms = NULL;
+}
+
 void m_media_free(_quvi_media_t m)
 {
   if (m == NULL)
     return;
+
+  /* Streams */
+
+#ifdef HAVE_GLIB_2_28
+  g_slist_free_full(m->streams, _stream_free);
+#else
+  g_slist_foreach(m->streams, _stream_free, NULL);
+  g_slist_free(m->streams);
+#endif
+  m->streams = NULL;
 
   /* URLs */
 
@@ -56,9 +91,6 @@ void m_media_free(_quvi_media_t m)
 
   g_string_free(m->url.thumbnail, TRUE);
   m->url.thumbnail = NULL;
-
-  g_string_free(m->url.stream, TRUE);
-  m->url.stream = NULL;
 
   g_string_free(m->url.input, TRUE);
   m->url.input = NULL;

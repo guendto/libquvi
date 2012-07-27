@@ -32,6 +32,7 @@ src=\
   verify_free.c\
   verify_new.c\
   verify_get.c\
+  media_stream_next.c\
   media_free.c\
   media_new.c\
   media_get.c\
