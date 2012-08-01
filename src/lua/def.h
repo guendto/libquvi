@@ -79,6 +79,16 @@
 
 #define US_INPUT_URL "input_url" /* App req. URL */
 
+/* Lua indexes.
+ *
+ * Used as 'key' (at index -2) and 'value' (at index -1). Many of
+ * the libquvi functions that call lua_next use these indexes. This is
+ * similar to (in Lua):
+ *   for k,v in pairs(t) do ... end
+ */
+
+enum {LI_VALUE = -1, LI_KEY = -2};
+
 #endif /* l_def_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

@@ -23,6 +23,15 @@
 gboolean l_chk_accepts(lua_State*, _quvi_script_t, const gchar*,
                        const gchar*, const gchar*);
 
+gboolean l_chk_assign_s(lua_State*, const gchar*, GString*);
+gboolean l_chk_s(lua_State*, const gchar*, gchar**);
+
+gboolean l_chk_assign_n(lua_State*, const gchar*, gdouble*);
+gboolean l_chk_n(lua_State*, const gchar*, gdouble*);
+
+gboolean l_chk_assign_b(lua_State*, const gchar*, gboolean*);
+gboolean l_chk_b(lua_State*, const gchar*, gboolean*);
+
 #endif /* l_chk_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

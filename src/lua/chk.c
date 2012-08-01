@@ -29,6 +29,8 @@
 /* -- */
 #include "lua/getfield.h"
 #include "lua/chk.h"
+#include "lua/def.h"
+#include "misc/re.h"
 
 gboolean l_chk_accepts(lua_State *l, _quvi_script_t qs,
                        const gchar *k_accepts, const gchar *k_domains,
@@ -56,6 +58,86 @@ gboolean l_chk_accepts(lua_State *l, _quvi_script_t qs,
   lua_pop(l, 1);
 
   return (r);
+}
+
+/*
+ * Return the value of the named (`w') string. The value is trimmed
+ * of any extra whitespace (e.g. leading, trailing).
+ *
+ * NOTE: g_free the returned value when done using it.
+ */
+gboolean l_chk_s(lua_State *l, const gchar *w, gchar **v)
+{
+  if (lua_isstring(l, LI_KEY) && lua_isstring(l, LI_VALUE))
+    {
+      if (g_strcmp0(lua_tostring(l, LI_KEY), w) == 0)
+        {
+          *v = m_trim_ws(lua_tostring(l, LI_VALUE));
+          return (TRUE);
+        }
+    }
+  return (FALSE);
+}
+
+gboolean l_chk_assign_s(lua_State *l, const gchar *k, GString *v)
+{
+  gchar *s = NULL;
+  if (l_chk_s(l, k, &s) == TRUE)
+    {
+      g_string_assign(v, s);
+      g_free(s);
+      s = NULL;
+      return (TRUE);
+    }
+  return (FALSE);
+}
+
+gboolean l_chk_n(lua_State *l, const gchar *w, gdouble *v)
+{
+  if (lua_isstring(l, LI_KEY) && lua_isnumber(l, LI_VALUE))
+    {
+      if (g_strcmp0(lua_tostring(l, LI_KEY), w) == 0)
+        {
+          *v = lua_tonumber(l, LI_VALUE);
+          return (TRUE);
+        }
+    }
+  return (FALSE);
+}
+
+gboolean l_chk_assign_n(lua_State *l, const gchar *k, gdouble *v)
+{
+  gdouble n = 0;
+  if (l_chk_n(l, k, &n) == TRUE)
+    {
+      *v = n;
+      return (TRUE);
+    }
+  return (FALSE);
+}
+
+gboolean l_chk_b(lua_State *l, const gchar *w, gboolean *v)
+{
+  if (lua_isstring(l, LI_KEY) && lua_isboolean(l, LI_VALUE))
+    {
+      if (g_strcmp0(lua_tostring(l, LI_KEY), w) == 0)
+        {
+          *v = lua_toboolean(l, LI_VALUE);
+          return (TRUE);
+        }
+    }
+  return (FALSE);
+}
+
+gboolean l_chk_assign_b(lua_State *l, const gchar *k, gboolean *v)
+{
+  gboolean b = 0;
+  if (l_chk_b(l, k, &b) == TRUE)
+    {
+      *v = b;
+      return (TRUE);
+    }
+  return (FALSE);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

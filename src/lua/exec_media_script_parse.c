@@ -28,9 +28,10 @@
 #include "_quvi_media_s.h"
 #include "_quvi_script_s.h"
 /* -- */
-#include "lua/def.h"
 #include "lua/getfield.h"
 #include "lua/setfield.h"
+#include "lua/chk.h"
+#include "lua/def.h"
 #include "misc/re.h"
 
 /*
@@ -44,98 +45,16 @@
 
 static const gchar script_func[] = "parse";
 
-/*
- * Many of these functions use 'key' (at index -2) and 'value' (at
- * index -1) with lua_next. Think of it as:
- *   for k,v in pairs(t) do
- *     ...
- *   end
- * in Lua.
- */
-enum { VALUE = -1, KEY = -2 };
-
-/*
- * Return the value of the named (`w') string. The value is trimmed
- * of any extra whitespace (e.g. leading, trailing).
- *
- * NOTE: g_free the returned value when done using it.
- */
-static gboolean _chk_s(lua_State *l, const gchar *w, gchar **v)
-{
-  if (lua_isstring(l, KEY) && lua_isstring(l, VALUE))
-    {
-      if (g_strcmp0(lua_tostring(l, KEY), w) == 0)
-        {
-          *v = m_trim_ws(lua_tostring(l, VALUE));
-          return (TRUE);
-        }
-    }
-  return (FALSE);
-}
-
-static gboolean _chk_assign_s(lua_State *l, const gchar *k, GString *s)
-{
-  gchar *v = NULL;
-  if (_chk_s(l, k, &v) == TRUE)
-    {
-      g_string_assign(s, v);
-      g_free(v);
-      v = NULL;
-      return (TRUE);
-    }
-  return (FALSE);
-}
-
-static gboolean _chk_n(lua_State *l, const gchar *w, gdouble *v)
-{
-  if (lua_isstring(l, KEY) && lua_isnumber(l, VALUE))
-    {
-      if (g_strcmp0(lua_tostring(l, KEY), w) == 0)
-        {
-          *v = lua_tonumber(l, VALUE);
-          return (TRUE);
-        }
-    }
-  return (FALSE);
-}
-
-static void _chk_assign_n(lua_State *l, const gchar *k, gdouble *dst)
-{
-  gdouble v = 0;
-  if (_chk_n(l, k, &v) == TRUE)
-    *dst = v;
-}
-
-static gboolean _chk_b(lua_State *l, const gchar *w, gboolean *v)
-{
-  if (lua_isstring(l, KEY) && lua_isboolean(l, VALUE))
-    {
-      if (g_strcmp0(lua_tostring(l, KEY), w) == 0)
-        {
-          *v = lua_toboolean(l, VALUE);
-          return (TRUE);
-        }
-    }
-  return (FALSE);
-}
-
-static void _chk_stream_b(lua_State *l, const gchar *k, gboolean *dst)
-{
-  gboolean v = 0;
-  if (_chk_b(l, k, &v) == TRUE)
-    *dst = v;
-}
-
 static void _foreach_video_property(lua_State *l, _quvi_media_t qm,
                                     _quvi_media_stream_t qms)
 {
   lua_pushnil(l);
-  while (lua_next(l, KEY))
+  while (lua_next(l, LI_KEY))
     {
-      _chk_assign_n(l, MSS_VIDEO_BITRATE_KBIT_S, &qms->video.bitrate_kbit_s);
-      _chk_assign_s(l, MSS_VIDEO_ENCODING, qms->video.encoding);
-      _chk_assign_n(l, MSS_VIDEO_HEIGHT, &qms->video.height);
-      _chk_assign_n(l, MSS_VIDEO_WIDTH, &qms->video.width);
+      l_chk_assign_n(l, MSS_VIDEO_BITRATE_KBIT_S, &qms->video.bitrate_kbit_s);
+      l_chk_assign_s(l, MSS_VIDEO_ENCODING, qms->video.encoding);
+      l_chk_assign_n(l, MSS_VIDEO_HEIGHT, &qms->video.height);
+      l_chk_assign_n(l, MSS_VIDEO_WIDTH, &qms->video.width);
       lua_pop(l, 1);
     }
 }
@@ -144,10 +63,10 @@ static void _foreach_audio_property(lua_State *l, _quvi_media_t qm,
                                     _quvi_media_stream_t qms)
 {
   lua_pushnil(l);
-  while (lua_next(l, KEY))
+  while (lua_next(l, LI_KEY))
     {
-      _chk_assign_n(l, MSS_AUDIO_BITRATE_KBIT_S, &qms->audio.bitrate_kbit_s);
-      _chk_assign_s(l, MSS_AUDIO_ENCODING, qms->audio.encoding);
+      l_chk_assign_n(l, MSS_AUDIO_BITRATE_KBIT_S, &qms->audio.bitrate_kbit_s);
+      l_chk_assign_s(l, MSS_AUDIO_ENCODING, qms->audio.encoding);
       lua_pop(l, 1);
     }
 }
@@ -156,9 +75,9 @@ static void _foreach_flag_property(lua_State *l, _quvi_media_t qm,
                                    _quvi_media_stream_t qms)
 {
   lua_pushnil(l);
-  while (lua_next(l, KEY))
+  while (lua_next(l, LI_KEY))
     {
-      _chk_stream_b(l, MSS_FLAGS_BEST, &qms->flags.best);
+      l_chk_assign_b(l, MSS_FLAGS_BEST, &qms->flags.best);
       lua_pop(l, 1);
     }
 }
@@ -169,9 +88,9 @@ static void _chk_stream_sublevel(const gchar *level, lua_State *l,
                                  _quvi_media_t qm, _quvi_media_stream_t qms,
                                  foreach_cb cb)
 {
-  if (lua_isstring(l, KEY) && lua_istable(l, VALUE))
+  if (lua_isstring(l, LI_KEY) && lua_istable(l, LI_VALUE))
     {
-      if (g_strcmp0(lua_tostring(l, KEY), level) == 0)
+      if (g_strcmp0(lua_tostring(l, LI_KEY), level) == 0)
         cb(l, qm, qms);
     }
 }
@@ -205,14 +124,14 @@ static _quvi_media_stream_t _new_stream(lua_State *l, _quvi_media_t qm,
   _quvi_media_stream_t qms = _media_stream_new();
 
   lua_pushnil(l);
-  while (lua_next(l, KEY)) /* For each qargs.stream property */
+  while (lua_next(l, LI_KEY)) /* For each qargs.stream property */
     {
       _chk_stream_sublevel(MSS_VIDEO, l, qm, qms, _foreach_video_property);
       _chk_stream_sublevel(MSS_AUDIO, l, qm, qms, _foreach_audio_property);
       _chk_stream_sublevel(MSS_FLAGS, l, qm, qms, _foreach_flag_property);
-      _chk_assign_s(l, MSS_CONTAINER, qms->container);
-      _chk_assign_s(l, MSS_FORMAT_ID, qms->fmt_id);
-      _chk_assign_s(l, MSS_URL, qms->url);
+      l_chk_assign_s(l, MSS_CONTAINER, qms->container);
+      l_chk_assign_s(l, MSS_FORMAT_ID, qms->fmt_id);
+      l_chk_assign_s(l, MSS_URL, qms->url);
       lua_pop(l, 1);
     }
   _has_stream_url(l, qms, script_path, i);
@@ -253,9 +172,9 @@ static void _foreach_stream(lua_State *l, _quvi_media_t qm,
   gint i = 0;
 
   lua_pushnil(l);
-  while (lua_next(l, KEY))
+  while (lua_next(l, LI_KEY))
     {
-      if (lua_istable(l, VALUE))
+      if (lua_istable(l, LI_VALUE))
         {
           _quvi_media_stream_t qms = _new_stream(l, qm, script_path, ++i);
           qm->streams = g_slist_prepend(qm->streams, qms);
@@ -271,9 +190,9 @@ static void _chk_streams(lua_State *l, _quvi_media_t qm,
                          const gchar *script_path)
 {
   lua_pushstring(l, MS_STREAMS);
-  lua_gettable(l, KEY);
+  lua_gettable(l, LI_KEY);
 
-  if (lua_istable(l, VALUE))
+  if (lua_istable(l, LI_VALUE))
     _foreach_stream(l, qm, script_path);
   else
     {
@@ -293,13 +212,13 @@ static void _chk_streams(lua_State *l, _quvi_media_t qm,
 static void _chk_optional(lua_State *l, _quvi_media_t qm)
 {
   lua_pushnil(l);
-  while (lua_next(l, KEY))
+  while (lua_next(l, LI_KEY))
     {
-      _chk_assign_n(l, MS_START_TIME_MS, &qm->start_time_ms);
-      _chk_assign_n(l, MS_DURATION_MS, &qm->duration_ms);
-      _chk_assign_s(l, MS_THUMB_URL, qm->url.thumbnail);
-      _chk_assign_s(l, MS_TITLE, qm->title);
-      _chk_assign_s(l, MS_ID, qm->id);
+      l_chk_assign_n(l, MS_START_TIME_MS, &qm->start_time_ms);
+      l_chk_assign_n(l, MS_DURATION_MS, &qm->duration_ms);
+      l_chk_assign_s(l, MS_THUMB_URL, qm->url.thumbnail);
+      l_chk_assign_s(l, MS_TITLE, qm->title);
+      l_chk_assign_s(l, MS_ID, qm->id);
       lua_pop(l, 1);
     }
 }
@@ -308,9 +227,9 @@ static void _chk_optional(lua_State *l, _quvi_media_t qm)
 static gboolean _chk_goto_instr(lua_State *l, _quvi_media_t qm)
 {
   lua_pushnil(l);
-  while (lua_next(l, KEY))
+  while (lua_next(l, LI_KEY))
     {
-      if (_chk_assign_s(l, MS_GOTO_URL, qm->url.redirect_to) == TRUE)
+      if (l_chk_assign_s(l, MS_GOTO_URL, qm->url.redirect_to) == TRUE)
         break;
       lua_pop(l, 1);
     }
