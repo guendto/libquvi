@@ -28,81 +28,103 @@
 #include "_quvi_playlist_s.h"
 #include "_quvi_script_s.h"
 /* -- */
-#include "lua/def.h"
 #include "lua/getfield.h"
 #include "lua/setfield.h"
-#include "misc/re.h"
+#include "lua/chk.h"
+#include "lua/def.h"
+
+/*
+ * NOTE: The error messages produced in these functions are intended for
+ * developers. They would typically be seen when a new media script is
+ * being developed or an old one is being maintained.
+ *
+ * The messages should be clear, indicating the actual error, minimizing
+ * the time spent on locating the actual problem in the script.
+ */
 
 static const gchar script_func[] = "parse";
 
-static void _get_s(lua_State *l, const gchar *k,
-                 gpointer dst, const gchar *script_path)
+static void _chk_optional(lua_State *l, _quvi_playlist_t qp)
 {
-  const gchar *s = l_getfield_s(l, k, script_path, script_func);
-  if (s != NULL)
+  lua_pushnil(l);
+  while (lua_next(l, LI_KEY))
     {
-      gchar *u = m_trim_ws(s);
-      if (u != NULL)
-        {
-          g_string_assign((GString*) dst, u);
-          g_free(u);
-          u = NULL;
-        }
+      l_chk_assign_s(l, PS_ID, qp->id.playlist);
+      lua_pop(l, 1);
     }
 }
 
-static gint _prepend_media_url(gpointer p, const gchar *url)
+static void _foreach_media_url(lua_State *l, _quvi_playlist_t qp,
+                               const gchar *script_path)
 {
-  _quvi_playlist_t pl = (_quvi_playlist_t) p;
-  pl->url.media = g_slist_prepend(pl->url.media, g_strdup(url));
-  return (QUVI_OK);
+  lua_pushnil(l);
+  while (lua_next(l, LI_KEY))
+    {
+      if (lua_isstring(l, LI_KEY) && lua_isstring(l, LI_VALUE))
+        {
+          const gchar *url = lua_tostring(l, LI_VALUE);
+          qp->url.media = g_slist_prepend(qp->url.media, g_strdup(url));
+        }
+      lua_pop(l, 1);
+    }
+  qp->url.media = g_slist_reverse(qp->url.media);
+}
+
+/* Check for 'qargs.media_url'. */
+static void _chk_media_url(lua_State *l, _quvi_playlist_t qp,
+                           const gchar *script_path)
+{
+  lua_pushstring(l, PS_MEDIA_URL);
+  lua_gettable(l, LI_KEY);
+
+  if (lua_istable(l, LI_VALUE))
+    _foreach_media_url(l, qp, script_path);
+  else
+    {
+      g_warning("%s: %s: should return a dictionary containing "
+                "the `qargs.%s'", script_path, script_func,
+                PS_MEDIA_URL);
+    }
+  lua_pop(l, 1);
 }
 
 QuviError l_exec_playlist_script_parse(gpointer p, GSList *sl)
 {
-  typedef l_callback_getfield_table_iter_s cb;
-
-  _quvi_playlist_t pl;
+  _quvi_playlist_t qp;
   _quvi_script_t qs;
   lua_State *l;
-  QuviError rc;
 
-  pl = (_quvi_playlist_t) p;
-  l = pl->handle.quvi->handle.lua;
+  qp = (_quvi_playlist_t) p;
+  l = qp->handle.quvi->handle.lua;
 
   qs = (_quvi_script_t) sl->data;
   lua_getglobal(l, script_func);
 
   if (!lua_isfunction(l, -1))
-    luaL_error(l, "%s: `%s' function not found", qs->fpath->str, script_func);
+    luaL_error(l, "%s: function `%s' not found", qs->fpath->str, script_func);
 
   lua_newtable(l);
-  l_set_reg_userdata(l, USERDATA_QUVI_T, (gpointer) pl->handle.quvi);
-  l_setfield_b(l, GS_VERBOSE, pl->handle.quvi->opt.scripts.verbose);
-  l_setfield_s(l, PS_INPUT_URL, pl->url.input->str);
+  l_set_reg_userdata(l, USERDATA_QUVI_T, (gpointer) qp->handle.quvi);
+  l_setfield_b(l, GS_VERBOSE, qp->handle.quvi->opt.scripts.verbose);
+  l_setfield_s(l, PS_INPUT_URL, qp->url.input->str);
 
   if (lua_pcall(l, 1, 1, 0))
     {
-      g_string_assign(pl->handle.quvi->status.errmsg, lua_tostring(l, -1));
+      g_string_assign(qp->handle.quvi->status.errmsg, lua_tostring(l, -1));
       return (QUVI_ERROR_SCRIPT);
     }
 
   if (!lua_istable(l, -1))
     {
-      luaL_error(l, "%s: expected `%s' function return a table",
+      luaL_error(l, "%s: %s: must return a dictionary, typically `qargs'",
                  qs->fpath->str, script_func);
     }
 
-  _get_s(l, PS_ID, (gpointer) pl->id.playlist, qs->fpath->str);
-
-  rc = l_getfield_table_iter_s(l, pl, PS_MEDIA_URL, qs->fpath->str,
-                               script_func, (cb) _prepend_media_url);
-  if (rc == QUVI_OK)
-    pl->url.media = g_slist_reverse(pl->url.media);
-
+  _chk_optional(l, qp);
+  _chk_media_url(l, qp, qs->fpath->str);
   lua_pop(l, 1);
 
-  return (rc);
+  return (QUVI_OK);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
