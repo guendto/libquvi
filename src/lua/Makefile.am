@@ -4,7 +4,6 @@ src=\
   util/exec_util_convert_entities.c\
   util/exec_util_to_file_ext.c\
   chk_accepts.c\
-  exec_media_script_query_formats.c\
   exec_playlist_script_ident.c\
   exec_playlist_script_parse.c\
   exec_media_script_ident.c\

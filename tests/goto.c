@@ -60,42 +60,10 @@ static void test_goto_url()
   quvi_free(q);
 }
 
-static void test_goto_url_qfmts()
-{
-  quvi_query_formats_t qqf;
-  quvi_t q;
-
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
-    return;
-
-  q = quvi_new();
-  g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
-
-  chk_verbose(q);
-
-  qqf = quvi_query_formats_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
-  g_assert(qqf != NULL);
-  {
-    gchar **r = g_strsplit(quvi_query_formats_get(qqf), ",", 0);
-    g_assert(r != NULL);
-    g_assert_cmpint(g_strv_length(r), >, 1);
-    g_strfreev(r);
-    r = NULL;
-  }
-  quvi_query_formats_free(qqf);
-  quvi_free(q);
-}
-
 gint main(gint argc, gchar **argv)
 {
   g_test_init(&argc, &argv, NULL);
   g_test_add_func("/quvi/goto URL", test_goto_url);
-  g_test_add_func("/quvi/goto URL (query fmts)", test_goto_url_qfmts);
   return (g_test_run());
 }
 

@@ -1,7 +1,6 @@
 SUBDIRS=quvi-1.0 api misc lua curl net
 
 hdr=\
-  _quvi_query_formats_s.h\
   _quvi_net_resolve_s.h\
   _quvi_playlist_s.h\
   _quvi_net_opt_s.h\

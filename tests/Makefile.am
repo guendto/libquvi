@@ -34,14 +34,6 @@ quvi_CFLAGS=$(AM_CFLAGS)
 
 # TEST_INTERNET tests
 
-TEST_PROGS+=query_fmts
-
-query_fmts_SOURCES=query_fmts.c
-query_fmts_CPPFLAGS=$(testsuite_common_cppflags)
-query_fmts_LDFLAGS=$(testsuite_common_ldflags)
-query_fmts_LDADD=$(testsuite_common_ldadd)
-query_fmts_CFLAGS=$(AM_CFLAGS)
-
 TEST_PROGS+=playlist
 
 playlist_SOURCES=playlist.c

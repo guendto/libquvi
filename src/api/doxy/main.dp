@@ -26,7 +26,6 @@ stream URLs.
 @section p_advanced Programming: Advanced topics
 @li @subpage scan_media
 @li @subpage chk_support
-@li @subpage query_formats
 @li @subpage scripts
 @li @subpage select_stream
 @li @subpage verify_url

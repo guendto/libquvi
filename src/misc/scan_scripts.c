@@ -162,7 +162,6 @@ static gpointer _new_media_script(_quvi_t q, const gchar *path,
       gboolean OK =
         (_chk(c->str, "^\\-\\-\\s+libquvi\\-scripts") == TRUE
          && _chk(c->str, "^function ident") == TRUE
-         && _chk(c->str, "^function query_formats") == TRUE
          && _chk(c->str, "^function parse") == TRUE);
 
       if (OK == TRUE)

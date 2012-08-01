@@ -92,17 +92,6 @@ QuviError m_match_media_script(_quvi_t q, _quvi_media_t *m,
         }
       break;
 
-    case QM_MATCH_MS_QUERY_FORMATS:
-      g_return_val_if_fail(result != NULL, QUVI_ERROR_INVALID_ARG);
-      rc = l_exec_media_script_query_formats(*m, s, result);
-      if (rc == QUVI_OK)
-        {
-          /* Check if goto_url was set. */
-          if (_chk_goto_url(*m) == TRUE)
-            return (m_match_media_script(q, m, url, mode, result));
-        }
-      break;
-
     case QM_MATCH_MS_SUPPORTED_OFFLINE:
     case QM_MATCH_MS_SUPPORTED_ONLINE:
       break;

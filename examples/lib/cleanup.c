@@ -30,9 +30,6 @@ void cleanup()
   quvi_playlist_free(qp);
   qp = NULL;
 
-  quvi_query_formats_free(qqf);
-  qqf = NULL;
-
   quvi_resolve_free(qr);
   qr = NULL;
 

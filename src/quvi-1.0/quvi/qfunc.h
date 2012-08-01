@@ -48,13 +48,6 @@ extern "C" {
   void quvi_media_stream_select(quvi_media_t, const char*);
   void quvi_media_stream_choose_best(quvi_media_t);
 
-  /* Query formats */
-
-  quvi_query_formats_t quvi_query_formats_new(quvi_t, const char*);
-  void quvi_query_formats_free(quvi_query_formats_t);
-
-  const char *quvi_query_formats_get(quvi_query_formats_t);
-
   /* Playlist */
 
   quvi_playlist_t quvi_playlist_new(quvi_t, const char*);

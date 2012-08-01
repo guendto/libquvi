@@ -54,7 +54,7 @@ void chk_verbose(quvi_t q)
 
 /* Check if test was set to be skipped.
  * Example:
- *  env TEST_SKIP=test_supports_online,test_query_formats make test
+ *  env TEST_SKIP=test_supports_online,test_quvi make test
  */
 gboolean chk_skip(const gchar *test)
 {
