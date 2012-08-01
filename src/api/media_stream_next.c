@@ -17,7 +17,7 @@
  * 02110-1301, USA.
  */
 
-/** @file set.c */
+/** @file media_stream_next.c */
 
 #include "config.h"
 
@@ -26,50 +26,27 @@
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
+#include "_quvi_media_s.h"
 
-static QuviError _set(_quvi_t q, QuviOption o, va_list arg)
-{
-  switch (o)
-    {
-    case QUVI_OPTION_MEDIA_SCRIPT_PROTOCOL_CATEGORY:
-      q->opt.scripts.category = va_arg(arg, glong);
-      break;
-    case QUVI_OPTION_AUTOPROXY:
-      q->opt.autoproxy = (gboolean) va_arg(arg, glong) >0;
-      break;
-
-      /* Callback */
-
-    case QUVI_OPTION_CALLBACK_STATUS:
-      q->cb.status = va_arg(arg, quvi_callback_status);
-      break;
-
-      /* Default */
-
-    default:
-      return (QUVI_ERROR_INVALID_ARG);
-    }
-
-  return (QUVI_OK);
-}
-
-/** @brief Set library handle option
-@sa @ref getting_started
-@ingroup lib
+/** @brief Traverse to next available @ref m_stream
+@return QUVI_TRUE if succeeded, otherwise QUVI_FALSE
+@sa @ref parse_media
+@ingroup mediaprop
 */
-void quvi_set(quvi_t handle, QuviOption option, ...)
+QuviBoolean quvi_media_stream_next(quvi_media_t handle)
 {
-  va_list arg;
-  _quvi_t q;
+  _quvi_media_t qm = (_quvi_media_t) handle;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
-  g_return_if_fail(handle != NULL);
+  g_return_val_if_fail(handle != NULL, QUVI_FALSE);
 
-  q = (_quvi_t) handle;
+  qm->curr.stream = (qm->curr.stream != NULL)
+                    ? g_slist_next(qm->curr.stream)
+                    : qm->streams;
 
-  va_start(arg, option);
-  q->status.rc = _set(handle, option, arg);
-  va_end(arg);
+  return ((qm->curr.stream != NULL)
+          ? QUVI_TRUE
+          : QUVI_FALSE);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

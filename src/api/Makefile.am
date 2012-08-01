@@ -13,7 +13,8 @@ EXTRA_DIST=\
   doxy/proxy_support.dp\
   doxy/query_formats.dp\
   doxy/scan_media.dp\
-  doxy/scripts.dp
+  doxy/scripts.dp\
+  doxy/select_stream.dp
 
 src=\
   query_formats_free.c\
@@ -32,6 +33,10 @@ src=\
   verify_free.c\
   verify_new.c\
   verify_get.c\
+  media_stream_choose_best.c\
+  media_stream_select.c\
+  media_stream_reset.c\
+  media_stream_next.c\
   media_free.c\
   media_new.c\
   media_get.c\

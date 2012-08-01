@@ -26,14 +26,12 @@
 
 #define GS_VERBOSE  "verbose"   /* Verbose flag */
 
-/* Media script */
+/* Media script: Media properties */
 
 #define MS_AVAIL_FORMATS    "avail_formats" /* Available formats to URL */
 #define MS_START_TIME_MS    "start_time_ms" /* Start streaming at */
 #define MS_DURATION_MS      "duration_ms"   /* Media duration in ms */
 #define MS_CATEGORIES       "categories"    /* Protocol categories */
-#define MS_STREAM_URL       "stream_url"    /* Media stream URL */
-#define MS_REQ_FORMAT       "req_format"    /* User requested format */
 #define MS_INPUT_URL        "input_url"     /* App req. URL */
 #define MS_THUMB_URL        "thumb_url"     /* Image thumbnail URL */
 #define MS_GOTO_URL         "goto_url"      /* Redirect to URL */
@@ -41,6 +39,26 @@
 #define MS_DOMAINS          "domains"       /* Accepted domains */
 #define MS_TITLE            "title"         /* Media title */
 #define MS_ID               "id"            /* Media ID */
+#define MS_STREAMS          "streams"       /* Media streams */
+
+/* Media script: stream properties */
+
+#define MSS_VIDEO                 "video"
+#define MSS_VIDEO_BITRATE_KBIT_S  "bitrate_kbit_s"
+#define MSS_VIDEO_ENCODING        "encoding"
+#define MSS_VIDEO_HEIGHT          "height"
+#define MSS_VIDEO_WIDTH           "width"
+
+#define MSS_AUDIO                 "audio"
+#define MSS_AUDIO_BITRATE_KBIT_S  MSS_VIDEO_BITRATE_KBIT_S
+#define MSS_AUDIO_ENCODING        MSS_VIDEO_ENCODING
+
+#define MSS_FLAGS                 "flags"
+#define MSS_FLAGS_BEST            "best"
+
+#define MSS_CONTAINER             "container"
+#define MSS_FORMAT_ID             "fmt_id"
+#define MSS_URL                   "url"
 
 #define MS_EMPTY         ""
 

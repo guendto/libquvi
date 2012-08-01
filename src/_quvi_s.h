@@ -36,7 +36,6 @@ struct _quvi_s
   struct
   {
     gboolean autoproxy;
-    GString *format;
     struct
     {
       gboolean verbose; /* LIBQUVI_VERBOSE_SCRIPTS */

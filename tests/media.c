@@ -17,6 +17,12 @@
  * 02110-1301, USA.
  */
 
+/*
+ * TODO: When a suitable test URL is found
+ * - Add check for QUVI_MEDIA_STREAM_PROPERTY_VIDEO_BITRATE_KBIT_S
+ * - Add check for QUVI_MEDIA_STREAM_PROPERTY_AUDIO_BITRATE_KBIT_S
+ */
+
 #include <string.h>
 #include <glib.h>
 #include <quvi.h>
@@ -76,21 +82,191 @@ static void test_media()
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
   g_assert(qm != NULL);
 
+  /* Boundary check: the first -1 */
   quvi_media_get(qm, QUVI_MEDIA_PROPERTY_THUMBNAIL_URL-1, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
 
-  quvi_media_get(qm, QUVI_MEDIA_PROPERTY_DURATION_MS+1, &s);
+  /* Boundary check: the last +1 */
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_VIDEO_WIDTH+1, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
 
   /* string */
   chk_len(QUVI_MEDIA_PROPERTY_THUMBNAIL_URL);
-  chk_len(QUVI_MEDIA_PROPERTY_STREAM_URL);
+  chk_len(QUVI_MEDIA_PROPERTY_TITLE);
+  chk_len(QUVI_MEDIA_PROPERTY_ID);
+
+  chk_len(QUVI_MEDIA_STREAM_PROPERTY_URL);
+
+  /* double */
+  chk_val(QUVI_MEDIA_PROPERTY_START_TIME_MS);
+  chk_val(QUVI_MEDIA_PROPERTY_DURATION_MS);
+
+  quvi_media_free(qm);
+  quvi_free(q);
+}
+
+static void test_media_multi()
+{
+  static const gchar URL[] =
+    "http://www.dailymotion.com/video/xm8t99_king-kong-vs-godzilla_shortfilms";
+
+  quvi_media_t qm;
+  GString *b;
+  gchar *s;
+  quvi_t q;
+  gint i;
+
+  if (chk_internet() == FALSE)
+    return;
+
+  if (chk_skip(__func__) == TRUE)
+    return;
+
+  q = quvi_new();
+  g_assert(q != NULL);
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+
+  chk_verbose(q);
+
+  qm = quvi_media_new(q, URL);
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert(qm != NULL);
+
+  /* string */
+  chk_len(QUVI_MEDIA_PROPERTY_THUMBNAIL_URL);
   chk_len(QUVI_MEDIA_PROPERTY_TITLE);
   chk_len(QUVI_MEDIA_PROPERTY_ID);
 
   /* double */
   chk_val(QUVI_MEDIA_PROPERTY_START_TIME_MS);
   chk_val(QUVI_MEDIA_PROPERTY_DURATION_MS);
+
+  b = g_string_new(NULL);
+  i = 0;
+
+  while (quvi_media_stream_next(qm) == QUVI_TRUE)
+    {
+      chk_len(QUVI_MEDIA_STREAM_PROPERTY_FORMAT_ID);
+      chk_len(QUVI_MEDIA_STREAM_PROPERTY_URL);
+
+      quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &s);
+      g_assert_cmpint(qerr(q), ==, QUVI_OK);
+
+      if (b->len >0) /* Make sure each media stream URL is unique */
+        g_assert_cmpstr(b->str, !=, s);
+
+      g_string_assign(b, s);
+
+      chk_len(QUVI_MEDIA_STREAM_PROPERTY_VIDEO_ENCODING);
+      chk_len(QUVI_MEDIA_STREAM_PROPERTY_CONTAINER);
+
+      chk_val(QUVI_MEDIA_STREAM_PROPERTY_VIDEO_HEIGHT);
+      chk_val(QUVI_MEDIA_STREAM_PROPERTY_VIDEO_WIDTH);
+
+      ++i;
+    }
+  g_assert_cmpint(i, >, 1);
+
+  g_string_free(b, TRUE);
+  b = NULL;
+
+  quvi_media_free(qm);
+  quvi_free(q);
+}
+
+static void test_media_select()
+{
+  static const gchar URL[] =
+    "http://www.dailymotion.com/video/xm8t99_king-kong-vs-godzilla_shortfilms";
+
+  quvi_media_t qm;
+  GSList *fmt_ids;
+  GSList *curr;
+  gchar *s;
+  quvi_t q;
+
+  if (chk_internet() == FALSE)
+    return;
+
+  if (chk_skip(__func__) == TRUE)
+    return;
+
+  q = quvi_new();
+  g_assert(q != NULL);
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+
+  chk_verbose(q);
+
+  qm = quvi_media_new(q, URL);
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert(qm != NULL);
+
+  fmt_ids = NULL;
+  while (quvi_media_stream_next(qm) == QUVI_TRUE)
+    {
+      quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_FORMAT_ID, &s);
+      fmt_ids = g_slist_prepend(fmt_ids, g_strdup(s));
+    }
+  fmt_ids = g_slist_reverse(fmt_ids);
+
+  /* Default stream. This should also advance the current list pointer,
+   * so that when quvi_media_stream_next is called the next time, it
+   * should return the 2nd stream in the list, not the first one. */
+
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_FORMAT_ID, &s);
+  curr = g_slist_nth(fmt_ids, 0);
+  g_assert_cmpstr(curr->data, ==, s);
+
+  quvi_media_stream_next(qm);
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_FORMAT_ID, &s);
+  curr = g_slist_nth(fmt_ids, 1);
+  g_assert_cmpstr(curr->data, ==, s);
+
+  /* Reset. */
+
+  quvi_media_stream_reset(qm);
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_FORMAT_ID, &s);
+  curr = g_slist_nth(fmt_ids, 0);
+  g_assert_cmpstr(curr->data, ==, s);
+
+  /* Best stream. Assumes this to be the last. */
+
+  quvi_media_stream_choose_best(qm);
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_FORMAT_ID, &s);
+  curr = g_slist_last(fmt_ids);
+  g_assert_cmpstr(curr->data, ==, s);
+
+  /* Select. */
+
+  quvi_media_stream_select(qm, "foo,bar,baz,best,croak");
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_FORMAT_ID, &s);
+  curr = g_slist_last(fmt_ids); /* Assumes the best is the last. */
+  g_assert_cmpstr(curr->data, ==, s);
+
+  quvi_media_stream_select(qm, "foo,bar,baz,croak");
+  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_NO_FORMAT_ID_CROAK);
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_FORMAT_ID, &s);
+  curr = g_slist_nth(fmt_ids, 0);
+  g_assert_cmpstr(curr->data, ==, s);
+
+  quvi_media_stream_select(qm, "foo,bar,baz");
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_FORMAT_ID, &s);
+  curr = g_slist_nth(fmt_ids, 0); /* Should be the default stream (first) */
+  g_assert_cmpstr(curr->data, ==, s);
+
+  quvi_media_stream_select(qm, "^\\w\\w_\\w+_\\w+_\\d40p$,bar,baz,croak");
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_FORMAT_ID, &s);
+  curr = g_slist_nth(fmt_ids, 0); /* Should be "ld_mp4_h264_240p". */
+  g_assert_cmpstr(curr->data, ==, s);
+
+  quvi_media_stream_select(qm, "foo,^\\w\\w_\\w+_\\w+_\\d+4p$,baz,croak");
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_FORMAT_ID, &s);
+  curr = g_slist_nth(fmt_ids, 1); /* Should be "sd_mp4_h264_384p". */
+  g_assert_cmpstr(curr->data, ==, s);
 
   quvi_media_free(qm);
   quvi_free(q);
@@ -156,6 +332,9 @@ static void test_media_starttime()
   quvi_media_get(qm, QUVI_MEDIA_PROPERTY_START_TIME_MS, &st);
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
   g_assert_cmpint(st, ==, 142000);
+
+  /* YouTube videos should give us this data. */
+  chk_len(QUVI_MEDIA_STREAM_PROPERTY_AUDIO_ENCODING);
 
   quvi_media_free(qm);
   quvi_free(q);
@@ -232,6 +411,8 @@ gint main(gint argc, gchar **argv)
 {
   g_test_init(&argc, &argv, NULL);
   g_test_add_func("/quvi/media", test_media);
+  g_test_add_func("/quvi/media (>1 streams)", test_media_multi);
+  g_test_add_func("/quvi/media (select)", test_media_select);
   g_test_add_func("/quvi/media (short)", test_media_short);
   g_test_add_func("/quvi/media (nosupport)", test_media_nosupport);
   g_test_add_func("/quvi/media (start_time)", test_media_starttime);

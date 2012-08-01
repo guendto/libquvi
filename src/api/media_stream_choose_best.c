@@ -17,7 +17,7 @@
  * 02110-1301, USA.
  */
 
-/** @file set.c */
+/** @file media_stream_choose_best.c */
 
 #include "config.h"
 
@@ -26,50 +26,42 @@
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
+#include "_quvi_media_s.h"
 
-static QuviError _set(_quvi_t q, QuviOption o, va_list arg)
-{
-  switch (o)
-    {
-    case QUVI_OPTION_MEDIA_SCRIPT_PROTOCOL_CATEGORY:
-      q->opt.scripts.category = va_arg(arg, glong);
-      break;
-    case QUVI_OPTION_AUTOPROXY:
-      q->opt.autoproxy = (gboolean) va_arg(arg, glong) >0;
-      break;
-
-      /* Callback */
-
-    case QUVI_OPTION_CALLBACK_STATUS:
-      q->cb.status = va_arg(arg, quvi_callback_status);
-      break;
-
-      /* Default */
-
-    default:
-      return (QUVI_ERROR_INVALID_ARG);
-    }
-
-  return (QUVI_OK);
-}
-
-/** @brief Set library handle option
-@sa @ref getting_started
-@ingroup lib
+/** @brief Selects the @ref m_stream that was determined to be of the "best quality"
+@note
+  - Only useful when there are >1 media streams available, otherwise the
+    function falls back to the first available @ref m_stream (the
+    default)
+  - The @ref m_script determines the best quality @ref m_stream
+@sa @ref parse_media
+@ingroup mediaprop
 */
-void quvi_set(quvi_t handle, QuviOption option, ...)
+void quvi_media_stream_choose_best(quvi_media_t handle)
 {
-  va_list arg;
-  _quvi_t q;
+  _quvi_media_stream_t qms;
+  _quvi_media_t qm;
+
+  qm = (_quvi_media_t) handle;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_if_fail(handle != NULL);
 
-  q = (_quvi_t) handle;
+  quvi_media_stream_reset(qm);
 
-  va_start(arg, option);
-  q->status.rc = _set(handle, option, arg);
-  va_end(arg);
+  while (quvi_media_stream_next(qm) == QUVI_TRUE)
+    {
+      qms = (_quvi_media_stream_t) qm->curr.stream->data;
+      g_assert(qms != NULL);
+
+      if (qms->flags.best == TRUE)
+        break;
+    }
+
+  /*
+   * If nothing was flagged as such, let it fall through.
+   * Use whatever is the first.
+   */
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

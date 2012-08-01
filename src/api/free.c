@@ -55,9 +55,6 @@ void quvi_free(quvi_t handle)
   g_string_free(q->status.errmsg, TRUE);
   q->status.errmsg = NULL;
 
-  g_string_free(q->opt.format, TRUE);
-  q->opt.format = NULL;
-
   /* Scripts. */
 
 #ifdef HAVE_GLIB_2_28

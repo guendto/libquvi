@@ -42,6 +42,12 @@ extern "C" {
 
   void quvi_media_get(quvi_media_t, QuviMediaProperty, ...);
 
+  QuviBoolean quvi_media_stream_next(quvi_media_t);
+  void quvi_media_stream_reset(quvi_media_t);
+
+  void quvi_media_stream_select(quvi_media_t, const char*);
+  void quvi_media_stream_choose_best(quvi_media_t);
+
   /* Query formats */
 
   quvi_query_formats_t quvi_query_formats_new(quvi_t, const char*);
