@@ -30,14 +30,14 @@
 
 gpointer m_playlist_new(_quvi_t q, const gchar *url)
 {
-  _quvi_playlist_t p = g_new0(struct _quvi_playlist_s, 1);
+  _quvi_playlist_t qp = g_new0(struct _quvi_playlist_s, 1);
   /* URL */
-  p->url.input = g_string_new(url);
+  qp->url.input = g_string_new(url);
   /* ID */
-  p->id.playlist = g_string_new(NULL);
+  qp->id.playlist = g_string_new(NULL);
   /* Handle */
-  p->handle.quvi = q;
-  return (p);
+  qp->handle.quvi = q;
+  return (qp);
 }
 
 static void _url_free(gpointer p, gpointer userdata)
@@ -49,31 +49,31 @@ static void _url_free(gpointer p, gpointer userdata)
   p = NULL;
 }
 
-void m_playlist_free(_quvi_playlist_t p)
+void m_playlist_free(_quvi_playlist_t qp)
 {
-  if (p == NULL)
+  if (qp == NULL)
     return;
 
   /* URLs */
 
 #ifdef HAVE_GLIB_2_28
-  g_slist_free_full(p->url.media, _url_free);
+  g_slist_free_full(qp->url.media, _url_free);
 #else
-  g_slist_foreach(p->url.media, _url_free, NULL);
-  g_slist_free(p->url.media);
+  g_slist_foreach(qp->url.media, _url_free, NULL);
+  g_slist_free(qp->url.media);
 #endif
-  p->url.media = NULL;
+  qp->url.media = NULL;
 
-  g_string_free(p->url.input, TRUE);
-  p->url.input = NULL;
+  g_string_free(qp->url.input, TRUE);
+  qp->url.input = NULL;
 
   /* ID */
 
-  g_string_free(p->id.playlist, TRUE);
-  p->id.playlist = NULL;
+  g_string_free(qp->id.playlist, TRUE);
+  qp->id.playlist = NULL;
 
-  g_free(p);
-  p = NULL;
+  g_free(qp);
+  qp = NULL;
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

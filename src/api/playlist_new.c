@@ -38,7 +38,7 @@
 */
 quvi_playlist_t quvi_playlist_new(quvi_t handle, const char *url)
 {
-  _quvi_playlist_t p;
+  _quvi_playlist_t qp;
   _quvi_t q;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
@@ -46,11 +46,11 @@ quvi_playlist_t quvi_playlist_new(quvi_t handle, const char *url)
   g_return_val_if_fail(url != NULL, NULL);
 
   q = (_quvi_t) handle;
-  p = NULL;
+  qp = NULL;
 
-  q->status.rc = m_match_playlist_script(q, &p, url,
+  q->status.rc = m_match_playlist_script(q, &qp, url,
                                          QM_MATCH_PS_PARSE, NULL);
-  return (p);
+  return (qp);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

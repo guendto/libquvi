@@ -35,16 +35,16 @@
 */
 QuviBoolean quvi_playlist_next_media_url(quvi_playlist_t handle)
 {
-  _quvi_playlist_t p = (_quvi_playlist_t) handle;
+  _quvi_playlist_t qp = (_quvi_playlist_t) handle;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_val_if_fail(handle != NULL, QUVI_FALSE);
 
-  p->url.curr.media = (p->url.curr.media != NULL)
-                      ? g_slist_next(p->url.curr.media)
-                      : p->url.media;
+  qp->url.curr.media = (qp->url.curr.media != NULL)
+                       ? g_slist_next(qp->url.curr.media)
+                       : qp->url.media;
 
-  return ((p->url.curr.media != NULL)
+  return ((qp->url.curr.media != NULL)
           ? QUVI_TRUE
           : QUVI_FALSE);
 }

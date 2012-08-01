@@ -28,7 +28,7 @@
 #include "_quvi_s.h"
 #include "_quvi_playlist_s.h"
 
-static QuviError _playlist_get(_quvi_playlist_t p,
+static QuviError _playlist_get(_quvi_playlist_t qp,
                                QuviPlaylistProperty n, ...)
 {
   QuviError rc;
@@ -76,10 +76,10 @@ static QuviError _playlist_get(_quvi_playlist_t p,
   switch (n)
     {
     case QUVI_PLAYLIST_PROPERTY_ID:
-      *sp = p->id.playlist->str;
+      *sp = qp->id.playlist->str;
       break;
     case QUVI_PLAYLIST_PROPERTY_MEDIA_URL:
-      *sp = (gchar*) p->url.curr.media->data;
+      *sp = (gchar*) qp->url.curr.media->data;
       break;
     default:
       rc = QUVI_ERROR_INVALID_ARG;
@@ -95,7 +95,7 @@ static QuviError _playlist_get(_quvi_playlist_t p,
 void quvi_playlist_get(quvi_playlist_t handle,
                        QuviPlaylistProperty property, ...)
 {
-  _quvi_playlist_t pl;
+  _quvi_playlist_t qp;
   va_list arg;
   gpointer p;
   _quvi_t q;
@@ -107,10 +107,10 @@ void quvi_playlist_get(quvi_playlist_t handle,
   p = va_arg(arg, gpointer);
   va_end(arg);
 
-  pl = (_quvi_playlist_t) handle;
-  q = pl->handle.quvi;
+  qp = (_quvi_playlist_t) handle;
+  q = qp->handle.quvi;
 
-  q->status.rc = _playlist_get(pl, property, p);
+  q->status.rc = _playlist_get(qp, property, p);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

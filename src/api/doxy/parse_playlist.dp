@@ -4,13 +4,13 @@ libquvi supports parsing a playlist properties (e.g. media URLs), these
 may be accessed using the @ref playlistprop functions.
 
 @code
-quvi_playlist_t p = quvi_playlist_new(q, URL);
+quvi_playlist_t qp = quvi_playlist_new(q, URL);
 abort_if_error();
 {
-  while (quvi_playlist_next_media_url(p) == QUVI_TRUE)
+  while (quvi_playlist_next_media_url(qp) == QUVI_TRUE)
     {
       char *s = NULL;
-      quvi_playlist_get(p, QUVI_PLAYLIST_PROPERTY_MEDIA_URL, &s);
+      quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_MEDIA_URL, &s);
       abort_if_error();
       {
         quvi_media_t qm = quvi_media_new(q, s);
@@ -19,11 +19,11 @@ abort_if_error();
         quvi_media_free(qm);
         qm = NULL;
       }
-      quvi_playlist_get(p, QUVI_PLAYLIST_PROPERTY_ID, &s);
+      quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &s);
     }
 }
-quvi_playlist_free(p); /* Release when done using it. */
-p = NULL;
+quvi_playlist_free(qp); /* Release when done using it. */
+qp = NULL;
 @endcode
 
 @sa @ref parse_media

@@ -47,12 +47,12 @@ static QuviError _chk_results(lua_State *l, _quvi_script_t qs)
 
 QuviError l_exec_playlist_script_ident(gpointer p, GSList *sl)
 {
-  _quvi_playlist_t pl;
+  _quvi_playlist_t qp;
   _quvi_script_t qs;
   lua_State *l;
 
-  pl = (_quvi_playlist_t) p;
-  l = pl->handle.quvi->handle.lua;
+  qp = (_quvi_playlist_t) p;
+  l = qp->handle.quvi->handle.lua;
 
   qs = (_quvi_script_t) sl->data;
   lua_pushnil(l);
@@ -69,12 +69,12 @@ QuviError l_exec_playlist_script_ident(gpointer p, GSList *sl)
     }
 
   lua_newtable(l);
-  l_setfield_b(l, GS_VERBOSE, pl->handle.quvi->opt.scripts.verbose);
-  l_setfield_s(l, PS_INPUT_URL, pl->url.input->str);
+  l_setfield_b(l, GS_VERBOSE, qp->handle.quvi->opt.scripts.verbose);
+  l_setfield_s(l, PS_INPUT_URL, qp->url.input->str);
 
   if (lua_pcall(l, 1, 1, 0))
     {
-      g_string_assign(pl->handle.quvi->status.errmsg, lua_tostring(l, -1));
+      g_string_assign(qp->handle.quvi->status.errmsg, lua_tostring(l, -1));
       return (QUVI_ERROR_SCRIPT);
     }
 

@@ -35,17 +35,17 @@
 static QuviBoolean _supports_playlist(_quvi_t q, const gchar *url,
                                       const QuviSupportsMode mode)
 {
-  _quvi_playlist_t p = NULL;
+  _quvi_playlist_t qp = NULL;
 
-  q->status.rc = m_match_playlist_script(q, &p, url,
+  q->status.rc = m_match_playlist_script(q, &qp, url,
                                          (mode == QUVI_SUPPORTS_MODE_OFFLINE)
                                          ? QM_MATCH_PS_SUPPORTED_OFFLINE
                                          : QM_MATCH_PS_SUPPORTED_ONLINE,
                                          NULL);
-  if (p != NULL)
+  if (qp != NULL)
     {
-      quvi_playlist_free((quvi_playlist_t) p);
-      p = NULL;
+      quvi_playlist_free((quvi_playlist_t) qp);
+      qp = NULL;
     }
   return (quvi_ok(q));
 }
