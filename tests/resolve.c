@@ -155,7 +155,7 @@ static void test_resolve_nodst_t_param()
  * do not work with the library. The test below should redirect to
  * "http://www.youtube.com/watch?v=G4evlxq34og", missing the #t
  * parameter, see the above example for the explanation. */
-static void test_resolve_known_short_t_param()
+static void test_resolve_shortened_with_t_param()
 {
   static const gchar URL[] = "http://is.gd/TRWtNf";
   /* http://www.youtube.com/watch?v=G4evlxq34og#t=3m20 */
@@ -197,8 +197,8 @@ gint main(gint argc, gchar **argv)
   g_test_add_func("/quvi/resolve (nodst)", test_resolve_nodst);
   g_test_add_func("/quvi/resolve (nodst #t param)",
                   test_resolve_nodst_t_param);
-  g_test_add_func("/quvi/resolve (known shortened #t param URL)",
-                  test_resolve_known_short_t_param);
+  g_test_add_func("/quvi/resolve (short URL with #t param)",
+                  test_resolve_shortened_with_t_param);
   return (g_test_run());
 }
 
