@@ -24,9 +24,9 @@
 #include "tests.h"
 
 static const gchar URL[] =
-  "http://www.funnyordie.com/videos/404b3bcc41/the-slogan";
+  "http://www.gaskrank.tv/tv/motorrad-oldtimer/1928-henderson-deluxe-alt-und--19115.htm";
 
-static const gchar URL_SHORT[] = "http://is.gd/efknJc";
+static const gchar URL_SHORT[] = "http://is.gd/jg9P5c";
 static const gchar URL_NOSUP[] = "http://example.com/";
 static const gchar URL_INV[] = "foobar";
 
