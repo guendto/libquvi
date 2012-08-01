@@ -65,7 +65,7 @@ const char *quvi_errmsg(quvi_t handle)
 
   s = msg[0];
 
-  if (c<0 || c>i)
+  if ( (gint) c<0 || c>i)
     {
       if (q->status.errmsg->len >0)
         s = q->status.errmsg->str;
