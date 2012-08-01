@@ -72,6 +72,8 @@ const gpointer l_get_reg_userdata(lua_State *l, const gchar *k)
   return ((gpointer) lua_touserdata(l, -1));
 }
 
+#ifdef _1 /* Unused */
+
 QuviError l_getfield_table_iter_s(lua_State *l,
                                   const gpointer dst,
                                   const gchar *k,
@@ -102,5 +104,6 @@ QuviError l_getfield_table_iter_s(lua_State *l,
 
   return (rc);
 }
+#endif /* _1, unused */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

@@ -31,11 +31,14 @@ const gboolean l_getfield_b(lua_State*, const gchar*,
 
 const gpointer l_get_reg_userdata(lua_State*, const gchar*);
 
+#ifdef _1 /* Unused */
+
 typedef gint (*l_callback_getfield_table_iter_s) (gpointer, const gchar*);
 
 QuviError l_getfield_table_iter_s(lua_State*, const gpointer, const gchar*,
                                   const gchar*, const gchar*,
                                   l_callback_getfield_table_iter_s);
+#endif
 
 #endif /* l_getfield_h */
 
