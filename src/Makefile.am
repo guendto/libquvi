@@ -6,6 +6,7 @@ hdr=\
   _quvi_playlist_s.h\
   _quvi_net_opt_s.h\
   _quvi_script_s.h\
+  _quvi_verify_s.h\
   _quvi_media_s.h\
   _quvi_scan_s.h\
   _quvi_net_s.h\

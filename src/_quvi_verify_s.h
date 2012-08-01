@@ -17,15 +17,25 @@
  * 02110-1301, USA.
  */
 
-#include <stdio.h>
-#include <quvi.h>
+#ifndef _quvi_verify_s_h
+#define _quvi_verify_s_h
 
-quvi_query_formats_t qqf = NULL;
-quvi_playlist_t qp = NULL;
-quvi_resolve_t qr = NULL;
-quvi_verify_t qv = NULL;
-quvi_media_t qm = NULL;
-quvi_scan_t qs = NULL;
-quvi_t q = NULL;
+struct _quvi_verify_s
+{
+  struct {
+    GString *input;
+  } url;
+  struct
+  {
+    _quvi_t quvi;
+  } handle;
+  GString *content_type;
+  gdouble length_bytes;
+  GString *file_ext;
+};
+
+typedef struct _quvi_verify_s *_quvi_verify_t;
+
+#endif /* _quvi_verify_s_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

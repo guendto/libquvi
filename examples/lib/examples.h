@@ -23,6 +23,7 @@
 extern quvi_query_formats_t qqf;
 extern quvi_playlist_t qp;
 extern quvi_resolve_t qr;
+extern quvi_verify_t qv;
 extern quvi_media_t qm;
 extern quvi_scan_t qs;
 extern quvi_t q;

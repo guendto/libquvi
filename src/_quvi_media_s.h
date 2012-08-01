@@ -20,13 +20,41 @@
 #ifndef _quvi_media_s_h
 #define _quvi_media_s_h
 
+struct _quvi_media_stream_s
+{
+  struct
+  {
+    gdouble bitrate_kbit_s;
+    GString *encoding;
+    gdouble height;
+    gdouble width;
+  } video;
+  struct
+  {
+    gdouble bitrate_kbit_s;
+    GString *encoding;
+  } audio;
+  struct
+  {
+    gboolean best;
+  } flags;
+  GString *container;
+  GString *fmt_id;
+  GString *url;
+};
+
+typedef struct _quvi_media_stream_s *_quvi_media_stream_t;
+
 struct _quvi_media_s
 {
   struct
   {
+    GSList *stream;
+  } curr;
+  struct
+  {
     GString *redirect_to; /* Set in a media script ("goto_url") */
     GString *thumbnail;
-    GString *stream;
     GString *input; /* e.g. "http://youtube.com/?watch=foo" */
   } url;
   struct
@@ -34,11 +62,9 @@ struct _quvi_media_s
     _quvi_t quvi;
   } handle;
   /* Other */
-  GString *content_type;
   gdouble start_time_ms;
-  gdouble length_bytes;
   gdouble duration_ms;
-  GString *file_ext;
+  GSList *streams;
   GString *title;
   GString *id;
 };

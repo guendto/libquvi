@@ -17,15 +17,39 @@
  * 02110-1301, USA.
  */
 
-#include <stdio.h>
-#include <quvi.h>
+/** @file verify_free.c */
 
-quvi_query_formats_t qqf = NULL;
-quvi_playlist_t qp = NULL;
-quvi_resolve_t qr = NULL;
-quvi_verify_t qv = NULL;
-quvi_media_t qm = NULL;
-quvi_scan_t qs = NULL;
-quvi_t q = NULL;
+#include "config.h"
+
+#include <glib.h>
+
+#include "quvi.h"
+/* -- */
+#include "_quvi_s.h"
+#include "_quvi_verify_s.h"
+
+/** @brief Free all of memory used by a verify handle
+@note If handle is NULL the function simply returns
+@ingroup verify
+*/
+void quvi_verify_free(quvi_verify_t handle)
+{
+  _quvi_verify_t v = (_quvi_verify_t) handle;
+
+  if (handle == NULL)
+    return;
+
+  g_string_free(v->url.input, TRUE);
+  v->url.input = NULL;
+
+  g_string_free(v->content_type, TRUE);
+  v->content_type = NULL;
+
+  g_string_free(v->file_ext, TRUE);
+  v->file_ext = NULL;
+
+  g_free(v);
+  v = NULL;
+}
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

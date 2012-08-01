@@ -17,15 +17,29 @@
  * 02110-1301, USA.
  */
 
-#include <stdio.h>
-#include <quvi.h>
+/** @file media_stream_reset.c */
 
-quvi_query_formats_t qqf = NULL;
-quvi_playlist_t qp = NULL;
-quvi_resolve_t qr = NULL;
-quvi_verify_t qv = NULL;
-quvi_media_t qm = NULL;
-quvi_scan_t qs = NULL;
-quvi_t q = NULL;
+#include "config.h"
+
+#include <glib.h>
+
+#include "quvi.h"
+/* -- */
+#include "_quvi_s.h"
+#include "_quvi_media_s.h"
+
+/** @brief Resets to the first available @ref m_stream
+@sa @ref parse_media
+@ingroup mediaprop
+*/
+void quvi_media_stream_reset(quvi_media_t handle)
+{
+  _quvi_media_t qm = (_quvi_media_t) handle;
+
+  /* If G_DISABLE_CHECKS is defined then the check is not performed. */
+  g_return_if_fail(handle != NULL);
+
+  qm->curr.stream = NULL;
+}
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

@@ -25,27 +25,27 @@
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
-#include "_quvi_media_s.h"
+#include "_quvi_verify_s.h"
 #include "_quvi_net_s.h"
 #include "_quvi_macro.h"
 /* -- */
 #include "net/handle.h"
 #include "net/opt.h"
 
-extern QuviError l_exec_util_to_file_ext(_quvi_media_t, _quvi_net_t);
+extern QuviError l_exec_util_to_file_ext(_quvi_verify_t, _quvi_net_t);
 extern QuviError c_verify(_quvi_t, _quvi_net_t);
 
 static const gdouble MIN_LIKELY_MEDIA_LENGTH = 50*1024;
 
-static QuviError _verify(_quvi_media_t m)
+static QuviError _verify(_quvi_verify_t v)
 {
   _quvi_net_t n;
   QuviError rc;
   lua_State *l;
   _quvi_t q;
 
-  n = n_new(m->handle.quvi, m->url.stream->str);
-  q = m->handle.quvi;
+  q = v->handle.quvi;
+  n = n_new(q, v->url.input->str);
   l = q->handle.lua;
 
   if (lua_istable(l, 2))
@@ -58,21 +58,11 @@ static QuviError _verify(_quvi_media_t m)
 
   if (rc == QUVI_OK)
     {
-      rc = l_exec_util_to_file_ext(m, n);
+      rc = l_exec_util_to_file_ext(v, n);
       if (rc == QUVI_OK)
         {
-          g_string_assign(m->content_type, n->verify.content_type->str);
-          m->length_bytes = n->verify.content_length;
-
-          /* Sanity check. */
-          if (m->length_bytes <MIN_LIKELY_MEDIA_LENGTH)
-            {
-              g_string_printf(q->status.errmsg,
-                              "Content length (%.0f bytes) for media "
-                              "looks suspicious. This is most likely "
-                              "a bug. Please report it.", m->length_bytes);
-              rc = QUVI_ERROR_INVALID_CONTENT_LENGTH;
-            }
+          g_string_assign(v->content_type, n->verify.content_type->str);
+          v->length_bytes = n->verify.content_length;
         }
 
       if (q->cb.status != NULL)
@@ -92,8 +82,8 @@ static QuviError _verify(_quvi_media_t m)
       else
         {
           g_string_assign(q->status.errmsg,
-                          "unknown error: verify: callback returned "
-                          "empty errmsg");
+                          "Unknown error: verify: callback returned "
+                          "an empty errmsg");
         }
     }
 
@@ -103,34 +93,31 @@ static QuviError _verify(_quvi_media_t m)
   return (rc);
 }
 
-QuviError n_verify_media_stream(_quvi_media_t m)
+QuviError n_verify(_quvi_verify_t v)
 {
-  _quvi_t q = m->handle.quvi;
+  _quvi_t q;
+  gchar *s;
 
-  if (q->opt.verify == FALSE)
-    return (QUVI_OK); /* Skip verification. */
+  q = v->handle.quvi;
+  s = g_uri_parse_scheme(v->url.input->str);
 
-  {
-    /* Verify HTTP(S) media stream URLs only. */
+  if (s != NULL) /* Verify HTTP(S) media stream URLs only. */
+    {
+      const gboolean r = (gboolean) g_strcmp0(s, "http") == 0
+                         || g_strcmp0(s, "https") == 0;
 
-    gchar *s = g_uri_parse_scheme(m->url.stream->str);
-    if (s != NULL)
-      {
-        const gboolean r = (gboolean) g_strcmp0(s, "http") == 0
-                           || g_strcmp0(s, "https") == 0;
+      g_free(s);
+      s = NULL;
 
-        g_free(s);
-        s = NULL;
-
-        if (r == FALSE)
-          return (QUVI_OK); /* Skip verification. */
-      }
-    else
-      {
-        g_error("[%s] %s: unable to parse uri", __func__, m->url.stream->str);
+      if (r == FALSE)
         return (QUVI_OK); /* Skip verification. */
-      }
-  }
+    }
+  else
+    {
+      g_string_printf(q->status.errmsg,
+                      "Unable to parse URI: %s", v->url.input->str);
+      return (QUVI_ERROR_INVALID_ARG); /* Skip verification. */
+    }
 
   if (q->cb.status != NULL)
     {
@@ -140,7 +127,7 @@ QuviError n_verify_media_stream(_quvi_media_t m)
         return (QUVI_ERROR_CALLBACK_ABORTED);
     }
 
-  return (_verify(m));
+  return (_verify(v));
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

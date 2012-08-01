@@ -42,15 +42,11 @@ extern "C" {
 
   void quvi_media_get(quvi_media_t, QuviMediaProperty, ...);
 
-  /* Convenience */
+  QuviBoolean quvi_media_stream_next(quvi_media_t);
+  void quvi_media_stream_reset(quvi_media_t);
 
-  QuviBoolean quvi_supports(quvi_t, const char*,
-                            QuviSupportsMode, QuviSupportsType);
-
-  const char *quvi_version(QuviVersion);
-
-  const char *quvi_errmsg(quvi_t);
-  QuviBoolean quvi_ok(quvi_t);
+  void quvi_media_stream_select(quvi_media_t, const char*);
+  void quvi_media_stream_choose_best(quvi_media_t);
 
   /* Query formats */
 
@@ -81,6 +77,23 @@ extern "C" {
 
   QuviBoolean quvi_resolve_forwarded(quvi_resolve_t);
   const char *quvi_resolve_destination_url(quvi_resolve_t);
+
+  /* Verify */
+
+  quvi_verify_t quvi_verify_new(quvi_t, const char*);
+  void quvi_verify_free(quvi_verify_t);
+
+  void quvi_verify_get(quvi_verify_t, QuviVerifyProperty, ...);
+
+  /* Convenience */
+
+  QuviBoolean quvi_supports(quvi_t, const char*,
+                            QuviSupportsMode, QuviSupportsType);
+
+  const char *quvi_version(QuviVersion);
+
+  const char *quvi_errmsg(quvi_t);
+  QuviBoolean quvi_ok(quvi_t);
 
 #ifdef __cplusplus
 }

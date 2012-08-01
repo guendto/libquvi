@@ -45,7 +45,6 @@ static gboolean _chk_goto_url(_quvi_media_t m)
 }
 
 extern QuviError l_match_url_to_media_script(_quvi_media_t, GSList**);
-extern QuviError n_verify_media_stream(_quvi_media_t);
 
 typedef QuviMatchMediaScriptMode _qm_mode;
 
@@ -90,7 +89,6 @@ QuviError m_match_media_script(_quvi_t q, _quvi_media_t *m,
           /* Check if goto_url was set. */
           if (_chk_goto_url(*m) == TRUE)
             return (m_match_media_script(q, m, url, mode, result));
-          rc = n_verify_media_stream(*m);
         }
       break;
 

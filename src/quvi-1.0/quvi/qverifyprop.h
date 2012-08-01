@@ -17,15 +17,31 @@
  * 02110-1301, USA.
  */
 
-#include <stdio.h>
-#include <quvi.h>
+#ifndef qverifyprop_h
+#define qverifyprop_h
 
-quvi_query_formats_t qqf = NULL;
-quvi_playlist_t qp = NULL;
-quvi_resolve_t qr = NULL;
-quvi_verify_t qv = NULL;
-quvi_media_t qm = NULL;
-quvi_scan_t qs = NULL;
-quvi_t q = NULL;
+/** @file qverifyprop.h */
+
+/** @cond NODOC */
+#define QUVI_VERIFY_PROPERTY_TYPE_STRING 0x100000
+#define QUVI_VERIFY_PROPERTY_TYPE_LONG   0x200000
+#define QUVI_VERIFY_PROPERTY_TYPE_DOUBLE 0x300000
+#define QUVI_VERIFY_PROPERTY_TYPE_VOID   0x400000
+#define QUVI_VERIFY_PROPERTY_TYPE_MASK   0xf00000
+/** @endcond */
+
+/** @enum QuviVerifyProperty */
+typedef enum
+{
+  /* string */
+  QUVI_VERIFY_PROPERTY_FILE_EXTENSION = QUVI_VERIFY_PROPERTY_TYPE_STRING+1,
+  QUVI_VERIFY_PROPERTY_CONTENT_TYPE,
+  /* double */
+  QUVI_VERIFY_PROPERTY_LENGTH_BYTES =
+  ((QUVI_VERIFY_PROPERTY_CONTENT_TYPE - QUVI_VERIFY_PROPERTY_TYPE_STRING)
+  + QUVI_VERIFY_PROPERTY_TYPE_DOUBLE + 0x20)
+} QuviVerifyProperty;
+
+#endif /* qverifyprop_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

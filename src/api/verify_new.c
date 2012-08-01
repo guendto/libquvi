@@ -17,53 +17,53 @@
  * 02110-1301, USA.
  */
 
+/** @file verify_new.c */
+
 #include "config.h"
 
-#include <lauxlib.h>
-#include <lualib.h>
 #include <glib.h>
 
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_verify_s.h"
-#include "_quvi_net_s.h"
-/* -- */
-#include "lua/load_util_script.h"
 
-static const gchar script_fname[]= "to_file_ext.lua";
-static const gchar script_func[] = "to_file_ext";
-
-QuviError l_exec_util_to_file_ext(_quvi_verify_t v, _quvi_net_t n)
+static gpointer _verify_new(_quvi_t q, const gchar *url)
 {
-  lua_State *l;
-  QuviError rc;
+  _quvi_verify_t qv = g_new0(struct _quvi_verify_s, 1);
+  qv->content_type = g_string_new(NULL);
+  qv->file_ext = g_string_new(NULL);
+  qv->url.input = g_string_new(url);
+  qv->handle.quvi = q;
+  return (qv);
+}
+
+/** @cond NODOC */
+QuviError n_verify(_quvi_verify_t);
+/** @endcond */
+
+/** @brief Verify URL
+@return New handle, @ref quvi_verify_free when done using it
+@note
+ - Support for determining the file extension is very limited
+ - Use @ref quvi_ok for checking if an error occurred
+@ingroup verify
+*/
+quvi_verify_t quvi_verify_new(quvi_t handle, const char *url)
+{
+  _quvi_verify_t v;
   _quvi_t q;
 
-  q = v->handle.quvi;
-  rc = l_load_util_script(q, script_fname, script_func);
+  /* If G_DISABLE_CHECKS is defined then the check is not performed. */
+  g_return_val_if_fail(handle != NULL, NULL);
+  g_return_val_if_fail(url != NULL, NULL);
 
-  if (rc != QUVI_OK)
-    return (rc);
+  q = (_quvi_t) handle;
+  v = _verify_new(q, url);
 
-  l = q->handle.lua;
-  lua_pushstring(l, n->verify.content_type->str);
+  q->status.rc = n_verify(v);
 
-  /* 2=qargs,title [qargs: set in l_load_util_script]
-   * 1=returns a string */
-  if (lua_pcall(l, 2, 1, 0))
-    {
-      g_string_assign(q->status.errmsg, lua_tostring(l, -1));
-      return (QUVI_ERROR_SCRIPT);
-    }
-
-  if (!lua_isstring(l, -1))
-    luaL_error(l, "%s: did not return a string", script_func);
-
-  g_string_assign(v->file_ext, lua_tostring(l,-1));
-  lua_pop(l, 1);
-
-  return (QUVI_OK);
+  return (v);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

@@ -1,18 +1,19 @@
 libquvisubincludedir=$(includedir)/quvi-1.0/quvi
 libquvisubinclude_HEADERS=\
-  qversion.h\
-  qsupp.h\
-  qprotocat.h\
-  qmediaprop.h\
   qplaylistprop.h\
-  qscript.h\
+  qverifyprop.h\
+  qmediaprop.h\
+  qprotocat.h\
   qcallback.h\
-  qbool.h\
-  qdef.h\
-  qinfo.h\
+  qversion.h\
   qoption.h\
+  qscript.h\
   qerror.h\
-  qfunc.h
+  qsupp.h\
+  qbool.h\
+  qinfo.h\
+  qfunc.h\
+  qdef.h
 
 install-data-local:
 	@if test -f $(libquvisubincludedir)/qfunc.h ; then \

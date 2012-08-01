@@ -17,15 +17,36 @@
  * 02110-1301, USA.
  */
 
-#include <stdio.h>
-#include <quvi.h>
+/** @file media_stream_next.c */
 
-quvi_query_formats_t qqf = NULL;
-quvi_playlist_t qp = NULL;
-quvi_resolve_t qr = NULL;
-quvi_verify_t qv = NULL;
-quvi_media_t qm = NULL;
-quvi_scan_t qs = NULL;
-quvi_t q = NULL;
+#include "config.h"
+
+#include <glib.h>
+
+#include "quvi.h"
+/* -- */
+#include "_quvi_s.h"
+#include "_quvi_media_s.h"
+
+/** @brief Traverse to next available @ref m_stream
+@return QUVI_TRUE if succeeded, otherwise QUVI_FALSE
+@sa @ref parse_media
+@ingroup mediaprop
+*/
+QuviBoolean quvi_media_stream_next(quvi_media_t handle)
+{
+  _quvi_media_t qm = (_quvi_media_t) handle;
+
+  /* If G_DISABLE_CHECKS is defined then the check is not performed. */
+  g_return_val_if_fail(handle != NULL, QUVI_FALSE);
+
+  qm->curr.stream = (qm->curr.stream != NULL)
+                    ? g_slist_next(qm->curr.stream)
+                    : qm->streams;
+
+  return ((qm->curr.stream != NULL)
+          ? QUVI_TRUE
+          : QUVI_FALSE);
+}
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
