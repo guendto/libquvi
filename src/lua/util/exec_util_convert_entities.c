@@ -34,20 +34,20 @@ static const gchar script_fname[]= "convert_entities.lua";
 static const gchar script_func[] = "convert_entities";
 
 /* Convert HTML entities in the media title. */
-QuviError l_exec_util_convert_entities(_quvi_media_t m)
+QuviError l_exec_util_convert_entities(_quvi_media_t qm)
 {
   lua_State *l;
   QuviError rc;
   _quvi_t q;
 
-  q = m->handle.quvi;
+  q = qm->handle.quvi;
   rc = l_load_util_script(q, script_fname, script_func);
 
   if (rc != QUVI_OK)
     return (rc);
 
   l = q->handle.lua;
-  lua_pushstring(l, m->title->str);
+  lua_pushstring(l, qm->title->str);
 
   /* 2=qargs,title [qargs: set in l_load_util_script]
    * 1=returns a string */
@@ -60,7 +60,7 @@ QuviError l_exec_util_convert_entities(_quvi_media_t m)
   if (!lua_isstring(l, -1))
     luaL_error(l, "%s: did not return a string", script_func);
 
-  g_string_assign(m->title, lua_tostring(l, -1));
+  g_string_assign(qm->title, lua_tostring(l, -1));
   lua_pop(l, 1);
 
   return (QUVI_OK);

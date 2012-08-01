@@ -53,17 +53,17 @@ static QuviBoolean _supports_playlist(_quvi_t q, const gchar *url,
 static QuviBoolean _supports_media(_quvi_t q, const gchar *url,
                                    const QuviSupportsMode mode)
 {
-  _quvi_media_t m = NULL;
+  _quvi_media_t qm = NULL;
 
-  q->status.rc = m_match_media_script(q, &m, url,
+  q->status.rc = m_match_media_script(q, &qm, url,
                                       (mode == QUVI_SUPPORTS_MODE_OFFLINE)
                                       ? QM_MATCH_MS_SUPPORTED_OFFLINE
                                       : QM_MATCH_MS_SUPPORTED_ONLINE,
                                       NULL);
-  if (m != NULL)
+  if (qm != NULL)
     {
-      quvi_media_free((quvi_media_t) m);
-      m = NULL;
+      quvi_media_free((quvi_media_t) qm);
+      qm = NULL;
     }
   return (quvi_ok(q));
 }

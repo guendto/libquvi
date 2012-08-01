@@ -38,7 +38,7 @@
 */
 quvi_media_t quvi_media_new(quvi_t handle, const char *url)
 {
-  _quvi_media_t m;
+  _quvi_media_t qm;
   _quvi_t q;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
@@ -46,11 +46,11 @@ quvi_media_t quvi_media_new(quvi_t handle, const char *url)
   g_return_val_if_fail(url != NULL, NULL);
 
   q = (_quvi_t) handle;
-  m = NULL;
+  qm = NULL;
 
-  q->status.rc = m_match_media_script(q, &m, url,
+  q->status.rc = m_match_media_script(q, &qm, url,
                                       QM_MATCH_MS_PARSE, NULL);
-  return (m);
+  return (qm);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

@@ -33,12 +33,12 @@
 #include "net/handle.h"
 #include "lua/exec.h"
 
-static gboolean _chk_goto_url(_quvi_media_t m)
+static gboolean _chk_goto_url(_quvi_media_t qm)
 {
-  if (m->url.redirect_to->len >0)
+  if (qm->url.redirect_to->len >0)
     {
-      g_string_assign(m->url.input, m->url.redirect_to->str);
-      g_string_assign(m->url.redirect_to, "");
+      g_string_assign(qm->url.input, qm->url.redirect_to->str);
+      g_string_assign(qm->url.redirect_to, "");
       return (TRUE);
     }
   return (FALSE);
@@ -48,7 +48,7 @@ extern QuviError l_match_url_to_media_script(_quvi_media_t, GSList**);
 
 typedef QuviMatchMediaScriptMode _qm_mode;
 
-QuviError m_match_media_script(_quvi_t q, _quvi_media_t *m,
+QuviError m_match_media_script(_quvi_t q, _quvi_media_t *qm,
                                const gchar *url, const _qm_mode mode,
                                gchar **result)
 {
@@ -60,17 +60,17 @@ QuviError m_match_media_script(_quvi_t q, _quvi_media_t *m,
                  ? TRUE
                  : FALSE;
 
-  if (*m == NULL)
-    *m = m_media_new(q, url);
+  if (*qm == NULL)
+    *qm = m_media_new(q, url);
 
   if (resolve_flag == TRUE) /* Resolve URL redirection. */
     {
-      m_resolve(q, url, (*m)->url.input);
+      m_resolve(q, url, (*qm)->url.input);
       if (quvi_ok(q) == QUVI_FALSE)
         return (q->status.rc);
     }
 
-  rc = l_match_url_to_media_script(*m, &s);
+  rc = l_match_url_to_media_script(*qm, &s);
 
   if (rc == QUVI_ERROR_NO_SUPPORT)
     {
@@ -83,12 +83,12 @@ QuviError m_match_media_script(_quvi_t q, _quvi_media_t *m,
   switch (mode)
     {
     case QM_MATCH_MS_PARSE:
-      rc = l_exec_media_script_parse(*m, s);
+      rc = l_exec_media_script_parse(*qm, s);
       if (rc == QUVI_OK)
         {
           /* Check if goto_url was set. */
-          if (_chk_goto_url(*m) == TRUE)
-            return (m_match_media_script(q, m, url, mode, result));
+          if (_chk_goto_url(*qm) == TRUE)
+            return (m_match_media_script(q, qm, url, mode, result));
         }
       break;
 

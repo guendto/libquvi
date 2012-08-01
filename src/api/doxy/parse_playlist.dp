@@ -13,11 +13,11 @@ abort_if_error();
       quvi_playlist_get(p, QUVI_PLAYLIST_PROPERTY_MEDIA_URL, &s);
       abort_if_error();
       {
-        quvi_media_t m = quvi_media_new(q, s);
+        quvi_media_t qm = quvi_media_new(q, s);
         abort_if_error();
         ...
-        quvi_media_free(m);
-        m = NULL;
+        quvi_media_free(qm);
+        qm = NULL;
       }
       quvi_playlist_get(p, QUVI_PLAYLIST_PROPERTY_ID, &s);
     }

@@ -30,17 +30,17 @@
 
 gpointer m_media_new(_quvi_t q, const gchar *url)
 {
-  _quvi_media_t m = g_new0(struct _quvi_media_s, 1);
+  _quvi_media_t qm = g_new0(struct _quvi_media_s, 1);
   /* URL */
-  m->url.redirect_to = g_string_new(NULL);
-  m->url.thumbnail = g_string_new(NULL);
-  m->url.input = g_string_new(url);
+  qm->url.redirect_to = g_string_new(NULL);
+  qm->url.thumbnail = g_string_new(NULL);
+  qm->url.input = g_string_new(url);
   /* Handle */
-  m->handle.quvi = q;
+  qm->handle.quvi = q;
   /* Other */
-  m->title = g_string_new(NULL);
-  m->id = g_string_new(NULL);
-  return (m);
+  qm->title = g_string_new(NULL);
+  qm->id = g_string_new(NULL);
+  return (qm);
 }
 
 static void _stream_free(gpointer p, gpointer userdata)
@@ -69,42 +69,42 @@ static void _stream_free(gpointer p, gpointer userdata)
   qms = NULL;
 }
 
-void m_media_free(_quvi_media_t m)
+void m_media_free(_quvi_media_t qm)
 {
-  if (m == NULL)
+  if (qm == NULL)
     return;
 
   /* Streams */
 
 #ifdef HAVE_GLIB_2_28
-  g_slist_free_full(m->streams, _stream_free);
+  g_slist_free_full(qm->streams, _stream_free);
 #else
-  g_slist_foreach(m->streams, _stream_free, NULL);
-  g_slist_free(m->streams);
+  g_slist_foreach(qm->streams, _stream_free, NULL);
+  g_slist_free(qm->streams);
 #endif
-  m->streams = NULL;
+  qm->streams = NULL;
 
   /* URLs */
 
-  g_string_free(m->url.redirect_to, TRUE);
-  m->url.redirect_to = NULL;
+  g_string_free(qm->url.redirect_to, TRUE);
+  qm->url.redirect_to = NULL;
 
-  g_string_free(m->url.thumbnail, TRUE);
-  m->url.thumbnail = NULL;
+  g_string_free(qm->url.thumbnail, TRUE);
+  qm->url.thumbnail = NULL;
 
-  g_string_free(m->url.input, TRUE);
-  m->url.input = NULL;
+  g_string_free(qm->url.input, TRUE);
+  qm->url.input = NULL;
 
   /* Other */
 
-  g_string_free(m->title, TRUE);
-  m->title = NULL;
+  g_string_free(qm->title, TRUE);
+  qm->title = NULL;
 
-  g_string_free(m->id, TRUE);
-  m->id = NULL;
+  g_string_free(qm->id, TRUE);
+  qm->id = NULL;
 
-  g_free(m);
-  m = NULL;
+  g_free(qm);
+  qm = NULL;
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

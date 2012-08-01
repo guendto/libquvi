@@ -35,7 +35,7 @@
 
 static const gchar script_func[] = "ident";
 
-static QuviError _chk_results(lua_State *l, _quvi_script_t qs, _quvi_media_t m)
+static QuviError _chk_results(lua_State *l, _quvi_script_t qs, _quvi_media_t qm)
 {
   QuviError rc = QUVI_ERROR_NO_SUPPORT;
 
@@ -43,7 +43,7 @@ static QuviError _chk_results(lua_State *l, _quvi_script_t qs, _quvi_media_t m)
     {
       const glong c = (glong) l_getfield_n(l, MS_CATEGORIES,
                                            qs->fpath->str, script_func);
-      rc = (c & m->handle.quvi->opt.scripts.category)
+      rc = (c & qm->handle.quvi->opt.scripts.category)
            ? QUVI_OK
            : QUVI_ERROR_NO_SUPPORT;
     }
@@ -55,11 +55,11 @@ static QuviError _chk_results(lua_State *l, _quvi_script_t qs, _quvi_media_t m)
 QuviError l_exec_media_script_ident(gpointer p, GSList *sl)
 {
   _quvi_script_t qs;
-  _quvi_media_t m;
+  _quvi_media_t qm;
   lua_State *l;
 
-  m = (_quvi_media_t) p;
-  l = m->handle.quvi->handle.lua;
+  qm = (_quvi_media_t) p;
+  l = qm->handle.quvi->handle.lua;
 
   lua_pushnil(l);
   qs = (_quvi_script_t) sl->data;
@@ -76,12 +76,12 @@ QuviError l_exec_media_script_ident(gpointer p, GSList *sl)
     }
 
   lua_newtable(l);
-  l_setfield_b(l, GS_VERBOSE, m->handle.quvi->opt.scripts.verbose);
-  l_setfield_s(l, MS_INPUT_URL, m->url.input->str);
+  l_setfield_b(l, GS_VERBOSE, qm->handle.quvi->opt.scripts.verbose);
+  l_setfield_s(l, MS_INPUT_URL, qm->url.input->str);
 
   if (lua_pcall(l, 1, 1, 0))
     {
-      g_string_assign(m->handle.quvi->status.errmsg, lua_tostring(l, -1));
+      g_string_assign(qm->handle.quvi->status.errmsg, lua_tostring(l, -1));
       return (QUVI_ERROR_SCRIPT);
     }
 
@@ -90,7 +90,7 @@ QuviError l_exec_media_script_ident(gpointer p, GSList *sl)
       luaL_error(l, "%s: expected `%s' to return a table",
                  qs->fpath->str, script_func);
     }
-  return (_chk_results(l, qs, m));
+  return (_chk_results(l, qs, qm));
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

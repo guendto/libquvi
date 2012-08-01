@@ -28,12 +28,12 @@
 /* -- */
 #include "lua/exec.h"
 
-QuviError l_match_url_to_media_script(_quvi_media_t m, GSList **curr)
+QuviError l_match_url_to_media_script(_quvi_media_t qm, GSList **curr)
 {
-  *curr = m->handle.quvi->scripts.media;
+  *curr = qm->handle.quvi->scripts.media;
   while (*curr != NULL)
     {
-      const QuviError rc = l_exec_media_script_ident(m, *curr);
+      const QuviError rc = l_exec_media_script_ident(qm, *curr);
 
       if (rc == QUVI_OK)
         return (rc);

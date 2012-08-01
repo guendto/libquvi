@@ -13,15 +13,15 @@ more than check @ref quvi_ok return value and exit if the function
 returned QUVI_FALSE. We do not define this function in these examples.
 
 @code
-quvi_media_t m = quvi_media_new(q, URL);
+quvi_media_t qm = quvi_media_new(q, URL);
 abort_if_error();
 {
   char *m_title, *m_url;
-  quvi_media_get(m, QUVI_MEDIA_PROPERTY_TITLE, &m_title);
-  quvi_media_get(m, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
+  quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &m_title);
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
 }
-quvi_media_free(m); /* Release when done using it. */
-m = NULL;
+quvi_media_free(qm); /* Release when done using it. */
+qm = NULL;
 @endcode
 
 @sa QuviMediaProperty
@@ -42,33 +42,33 @@ as one might expect.
 For example:
 
 @code
-quvi_media_t m = quvi_media_new(q, URL);
+quvi_media_t qm = quvi_media_new(q, URL);
 abort_if_error();
 {
   char *m_title, *m_url;
-  quvi_media_get(m, QUVI_MEDIA_PROPERTY_TITLE, &m_title);
+  quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &m_title);
 
   /* Advances the media stream list, starting from the first. */
-  quvi_media_get(m, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
 
   /* Would now continue from second stream in the list. */
-  while (quvi_media_next_stream(m) == QUVI_TRUE)
-    quvi_media_get(m, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
+  while (quvi_media_next_stream(qm) == QUVI_TRUE)
+    quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
 }
 @endcode
 
 Where as:
 
 @code
-quvi_media_t m = quvi_media_new(q, URL);
+quvi_media_t qm = quvi_media_new(q, URL);
 abort_if_error();
 {
   char *m_title, *m_url;
-  quvi_media_get(m, QUVI_MEDIA_PROPERTY_TITLE, &m_title);
+  quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &m_title);
 
   /* Would start from the first stream in the list. */
-  while (quvi_media_next_stream(m) == QUVI_TRUE)
-    quvi_media_get(m, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
+  while (quvi_media_next_stream(qm) == QUVI_TRUE)
+    quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
 }
 @endcode
 
