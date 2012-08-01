@@ -3,7 +3,7 @@ src=\
   util/exec_util_resolve_redirections.c\
   util/exec_util_convert_entities.c\
   util/exec_util_to_file_ext.c\
-  chk_accepts.c\
+  chk.c\
   exec_playlist_script_ident.c\
   exec_playlist_script_parse.c\
   exec_media_script_ident.c\
@@ -20,7 +20,7 @@ src=\
   quvi/fetch.c
 
 hdr=\
-  chk_accepts.h\
+  chk.h\
   load_util_script.h\
   getfield.h\
   setfield.h\

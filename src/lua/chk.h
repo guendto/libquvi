@@ -17,12 +17,12 @@
  * 02110-1301, USA.
  */
 
-#ifndef l_chk_accepts_h
-#define l_chk_accepts_h
+#ifndef l_chk_h
+#define l_chk_h
 
 gboolean l_chk_accepts(lua_State*, _quvi_script_t, const gchar*,
                        const gchar*, const gchar*);
 
-#endif /* l_chk_accepts_h */
+#endif /* l_chk_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

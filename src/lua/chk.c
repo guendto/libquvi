@@ -27,8 +27,8 @@
 #include "_quvi_s.h"
 #include "_quvi_script_s.h"
 /* -- */
-#include "lua/chk_accepts.h"
 #include "lua/getfield.h"
+#include "lua/chk.h"
 
 gboolean l_chk_accepts(lua_State *l, _quvi_script_t qs,
                        const gchar *k_accepts, const gchar *k_domains,

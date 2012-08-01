@@ -28,9 +28,9 @@
 #include "_quvi_playlist_s.h"
 #include "_quvi_script_s.h"
 /* -- */
-#include "lua/chk_accepts.h"
 #include "lua/getfield.h"
 #include "lua/setfield.h"
+#include "lua/chk.h"
 #include "lua/def.h"
 
 static const gchar script_func[] = "ident";
