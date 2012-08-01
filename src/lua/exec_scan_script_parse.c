@@ -32,24 +32,57 @@
 #include "lua/getfield.h"
 #include "lua/setfield.h"
 
-static gint _prepend_media_url(gpointer p, const gchar *url)
-{
-  _quvi_scan_t s = (_quvi_scan_t) p;
-  s->url.media = g_slist_prepend(s->url.media, g_strdup(url));
-  return (QUVI_OK);
-}
+/*
+ * NOTE: The error messages produced in these functions are intended for
+ * developers. They would typically be seen when a new media script is
+ * being developed or an old one is being maintained.
+ *
+ * The messages should be clear, indicating the actual error, minimizing
+ * the time spent on locating the actual problem in the script.
+ */
 
 static const gchar script_func[] = "parse";
+
+static void _foreach_media_url(lua_State *l, _quvi_scan_t qs,
+                               const gchar *script_path)
+{
+  lua_pushnil(l);
+  while (lua_next(l, LI_KEY))
+    {
+      if (lua_isstring(l, LI_KEY) && lua_isstring(l, LI_VALUE))
+        {
+          const gchar *url = lua_tostring(l, LI_VALUE);
+          qs->url.media = g_slist_prepend(qs->url.media, g_strdup(url));
+        }
+      lua_pop(l, 1);
+    }
+  qs->url.media = g_slist_reverse(qs->url.media);
+}
+
+/* Check for 'qargs.media_url'. */
+static void _chk_media_url(lua_State *l, _quvi_scan_t qs,
+                           const gchar *script_path)
+{
+  lua_pushstring(l, SS_MEDIA_URL);
+  lua_gettable(l, LI_KEY);
+
+  if (lua_istable(l, LI_VALUE))
+    _foreach_media_url(l, qs, script_path);
+  else
+    {
+      g_warning("%s: %s: should return a dictionary containing "
+                "the `qargs.%s'", script_path, script_func,
+                SS_MEDIA_URL);
+    }
+  lua_pop(l, 1);
+}
 
 QuviError l_exec_scan_script_parse(gpointer p, gpointer _qss,
                                    const gchar *data)
 {
-  typedef l_callback_getfield_table_iter_s cb;
-
   _quvi_script_t qss;
   _quvi_scan_t qs;
   lua_State *l;
-  QuviError rc;
 
   qss = (_quvi_script_t) _qss;
   qs = (_quvi_scan_t) p;
@@ -64,7 +97,7 @@ QuviError l_exec_scan_script_parse(gpointer p, gpointer _qss,
 
   if (!lua_isfunction(l, -1))
     {
-      luaL_error(l, "%s: `%s' function not found",
+      luaL_error(l, "%s: function `%s' not found",
                  qss->fpath->str, script_func);
     }
 
@@ -82,18 +115,14 @@ QuviError l_exec_scan_script_parse(gpointer p, gpointer _qss,
 
   if (!lua_istable(l, -1))
     {
-      luaL_error(l, "%s: expected `%s' function return a table",
+      luaL_error(l, "%s: %s: must return a dictionary, typically `qargs'",
                  qss->fpath->str, script_func);
     }
 
-  rc = l_getfield_table_iter_s(l, qs, SS_MEDIA_URL, qss->fpath->str,
-                               script_func, (cb) _prepend_media_url);
-  if (rc == QUVI_OK)
-    qs->url.media = g_slist_reverse(qs->url.media);
-
+  _chk_media_url(l, qs, qss->fpath->str);
   lua_pop(l, 1);
 
-  return (rc);
+  return (QUVI_OK);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
