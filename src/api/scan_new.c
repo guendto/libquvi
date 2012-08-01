@@ -72,22 +72,22 @@ static void _exec_scan_script(gpointer p, gpointer userdata)
 quvi_scan_t quvi_scan_new(quvi_t handle, const char *url)
 {
   _quvi_t q = (_quvi_t) handle;
-  _quvi_scan_t s = NULL;
+  _quvi_scan_t qs = NULL;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_val_if_fail(handle != NULL, NULL);
   g_return_val_if_fail(url != NULL, NULL);
 
-  s = m_scan_new(q, url);
+  qs = m_scan_new(q, url);
   {
     _quvi_net_t n = NULL;
-    n_fetch(q, &n, s->url.input->str);
+    n_fetch(q, &n, qs->url.input->str);
 
     if (quvi_ok(q) == QUVI_TRUE)
       {
         struct _exec_scan_script_s e;
 
-        e.handle.scan = s;
+        e.handle.scan = qs;
         e.handle.net = n;
 
         g_slist_foreach(q->scripts.scan, _exec_scan_script, &e);
@@ -95,7 +95,7 @@ quvi_scan_t quvi_scan_new(quvi_t handle, const char *url)
     n_free(n);
     n = NULL;
   }
-  return (s);
+  return (qs);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

@@ -30,12 +30,12 @@
 
 gpointer m_scan_new(_quvi_t q, const gchar *url)
 {
-  _quvi_scan_t s = g_new0(struct _quvi_scan_s, 1);
+  _quvi_scan_t qs = g_new0(struct _quvi_scan_s, 1);
   /* URL */
-  s->url.input = g_string_new(url);
+  qs->url.input = g_string_new(url);
   /* Handle */
-  s->handle.quvi = q;
-  return (s);
+  qs->handle.quvi = q;
+  return (qs);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

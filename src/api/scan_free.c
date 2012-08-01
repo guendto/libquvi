@@ -44,7 +44,7 @@ static void _url_free(gpointer p, gpointer userdata)
 */
 void quvi_scan_free(quvi_scan_t handle)
 {
-  _quvi_scan_t s = (_quvi_scan_t) handle;
+  _quvi_scan_t qs = (_quvi_scan_t) handle;
 
   if (handle == NULL)
     return;
@@ -52,18 +52,18 @@ void quvi_scan_free(quvi_scan_t handle)
   /* URLs */
 
 #ifdef HAVE_GLIB_2_28
-  g_slist_free_full(s->url.media, _url_free);
+  g_slist_free_full(qs->url.media, _url_free);
 #else
-  g_slist_foreach(s->url.media, _url_free, NULL);
-  g_slist_free(s->url.media);
+  g_slist_foreach(qs->url.media, _url_free, NULL);
+  g_slist_free(qs->url.media);
 #endif
-  s->url.media = NULL;
+  qs->url.media = NULL;
 
-  g_string_free(s->url.input, TRUE);
-  s->url.input = NULL;
+  g_string_free(qs->url.input, TRUE);
+  qs->url.input = NULL;
 
-  g_free(s);
-  s = NULL;
+  g_free(qs);
+  qs = NULL;
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

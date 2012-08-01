@@ -36,17 +36,17 @@
 */
 const char *quvi_scan_next_media_url(quvi_scan_t handle)
 {
-  _quvi_scan_t s = (_quvi_scan_t) handle;
+  _quvi_scan_t qs = (_quvi_scan_t) handle;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_val_if_fail(handle != NULL, NULL);
 
-  s->url.curr.media = (s->url.curr.media != NULL)
-                      ? g_slist_next(s->url.curr.media)
-                      : s->url.media;
+  qs->url.curr.media = (qs->url.curr.media != NULL)
+                       ? g_slist_next(qs->url.curr.media)
+                       : qs->url.media;
 
-  return ((s->url.curr.media != NULL)
-          ? s->url.curr.media->data
+  return ((qs->url.curr.media != NULL)
+          ? qs->url.curr.media->data
           : NULL);
 }
 
