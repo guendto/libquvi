@@ -28,7 +28,6 @@
 #include "_quvi_media_s.h"
 #include "_quvi_script_s.h"
 /* -- */
-#include "lua/getfield.h"
 #include "lua/setfield.h"
 #include "lua/chk.h"
 #include "lua/def.h"

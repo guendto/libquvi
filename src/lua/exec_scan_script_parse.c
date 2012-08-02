@@ -28,9 +28,8 @@
 #include "_quvi_scan_s.h"
 #include "_quvi_script_s.h"
 /* -- */
-#include "lua/def.h"
-#include "lua/getfield.h"
 #include "lua/setfield.h"
+#include "lua/def.h"
 
 /*
  * NOTE: The error messages produced in these functions are intended for
