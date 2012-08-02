@@ -60,7 +60,7 @@ static void test_playlist()
 
   {
     gint i = 0;
-    while (quvi_playlist_next_media_url(qp) == QUVI_TRUE)
+    while (quvi_playlist_media_next(qp) == QUVI_TRUE)
       {
         quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_MEDIA_URL, &s);
         g_assert_cmpint(qerr(q), ==, QUVI_OK);
@@ -104,7 +104,7 @@ static void test_playlist_short()
 
   {
     gint i = 0;
-    while (quvi_playlist_next_media_url(qp) == QUVI_TRUE)
+    while (quvi_playlist_media_next(qp) == QUVI_TRUE)
       {
         quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_MEDIA_URL, &s);
         g_assert_cmpint(qerr(q), ==, QUVI_OK);
