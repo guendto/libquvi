@@ -28,10 +28,18 @@
 #include "_quvi_playlist_s.h"
 #include "_quvi_script_s.h"
 /* -- */
-#include "lua/getfield.h"
 #include "lua/setfield.h"
 #include "lua/chk.h"
 #include "lua/def.h"
+
+/*
+ * NOTE: The error messages produced in these functions are intended for
+ * developers. They would typically be seen when a new script is being
+ * developed.
+ *
+ * The messages should be clear, indicating the actual error, minimizing
+ * the time spent on locating the actual problem in the script.
+ */
 
 static const gchar script_func[] = "ident";
 
@@ -63,10 +71,7 @@ QuviError l_exec_playlist_script_ident(gpointer p, GSList *sl)
   lua_getglobal(l, script_func);
 
   if (!lua_isfunction(l, -1))
-    {
-      luaL_error(l, "%s: `%s' function not found",
-                 qs->fpath->str, script_func);
-    }
+    luaL_error(l, "%s: function `%s' not found", qs->fpath->str, script_func);
 
   lua_newtable(l);
   l_setfield_b(l, GS_VERBOSE, qp->handle.quvi->opt.scripts.verbose);
@@ -80,7 +85,7 @@ QuviError l_exec_playlist_script_ident(gpointer p, GSList *sl)
 
   if (!lua_istable(l, -1))
     {
-      luaL_error(l, "%s: expected `%s' to return a table",
+      luaL_error(l, "%s: %s: must return a dictionary",
                  qs->fpath->str, script_func);
     }
   return (_chk_results(l, qs));
