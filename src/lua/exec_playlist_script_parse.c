@@ -47,6 +47,7 @@ static const gchar script_func[] = "parse";
 static gpointer _playlist_media_new()
 {
   _quvi_playlist_media_t qpm = g_new0(struct _quvi_playlist_media_s, 1);
+  qpm->title = g_string_new(NULL);
   qpm->url = g_string_new(NULL);
   return (qpm);
 }
@@ -61,6 +62,7 @@ static gboolean _new_media(lua_State *l, _quvi_playlist_t qp,
   while (lua_next(l, LI_KEY)) /* For each qargs.media */
     {
       l_chk_assign_n(l, PSM_DURATION_MS, &(*qpm)->duration_ms);
+      l_chk_assign_s(l, PSM_TITLE, (*qpm)->title);
       l_chk_assign_s(l, PSM_URL, (*qpm)->url);
       lua_pop(l, 1);
     }
