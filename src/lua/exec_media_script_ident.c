@@ -56,8 +56,7 @@ static QuviError _chk_results(lua_State *l, _quvi_script_t qs,
       lua_pushnil(l);
       while (lua_next(l, LI_KEY))
         {
-          if (l_chk_assign_n(l, MS_CATEGORIES, &c) == TRUE)
-            break;
+          l_chk_assign_n(l, MS_CATEGORIES, &c);
           lua_pop(l, 1);
         }
 

@@ -228,8 +228,7 @@ static gboolean _chk_goto_instr(lua_State *l, _quvi_media_t qm)
   lua_pushnil(l);
   while (lua_next(l, LI_KEY))
     {
-      if (l_chk_assign_s(l, MS_GOTO_URL, qm->url.redirect_to) == TRUE)
-        break;
+      l_chk_assign_s(l, MS_GOTO_URL, qm->url.redirect_to);
       lua_pop(l, 1);
     }
   return ((qm->url.redirect_to->len >0) ? TRUE:FALSE);
