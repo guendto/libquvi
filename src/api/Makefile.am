@@ -16,6 +16,7 @@ EXTRA_DIST=\
   doxy/select_stream.dp
 
 src=\
+  playlist_media_reset.c\
   playlist_media_next.c\
   playlist_free.c\
   playlist_new.c\
