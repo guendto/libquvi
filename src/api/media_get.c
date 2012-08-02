@@ -108,8 +108,7 @@ static QuviError _media_get(_quvi_media_t qm, QuviMediaProperty n, ...)
       /*
        * Stream properties.
        *
-       * NOTE: These must advance current stream pointer if it is still
-       * set to NULL.
+       * NOTE: These must advance current stream pointer if it is still NULL.
        */
 
     case QUVI_MEDIA_STREAM_PROPERTY_VIDEO_ENCODING:
