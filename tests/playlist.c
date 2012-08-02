@@ -61,6 +61,21 @@ static void test_playlist()
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "thelittleidiot_destroyed");
 
+  /* This should advance the current media pointer to the first media
+   * item in the returned list. */
+  quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_TITLE, &s);
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpstr(s, ==, "The Broken Places"); /* First media title. */
+
+  /* This should continue from the 2nd item, not the 1st in the list. */
+  quvi_playlist_media_next(qp);
+
+  quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_TITLE, &s);
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpstr(s, ==, "Be The One"); /* Second media title. */
+
+  quvi_playlist_media_reset(qp);
+
   {
     gint i = 0;
     while (quvi_playlist_media_next(qp) == QUVI_TRUE)
@@ -72,6 +87,14 @@ static void test_playlist()
         quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_TITLE, &s);
         g_assert_cmpint(qerr(q), ==, QUVI_OK);
         g_assert_cmpint(strlen(s), >, 0);
+
+        if (i == 0)
+          {
+            /* Confirm that this is the first item, the call to
+             * quvi_playlist_reset earlier should have reset the
+             * current location. */
+            g_assert_cmpstr(s, ==, "The Broken Places");
+          }
 
         quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &s);
         g_assert_cmpint(qerr(q), ==, QUVI_OK);
