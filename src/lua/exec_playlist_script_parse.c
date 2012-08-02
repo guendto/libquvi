@@ -31,6 +31,7 @@
 #include "lua/setfield.h"
 #include "lua/chk.h"
 #include "lua/def.h"
+#include "misc/playlist.h"
 
 /*
  * NOTE: The error messages produced in these functions are intended for
@@ -43,48 +44,84 @@
 
 static const gchar script_func[] = "parse";
 
+static gpointer _playlist_media_new()
+{
+  _quvi_playlist_media_t qpm = g_new0(struct _quvi_playlist_media_s, 1);
+  qpm->url = g_string_new(NULL);
+  return (qpm);
+}
+
+static gboolean _new_media(lua_State *l, _quvi_playlist_t qp,
+                           const gchar *script_path, const gint i,
+                           _quvi_playlist_media_t *qpm)
+{
+  *qpm = _playlist_media_new();
+
+  lua_pushnil(l);
+  while (lua_next(l, LI_KEY)) /* For each qargs.media */
+    {
+      l_chk_assign_s(l, PSM_URL, (*qpm)->url);
+      lua_pop(l, 1);
+    }
+
+  if ((*qpm)->url->len ==0)
+    {
+      m_playlist_media_free(*qpm);
+      *qpm = NULL;
+    }
+
+  return ( ((*qpm)->url->len >0) ? TRUE:FALSE);
+}
+
+/* For each qargs.media */
+static void _foreach_media(lua_State *l, _quvi_playlist_t qp,
+                           const gchar *script_path)
+{
+  _quvi_playlist_media_t qpm;
+  gint i;
+
+  i = 0;
+
+  lua_pushnil(l);
+  while (lua_next(l, LI_KEY))
+    {
+      if (lua_istable(l, LI_VALUE))
+        {
+          if (_new_media(l, qp, script_path, ++i, &qpm) == TRUE)
+            qp->media = g_slist_prepend(qp->media, qpm);
+        }
+      lua_pop(l, 1);
+    }
+  qp->media = g_slist_reverse(qp->media);
+}
+
+/* Check for qargs.media */
+static void _chk_media(lua_State *l, _quvi_playlist_t qp,
+                       const gchar *script_path)
+{
+  lua_pushstring(l, PS_MEDIA);
+  lua_gettable(l, LI_KEY);
+
+  if (lua_istable(l, LI_VALUE))
+    _foreach_media(l, qp, script_path);
+  else
+    {
+      g_warning("%s: %s: should return a dictionary containing "
+                "the `qargs.%s' dictionary", script_path, script_func,
+                PS_MEDIA);
+    }
+  lua_pop(l, 1);
+}
+
 static void _chk_optional(lua_State *l, _quvi_playlist_t qp)
 {
   lua_pushnil(l);
   while (lua_next(l, LI_KEY))
     {
-      l_chk_assign_s(l, PS_ID, qp->id.playlist);
+      if (l_chk_assign_s(l, PS_ID, qp->id.playlist) == TRUE)
+        break;
       lua_pop(l, 1);
     }
-}
-
-static void _foreach_media_url(lua_State *l, _quvi_playlist_t qp,
-                               const gchar *script_path)
-{
-  lua_pushnil(l);
-  while (lua_next(l, LI_KEY))
-    {
-      if (lua_isstring(l, LI_KEY) && lua_isstring(l, LI_VALUE))
-        {
-          const gchar *url = lua_tostring(l, LI_VALUE);
-          qp->url.media = g_slist_prepend(qp->url.media, g_strdup(url));
-        }
-      lua_pop(l, 1);
-    }
-  qp->url.media = g_slist_reverse(qp->url.media);
-}
-
-/* Check for 'qargs.media_url'. */
-static void _chk_media_url(lua_State *l, _quvi_playlist_t qp,
-                           const gchar *script_path)
-{
-  lua_pushstring(l, PS_MEDIA_URL);
-  lua_gettable(l, LI_KEY);
-
-  if (lua_istable(l, LI_VALUE))
-    _foreach_media_url(l, qp, script_path);
-  else
-    {
-      g_warning("%s: %s: should return a dictionary containing "
-                "the `qargs.%s'", script_path, script_func,
-                PS_MEDIA_URL);
-    }
-  lua_pop(l, 1);
 }
 
 QuviError l_exec_playlist_script_parse(gpointer p, GSList *sl)
@@ -120,7 +157,8 @@ QuviError l_exec_playlist_script_parse(gpointer p, GSList *sl)
     }
 
   _chk_optional(l, qp);
-  _chk_media_url(l, qp, qs->fpath->str);
+  _chk_media(l, qp, qs->fpath->str);
+
   lua_pop(l, 1);
 
   return (QUVI_OK);
