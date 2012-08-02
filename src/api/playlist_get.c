@@ -117,6 +117,11 @@ static QuviError _playlist_get(_quvi_playlist_t qp,
       *sp = (qpm != NULL) ? qpm->url->str : (gchar*) empty;
       break;
 
+    case QUVI_PLAYLIST_MEDIA_PROPERTY_DURATION_MS:
+      _chk_curr_media(qp, &qpm);
+      *dp = (qpm != NULL) ? qpm->duration_ms : 0;
+      break;
+
     default:
       rc = QUVI_ERROR_INVALID_ARG;
       break;

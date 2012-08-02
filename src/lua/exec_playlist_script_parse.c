@@ -60,6 +60,7 @@ static gboolean _new_media(lua_State *l, _quvi_playlist_t qp,
   lua_pushnil(l);
   while (lua_next(l, LI_KEY)) /* For each qargs.media */
     {
+      l_chk_assign_n(l, PSM_DURATION_MS, &(*qpm)->duration_ms);
       l_chk_assign_s(l, PSM_URL, (*qpm)->url);
       lua_pop(l, 1);
     }
