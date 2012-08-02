@@ -44,15 +44,24 @@
 
 static const gchar script_func[] = "ident";
 
-static QuviError _chk_results(lua_State *l, _quvi_script_t qs, _quvi_media_t qm)
+static QuviError _chk_results(lua_State *l, _quvi_script_t qs,
+                              _quvi_media_t qm)
 {
   QuviError rc = QUVI_ERROR_NO_SUPPORT;
 
   if (l_chk_accepts(l, qs, MS_ACCEPTS, MS_DOMAINS, script_func) == TRUE)
     {
-      const glong c = (glong) l_getfield_n(l, MS_CATEGORIES,
-                                           qs->fpath->str, script_func);
-      rc = (c & qm->handle.quvi->opt.scripts.category)
+      gdouble c = 0;
+
+      lua_pushnil(l);
+      while (lua_next(l, LI_KEY))
+        {
+          if (l_chk_assign_n(l, MS_CATEGORIES, &c) == TRUE)
+            break;
+          lua_pop(l, 1);
+        }
+
+      rc = ((glong) c & qm->handle.quvi->opt.scripts.category)
            ? QUVI_OK
            : QUVI_ERROR_NO_SUPPORT;
     }
