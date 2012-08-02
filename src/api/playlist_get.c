@@ -28,9 +28,22 @@
 #include "_quvi_s.h"
 #include "_quvi_playlist_s.h"
 
+/* Advances the current media pointer to the first media if undefined. */
+static void _chk_curr_media(_quvi_playlist_t qp, _quvi_playlist_media_t *qpm)
+{
+  if (qp->curr.media == NULL)
+    quvi_playlist_media_next(qp);
+
+  if (qp->curr.media != NULL)
+    *qpm = (_quvi_playlist_media_t) qp->curr.media->data;
+}
+
+static const gchar empty[] = "";
+
 static QuviError _playlist_get(_quvi_playlist_t qp,
                                QuviPlaylistProperty n, ...)
 {
+  _quvi_playlist_media_t qpm;
   QuviError rc;
   gdouble *dp;
   va_list arg;
@@ -46,6 +59,7 @@ static QuviError _playlist_get(_quvi_playlist_t qp,
   lp = NULL;
 
   rc = QUVI_OK;
+  qpm = NULL;
 
   switch (type)
     {
@@ -78,9 +92,31 @@ static QuviError _playlist_get(_quvi_playlist_t qp,
     case QUVI_PLAYLIST_PROPERTY_ID:
       *sp = qp->id.playlist->str;
       break;
+
+      /*
+       * (Playlist) Media properties.
+       *
+       * quvi_playlist_get is expected to return the property values for
+       * the first media the playlist script returned, just like
+       * quvi_media_get does with media scripts. We must mimic this
+       * behaviour by first attempting to move to the first item in the
+       * playlist media list.
+       *
+       * Unlike with quvi_media_get, playlist scripts are allowed to return
+       * nothing. Media scripts are expected to return at least one media
+       * stream.
+       *
+       * This means that if the playlist script did not return any such
+       * properties (e.g. media URL):
+       *  - returned strings must be set to empty ("")
+       *  - returned numeric values must be set to 0
+       */
+
     case QUVI_PLAYLIST_PROPERTY_MEDIA_URL:
-      *sp = (gchar*) qp->url.curr.media->data;
+      _chk_curr_media(qp, &qpm);
+      *sp = (qpm != NULL) ? qpm->url->str : (gchar*) empty;
       break;
+
     default:
       rc = QUVI_ERROR_INVALID_ARG;
       break;
