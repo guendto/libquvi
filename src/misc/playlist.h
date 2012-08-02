@@ -23,6 +23,8 @@
 gpointer m_playlist_new(_quvi_t, const gchar*);
 void m_playlist_free(_quvi_playlist_t);
 
+void m_playlist_media_free(_quvi_playlist_media_t);
+
 #endif /* m_playlist_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
