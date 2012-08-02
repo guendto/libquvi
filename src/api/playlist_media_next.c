@@ -17,7 +17,7 @@
  * 02110-1301, USA.
  */
 
-/** @file playlist_next_media_url.c */
+/** @file playlist_media_next.c */
 
 #include "config.h"
 
@@ -28,12 +28,12 @@
 #include "_quvi_s.h"
 #include "_quvi_playlist_s.h"
 
-/** @brief Traverse to next playlist media URL
+/** @brief Traverse to next available playlist media
 @return QUVI_TRUE if succeeded, otherwise QUVI_FALSE
 @sa @ref parse_playlist
 @ingroup playlistprop
 */
-QuviBoolean quvi_playlist_next_media_url(quvi_playlist_t handle)
+QuviBoolean quvi_playlist_media_next(quvi_playlist_t handle)
 {
   _quvi_playlist_t qp = (_quvi_playlist_t) handle;
 
