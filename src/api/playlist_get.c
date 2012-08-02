@@ -112,6 +112,11 @@ static QuviError _playlist_get(_quvi_playlist_t qp,
        *  - returned numeric values must be set to 0
        */
 
+    case QUVI_PLAYLIST_MEDIA_PROPERTY_TITLE:
+      _chk_curr_media(qp, &qpm);
+      *sp = (qpm != NULL) ? qpm->title->str : (gchar*) empty;
+      break;
+
     case QUVI_PLAYLIST_MEDIA_PROPERTY_URL:
       _chk_curr_media(qp, &qpm);
       *sp = (qpm != NULL) ? qpm->url->str : (gchar*) empty;
