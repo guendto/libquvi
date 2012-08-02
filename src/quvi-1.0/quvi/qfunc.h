@@ -54,7 +54,7 @@ extern "C" {
   void quvi_playlist_free(quvi_playlist_t);
 
   void quvi_playlist_get(quvi_playlist_t, QuviPlaylistProperty, ...);
-  QuviBoolean quvi_playlist_next_media_url(quvi_playlist_t);
+  QuviBoolean quvi_playlist_media_next(quvi_playlist_t);
 
   /* Scan */
 

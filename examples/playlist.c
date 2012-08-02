@@ -66,15 +66,21 @@ gint main(gint argc, gchar **argv)
   qp = quvi_playlist_new(q, url);
   exit_if_error();
   {
-    gchar *s = NULL;
+    gchar *p_id, *m_url, *m_title;
+    gdouble m_dur_ms;
 
-    quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &s);
-    g_print("id=%s\n", s);
+    quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &p_id);
+    g_print("id=%s\n", p_id);
 
-    while (quvi_playlist_next_media_url(qp) == QUVI_TRUE)
+    while (quvi_playlist_media_next(qp) == QUVI_TRUE)
       {
-        quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_MEDIA_URL, &s);
-        g_print("%s\n", s);
+        quvi_playlist_get(qp,
+                          QUVI_PLAYLIST_MEDIA_PROPERTY_DURATION_MS, &m_dur_ms);
+
+        quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_TITLE, &m_title);
+        quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &m_url);
+
+        g_print("title=%s, duration=%.0f, url=%s\n", m_title, m_dur_ms, m_url);
       }
   }
 

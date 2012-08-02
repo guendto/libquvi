@@ -63,11 +63,17 @@
 
 /* Playlist script */
 
-#define PS_INPUT_URL      "input_url" /* App req. URL */
-#define PS_MEDIA_URL      "media_url" /* Array of found media URLs */
-#define PS_ACCEPTS        "accepts"   /* Script accepts URL */
-#define PS_DOMAINS        "domains"   /* Accepted domains */
-#define PS_ID             "id"        /* Playlist ID */
+#define PS_INPUT_URL  "input_url" /* App req. URL */
+#define PS_ACCEPTS    "accepts"   /* Script accepts URL */
+#define PS_DOMAINS    "domains"   /* Accepted domains */
+#define PS_MEDIA      "media"     /* Found media */
+#define PS_ID         "id"        /* Playlist ID */
+
+/* Playlist script: Media properties */
+
+#define PSM_DURATION_MS "duration_ms" /* Duration in ms */
+#define PSM_TITLE       "title"       /* Title */
+#define PSM_URL         "url"         /* URL */
 
 /* Scan script */
 

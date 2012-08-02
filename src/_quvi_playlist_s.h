@@ -24,12 +24,7 @@ struct _quvi_playlist_s
 {
   struct
   {
-    struct
-    {
-      GSList *media;
-    } curr;
     GString *input;
-    GSList *media;
   } url;
   struct
   {
@@ -39,9 +34,23 @@ struct _quvi_playlist_s
   {
     _quvi_t quvi;
   } handle;
+  struct
+  {
+    GSList *media;
+  } curr;
+  GSList *media;
 };
 
 typedef struct _quvi_playlist_s *_quvi_playlist_t;
+
+struct _quvi_playlist_media_s
+{
+  gdouble duration_ms;
+  GString *title;
+  GString *url;
+};
+
+typedef struct _quvi_playlist_media_s *_quvi_playlist_media_t;
 
 #endif /* _quvi_playlist_s_h */
 

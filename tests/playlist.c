@@ -29,6 +29,7 @@ static void test_playlist()
     "http://soundcloud.com/thelittleidiot/sets/destroyed/";
 
   quvi_playlist_t qp;
+  gdouble n;
   quvi_t q;
   gchar *s;
 
@@ -48,10 +49,12 @@ static void test_playlist()
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
   g_assert(qp != NULL);
 
+  /* Boundary check: the first -1 */
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID-1, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
 
-  quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_MEDIA_URL+1, &s);
+  /* Boundary check: the last +1 */
+  quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_DURATION_MS+1, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &s);
@@ -60,11 +63,20 @@ static void test_playlist()
 
   {
     gint i = 0;
-    while (quvi_playlist_next_media_url(qp) == QUVI_TRUE)
+    while (quvi_playlist_media_next(qp) == QUVI_TRUE)
       {
-        quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_MEDIA_URL, &s);
+        quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_DURATION_MS, &n);
+        g_assert_cmpint(qerr(q), ==, QUVI_OK);
+        g_assert_cmpfloat(n, >, 0);
+
+        quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_TITLE, &s);
         g_assert_cmpint(qerr(q), ==, QUVI_OK);
         g_assert_cmpint(strlen(s), >, 0);
+
+        quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &s);
+        g_assert_cmpint(qerr(q), ==, QUVI_OK);
+        g_assert_cmpint(strlen(s), >, 0);
+
         ++i;
       }
     g_assert_cmpint(i, >, 1);
@@ -104,9 +116,9 @@ static void test_playlist_short()
 
   {
     gint i = 0;
-    while (quvi_playlist_next_media_url(qp) == QUVI_TRUE)
+    while (quvi_playlist_media_next(qp) == QUVI_TRUE)
       {
-        quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_MEDIA_URL, &s);
+        quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &s);
         g_assert_cmpint(qerr(q), ==, QUVI_OK);
         g_assert_cmpint(strlen(s), >, 0);
         ++i;

@@ -40,13 +40,24 @@ gpointer m_playlist_new(_quvi_t q, const gchar *url)
   return (qp);
 }
 
-static void _url_free(gpointer p, gpointer userdata)
+void m_playlist_media_free(_quvi_playlist_media_t qpm)
 {
-  if (p == NULL)
+  if (qpm == NULL)
     return;
 
-  g_free(p);
-  p = NULL;
+  g_string_free(qpm->title, TRUE);
+  qpm->title = NULL;
+
+  g_string_free(qpm->url, TRUE);
+  qpm->url = NULL;
+
+  g_free(qpm);
+  qpm = NULL;
+}
+
+static void _playlist_media_free(gpointer p, gpointer userdata)
+{
+  m_playlist_media_free(p);
 }
 
 void m_playlist_free(_quvi_playlist_t qp)
@@ -54,15 +65,13 @@ void m_playlist_free(_quvi_playlist_t qp)
   if (qp == NULL)
     return;
 
-  /* URLs */
-
 #ifdef HAVE_GLIB_2_28
-  g_slist_free_full(qp->url.media, _url_free);
+  g_slist_free_full(qp->media, _playlist_media_free);
 #else
-  g_slist_foreach(qp->url.media, _url_free, NULL);
-  g_slist_free(qp->url.media);
+  g_slist_foreach(qp->media, _playlist_media_free, NULL);
+  g_slist_free(qp->media);
 #endif
-  qp->url.media = NULL;
+  qp->media = NULL;
 
   g_string_free(qp->url.input, TRUE);
   qp->url.input = NULL;
