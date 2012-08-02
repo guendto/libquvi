@@ -40,11 +40,11 @@ QuviBoolean quvi_playlist_media_next(quvi_playlist_t handle)
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_val_if_fail(handle != NULL, QUVI_FALSE);
 
-  qp->url.curr.media = (qp->url.curr.media != NULL)
-                       ? g_slist_next(qp->url.curr.media)
-                       : qp->url.media;
+  qp->curr.media = (qp->curr.media != NULL)
+                   ? g_slist_next(qp->curr.media)
+                   : qp->media;
 
-  return ((qp->url.curr.media != NULL)
+  return ((qp->curr.media != NULL)
           ? QUVI_TRUE
           : QUVI_FALSE);
 }
