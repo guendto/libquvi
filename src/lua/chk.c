@@ -27,10 +27,18 @@
 #include "_quvi_s.h"
 #include "_quvi_script_s.h"
 /* -- */
-#include "lua/getfield.h"
 #include "lua/chk.h"
 #include "lua/def.h"
 #include "misc/re.h"
+
+/*
+ * NOTE: The error messages produced in these functions are intended for
+ * developers. They would typically be seen when a new script is being
+ * developed.
+ *
+ * The messages should be clear, indicating the actual error, minimizing
+ * the time spent on locating the actual problem in the script.
+ */
 
 gboolean l_chk_accepts(lua_State *l, _quvi_script_t qs,
                        const gchar *k_accepts, const gchar *k_domains,
@@ -43,17 +51,25 @@ gboolean l_chk_accepts(lua_State *l, _quvi_script_t qs,
 
   if (lua_istable(l, -1))
     {
-      const gchar *s = l_getfield_s(l, k_domains,
-                                    qs->fpath->str, script_func);
-
-      g_string_assign(qs->domains, s);
-
-      r = l_getfield_b(l, k_accepts, qs->fpath->str, script_func);
+      lua_pushnil(l);
+      while (lua_next(l, LI_KEY))
+        {
+          l_chk_assign_s(l, k_domains, qs->domains);
+          l_chk_assign_b(l, k_accepts, &r);
+          lua_pop(l, 1);
+        }
+      if (qs->domains->len ==0)
+        {
+          luaL_error(l, "%s: %s: dictionary `%s' must contain "
+                     "a string value for `%s'", qs->fpath->str,
+                     script_func, k_accepts, k_domains);
+        }
     }
   else
     {
-      luaL_error(l, "%s: %s: expected to return a table containing table `%s'",
-                 qs->fpath->str, script_func, k_accepts);
+      luaL_error(l, "%s: %s: the returned dictionary must contain "
+                 "a dictionary `%s'", qs->fpath->str, script_func,
+                 k_accepts);
     }
   lua_pop(l, 1);
 
