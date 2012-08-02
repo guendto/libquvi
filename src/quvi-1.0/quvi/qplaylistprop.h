@@ -35,7 +35,7 @@ typedef enum
 {
   /* string */
   QUVI_PLAYLIST_PROPERTY_ID = QUVI_PLAYLIST_PROPERTY_TYPE_STRING+1,
-  QUVI_PLAYLIST_PROPERTY_MEDIA_URL
+  QUVI_PLAYLIST_MEDIA_PROPERTY_URL
 } QuviPlaylistProperty;
 
 #endif /* qplaylistprop_h */

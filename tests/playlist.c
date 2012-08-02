@@ -51,7 +51,7 @@ static void test_playlist()
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID-1, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
 
-  quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_MEDIA_URL+1, &s);
+  quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL+1, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &s);
@@ -62,7 +62,7 @@ static void test_playlist()
     gint i = 0;
     while (quvi_playlist_media_next(qp) == QUVI_TRUE)
       {
-        quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_MEDIA_URL, &s);
+        quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &s);
         g_assert_cmpint(qerr(q), ==, QUVI_OK);
         g_assert_cmpint(strlen(s), >, 0);
         ++i;
@@ -106,7 +106,7 @@ static void test_playlist_short()
     gint i = 0;
     while (quvi_playlist_media_next(qp) == QUVI_TRUE)
       {
-        quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_MEDIA_URL, &s);
+        quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &s);
         g_assert_cmpint(qerr(q), ==, QUVI_OK);
         g_assert_cmpint(strlen(s), >, 0);
         ++i;

@@ -73,7 +73,7 @@ gint main(gint argc, gchar **argv)
 
     while (quvi_playlist_media_next(qp) == QUVI_TRUE)
       {
-        quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_MEDIA_URL, &p_url);
+        quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &p_url);
         g_print("url=%s\n", p_url);
       }
   }
