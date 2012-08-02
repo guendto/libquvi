@@ -72,6 +72,7 @@
 /* Playlist script: Media properties */
 
 #define PSM_DURATION_MS "duration_ms" /* Duration in ms */
+#define PSM_TITLE       "title"       /* Title */
 #define PSM_URL         "url"         /* URL */
 
 /* Scan script */

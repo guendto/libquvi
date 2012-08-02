@@ -66,7 +66,7 @@ gint main(gint argc, gchar **argv)
   qp = quvi_playlist_new(q, url);
   exit_if_error();
   {
-    gchar *p_id, *m_url;
+    gchar *p_id, *m_url, *m_title;
     gdouble m_dur_ms;
 
     quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &p_id);
@@ -77,9 +77,10 @@ gint main(gint argc, gchar **argv)
         quvi_playlist_get(qp,
                           QUVI_PLAYLIST_MEDIA_PROPERTY_DURATION_MS, &m_dur_ms);
 
+        quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_TITLE, &m_title);
         quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &m_url);
 
-        g_print("duration=%.0f, url=%s\n", m_dur_ms, m_url);
+        g_print("title=%s, duration=%.0f, url=%s\n", m_title, m_dur_ms, m_url);
       }
   }
 

@@ -46,6 +46,7 @@ typedef struct _quvi_playlist_s *_quvi_playlist_t;
 struct _quvi_playlist_media_s
 {
   gdouble duration_ms;
+  GString *title;
   GString *url;
 };
 

@@ -45,6 +45,9 @@ void m_playlist_media_free(_quvi_playlist_media_t qpm)
   if (qpm == NULL)
     return;
 
+  g_string_free(qpm->title, TRUE);
+  qpm->title = NULL;
+
   g_string_free(qpm->url, TRUE);
   qpm->url = NULL;
 
