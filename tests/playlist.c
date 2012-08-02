@@ -65,13 +65,17 @@ static void test_playlist()
     gint i = 0;
     while (quvi_playlist_media_next(qp) == QUVI_TRUE)
       {
-        quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &s);
-        g_assert_cmpint(qerr(q), ==, QUVI_OK);
-        g_assert_cmpint(strlen(s), >, 0);
-
         quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_DURATION_MS, &n);
         g_assert_cmpint(qerr(q), ==, QUVI_OK);
         g_assert_cmpfloat(n, >, 0);
+
+        quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_TITLE, &s);
+        g_assert_cmpint(qerr(q), ==, QUVI_OK);
+        g_assert_cmpint(strlen(s), >, 0);
+
+        quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &s);
+        g_assert_cmpint(qerr(q), ==, QUVI_OK);
+        g_assert_cmpint(strlen(s), >, 0);
 
         ++i;
       }
