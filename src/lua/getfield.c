@@ -26,6 +26,19 @@
 /* -- */
 #include "lua/getfield.h"
 
+const gpointer l_get_reg_userdata(lua_State *l, const gchar *k)
+{
+  lua_pushstring(l, k);
+  lua_gettable(l, LUA_REGISTRYINDEX);
+
+  if (!lua_isuserdata(l, -1))
+    luaL_error(l, "expected `%s' in LUA_REGISTRYINDEX", k);
+
+  return ((gpointer) lua_touserdata(l, -1));
+}
+
+#ifdef _1 /* Unused */
+
 static const gchar *_E = "%s: %s: expected `%s' in returned table";
 
 #define _pop(ltype, ctype, dval) \
@@ -60,19 +73,6 @@ const gboolean l_getfield_b(lua_State *l, const gchar *k,
 {
   _pop(boolean, gboolean, FALSE);
 }
-
-const gpointer l_get_reg_userdata(lua_State *l, const gchar *k)
-{
-  lua_pushstring(l, k);
-  lua_gettable(l, LUA_REGISTRYINDEX);
-
-  if (!lua_isuserdata(l, -1))
-    luaL_error(l, "expected `%s' in LUA_REGISTRYINDEX", k);
-
-  return ((gpointer) lua_touserdata(l, -1));
-}
-
-#ifdef _1 /* Unused */
 
 QuviError l_getfield_table_iter_s(lua_State *l,
                                   const gpointer dst,

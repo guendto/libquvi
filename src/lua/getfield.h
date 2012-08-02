@@ -20,6 +20,10 @@
 #ifndef l_getfield_h
 #define l_getfield_h
 
+const gpointer l_get_reg_userdata(lua_State*, const gchar*);
+
+#ifdef _1 /* Unused */
+
 const gchar *l_getfield_s(lua_State*, const gchar*,
                           const gchar*, const gchar*);
 
@@ -28,10 +32,6 @@ const gdouble l_getfield_n(lua_State*, const gchar*,
 
 const gboolean l_getfield_b(lua_State*, const gchar*,
                             const gchar*, const gchar*);
-
-const gpointer l_get_reg_userdata(lua_State*, const gchar*);
-
-#ifdef _1 /* Unused */
 
 typedef gint (*l_callback_getfield_table_iter_s) (gpointer, const gchar*);
 
