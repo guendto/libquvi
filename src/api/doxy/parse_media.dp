@@ -52,7 +52,7 @@ abort_if_error();
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
 
   /* Would now continue from second stream in the list. */
-  while (quvi_media_next_stream(qm) == QUVI_TRUE)
+  while (quvi_media_stream_next(qm) == QUVI_TRUE)
     quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
 }
 @endcode
@@ -67,7 +67,7 @@ abort_if_error();
   quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &m_title);
 
   /* Would start from the first stream in the list. */
-  while (quvi_media_next_stream(qm) == QUVI_TRUE)
+  while (quvi_media_stream_next(qm) == QUVI_TRUE)
     quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &m_url);
 }
 @endcode
