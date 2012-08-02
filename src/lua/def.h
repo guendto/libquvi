@@ -71,7 +71,8 @@
 
 /* Playlist script: Media properties */
 
-#define PSM_URL         "url"         /* Media URL */
+#define PSM_DURATION_MS "duration_ms" /* Duration in ms */
+#define PSM_URL         "url"         /* URL */
 
 /* Scan script */
 
