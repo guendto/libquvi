@@ -33,37 +33,24 @@
 #include "curl/temp.h"
 #include "net/def.h"
 
-extern const char *n_opt_name[];
-
-/* Set cURL options from script fetch args (if any), e.g. user-agent */
-static void _setopt(_quvi_net_opt_t o, CURL *c)
+static void _set_opt(gpointer p, gpointer userdata)
 {
-  gint i = -1;
-  while (n_opt_name[++i] != NULL)
+  _quvi_net_opt_t o;
+  CURL *c;
+
+  o = (_quvi_net_opt_t) p;
+  c = userdata;
+
+  switch ((glong) o->id)
     {
-      const gchar *s = n_opt_name[i];
-
-      if (g_ascii_strcasecmp(s, o->name->str) != 0)
-        continue;
-      {
-        const gchar *v = o->val->str;
-
-        if (g_ascii_strcasecmp(s, MSO_ARBITRARY_COOKIE) == 0)
-          curl_easy_setopt(c, CURLOPT_COOKIE, v);
-
-        else if (g_ascii_strcasecmp(s, MSO_USER_AGENT) == 0)
-          curl_easy_setopt(c, CURLOPT_USERAGENT, v);
-      }
-    }
-}
-
-static void _apply_media_script_opts(const _quvi_net_t n, CURL *c)
-{
-  GSList *curr = n->options;
-  while (curr != NULL)
-    {
-      _setopt((_quvi_net_opt_t) curr->data, c);
-      curr = g_slist_next(curr);
+    case QUVI_FETCH_OPTION_USER_AGENT:
+      curl_easy_setopt(c, CURLOPT_USERAGENT, o->value.s->str);
+      break;
+    case QUVI_FETCH_OPTION_COOKIE:
+      curl_easy_setopt(c, CURLOPT_COOKIE, o->value.s->str);
+      break;
+    default:
+      break;
     }
 }
 
@@ -76,9 +63,10 @@ static void _set_opts(_quvi_net_t n, _c_temp_t t, CURL *c)
   curl_easy_setopt(c, CURLOPT_WRITEDATA, t);
   /* CURLOPT_ENCODING -> CURLOPT_ACCEPT_ENCODING 7.21.6+ */
   curl_easy_setopt(c, CURLOPT_ENCODING, "");
+  /* Set cURL options from script fetch args (if any), e.g. user-agent */
+  g_slist_foreach(n->options, _set_opt, c);
 
   c_autoproxy(n->handle.quvi, n->url.addr->str);
-  _apply_media_script_opts(n, c);
 }
 
 static void _reset_opts(CURL *c)
