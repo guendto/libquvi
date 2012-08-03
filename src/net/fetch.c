@@ -40,7 +40,7 @@ static glong _cb_status_type(lua_State *l)
   const gchar *s;
   glong st;
 
-  st = QUVI_CALLBACK_STATUS_FETCH_PAGE;
+  st = QUVI_CALLBACK_STATUS_FETCH_URL;
 
   if (!lua_istable(l, 2))
     return (st);
