@@ -66,6 +66,23 @@ library.
 @sa @ref m_stream_url
 @sa quvi_get
 
+@subsection m_stream_best Media stream: Best quality
+
+The best quality stream is determined and flagged as such by
+a @ref m_script when there are >1 streams available.
+How the best quality stream is determined depends on the website and
+the @ref m_script.
+
+The library uses the keyword 'best' with @ref quvi_media_stream_select
+to identify this stream.
+
+@sa @ref select_stream
+
+@subsection m_stream_default Media stream: Default quality
+
+This is whatever the @ref m_script returns as the first stream. This
+stream is returned always.
+
 @subsection m_url Media URL
 
 An Internet address to the media, e.g. "http://youtube.com/watch?v=foo".
