@@ -35,6 +35,7 @@
 
 gint l_quvi_fetch(lua_State *l)
 {
+  const gchar *url;
   QuviBoolean ok;
   _quvi_net_t n;
   _quvi_t q;
@@ -43,7 +44,13 @@ gint l_quvi_fetch(lua_State *l)
   q = (_quvi_t) l_get_reg_userdata(l, USERDATA_QUVI_T);
   n = NULL;
 
-  n_fetch(q, &n, luaL_checkstring(l, 1));
+  if (lua_isstring(l, 1))
+    url = lua_tostring(l, 1);
+  else
+    luaL_error(l, "quvi.fetch: expects an URL argument");
+  lua_pop(l, 1);
+
+  n_fetch(q, &n, url);
 
   ok = quvi_ok(q);
   c = 0; /* No. of quvi.fetch returned values. */
