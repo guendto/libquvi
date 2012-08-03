@@ -7,6 +7,10 @@
 A libquvi script written for a website (lua/media/*.lua) that is
 responsible for parsing the media properties.
 
+@note
+  - Media scripts are expected to return >0 streams (qargs.stream[i].url)
+  - All other properties are optional
+
 @sa @ref QuviMediaProperty
 
 @subsection pl_script Playlist script
@@ -14,12 +18,20 @@ responsible for parsing the media properties.
 A libquvi script written for a website (lua/playlist/*.lua) that is
 responsible for parsing the playlist properties.
 
+@note
+  - None of the returned properties are mandatory
+  - Playlist scripts may not return any results
+
 @sa @ref parse_playlist
 
 @subsection scan_script Scan script
 
 A libquvi script written for scanning URL contents for embedded media
 URLs.
+
+@note
+  - None of the returned properties are mandatory
+  - Scan scripts may not return any results
 
 @sa @ref scan_media
 
