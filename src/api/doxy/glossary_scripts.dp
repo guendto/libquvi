@@ -2,28 +2,28 @@
 
 @section glossary_scripts Glossary: Scripts
 
-@section m_script Media script
+@subsection m_script Media script
 
 A libquvi script written for a website (lua/media/*.lua) that is
 responsible for parsing the media properties.
 
 @sa @ref QuviMediaProperty
 
-@section pl_script Playlist script
+@subsection pl_script Playlist script
 
 A libquvi script written for a website (lua/playlist/*.lua) that is
 responsible for parsing the playlist properties.
 
 @sa @ref parse_playlist
 
-@section scan_script Scan script
+@subsection scan_script Scan script
 
 A libquvi script written for scanning URL contents for embedded media
 URLs.
 
 @sa @ref scan_media
 
-@section script_property Script property
+@subsection script_property Script property
 
 A property of a script, that may be either
 a @ref m_script, a @ref pl_script, a @ref scan_script or
@@ -31,7 +31,7 @@ an @ref u_script.
 
 @sa QuviScriptProperty
 
-@section u_script Utility script
+@subsection u_script Utility script
 
 libquvi-scripts contain misc. utility scripts, some of which are used
 by the library directly (lua/util/*.lua), some of which may be used
