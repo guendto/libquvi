@@ -35,14 +35,6 @@ URLs.
 
 @sa @ref scan_media
 
-@subsection script_property Script property
-
-A property of a script, that may be either
-a @ref m_script, a @ref pl_script, a @ref scan_script or
-an @ref u_script.
-
-@sa QuviScriptProperty
-
 @subsection u_script Utility script
 
 libquvi-scripts contain misc. utility scripts, some of which are used

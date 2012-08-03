@@ -95,6 +95,14 @@ QUVI_MEDIA_SCRIPT_PROTOCOL_CATEGORY_HTTP.
 
 A collection of @ref m_url s.
 
+@section script_property Script property
+
+A property of a script, that may be of either
+a @ref m_script, a @ref pl_script, a @ref scan_script or
+an @ref u_script.
+
+@sa QuviScriptProperty
+
 @section sh_url Shortened URL
 
 An URL that has been "compressed", or "shortened", by a service such as
