@@ -10,10 +10,8 @@ while (quvi_script_next(q, QUVI_SCRIPT_TYPE_MEDIA) == QUVI_TRUE)
     puts(s);
   }
 @endcode
- 
+
+@sa QuviScriptProperty
+@sa @ref glossary_scripts
 @sa QuviScriptType
-@sa @ref pl_script
-@sa @ref m_script
-@sa @ref u_script
-@sa @ref scan_script
 */
