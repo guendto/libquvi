@@ -22,8 +22,12 @@
 
 struct _quvi_net_opt_s
 {
-  GString *name;
-  GString *val;
+  struct
+  {
+    GString *s;
+    gdouble n;
+  } value;
+  gdouble id;
 };
 
 typedef struct _quvi_net_opt_s *_quvi_net_opt_t;

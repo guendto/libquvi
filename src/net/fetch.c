@@ -34,42 +34,41 @@
 #include "net/handle.h"
 #include "net/opt.h"
 
-/* Return status type. Default to "page". */
-static glong _cb_status_type(lua_State *l)
+/* Return status type. */
+static glong _cb_status_type(_quvi_net_t n)
 {
-  const gchar *s;
+  _quvi_net_opt_t o;
+  GSList *curr;
   glong st;
 
-  st = QUVI_CALLBACK_STATUS_FETCH_URL;
+  st = QUVI_CALLBACK_STATUS_FETCH_URL; /* default */
+  curr = n->options;
 
-  if (!lua_istable(l, 2))
-    return (st);
-
-  lua_pushstring(l, FETCH_TYPE);
-  lua_gettable(l, 2);
-
-  if (lua_isstring(l, -1))
-    s = lua_tostring(l, -1);
-
-  if (s != NULL)
+  while (curr != NULL)
     {
-      if (g_ascii_strcasecmp(s, FETCH_CONFIG) == 0)
-        st = QUVI_CALLBACK_STATUS_FETCH_CONFIG;
-      else if (g_ascii_strcasecmp(s, FETCH_PLAYLIST) == 0)
-        st = QUVI_CALLBACK_STATUS_FETCH_PLAYLIST;
+      o = (_quvi_net_opt_t) curr->data;
+      if (o->id == QUVI_FETCH_OPTION_TYPE)
+        {
+          st = (glong) o->value.n;
+          break;
+        }
+      curr = g_slist_next(curr);
     }
   return (st);
 }
 
 static gchar *_chk_opt_from_charset(_quvi_net_t n)
 {
-  GSList *curr = n->options;
+  _quvi_net_opt_t o;
+  GSList *curr;
+
+  curr = n->options;
   while (curr != NULL)
     {
-      _quvi_net_opt_t o = (_quvi_net_opt_t) curr->data;
+      o = (_quvi_net_opt_t) curr->data;
 
-      if (g_ascii_strcasecmp(o->name->str, MSO_FROM_CHARSET) == 0)
-        return (g_strdup(o->val->str));
+      if (o->id == QUVI_FETCH_OPTION_FROM_CHARSET)
+        return (g_strdup(o->value.s->str));
 
       curr = g_slist_next(curr);
     }
@@ -81,11 +80,12 @@ extern QuviError c_fetch(_quvi_net_t);
 
 void n_fetch(_quvi_t q, _quvi_net_t *n, const gchar *url)
 {
-  lua_State *l = q->handle.lua;
+  *n = n_new(q, url);
+  n_chk_callback_opts(*n, q->handle.lua);
 
   if (q->cb.status != NULL)
     {
-      const glong st = _cb_status_type(l);
+      const glong st = _cb_status_type(*n);
       const glong p = q_makelong(QUVI_CALLBACK_STATUS_FETCH, st);
 
       if (q->cb.status(p, (gpointer) url) != QUVI_OK)
@@ -94,11 +94,6 @@ void n_fetch(_quvi_t q, _quvi_net_t *n, const gchar *url)
           return;
         }
     }
-
-  *n = n_new(q, url);
-
-  if (lua_istable(l, 2))
-    n_chk_callback_opts(*n, l);
 
   if (q->cb.fetch != NULL)
     q->status.rc = q->cb.fetch(*n);

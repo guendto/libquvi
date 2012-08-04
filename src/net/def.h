@@ -20,21 +20,22 @@
 #ifndef n_def_h
 #define n_def_h
 
-/*
- * Network options set in media scripts, e.g.:
- * function parse(t)
- *   local foo = quvi.fetch(URL, {user_agent='bar/1.0'})
- * end
- */
-#define MSO_ARBITRARY_COOKIE  "arbitrary_cookie"
-#define MSO_FROM_CHARSET      "from_charset"
-#define MSO_USER_AGENT        "user_agent"
+/* These values are used with the quvi.fetch function. */
 
-/* Status types for fetch callback. */
-#define FETCH_TYPE      "type"
-#define FETCH_PAGE      "page"
-#define FETCH_CONFIG    "config"
-#define FETCH_PLAYLIST  "playlist"
+typedef enum
+{
+  QUVI_FETCH_OPTION_FROM_CHARSET,
+  QUVI_FETCH_OPTION_USER_AGENT,
+  QUVI_FETCH_OPTION_COOKIE,
+  QUVI_FETCH_OPTION_TYPE
+} QuviFetchOption;
+
+typedef enum
+{
+  QUVI_FETCH_TYPE_PLAYLIST,
+  QUVI_FETCH_TYPE_CONFIG,
+  QUVI_FETCH_TYPE_URL
+} QuviFetchType;
 
 #endif /* n_def_h */
 
