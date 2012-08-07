@@ -23,6 +23,8 @@
  * - Add check for QUVI_MEDIA_STREAM_PROPERTY_AUDIO_BITRATE_KBIT_S
  */
 
+#include "config.h"
+
 #include <string.h>
 #include <glib.h>
 #include <quvi.h>
