@@ -41,8 +41,7 @@ typedef enum
   /**< Error occurred in callback, this could be either a network error
    * (network callback function returned an error) or a status callback
    * function returned an error. */
-  QUVI_ERROR_SCRIPT,
-  QUVI_ERROR_INVALID_CONTENT_LENGTH
+  QUVI_ERROR_SCRIPT
 } QuviError;
 
 #endif /* qerror_h */
