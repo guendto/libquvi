@@ -17,6 +17,8 @@
  * 02110-1301, USA.
  */
 
+#include "config.h"
+
 #include <locale.h>
 #include <stdlib.h>
 #include <string.h>

@@ -19,6 +19,8 @@
 
 /* Check whether URL redirects to a new location. */
 
+#include "config.h"
+
 #include <locale.h>
 #include <stdlib.h>
 #include <glib.h>
