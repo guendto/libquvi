@@ -30,7 +30,7 @@
 /* -- */
 #include "misc/re.h"
 
-static QuviError _select(_quvi_media_t qm, const gchar *fmt_id)
+static QuviError _select(_quvi_media_t qm, const gchar *id)
 {
   gboolean found_flag;
   QuviError rc;
@@ -41,7 +41,7 @@ static QuviError _select(_quvi_media_t qm, const gchar *fmt_id)
   quvi_media_stream_reset(qm);
   q = qm->handle.quvi;
 
-  r = g_strsplit(fmt_id, ",", 0);
+  r = g_strsplit(id, ",", 0);
   found_flag = FALSE;
   rc = QUVI_OK;
 
@@ -52,8 +52,8 @@ static QuviError _select(_quvi_media_t qm, const gchar *fmt_id)
           g_string_printf(q->status.errmsg,
                           "Nothing in `%s' matched the available media "
                           "streams, aborted by the croak keyword in the list",
-                          fmt_id);
-          rc = QUVI_ERROR_NO_FORMAT_ID_CROAK;
+                          id);
+          rc = QUVI_ERROR_NO_STREAM_ID_CROAK;
           break;
         }
       else if (g_strcmp0(r[i], "best") == 0)
@@ -69,7 +69,7 @@ static QuviError _select(_quvi_media_t qm, const gchar *fmt_id)
             {
               qms = (_quvi_media_stream_t) qm->curr.stream->data;
 
-              found_flag = m_match(qms->fmt_id->str, r[i]);
+              found_flag = m_match(qms->id->str, r[i]);
               if (found_flag == TRUE)
                 break;
             }
@@ -84,18 +84,18 @@ static QuviError _select(_quvi_media_t qm, const gchar *fmt_id)
   return (rc);
 }
 
-/** @brief Select a @ref m_stream matching a @ref m_stream_fmt_id
+/** @brief Select a @ref m_stream matching a @ref m_stream_id
 
-Matches the @ref m_stream_fmt_id (pattern) to the available media stream
+Matches the @ref m_stream_id (pattern) to the available media stream
 IDs and selects the stream if the IDs matched. The function returns
-immediately if the IDs matched. The format_id value may be a
-comma-separated value (e.g. "foo,bar,baz"). The format_id value may
+immediately if the IDs matched. The ID value may be a
+comma-separated value (e.g. "foo,bar,baz"). The ID value may
 contain the keywords 'croak' and 'best' (see notes below).
 @note
-  - format_id value is used as a regular expression pattern
+  - ID value is used as a regular expression pattern
     - The only exception to this is when it contains a comma-separated
       list of patterns
-  - format_id may contain the keywords 'best' and 'croak'
+  - ID may contain the keywords 'best' and 'croak'
     - These are reserved keywords used by both the library and the
       scripts
     - The function returns immediately after reaching either
@@ -110,7 +110,7 @@ contain the keywords 'croak' and 'best' (see notes below).
 @sa @ref parse_media
 @ingroup mediaprop
 */
-void quvi_media_stream_select(quvi_media_t handle, const char *format_id)
+void quvi_media_stream_select(quvi_media_t handle, const char *id)
 {
   _quvi_media_t qm;
   _quvi_t q;
@@ -121,7 +121,7 @@ void quvi_media_stream_select(quvi_media_t handle, const char *format_id)
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_if_fail(handle != NULL);
 
-  q->status.rc = _select(qm, format_id);
+  q->status.rc = _select(qm, id);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

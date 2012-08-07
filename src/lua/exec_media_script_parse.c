@@ -100,8 +100,8 @@ static gpointer _media_stream_new()
   qms->video.encoding = g_string_new(NULL);
   qms->audio.encoding = g_string_new(NULL);
   qms->container = g_string_new(NULL);
-  qms->fmt_id = g_string_new(NULL);
   qms->url = g_string_new(NULL);
+  qms->id = g_string_new(NULL);
   return (qms);
 }
 
@@ -129,16 +129,16 @@ static _quvi_media_stream_t _new_stream(lua_State *l, _quvi_media_t qm,
       _chk_stream_sublevel(MSS_AUDIO, l, qm, qms, _foreach_audio_property);
       _chk_stream_sublevel(MSS_FLAGS, l, qm, qms, _foreach_flag_property);
       l_chk_assign_s(l, MSS_CONTAINER, qms->container);
-      l_chk_assign_s(l, MSS_FORMAT_ID, qms->fmt_id);
       l_chk_assign_s(l, MSS_URL, qms->url);
+      l_chk_assign_s(l, MSS_ID, qms->id);
       lua_pop(l, 1);
     }
   _has_stream_url(l, qms, script_path, i);
   return (qms);
 }
 
-static void _chk_stream_fmt_ids(lua_State *l, _quvi_media_t qm,
-                                 const gchar *script_path)
+static void _chk_stream_ids(lua_State *l, _quvi_media_t qm,
+                            const gchar *script_path)
 {
   _quvi_media_stream_t qms;
   GSList *curr;
@@ -153,12 +153,12 @@ static void _chk_stream_fmt_ids(lua_State *l, _quvi_media_t qm,
   while (curr != NULL)
     {
       qms = (_quvi_media_stream_t) curr->data;
-      if (qms->fmt_id->len ==0)
+      if (qms->id->len ==0)
         {
           g_warning("%s: %s: `qargs.%s[%d].%s' should not be empty, "
                     "when there are >1 streams the scripts are "
-                    "expected to set a format ID for each stream",
-                    script_path, script_func, MS_STREAMS, i, MSS_FORMAT_ID);
+                    "expected to set an ID for each stream",
+                    script_path, script_func, MS_STREAMS, i, MSS_ID);
         }
       curr = g_slist_next(curr);
       ++i;
@@ -181,7 +181,7 @@ static void _foreach_stream(lua_State *l, _quvi_media_t qm,
       lua_pop(l, 1);
     }
   qm->streams = g_slist_reverse(qm->streams);
-  _chk_stream_fmt_ids(l, qm, script_path);
+  _chk_stream_ids(l, qm, script_path);
 }
 
 /* Check for 'qargs.streams'. This is the only mandatory data. */

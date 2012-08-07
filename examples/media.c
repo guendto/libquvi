@@ -29,9 +29,9 @@
 
 static void usage()
 {
-  g_printerr("Usage: media [-f<fmt_id,...>] [-v] [-b] [-a] <URL>\n"
+  g_printerr("Usage: media [-s<id,...>] [-v] [-b] [-a] <URL>\n"
              "Options:\n"
-             "  -f<arg>   Select arg format ID from the available streams,\n"
+             "  -s<arg>   Select arg stream ID from the available streams,\n"
              "             this may also be a comma-separated list of IDs\n"
              "  -v        Enable verbose output (libcurl)\n"
              "  -b        Choose the best quality stream\n"
@@ -41,12 +41,12 @@ static void usage()
 
 static void dump_stream()
 {
-  gchar *fmt_id, *url;
+  gchar *url, *id;
 
-  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_FORMAT_ID, &fmt_id);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &url);
+  quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &id);
 
-  g_print("[%s] fmt_id='%s', url='%s'\n", __func__, fmt_id, url);
+  g_print("[%s] id='%s', url='%s'\n", __func__, id, url);
 }
 
 static void dump_streams()
@@ -60,8 +60,8 @@ typedef quvi_callback_status qcs;
 gint main(gint argc, gchar **argv)
 {
   gboolean best_flag = FALSE;
-  gchar *fmt_id = NULL;
   gchar *url = NULL;
+  gchar *id = NULL;
   gint i = 1;
 
   g_assert(qm == NULL);
@@ -85,12 +85,15 @@ gint main(gint argc, gchar **argv)
         enable_autoproxy();
       else if (g_strcmp0("-b", argv[i]) == 0)
         best_flag = TRUE;
-      else if (g_str_has_prefix(argv[i], "-f") == TRUE)
+      else if (g_str_has_prefix(argv[i], "-s") == TRUE)
         {
           if (strlen(argv[i]) >2)
-            fmt_id = &argv[i][2];
+            id = &argv[i][2];
           else
-            g_printerr("[%s] `-f' ignored, specify format ID\n", __func__);
+            {
+              g_printerr("[%s] `-s' ignored, stream ID not specified\n",
+                         __func__);
+            }
         }
       else
         url = argv[i];
@@ -114,9 +117,9 @@ gint main(gint argc, gchar **argv)
         quvi_media_stream_choose_best(qm);
         dump_stream();
       }
-    else if (fmt_id != NULL)
+    else if (id != NULL)
       {
-        quvi_media_stream_select(qm, fmt_id);
+        quvi_media_stream_select(qm, id);
         exit_if_error();
         dump_stream();
       }

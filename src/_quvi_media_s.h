@@ -39,8 +39,8 @@ struct _quvi_media_stream_s
     gboolean best;
   } flags;
   GString *container;
-  GString *fmt_id;
   GString *url;
+  GString *id;
 };
 
 typedef struct _quvi_media_stream_s *_quvi_media_stream_t;

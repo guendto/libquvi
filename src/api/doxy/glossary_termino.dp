@@ -10,37 +10,41 @@ returned by a @ref m_script.
 @sa QuviMediaProperty
 @sa quvi_get
 
-@subsection m_stream_fmt_id Media stream format ID
+@subsection m_stream_id Media stream ID
 
 A string value that is used to identify the @ref m_stream. They are
 generated for each available media stream. They may vary per website.
 
-The @ref m_stream_fmt_id may consist of the properties of:
+The @ref m_stream_id typically consists of:
 @li Media container (e.g. "WebM")
 @li Media quality (e.g. "hd720")
 @li Video encoding (e.g. "VP8")
 @li Video height (e.g. "720")
 
-Whether they are used in the @ref m_stream_fmt_id depends on whether the
+A typical ID could look like:
+@verbatim
+$quality_$container_$encoding_$height(p)
+@endverbatim
+
+Whether they are used in the @ref m_stream_id depends on whether the
 website has made the data available, and whether the @ref m_script parses
 the properties and uses them.
 
 Sometimes these IDs may as simple as "hd" or "sd", although as of
 libquvi(-scripts) 1.0 the media scripts are expected to use the
-"standardized representation of the stream format ID" whenever
-possible. A typical ID would look like:
+"standardized representation of the stream ID" whenever possible.
 
+Example: Dailymotion
 @verbatim
-$quality_$container_$encoding_$height(p)
+hq_mp4_h264_480p
 @endverbatim
 
-Examples:
-@verbatim
-# DailyMotion: A text book example
-hq_mp4_h264_480p
+Example: YouTube
 
-# YouTube: Similar, but uses the container value instead of the video
-# encoding value. Uses also the 'itag' value which is specific to YouTube.
+Similar, but uses the container value instead of the video
+encoding value. It also uses the 'itag' value, which is specific to
+YouTube.
+@verbatim
 hd720_webm_i45_720p
 @endverbatim
 

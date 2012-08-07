@@ -126,15 +126,15 @@ static QuviError _media_get(_quvi_media_t qm, QuviMediaProperty n, ...)
       g_assert(qms != NULL);
       *sp = qms->container->str;
       break;
-    case QUVI_MEDIA_STREAM_PROPERTY_FORMAT_ID:
-      _chk_curr_stream(qm, &qms);
-      g_assert(qms != NULL);
-      *sp = qms->fmt_id->str;
-      break;
     case QUVI_MEDIA_STREAM_PROPERTY_URL:
       _chk_curr_stream(qm, &qms);
       g_assert(qms != NULL);
       *sp = qms->url->str;
+      break;
+    case QUVI_MEDIA_STREAM_PROPERTY_ID:
+      _chk_curr_stream(qm, &qms);
+      g_assert(qms != NULL);
+      *sp = qms->id->str;
       break;
     case QUVI_MEDIA_STREAM_PROPERTY_VIDEO_BITRATE_KBIT_S:
       _chk_curr_stream(qm, &qms);
