@@ -123,6 +123,7 @@ static void _chk_optional(lua_State *l, _quvi_playlist_t qp)
     {
       l_chk_assign_s(l, PS_THUMB_URL, qp->url.thumbnail);
       l_chk_assign_s(l, PS_ID, qp->id.playlist);
+      l_chk_assign_s(l, PS_TITLE, qp->title);
       lua_pop(l, 1);
     }
 }

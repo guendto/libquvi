@@ -38,6 +38,8 @@ gpointer m_playlist_new(_quvi_t q, const gchar *url)
   qp->id.playlist = g_string_new(NULL);
   /* Handle */
   qp->handle.quvi = q;
+  /* Other */
+  qp->title = g_string_new(NULL);
   return (qp);
 }
 
@@ -86,6 +88,11 @@ void m_playlist_free(_quvi_playlist_t qp)
 
   g_string_free(qp->id.playlist, TRUE);
   qp->id.playlist = NULL;
+
+  /* Other */
+
+  g_string_free(qp->title, TRUE);
+  qp->title = NULL;
 
   g_free(qp);
   qp = NULL;
