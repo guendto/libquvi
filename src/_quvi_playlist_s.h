@@ -24,6 +24,7 @@ struct _quvi_playlist_s
 {
   struct
   {
+    GString *thumbnail;
     GString *input;
   } url;
   struct

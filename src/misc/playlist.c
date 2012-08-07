@@ -32,6 +32,7 @@ gpointer m_playlist_new(_quvi_t q, const gchar *url)
 {
   _quvi_playlist_t qp = g_new0(struct _quvi_playlist_s, 1);
   /* URL */
+  qp->url.thumbnail = g_string_new(NULL);
   qp->url.input = g_string_new(url);
   /* ID */
   qp->id.playlist = g_string_new(NULL);
@@ -72,6 +73,11 @@ void m_playlist_free(_quvi_playlist_t qp)
   g_slist_free(qp->media);
 #endif
   qp->media = NULL;
+
+  /* URL */
+
+  g_string_free(qp->url.thumbnail, TRUE);
+  qp->url.thumbnail = NULL;
 
   g_string_free(qp->url.input, TRUE);
   qp->url.input = NULL;

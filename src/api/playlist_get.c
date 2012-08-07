@@ -89,6 +89,10 @@ static QuviError _playlist_get(_quvi_playlist_t qp,
 
   switch (n)
     {
+    case QUVI_PLAYLIST_PROPERTY_THUMBNAIL_URL:
+      *sp = qp->url.thumbnail->str;
+      break;
+
     case QUVI_PLAYLIST_PROPERTY_ID:
       *sp = qp->id.playlist->str;
       break;

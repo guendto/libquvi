@@ -121,6 +121,7 @@ static void _chk_optional(lua_State *l, _quvi_playlist_t qp)
   lua_pushnil(l);
   while (lua_next(l, LI_KEY))
     {
+      l_chk_assign_s(l, PS_THUMB_URL, qp->url.thumbnail);
       l_chk_assign_s(l, PS_ID, qp->id.playlist);
       lua_pop(l, 1);
     }

@@ -64,6 +64,7 @@
 /* Playlist script */
 
 #define PS_INPUT_URL  "input_url" /* App req. URL */
+#define PS_THUMB_URL  "thumb_url" /* Playlist thumbnail URL */
 #define PS_ACCEPTS    "accepts"   /* Script accepts URL */
 #define PS_DOMAINS    "domains"   /* Accepted domains */
 #define PS_MEDIA      "media"     /* Found media */
