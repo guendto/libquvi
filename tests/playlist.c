@@ -63,6 +63,10 @@ static void test_playlist()
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
   g_assert_cmpint(strlen(s), >, 0);
 
+  quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_TITLE, &s);
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpstr(s, ==, "Destroyed");
+
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "thelittleidiot_destroyed");
@@ -143,6 +147,10 @@ static void test_playlist_short()
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
   g_assert_cmpint(strlen(s), >, 0);
 
+  quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_TITLE, &s);
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpstr(s, ==, "Destroyed");
+
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "thelittleidiot_destroyed");
@@ -188,6 +196,10 @@ static void test_playlist_nosupport()
   g_assert(qp != NULL);
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_THUMBNAIL_URL, &s);
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpstr(s, ==, "");
+
+  quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_TITLE, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "");
 

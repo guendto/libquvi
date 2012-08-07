@@ -39,6 +39,7 @@ struct _quvi_playlist_s
   {
     GSList *media;
   } curr;
+  GString *title;
   GSList *media;
 };
 

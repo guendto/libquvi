@@ -67,6 +67,7 @@
 #define PS_THUMB_URL  "thumb_url" /* Playlist thumbnail URL */
 #define PS_ACCEPTS    "accepts"   /* Script accepts URL */
 #define PS_DOMAINS    "domains"   /* Accepted domains */
+#define PS_TITLE      "title"     /* Title */
 #define PS_MEDIA      "media"     /* Found media */
 #define PS_ID         "id"        /* Playlist ID */
 
