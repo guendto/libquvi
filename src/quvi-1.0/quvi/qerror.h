@@ -35,7 +35,7 @@ typedef enum
   QUVI_ERROR_PROXY_INIT,
   QUVI_ERROR_CURL_INIT,
   QUVI_ERROR_LUA_INIT,
-  QUVI_ERROR_NO_FORMAT_ID_CROAK = 0x40,
+  QUVI_ERROR_NO_STREAM_ID_CROAK = 0x40,
   QUVI_ERROR_NO_SUPPORT,
   QUVI_ERROR_CALLBACK,
   /**< Error occurred in callback, this could be either a network error
