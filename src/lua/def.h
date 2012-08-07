@@ -56,8 +56,8 @@
 #define MSS_FLAGS_BEST            "best"
 
 #define MSS_CONTAINER             "container"
-#define MSS_FORMAT_ID             "fmt_id"
 #define MSS_URL                   "url"
+#define MSS_ID                    "id"
 
 #define MS_EMPTY         ""
 

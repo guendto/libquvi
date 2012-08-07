@@ -53,11 +53,11 @@ static void _stream_free(gpointer p, gpointer userdata)
   g_string_free(qms->container, TRUE);
   qms->container = NULL;
 
-  g_string_free(qms->fmt_id, TRUE);
-  qms->fmt_id = NULL;
-
   g_string_free(qms->url, TRUE);
   qms->url = NULL;
+
+  g_string_free(qms->id, TRUE);
+  qms->id = NULL;
 
   g_string_free(qms->video.encoding, TRUE);
   qms->video.encoding = NULL;
