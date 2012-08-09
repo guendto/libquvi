@@ -1,4 +1,4 @@
-src=env.c qerr.c
+src=env.c qerr.c re.c
 hdr=tests.h
 
 noinst_LTLIBRARIES=libconvenience_test.la

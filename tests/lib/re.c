@@ -17,18 +17,39 @@
  * 02110-1301, USA.
  */
 
-#ifndef tests_h
-#define tests_h
+#include "config.h"
 
-glong qerr_m(quvi_t, const gchar*);
-glong qerr(quvi_t);
+#include <glib.h>
 
-gboolean chk_skip(const gchar*);
-void chk_verbose(quvi_t);
-gboolean chk_internet();
+#define _W "%s: %s"
 
-gboolean match(const gchar*, const gchar*);
+gboolean match(const gchar *s, const gchar *p)
+{
+  GMatchInfo *m;
+  GError *err;
+  GRegex *re;
+  gboolean r;
 
-#endif /* tests_h */
+  err = NULL;
+  re = g_regex_new(p, G_REGEX_MULTILINE, 0, &err);
+
+  if (err != NULL)
+    {
+      g_warning(_W, __func__, err->message);
+      g_error_free(err);
+      return (FALSE);
+    }
+
+  m = NULL;
+  r = g_regex_match(re, s, 0, &m);
+
+  g_match_info_free(m);
+  m = NULL;
+
+  g_regex_unref(re);
+  re = NULL;
+
+  return (r);
+}
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
