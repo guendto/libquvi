@@ -81,7 +81,7 @@ static void test_media()
   chk_verbose(q);
 
   qm = quvi_media_new(q, URLs[0]);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URLs[0]), ==, QUVI_OK);
   g_assert(qm != NULL);
 
   /* Boundary check: the first -1 */
@@ -131,7 +131,7 @@ static void test_media_multi()
   chk_verbose(q);
 
   qm = quvi_media_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qm != NULL);
 
   /* string */
@@ -200,7 +200,7 @@ static void test_media_select()
   chk_verbose(q);
 
   qm = quvi_media_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qm != NULL);
 
   ids = NULL;
@@ -295,7 +295,7 @@ static void test_media_short()
   chk_verbose(q);
 
   qm = quvi_media_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qm != NULL);
 
   quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &s);
@@ -328,7 +328,7 @@ static void test_media_starttime()
   chk_verbose(q);
 
   qm = quvi_media_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qm != NULL);
 
   quvi_media_get(qm, QUVI_MEDIA_PROPERTY_START_TIME_MS, &st);
@@ -363,7 +363,7 @@ static void test_media_nosupport()
   chk_verbose(q);
 
   qm = quvi_media_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_NO_SUPPORT);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_ERROR_NO_SUPPORT);
   g_assert(qm != NULL);
 
   quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &s);
@@ -397,7 +397,7 @@ static void test_media_same_q()
       gchar *s = NULL;
 
       qm = quvi_media_new(q, URLs[i]);
-      g_assert_cmpint(qerr(q), ==, QUVI_OK);
+      g_assert_cmpint(qerr_m(q, URLs[i]), ==, QUVI_OK);
       g_assert(qm != NULL);
 
       quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &s);

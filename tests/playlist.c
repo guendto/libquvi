@@ -48,7 +48,7 @@ static void test_playlist()
   chk_verbose(q);
 
   qp = quvi_playlist_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qp != NULL);
 
   /* Boundary check: the first -1 */
@@ -140,7 +140,7 @@ static void test_playlist_short()
   chk_verbose(q);
 
   qp = quvi_playlist_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qp != NULL);
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_THUMBNAIL_URL, &s);
@@ -192,7 +192,7 @@ static void test_playlist_nosupport()
   chk_verbose(q);
 
   qp = quvi_playlist_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_NO_SUPPORT);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_ERROR_NO_SUPPORT);
   g_assert(qp != NULL);
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_THUMBNAIL_URL, &s);

@@ -63,7 +63,7 @@ static void test_verify()
   chk_verbose(q);
 
   qv = quvi_verify_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qv != NULL);
 
   quvi_verify_get(qv, QUVI_VERIFY_PROPERTY_FILE_EXTENSION-1, &v);

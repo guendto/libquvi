@@ -47,7 +47,7 @@ static void test_resolve()
   chk_verbose(q);
 
   qr = quvi_resolve_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qr != NULL);
 
   g_assert(quvi_resolve_forwarded(qr) == QUVI_TRUE);
@@ -82,7 +82,7 @@ static void test_resolve_3()
   chk_verbose(q);
 
   qr = quvi_resolve_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qr != NULL);
 
   g_assert(quvi_resolve_forwarded(qr) == QUVI_TRUE);
@@ -112,7 +112,7 @@ static void test_resolve_nodst()
   chk_verbose(q);
 
   qr = quvi_resolve_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qr != NULL);
 
   g_assert_cmpint(quvi_resolve_forwarded(qr), ==, QUVI_FALSE);
@@ -142,7 +142,7 @@ static void test_resolve_nodst_t_param()
   chk_verbose(q);
 
   qr = quvi_resolve_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qr != NULL);
 
   /* g00gle servers redirect to the media URL stripping the #t
@@ -181,7 +181,7 @@ static void test_resolve_shortened_with_t_param()
   chk_verbose(q);
 
   qr = quvi_resolve_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qr != NULL);
 
   g_assert_cmpint(quvi_resolve_forwarded(qr), ==, QUVI_TRUE);

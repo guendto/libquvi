@@ -51,7 +51,7 @@ static void test_goto_url()
   chk_verbose(q);
 
   qm = quvi_media_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qm != NULL);
 
   quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &s);
