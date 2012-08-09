@@ -31,4 +31,12 @@ glong qerr(quvi_t q)
   return (n);
 }
 
+glong qerr_m(quvi_t q, const gchar *url)
+{
+  glong n = qerr(q);
+  g_test_message("url=%s", url);
+  g_test_message("errmsg=%s", quvi_errmsg(q));
+  return (n);
+}
+
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

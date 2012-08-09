@@ -58,44 +58,44 @@ static void test_supports()
   r = quvi_supports(q, URL,
                     QUVI_SUPPORTS_MODE_ONLINE+1, /* Defaults to online */
                     QUVI_SUPPORTS_TYPE_MEDIA);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert_cmpint(r, ==, QUVI_TRUE);
 
   r = quvi_supports(q, URL,
                     QUVI_SUPPORTS_MODE_ONLINE,
                     0xffff /* any */);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert_cmpint(r, ==, QUVI_TRUE);
 
   r = quvi_supports(q, URL,
                     QUVI_SUPPORTS_MODE_ONLINE,
                     QUVI_SUPPORTS_TYPE_MEDIA);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert_cmpint(r, ==, QUVI_TRUE);
 
   r = quvi_supports(q, URL_SHORT,
                     QUVI_SUPPORTS_MODE_ONLINE,
                     QUVI_SUPPORTS_TYPE_MEDIA);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL_SHORT), ==, QUVI_OK);
   g_assert_cmpint(r, ==, QUVI_TRUE);
 
   r = quvi_supports(q, URL /* Media URL */,
                     QUVI_SUPPORTS_MODE_ONLINE,
                     QUVI_SUPPORTS_TYPE_PLAYLIST /*!*/);
   g_assert_cmpint(r, ==, QUVI_FALSE);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_NO_SUPPORT);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_ERROR_NO_SUPPORT);
 
   r = quvi_supports(q, URL_NOSUP,
                     QUVI_SUPPORTS_MODE_ONLINE,
                     QUVI_SUPPORTS_TYPE_ANY);
   g_assert_cmpint(r, ==, QUVI_FALSE);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_NO_SUPPORT);
+  g_assert_cmpint(qerr_m(q, URL_NOSUP), ==, QUVI_ERROR_NO_SUPPORT);
 
   r = quvi_supports(q, URL_INV,
                     QUVI_SUPPORTS_MODE_ONLINE,
                     QUVI_SUPPORTS_TYPE_ANY);
   g_assert_cmpint(r, ==, QUVI_FALSE);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_CALLBACK);
+  g_assert_cmpint(qerr_m(q, URL_INV), ==, QUVI_ERROR_CALLBACK);
 
   quvi_free(q);
 }
@@ -173,8 +173,8 @@ static void test_supports_net_err()
   r = quvi_supports(q, URL, QUVI_SUPPORTS_MODE_ONLINE,
                     QUVI_SUPPORTS_TYPE_ANY);
   g_assert_cmpint(r, ==, QUVI_FALSE);
-  g_assert_cmpint(qerr(q), !=, QUVI_ERROR_NO_SUPPORT);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_CALLBACK);
+  g_assert_cmpint(qerr_m(q, URL), !=, QUVI_ERROR_NO_SUPPORT);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_ERROR_CALLBACK);
 
   quvi_free(q);
 }

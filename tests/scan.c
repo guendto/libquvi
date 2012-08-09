@@ -64,7 +64,7 @@ static void test_scan()
   q = new_q();
 
   qs = quvi_scan_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qs != NULL);
   chk_results(qs);
 
@@ -88,7 +88,7 @@ static void test_scan_short()
   q = new_q();
 
   qs = quvi_scan_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qs != NULL);
   chk_results(qs);
 
@@ -112,7 +112,7 @@ static void test_scan_noresults()
   q = new_q();
 
   qs = quvi_scan_new(q, URL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qs != NULL);
   g_assert(quvi_scan_next_media_url(qs) == NULL);
 
