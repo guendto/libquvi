@@ -92,8 +92,11 @@ verify_CFLAGS=$(AM_CFLAGS)
 
 test: all
 	@ok=1; for t in $(TEST_PROGS); do \
-		(gtester $(TEST_OPTS) $(top_builddir)/tests/$$t -o $$t.xml) \
-		|| ok=; gtester-report $$t.xml >$$t.html ; \
+		gtester $(TEST_OPTS) $(top_builddir)/tests/$$t -o $$t.xml \
+		|| { \
+			echo NOTE: Check $(abs_builddir)/$$t.xml for details; \
+			ok=; gtester-report $$t.xml >$$t.html; \
+		} \
 	done; \
 	if test -z "$$ok"; then exit 1; fi
 
