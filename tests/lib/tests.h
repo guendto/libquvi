@@ -20,6 +20,7 @@
 #ifndef tests_h
 #define tests_h
 
+glong qerr_m(quvi_t, const gchar*);
 glong qerr(quvi_t);
 
 gboolean chk_skip(const gchar*);
