@@ -81,7 +81,7 @@ help()
 {
   echo "Usage: $0 [OPTIONS]
 
-$0 is a wrapper script for running the tests.
+$0 is a convenience script for running the tests.
 
 OPTIONS
   -h  Show this help and exit
@@ -93,7 +93,8 @@ NOTE: Run 'configure' script first
     cd \$top_srcdir ; mkdir tmp ; cd tmp
     ../configure && make && ../$0
 
-$0 sets the following environment variables:
+$0 sets the following environment variables before
+running the tests:
   TEST_INTERNET
   TEST_VERBOSE
   TEST_SKIP
