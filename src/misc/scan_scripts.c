@@ -486,7 +486,7 @@ static gboolean _glob_scripts(_quvi_t q, const GlobType t, GSList **dst)
         for (i=0; r[i] != NULL; ++i)
           {
             path = g_build_path(G_DIR_SEPARATOR_S, r[i], dir[t], NULL);
-            r = _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
+            _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
 
             g_free(path);
             path = NULL;
