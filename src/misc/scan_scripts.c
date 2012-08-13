@@ -435,10 +435,10 @@ typedef enum
 
 static const gchar *dir[] =
 {
-  "lua/playlist/",
-  "lua/media/",
-  "lua/scan/",
-  "lua/util/",
+  "playlist/",
+  "media/",
+  "scan/",
+  "util/",
   NULL
 };
 
@@ -535,7 +535,7 @@ static gboolean dir_exists(const gchar *path)
 
 extern void l_modify_pkgpath(_quvi_t, const gchar*);
 
-#define Q_COMMON_DIR "lua/common"
+#define Q_COMMON_DIR "common"
 
 /*
  * Check for the "common" directory, if found, append the path to the
@@ -612,7 +612,7 @@ QuviError m_scan_scripts(_quvi_t q)
   show_script = g_getenv("LIBQUVI_SHOW_SCRIPT");
   show_dir = g_getenv("LIBQUVI_SHOW_DIR");
 
-  chk_common_scripts(q); /* Ignore what lua/common/ holds. */
+  chk_common_scripts(q);
 
   rc = _glob_scripts(q, GLOB_UTIL_SCRIPTS, &q->scripts.util)
        ? QUVI_OK
