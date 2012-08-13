@@ -537,27 +537,37 @@ extern void l_modify_pkgpath(_quvi_t, const gchar*);
 
 #define Q_COMMON_DIR "lua/common"
 
-/* Check for "lua/common/" directory, append it to "package.path" if
- * found. The library ignores the contents of the directory. */
+/*
+ * Check for the "common" directory, if found, append the path to the
+ * Lua's package.path setting.  We're not interested in the contents of
+ * this directory at this stage.
+ */
 static void chk_common_scripts(_quvi_t q)
 {
-  gchar *path;
+  gchar *path = NULL;
 
   {
     /* LIBQUVI_SCRIPTS_DIR (excl.) */
 
     if (scripts_dir != NULL && strlen(scripts_dir) >0)
       {
-        path = g_build_path(G_DIR_SEPARATOR_S,
-                            scripts_dir, Q_COMMON_DIR, NULL);
+        gchar **r;
+        gint i;
 
-        if (dir_exists(path) == TRUE)
-          l_modify_pkgpath(q, path);
+        r = g_strsplit(scripts_dir, G_DIR_SEPARATOR_S, 0);
+        for (i=0; r[i] != NULL; ++i)
+          {
+            path = g_build_path(G_DIR_SEPARATOR_S,
+                                scripts_dir, Q_COMMON_DIR, NULL);
 
-        g_free(path);
-        path = NULL;
+            if (dir_exists(path) == TRUE)
+              l_modify_pkgpath(q, path);
 
-        return;
+            g_free(path);
+            path = NULL;
+          }
+        g_strfreev(r);
+        r = NULL;
       }
   }
 
