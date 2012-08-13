@@ -474,19 +474,26 @@ static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
   cb_free = m_script_free;
 
   {
-    /* LIBQUVI_SCRIPTS_DIR (excl.) */
+    /* LIBQUVI_SCRIPTS_DIR */
 
     if (scripts_dir != NULL && strlen(scripts_dir) >0)
       {
-        gboolean r = FALSE;
+        gchar **r;
+        gint i;
 
-        path = g_build_path(G_DIR_SEPARATOR_S, scripts_dir, dir[m], NULL);
-        r = _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
+        r = g_strsplit(scripts_dir, G_DIR_SEPARATOR_S, 0);
 
-        g_free(path);
-        path = NULL;
+        for (i=0; r[i] != NULL; ++i)
+          {
+            path = g_build_path(G_DIR_SEPARATOR_S, r[i], dir[m], NULL);
+            r = _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
 
-        return (r);
+            g_free(path);
+            path = NULL;
+          }
+
+        g_strfreev(r);
+        r = NULL;
       }
   }
 
