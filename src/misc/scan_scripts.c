@@ -516,7 +516,9 @@ static gboolean _glob_scripts(_quvi_t q, const GlobType t, GSList **dst)
   {
     /* SCRIPTSDIR from config.h */
 
-    path = g_build_path(G_DIR_SEPARATOR_S, SCRIPTSDIR, dir[t], NULL);
+    path = g_build_path(G_DIR_SEPARATOR_S,
+                        SCRIPTSDIR, VERSION_MM, dir[t], NULL);
+
     _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
 
     g_free(path);
@@ -598,7 +600,8 @@ static void chk_common_scripts(_quvi_t q)
   {
     /* SCRIPTSDIR from config.h */
 
-    path = g_build_path(G_DIR_SEPARATOR_S, SCRIPTSDIR, Q_COMMON_DIR, NULL);
+    path = g_build_path(G_DIR_SEPARATOR_S,
+                        SCRIPTSDIR, VERSION_MM, Q_COMMON_DIR, NULL);
 
     if (dir_exists(path) == TRUE)
       l_modify_pkgpath(q, path);
