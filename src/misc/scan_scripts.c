@@ -481,7 +481,7 @@ static gboolean _glob_scripts(_quvi_t q, const GlobType t, GSList **dst)
         gchar **r;
         gint i;
 
-        r = g_strsplit(scripts_dir, G_DIR_SEPARATOR_S, 0);
+        r = g_strsplit(scripts_dir, G_SEARCHPATH_SEPARATOR_S, 0);
 
         for (i=0; r[i] != NULL; ++i)
           {
@@ -563,7 +563,7 @@ static void chk_common_scripts(_quvi_t q)
         gchar **r;
         gint i;
 
-        r = g_strsplit(scripts_dir, G_DIR_SEPARATOR_S, 0);
+        r = g_strsplit(scripts_dir, G_SEARCHPATH_SEPARATOR_S, 0);
         for (i=0; r[i] != NULL; ++i)
           {
             path = g_build_path(G_DIR_SEPARATOR_S,
