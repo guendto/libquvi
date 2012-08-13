@@ -431,7 +431,7 @@ typedef enum
   GLOB_MEDIA_SCRIPTS,
   GLOB_SCAN_SCRIPTS,
   GLOB_UTIL_SCRIPTS
-} GlobMode;
+} GlobType;
 
 static const gchar *dir[] =
 {
@@ -442,7 +442,7 @@ static const gchar *dir[] =
   NULL
 };
 
-static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
+static gboolean _glob_scripts(_quvi_t q, const GlobType t, GSList **dst)
 {
   chkdup_script_callback cb_chkdup;
   free_script_callback cb_free;
@@ -452,7 +452,7 @@ static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
   cb_new = NULL;
   *dst = NULL;
 
-  switch (m)
+  switch (t)
     {
     case GLOB_PLAYLIST_SCRIPTS:
       cb_new = _new_playlist_script;
@@ -485,7 +485,7 @@ static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
 
         for (i=0; r[i] != NULL; ++i)
           {
-            path = g_build_path(G_DIR_SEPARATOR_S, r[i], dir[m], NULL);
+            path = g_build_path(G_DIR_SEPARATOR_S, r[i], dir[t], NULL);
             r = _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
 
             g_free(path);
@@ -501,7 +501,7 @@ static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
     /* Current working directory. */
 
     gchar *cwd = g_get_current_dir();
-    path = g_build_path(G_DIR_SEPARATOR_S, cwd, dir[m], NULL);
+    path = g_build_path(G_DIR_SEPARATOR_S, cwd, dir[t], NULL);
 
     g_free(cwd);
     cwd = NULL;
@@ -516,7 +516,7 @@ static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
   {
     /* SCRIPTSDIR from config.h */
 
-    path = g_build_path(G_DIR_SEPARATOR_S, SCRIPTSDIR, dir[m], NULL);
+    path = g_build_path(G_DIR_SEPARATOR_S, SCRIPTSDIR, dir[t], NULL);
     _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
 
     g_free(path);
