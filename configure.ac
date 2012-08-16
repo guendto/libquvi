@@ -8,12 +8,23 @@ m4_include([m4/version.m4])
 AC_INIT([libquvi],[libquvi_lt_rel],
         [http://quvi.sf.net/bugs/],[],[http://quvi.sf.net/])
 
-# Interface:
+# Version
 LT_REL=libquvi_lt_rel
+AC_SUBST([LT_REL])
+
+LT_RMAJ=libquvi_lt_rmaj
+LT_RMIN=libquvi_lt_rmin
+LT_RMIC=libquvi_lt_rmic
+AC_SUBST([LT_RMAJ])
+AC_SUBST([LT_RMIN])
+AC_SUBST([LT_RMIC])
+
+AC_DEFINE_UNQUOTED([VERSION_MM], "$LT_RMAJ.$LT_RMIN", [Version major/minor])
+
+# Interface
 LT_CUR=libquvi_lt_cur
 LT_REV=libquvi_lt_rev
 LT_AGE=libquvi_lt_age
-AC_SUBST([LT_REL])
 AC_SUBST([LT_CUR])
 AC_SUBST([LT_REV])
 AC_SUBST([LT_AGE])
@@ -90,7 +101,7 @@ AS_IF([test -z "$versionfile"], [
   AC_MSG_ERROR([versionfile: variable not found])])
 
 AS_IF([ ! test -f "$versionfile"], [
-  AC_MSG_ERROR([$versionfile: does not exist or is not not a regular file])])
+  AC_MSG_WARN([$versionfile: does not exist or is not not a regular file])])
 
 AC_DEFINE_UNQUOTED([SCRIPTSDIR], ["$scriptsdir"], [We have scriptsdir])
 AC_DEFINE_UNQUOTED([VERSIONFILE], ["$versionfile"], [We have versionfile])

@@ -39,7 +39,10 @@ gen_version() # $1=path to top source dir
 
   # If that file is not found, or fails (e.g. empty), parse from m4/version.m4
   m4="$path/m4/version.m4"
-  VN=`perl -ne'/(\d+)\.(\d+)\.(\d+)/ && print "$1.$2.$3"' < "$m4"`
+  rmaj=`perl -ne'/.*lt_rmaj.*\[(\d+)\]/ && print "$1"' < "$m4"`
+  rmin=`perl -ne'/.*lt_rmin.*\[(\d+)\]/ && print "$1"' < "$m4"`
+  rmic=`perl -ne'/.*lt_rmic.*\[(\d+)\]/ && print "$1"' < "$m4"`
+  VN="$rmaj.$rmin.$rmic"
   [ -z $VN ] && exit $?
 
   # Use the "git describe" instead, if .git is present

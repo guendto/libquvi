@@ -15,12 +15,13 @@ stream URLs.
 @section p_advanced Programming: Advanced topics
 @li @subpage scan_media
 @li @subpage chk_support
-@li @subpage scripts
+@li @subpage acc_script_prop
 @li @subpage select_stream
 @li @subpage verify_url
 @li @subpage proxy_support
 
 @section misc Other
 @li @subpage env
+@li @subpage dirs
 @li @subpage glossary
 */

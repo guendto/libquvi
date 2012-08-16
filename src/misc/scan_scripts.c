@@ -431,18 +431,18 @@ typedef enum
   GLOB_MEDIA_SCRIPTS,
   GLOB_SCAN_SCRIPTS,
   GLOB_UTIL_SCRIPTS
-} GlobMode;
+} GlobType;
 
 static const gchar *dir[] =
 {
-  "lua/playlist/",
-  "lua/media/",
-  "lua/scan/",
-  "lua/util/",
+  "playlist/",
+  "media/",
+  "scan/",
+  "util/",
   NULL
 };
 
-static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
+static gboolean _glob_scripts(_quvi_t q, const GlobType t, GSList **dst)
 {
   chkdup_script_callback cb_chkdup;
   free_script_callback cb_free;
@@ -452,7 +452,7 @@ static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
   cb_new = NULL;
   *dst = NULL;
 
-  switch (m)
+  switch (t)
     {
     case GLOB_PLAYLIST_SCRIPTS:
       cb_new = _new_playlist_script;
@@ -474,19 +474,26 @@ static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
   cb_free = m_script_free;
 
   {
-    /* LIBQUVI_SCRIPTS_DIR (excl.) */
+    /* LIBQUVI_SCRIPTS_DIR */
 
     if (scripts_dir != NULL && strlen(scripts_dir) >0)
       {
-        gboolean r = FALSE;
+        gchar **r;
+        gint i;
 
-        path = g_build_path(G_DIR_SEPARATOR_S, scripts_dir, dir[m], NULL);
-        r = _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
+        r = g_strsplit(scripts_dir, G_SEARCHPATH_SEPARATOR_S, 0);
 
-        g_free(path);
-        path = NULL;
+        for (i=0; r[i] != NULL; ++i)
+          {
+            path = g_build_path(G_DIR_SEPARATOR_S, r[i], dir[t], NULL);
+            _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
 
-        return (r);
+            g_free(path);
+            path = NULL;
+          }
+
+        g_strfreev(r);
+        r = NULL;
       }
   }
 
@@ -494,7 +501,7 @@ static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
     /* Current working directory. */
 
     gchar *cwd = g_get_current_dir();
-    path = g_build_path(G_DIR_SEPARATOR_S, cwd, dir[m], NULL);
+    path = g_build_path(G_DIR_SEPARATOR_S, cwd, dir[t], NULL);
 
     g_free(cwd);
     cwd = NULL;
@@ -509,7 +516,9 @@ static gboolean _glob_scripts(_quvi_t q, const GlobMode m, GSList **dst)
   {
     /* SCRIPTSDIR from config.h */
 
-    path = g_build_path(G_DIR_SEPARATOR_S, SCRIPTSDIR, dir[m], NULL);
+    path = g_build_path(G_DIR_SEPARATOR_S,
+                        SCRIPTSDIR, VERSION_MM, dir[t], NULL);
+
     _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
 
     g_free(path);
@@ -535,29 +544,39 @@ static gboolean dir_exists(const gchar *path)
 
 extern void l_modify_pkgpath(_quvi_t, const gchar*);
 
-#define Q_COMMON_DIR "lua/common"
+#define Q_COMMON_DIR "common"
 
-/* Check for "lua/common/" directory, append it to "package.path" if
- * found. The library ignores the contents of the directory. */
+/*
+ * Check for the "common" directory, if found, append the path to the
+ * Lua's package.path setting.  We're not interested in the contents of
+ * this directory at this stage.
+ */
 static void chk_common_scripts(_quvi_t q)
 {
-  gchar *path;
+  gchar *path = NULL;
 
   {
     /* LIBQUVI_SCRIPTS_DIR (excl.) */
 
     if (scripts_dir != NULL && strlen(scripts_dir) >0)
       {
-        path = g_build_path(G_DIR_SEPARATOR_S,
-                            scripts_dir, Q_COMMON_DIR, NULL);
+        gchar **r;
+        gint i;
 
-        if (dir_exists(path) == TRUE)
-          l_modify_pkgpath(q, path);
+        r = g_strsplit(scripts_dir, G_SEARCHPATH_SEPARATOR_S, 0);
+        for (i=0; r[i] != NULL; ++i)
+          {
+            path = g_build_path(G_DIR_SEPARATOR_S,
+                                scripts_dir, Q_COMMON_DIR, NULL);
 
-        g_free(path);
-        path = NULL;
+            if (dir_exists(path) == TRUE)
+              l_modify_pkgpath(q, path);
 
-        return;
+            g_free(path);
+            path = NULL;
+          }
+        g_strfreev(r);
+        r = NULL;
       }
   }
 
@@ -581,7 +600,8 @@ static void chk_common_scripts(_quvi_t q)
   {
     /* SCRIPTSDIR from config.h */
 
-    path = g_build_path(G_DIR_SEPARATOR_S, SCRIPTSDIR, Q_COMMON_DIR, NULL);
+    path = g_build_path(G_DIR_SEPARATOR_S,
+                        SCRIPTSDIR, VERSION_MM, Q_COMMON_DIR, NULL);
 
     if (dir_exists(path) == TRUE)
       l_modify_pkgpath(q, path);
@@ -602,7 +622,7 @@ QuviError m_scan_scripts(_quvi_t q)
   show_script = g_getenv("LIBQUVI_SHOW_SCRIPT");
   show_dir = g_getenv("LIBQUVI_SHOW_DIR");
 
-  chk_common_scripts(q); /* Ignore what lua/common/ holds. */
+  chk_common_scripts(q);
 
   rc = _glob_scripts(q, GLOB_UTIL_SCRIPTS, &q->scripts.util)
        ? QUVI_OK
