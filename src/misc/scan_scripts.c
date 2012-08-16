@@ -529,7 +529,7 @@ static gboolean _glob_scripts(_quvi_t q, const GlobType t, GSList **dst)
   return (*dst != NULL);
 }
 
-static gboolean dir_exists(const gchar *path)
+static gboolean _dir_exists(const gchar *path)
 {
   GDir *dir = g_dir_open(path, 0, NULL);
 
@@ -569,7 +569,7 @@ static void chk_common_scripts(_quvi_t q)
             path = g_build_path(G_DIR_SEPARATOR_S,
                                 scripts_dir, Q_COMMON_DIR, NULL);
 
-            if (dir_exists(path) == TRUE)
+            if (_dir_exists(path) == TRUE)
               l_modify_pkgpath(q, path);
 
             g_free(path);
@@ -586,7 +586,7 @@ static void chk_common_scripts(_quvi_t q)
     gchar *cwd = g_get_current_dir();
     path = g_build_path(G_DIR_SEPARATOR_S, cwd, Q_COMMON_DIR, NULL);
 
-    if (dir_exists(path) == TRUE)
+    if (_dir_exists(path) == TRUE)
       l_modify_pkgpath(q, path);
 
     g_free(path);
@@ -603,7 +603,7 @@ static void chk_common_scripts(_quvi_t q)
     path = g_build_path(G_DIR_SEPARATOR_S,
                         SCRIPTSDIR, VERSION_MM, Q_COMMON_DIR, NULL);
 
-    if (dir_exists(path) == TRUE)
+    if (_dir_exists(path) == TRUE)
       l_modify_pkgpath(q, path);
 
     g_free(path);
