@@ -66,12 +66,13 @@ PKG_CHECK_MODULES([glib], [glib-2.0 >= 2.24])
 
 # Checks for scripts.
 pkg_scripts=libquvi-scripts-1.0
+
 AC_ARG_WITH([scriptsdir],
   [AS_HELP_STRING([--with-scriptsdir=DIR],
-    [Set libquvi-scripts directory to DIR. Overrides the libquvi-scripts
-    package check.  DIR is expected to contain all of the libquvi-scripts
-    as well as the "version" file containing the libquvi-scripts version
-    string.])],
+    [Set libquvi-scripts directory to DIR. This negates the
+    libquvi-scripts check.  DIR is assumed to contain the files
+    installed with libquvi-scripts to the
+      $prefix/share/libquvi-scripts/ directory.])],
   [scriptsdir=$withval
    versionfile=$scriptsdir/version],
   [PKG_CHECK_MODULES([libquvi_scripts], [libquvi-scripts-1.0 >= 1.0])
