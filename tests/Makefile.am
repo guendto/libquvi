@@ -14,7 +14,7 @@ testsuite_common_ldflags=\
 
 testsuite_common_ldadd=\
   $(top_builddir)/tests/lib/libconvenience_test.la\
-  $(top_builddir)/src/libquvi-1.0.la
+  $(top_builddir)/src/libquvi-0.9.la
 
 TEST_PROGS=script
 
