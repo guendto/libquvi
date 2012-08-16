@@ -551,7 +551,7 @@ extern void l_modify_pkgpath(_quvi_t, const gchar*);
  * Lua's package.path setting.  We're not interested in the contents of
  * this directory at this stage.
  */
-static void chk_common_scripts(_quvi_t q)
+static void _chk_common_scripts(_quvi_t q)
 {
   gchar *path = NULL;
 
@@ -622,7 +622,7 @@ QuviError m_scan_scripts(_quvi_t q)
   show_script = g_getenv("LIBQUVI_SHOW_SCRIPT");
   show_dir = g_getenv("LIBQUVI_SHOW_DIR");
 
-  chk_common_scripts(q);
+  _chk_common_scripts(q);
 
   rc = _glob_scripts(q, GLOB_UTIL_SCRIPTS, &q->scripts.util)
        ? QUVI_OK
