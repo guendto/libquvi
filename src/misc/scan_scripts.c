@@ -134,7 +134,7 @@ static gboolean _chk(const gchar *s, const gchar *p)
 }
 
 /* New script */
-static gpointer script_new(const gchar *fpath, const gchar *fname,
+static gpointer _script_new(const gchar *fpath, const gchar *fname,
                            const GString *c)
 {
   _quvi_script_t qs = g_new0(struct _quvi_script_s, 1);
@@ -168,7 +168,7 @@ static gpointer _new_media_script(_quvi_t q, const gchar *path,
         {
           typedef free_ident_callback fic;
 
-          qs = script_new(fpath->str, fname, c);
+          qs = _script_new(fpath->str, fname, c);
 
           _chk_script_ident(q, qs, &OK, m_media_new,
                             l_exec_media_script_ident,
@@ -217,7 +217,7 @@ static gpointer _new_playlist_script(_quvi_t q, const gchar *path,
         {
           typedef free_ident_callback fic;
 
-          qs = script_new(fpath->str, fname, c);
+          qs = _script_new(fpath->str, fname, c);
 
           _chk_script_ident(q, qs, &OK, m_playlist_new,
                             l_exec_playlist_script_ident,
@@ -262,7 +262,7 @@ static gpointer _new_scan_script(_quvi_t q, const gchar *path,
          && _chk(c->str, "^function parse") == TRUE);
 
       if (OK == TRUE)
-        qs = script_new(fpath->str, fname, c);
+        qs = _script_new(fpath->str, fname, c);
 
       g_string_free(c, TRUE);
       c = NULL;
@@ -301,7 +301,7 @@ static gpointer _new_util_script(_quvi_t q, const gchar *path,
         (_chk(c->str, "^\\-\\-\\s+libquvi\\-scripts") == TRUE);
 
       if (OK == TRUE)
-        qs = script_new(fpath->str, fname, c);
+        qs = _script_new(fpath->str, fname, c);
 
       g_string_free(c, TRUE);
       c = NULL;
