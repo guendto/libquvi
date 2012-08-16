@@ -101,7 +101,7 @@ AS_IF([test -z "$versionfile"], [
   AC_MSG_ERROR([versionfile: variable not found])])
 
 AS_IF([ ! test -f "$versionfile"], [
-  AC_MSG_ERROR([$versionfile: does not exist or is not not a regular file])])
+  AC_MSG_WARN([$versionfile: does not exist or is not not a regular file])])
 
 AC_DEFINE_UNQUOTED([SCRIPTSDIR], ["$scriptsdir"], [We have scriptsdir])
 AC_DEFINE_UNQUOTED([VERSIONFILE], ["$versionfile"], [We have versionfile])
