@@ -144,8 +144,8 @@ AC_CONFIG_FILES([
   src/net/Makefile
   src/api/Makefile
   src/lua/Makefile
-  src/quvi-1.0/quvi/Makefile
-  src/quvi-1.0/Makefile
+  src/quvi-0.9/quvi/Makefile
+  src/quvi-0.9/Makefile
   src/Makefile
   tests/Makefile
   tests/lib/Makefile

@@ -55,7 +55,7 @@ noinst_LTLIBRARIES=libconvenience_api.la
 libconvenience_api_la_SOURCES=$(src)
 
 libconvenience_api_la_CPPFLAGS=\
-  -I$(top_srcdir)/src/quvi-1.0/\
+  -I$(top_srcdir)/src/quvi-0.9/\
   -I$(top_srcdir)/src/\
   $(libproxy_CFLAGS)\
   $(liblua_CFLAGS)\

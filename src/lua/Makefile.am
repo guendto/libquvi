@@ -31,7 +31,7 @@ noinst_LTLIBRARIES=libconvenience_lua.la
 libconvenience_lua_la_SOURCES=$(src) $(hdr)
 
 libconvenience_lua_la_CPPFLAGS=\
-  -I$(top_srcdir)/src/quvi-1.0/\
+  -I$(top_srcdir)/src/quvi-0.9/\
   -I$(top_srcdir)/src/\
   $(liblua_CFLAGS)\
   $(glib_CFLAGS)\

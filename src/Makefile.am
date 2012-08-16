@@ -1,4 +1,4 @@
-SUBDIRS=quvi-1.0 api misc lua curl net
+SUBDIRS=quvi-0.9 api misc lua curl net
 
 hdr=\
   _quvi_net_resolve_s.h\
@@ -16,7 +16,7 @@ lib_LTLIBRARIES=libquvi-1.0.la
 libquvi_1_0_la_SOURCES=$(hdr)
 
 libquvi_1_0_la_CPPFLAGS=\
-  -I$(top_srcdir)/src/quvi-1.0/\
+  -I$(top_srcdir)/src/quvi-0.9/\
   -I$(top_srcdir)/src/\
   $(libcurl_CFLAGS)\
   $(liblua_CFLAGS)\

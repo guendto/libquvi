@@ -3,7 +3,7 @@ noinst_PROGRAMS=$(EXAMPLE_PROGS)
 
 examples_common_cppflags=\
   -I$(top_srcdir)/examples/lib\
-  -I$(top_srcdir)/src/quvi-1.0/\
+  -I$(top_srcdir)/src/quvi-0.9/\
   $(glib_CFLAGS)\
   $(AM_CPPFLAGS)
 
