@@ -44,3 +44,4 @@ tests/Makefile.in
 tests/lib/Makefile.in
 ChangeLog
 VERSION
+INSTALL
