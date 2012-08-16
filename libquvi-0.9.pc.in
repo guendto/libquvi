@@ -3,9 +3,9 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: libquvi 1.0
+Name: libquvi
 URL: http://quvi.sourceforge.net/
 Description: Query media library for Youtube like websites
 Version: @VERSION@
-Libs: -L${libdir} -lquvi-1.0
-Cflags: -I${includedir}/quvi-1.0
+Libs: -L${libdir} -lquvi-0.9
+Cflags: -I${includedir}/quvi-0.9

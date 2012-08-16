@@ -149,7 +149,7 @@ AC_CONFIG_FILES([
   src/Makefile
   tests/Makefile
   tests/lib/Makefile
-  libquvi-1.0.pc])
+  libquvi-0.9.pc])
 AC_OUTPUT
 
 AC_MSG_NOTICE([
