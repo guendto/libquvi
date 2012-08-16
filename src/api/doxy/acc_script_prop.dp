@@ -1,4 +1,4 @@
-/** @page scripts Accessing script properties
+/** @page acc_script_prop Accessing script properties
 
 The library provides limited access to the script properties.
 
