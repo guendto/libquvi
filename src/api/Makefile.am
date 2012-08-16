@@ -1,6 +1,8 @@
 
 EXTRA_DIST=\
+  doxy/acc_script_prop.dp\
   doxy/chk_support.dp\
+  doxy/dirs.dp\
   doxy/env.dp\
   doxy/getting_started.dp\
   doxy/glossary.dp\
@@ -12,8 +14,8 @@ EXTRA_DIST=\
   doxy/parse_playlist.dp\
   doxy/proxy_support.dp\
   doxy/scan_media.dp\
-  doxy/scripts.dp\
-  doxy/select_stream.dp
+  doxy/select_stream.dp\
+  doxy/verify_url.dp
 
 src=\
   playlist_media_reset.c\

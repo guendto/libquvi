@@ -1,0 +1,25 @@
+/** @page dirs Directories
+
+The library searches the following directories (in the following order):
+- @ref LIBQUVI_SCRIPTS_DIR
+- Current working directory
+
+And, either:
+- $prefix/share/libquvi-scripts/x.y/
+
+Or, if the library was compiled with the --with-scriptsdir=DIR option:
+- $DIR/x.y/
+
+The above directories are searched for the following subdirectories and
+any Lua scripts identified as libquvi scripts:
+- common/
+- playlist/
+- media/
+- scan/
+- util/
+
+The library will ignore any duplicate scripts. This is done by a basic
+SHA1 comparison.
+
+@sa @ref env
+*/

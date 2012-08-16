@@ -22,5 +22,6 @@ stream URLs.
 
 @section misc Other
 @li @subpage env
+@li @subpage dirs
 @li @subpage glossary
 */
