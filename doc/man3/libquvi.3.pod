@@ -24,11 +24,10 @@ See also:
 
 =head1 ENVIRONMENT
 
-=head2 LIBQUVI_SCRIPTSDIR
+=head2 LIBQUVI_SCRIPTS_DIR
 
-Path to the libquvi-scripts directory. This overrides the libquvi default
-search paths for the scripts. See also the tutorial in the
-L</API documentation>.
+The library will additionally look in the colon-separated list of
+directories specified by the LIBQUVI_SCRIPTS_DIR environment variable.
 
 =head2 LIBQUVI_SHOW_SCANDIR
 
