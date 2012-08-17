@@ -76,7 +76,7 @@ PKG_CHECK_MODULES([libcurl], [libcurl >= 7.21])
 PKG_CHECK_MODULES([glib], [glib-2.0 >= 2.24])
 
 # Checks for scripts.
-pkg_scripts=libquvi-scripts-1.0
+pkg_scripts=libquvi-scripts-0.9
 
 AC_ARG_WITH([scriptsdir],
   [AS_HELP_STRING([--with-scriptsdir=DIR],
@@ -86,7 +86,7 @@ AC_ARG_WITH([scriptsdir],
       $prefix/share/libquvi-scripts/ directory.])],
   [scriptsdir=$withval
    versionfile=$scriptsdir/version],
-  [PKG_CHECK_MODULES([libquvi_scripts], [libquvi-scripts-1.0 >= 1.0])
+  [PKG_CHECK_MODULES([libquvi_scripts], ["$pkg_scripts" >= 0.9])
     scriptsdir=`$PKG_CONFIG --variable scriptsdir $pkg_scripts 2>/dev/null`
     versionfile=`$PKG_CONFIG --variable versionfile $pkg_scripts 2>/dev/null`
     scriptsmodver=`$PKG_CONFIG --modversion $pkg_scripts 2>/dev/null`])
