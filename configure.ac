@@ -5,21 +5,8 @@ AC_PREREQ([2.67])
 
 m4_include([m4/version.m4])
 
-AC_INIT([libquvi],[libquvi_lt_rel],
+AC_INIT([libquvi], m4_esyscmd([./gen-ver.sh -c | tr -d '\n']),
         [http://quvi.sf.net/bugs/],[],[http://quvi.sf.net/])
-
-# Version
-LT_REL=libquvi_lt_rel
-AC_SUBST([LT_REL])
-
-LT_RMAJ=libquvi_lt_rmaj
-LT_RMIN=libquvi_lt_rmin
-LT_RMIC=libquvi_lt_rmic
-AC_SUBST([LT_RMAJ])
-AC_SUBST([LT_RMIN])
-AC_SUBST([LT_RMIC])
-
-AC_DEFINE_UNQUOTED([VERSION_MM], "$LT_RMAJ.$LT_RMIN", [Version major/minor])
 
 # Interface
 LT_CUR=libquvi_lt_cur
@@ -120,11 +107,16 @@ AC_TYPE_UINT8_T
 AC_CHECK_FUNCS([strrchr])
 
 # Version.
-VN=`$srcdir/gen-ver.sh $srcdir`
+VN=`$srcdir/gen-ver.sh`
 AC_DEFINE_UNQUOTED([VN], ["$VN"], [We have version number from gen-ver.sh])
 
 VN_C=`$srcdir/gen-ver.sh -c`
 AC_SUBST([VN_C])
+
+# Version: Major/Minor -pair, used to find the libquvi scripts.
+# e.g. $prefix/share/libquvi-scripts/$maj.$min/
+VERSION_MM=`$srcdir/gen-ver.sh -c -m`
+AC_DEFINE_UNQUOTED([VERSION_MM], "$VERSION_MM", [Version major/minor])
 
 # --with-manual
 AC_ARG_WITH([manual],
@@ -156,7 +148,7 @@ AC_CONFIG_FILES([
 AC_OUTPUT
 
 AC_MSG_NOTICE([
-  version         ${VERSION} (${VN})
+  version         ${VERSION}
   prefix          ${prefix}
   compiler        ${CC}
   cflags          ${CFLAGS}
