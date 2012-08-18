@@ -46,10 +46,10 @@ relevant to the installation:
 
   --with-scriptsdir=DIR (default:no)
 
-    Look in DIR for libquvi-scripts. This negates the (default) check
-    for the libquvi-scripts package.  DIR is assumed to contain the
-    files installed (typically) with libquvi-scripts to the
-      $prefix/share/libquvi-scripts/ directory.
+    Look in DIR for libquvi-scripts. This negates the default check for
+    the libquvi-scripts package.  DIR is presumed to contain similar
+    directory structure to the $prefix/share/libquvi-scripts/ directory
+    which is normally created by a typical libquvi-scripts installation.
 
   --with(out)-manual (default:yes)
 
@@ -117,9 +117,8 @@ When building with GNU Autotools,
     or
       PKG_CONFIG_PATH=DIR
 
-    Note that --with-scriptsdir expects a path to the directory containing
-    the script subdirectories (e.g. media/), _not_ the directory with the
-      $MAJOR_VERSION.$MINOR_VERSION/ subdirectory.
+    See also the --with-scriptsdir description above (under "Simple install
+    procedure").
 
   'make test-mem'   requires the valgrind(1) program. These tests will
   not automatically.
