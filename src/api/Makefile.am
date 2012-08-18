@@ -9,7 +9,6 @@ EXTRA_DIST=\
   doxy/glossary_scripts.dp\
   doxy/glossary_termino.dp\
   doxy/groups.dp\
-  doxy/main.dp\
   doxy/parse_media.dp\
   doxy/parse_playlist.dp\
   doxy/proxy_support.dp\
