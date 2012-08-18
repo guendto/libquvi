@@ -87,7 +87,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = @top_srcdir@/src/api/ @top_srcdir@/src/api/doxy/ @top_srcdir@/src/quvi-0.9/quvi/
+INPUT                  = @top_srcdir@/src/api/ @top_srcdir@/src/api/doxy/ @top_srcdir@/src/quvi-0.9/quvi/ @top_builddir@/src/api/doxy/
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c *.h *.dp
 RECURSIVE              = NO
