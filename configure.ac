@@ -123,6 +123,9 @@ AC_CHECK_FUNCS([strrchr])
 VN=`$srcdir/gen-ver.sh $srcdir`
 AC_DEFINE_UNQUOTED([VN], ["$VN"], [We have version number from gen-ver.sh])
 
+VN_C=`$srcdir/gen-ver.sh -c`
+AC_SUBST([VN_C])
+
 # --with-manual
 AC_ARG_WITH([manual],
   [AS_HELP_STRING([--with-manual],
