@@ -43,7 +43,7 @@ static void chk_results(quvi_scan_t qs)
       g_assert_cmpint(strlen(s), >, 0);
       ++i;
     }
-  g_assert_cmpint(i, ==, 1);
+  g_assert_cmpint(i, >=, 1);
 }
 
 static void test_scan()
