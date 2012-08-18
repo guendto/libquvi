@@ -47,6 +47,9 @@ AC_PATH_PROG([DATE], [date], [no])
 AS_IF([test "$DATE" != x"$xno"], [build_time=`$DATE +"%F %T %z"`])
 AC_DEFINE_UNQUOTED([BUILD_TIME], ["$build_time"], [We have build time])
 
+BUILD_TIME="$build_time"
+AC_SUBST([BUILD_TIME])
+
 AC_PATH_PROG([VALGRIND], [valgrind], [no])
 AM_CONDITIONAL([HAVE_VALGRIND], [test x"$VALGRIND" != "xno"])
 AC_SUBST([VALGRIND])
@@ -138,6 +141,7 @@ AC_CONFIG_FILES([
   src/curl/Makefile
   src/net/Makefile
   src/api/Makefile
+  src/api/doxy/main.dp
   src/lua/Makefile
   src/quvi-0.9/quvi/Makefile
   src/quvi-0.9/Makefile
