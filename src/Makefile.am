@@ -1,4 +1,4 @@
-SUBDIRS=quvi-1.0 api misc lua curl net
+SUBDIRS=quvi-0.9 api misc lua curl net
 
 hdr=\
   _quvi_net_resolve_s.h\
@@ -12,24 +12,24 @@ hdr=\
   _quvi_macro.h\
   _quvi_s.h
 
-lib_LTLIBRARIES=libquvi-1.0.la
-libquvi_1_0_la_SOURCES=$(hdr)
+lib_LTLIBRARIES=libquvi-0.9.la
+libquvi_0_9_la_SOURCES=$(hdr)
 
-libquvi_1_0_la_CPPFLAGS=\
-  -I$(top_srcdir)/src/quvi-1.0/\
+libquvi_0_9_la_CPPFLAGS=\
+  -I$(top_srcdir)/src/quvi-0.9/\
   -I$(top_srcdir)/src/\
   $(libcurl_CFLAGS)\
   $(liblua_CFLAGS)\
   $(glib_CFLAGS)\
   $(AM_CPPFLAGS)
 
-libquvi_1_0_la_CFLAGS=$(AM_CFLAGS)
+libquvi_0_9_la_CFLAGS=$(AM_CFLAGS)
 
-libquvi_1_0_la_LDFLAGS=\
+libquvi_0_9_la_LDFLAGS=\
   -version-info $(LT_CUR):$(LT_REV):$(LT_AGE)\
   $(AM_LDFLAGS)
 
-libquvi_1_0_la_LIBADD=\
+libquvi_0_9_la_LIBADD=\
   $(top_builddir)/src/misc/libconvenience_misc.la\
   $(top_builddir)/src/curl/libconvenience_curl.la\
   $(top_builddir)/src/net/libconvenience_net.la\

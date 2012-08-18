@@ -31,6 +31,6 @@ q = NULL;
 
 Compiling libquvi applications on UNIX:
 @code
-cc foo.c `pkg-config --cflags --libs libquvi-1.0` -o foo
+cc foo.c `pkg-config --cflags --libs libquvi-0.9` -o foo
 @endcode
 */

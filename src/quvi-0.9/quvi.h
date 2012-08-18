@@ -21,7 +21,10 @@
 #define quvi_h
 
 #ifndef QUVI_VERSION_API
+#define QUVI_VERSION_API 090000 /* 0.9 */
+#ifdef _1
 #define QUVI_VERSION_API 100000 /* 1.0 */
+#endif /* _1 */
 #endif
 
 #include <stdint.h>
