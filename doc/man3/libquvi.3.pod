@@ -1,26 +1,15 @@
 =head1 NAME
 
-libquvi - Overview of query media library
+libquvi - Overview of the library
 
 =head1 DESCRIPTION
 
-libquvi is a cross-platform library for parsing flash media stream
-URLs with C API. The term "quvi" is a shorthand for "query video".
+libquvi is a cross-platform library with C API for parsing ad0be
+flash media properties. "quvi" is an acronym for "query video".
 
-=head2 API documentation
+=head2 C API reference documentation
 
-E<lt>http://quvi.sourceforge.net/doc/E<gt>
-
-=head2 Motivation
-
-libquvi originates from the idea of allowing users to view the videos
-without having to install or use flash. It is a "workaround", not an
-"alternative" to flash.
-
-See also:
- <http://en.wikipedia.org/wiki/Adobe_Flash#Performance>
- <http://en.wikipedia.org/wiki/Adobe_Flash#Flash_client_security>
- <http://en.wikipedia.org/wiki/Adobe_Flash#Alternatives_to_Flash>
+ <http://quvi.sf.net/doc/>
 
 =head1 ENVIRONMENT
 
@@ -29,24 +18,34 @@ See also:
 The library will additionally look in the colon-separated list of
 directories specified by the LIBQUVI_SCRIPTS_DIR environment variable.
 
-=head2 LIBQUVI_SHOW_SCANDIR
+=head2 LIBQUVI_SHOW_DIR
 
-If set, libquvi prints the lua script search paths to the stderr.
+When defined, the library will output the paths of the searched directories to
+the stderr.
 
 =head2 LIBQUVI_SHOW_SCRIPT
 
-If set, the lua scripts found by libquvi are printed to the stderr.
+When defined, the library will output the file names of the found scripts to stderr.
+The output will also indicate whether the script was accepted by the library.
+
+=head2 LIBQUVI_VERBOSE_SCRIPTS
+
+When defined, scripts using the 'quvi/debug' module messaging functions will output
+to stderr.
+
+=head2 Proxy
+
+Refer to the libcurl C API, or C<curl(1)>, documentation for a complete list of the
+supported environment variables. libquvi uses libcurl to access the Internet.
 
 =head1 WWW
 
- Home  : <http://quvi.sourceforge.net>
  gitweb: <http://repo.or.cz/w/libquvi.git>
+ Home  : <http://quvi.sourceforge.net/>
 
 =head1 LICENSE
 
-libquvi is free software, licensed under the LGPLv2.1+. The lua scripts
-that libquvi uses are considered as programs and using the lua scripts
-is I<linking>.
+libquvi is Free Software, licensed under the LGPLv2.1+
 
 =head1 SEE ALSO
 
@@ -56,5 +55,5 @@ C<libquvi-scripts(7)>, C<quvi(1)>
 
 Toni Gundogdu E<lt>legatvs at sign gmail comE<gt>
 
-Thanks to all those who have contributed to the project by sending patches,
-reporting bugs and writing feedback. You know who you are.
+Thanks to all those who have contributed to the project by sending
+patches, reporting bugs and writing feedback. You know who you are.
