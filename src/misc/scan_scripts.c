@@ -128,7 +128,7 @@ static gboolean _chk(const gchar *s, const gchar *p)
   if (show_script != NULL && strlen(show_script) >0)
     {
       if (r == FALSE)
-        g_message("[%s] no match: `%s'", __func__, p);
+        g_message("libquvi: %s: no match: `%s'", __func__, p);
     }
   return (r);
 }
