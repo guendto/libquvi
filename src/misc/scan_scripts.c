@@ -79,9 +79,9 @@ static GString *_contents(GString *fpath)
   return (NULL);
 }
 
-static const gchar *scripts_dir = NULL;
-static const gchar *show_script = NULL;
-static const gchar *show_dir = NULL;
+const gchar *scripts_dir;
+const gchar *show_script;
+const gchar *show_dir;
 
 typedef QuviError (*exec_script_ident_callback)(gpointer, GSList*);
 typedef gpointer (*new_ident_callback)(_quvi_t, const gchar*);
