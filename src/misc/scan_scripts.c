@@ -135,7 +135,7 @@ static gboolean _chk(const gchar *s, const gchar *p)
 
 /* New script */
 static gpointer _script_new(const gchar *fpath, const gchar *fname,
-                           const GString *c)
+                            const GString *c)
 {
   _quvi_script_t qs = g_new0(struct _quvi_script_s, 1);
   qs->domains = g_string_new(NULL);
@@ -350,14 +350,6 @@ static gint _lua_files_only(const gchar *fpath)
   return (fpath[0] != '.' && ext != NULL && strcmp(ext, ".lua") == 0);
 }
 
-/* Sort scripts alphabetically by filepath. */
-static gint _sort(gconstpointer a, gconstpointer b)
-{
-  const _quvi_script_t qsa = (_quvi_script_t) a;
-  const _quvi_script_t qsb = (_quvi_script_t) b;
-  return (g_strcmp0(qsa->fpath->str, qsb->fpath->str) >0);
-}
-
 typedef gpointer (*new_script_callback)(_quvi_t, const gchar*, const gchar*);
 typedef gboolean (*chkdup_script_callback)(_quvi_t, gpointer, GSList*);
 typedef void (*free_script_callback)(gpointer, gpointer);
@@ -420,7 +412,7 @@ static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
   dir = NULL;
 
   if (*dst != NULL)
-    *dst = g_slist_sort(*dst, _sort);
+    *dst = g_slist_reverse(*dst);
 
   return (*dst != NULL);
 }
