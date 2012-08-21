@@ -19,6 +19,7 @@
 
 #include "config.h"
 
+#include <string.h>
 #include <glib.h>
 
 #include "quvi.h"
@@ -26,6 +27,7 @@
 #include "_quvi_s.h"
 #include "_quvi_playlist_s.h"
 #include "_quvi_net_s.h"
+#include "_quvi_script_s.h"
 /* -- */
 #include "misc/match_playlist_script.h"
 #include "misc/playlist.h"
@@ -34,6 +36,7 @@
 #include "lua/exec.h"
 
 extern QuviError l_match_url_to_playlist_script(_quvi_playlist_t, GSList**);
+extern const gchar *show_script; /* m_scan_scripts */
 
 typedef QuviMatchPlaylistScriptMode _qm_mode;
 
@@ -67,6 +70,14 @@ QuviError m_match_playlist_script(_quvi_t q, _quvi_playlist_t *p,
     }
   else if (rc != QUVI_OK)
     return (rc);
+
+  if (show_script != NULL && strlen(show_script) >0)
+    {
+      const _quvi_script_t qs = (const _quvi_script_t) s->data;
+
+      g_message("libquvi: %s: %s: input URL accepted",
+                __func__, qs->fpath->str);
+    }
 
   switch (mode)
     {
