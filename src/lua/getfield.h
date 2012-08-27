@@ -20,7 +20,7 @@
 #ifndef l_getfield_h
 #define l_getfield_h
 
-const gpointer l_get_reg_userdata(lua_State*, const gchar*);
+gpointer l_get_reg_userdata(lua_State*, const gchar*);
 
 #ifdef _1 /* Unused */
 

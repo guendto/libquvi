@@ -26,7 +26,7 @@
 /* -- */
 #include "lua/getfield.h"
 
-const gpointer l_get_reg_userdata(lua_State *l, const gchar *k)
+gpointer l_get_reg_userdata(lua_State *l, const gchar *k)
 {
   lua_pushstring(l, k);
   lua_gettable(l, LUA_REGISTRYINDEX);
