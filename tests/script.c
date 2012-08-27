@@ -25,7 +25,7 @@
 
 #include "tests.h"
 
-static const gint count(const quvi_t q, const QuviScriptType t)
+static gint count(const quvi_t q, const QuviScriptType t)
 {
   gint c = 0;
   while (quvi_script_next(q, t) == QUVI_TRUE)
@@ -33,9 +33,9 @@ static const gint count(const quvi_t q, const QuviScriptType t)
   return (c);
 }
 
-static const gsize len(const quvi_t q,
-                       const QuviScriptType t,
-                       const QuviScriptProperty p)
+static gsize len(const quvi_t q,
+                 const QuviScriptType t,
+                 const QuviScriptProperty p)
 {
   gchar *s = NULL;
 
