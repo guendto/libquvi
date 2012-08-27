@@ -6,6 +6,7 @@ TEST_OPTS=-k -m=thorough --verbose #--g-fatal-warnings
 testsuite_common_cppflags=\
   -I$(top_srcdir)/tests/lib\
   -I$(top_srcdir)/src/quvi-0.9/\
+  $(libcurl_CFLAGS)\
   $(glib_CFLAGS)\
   $(AM_CPPFLAGS)
 
