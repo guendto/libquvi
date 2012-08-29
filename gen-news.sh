@@ -35,7 +35,7 @@ $c
 "
 done
 b="$b
-`git diff --stat-width=72 "$t"..HEAD`
+`git diff --shortstat "$t"..HEAD`
 
 "
 n=`cat NEWS`
