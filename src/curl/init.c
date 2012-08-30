@@ -40,7 +40,9 @@ QuviError c_init(_quvi_t q)
 
   curl_easy_setopt(c, CURLOPT_USERAGENT, "Mozilla/5.0");
   curl_easy_setopt(c, CURLOPT_FOLLOWLOCATION, 1L);
+#ifdef _1 /* Use whatever libcurl defaults to. */
   curl_easy_setopt(c, CURLOPT_MAXREDIRS, 5L); /* http://is.gd/kFsvE4 */
+#endif
   curl_easy_setopt(c, CURLOPT_NOBODY, 0L);
 
   return (QUVI_OK);
