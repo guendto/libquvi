@@ -33,7 +33,7 @@ typedef quvi_callback_status qcs;
 static void help()
 {
   g_print("Usage: resolve [-v] [URL]\n");
-  cleanup();
+  examples_cleanup();
   exit(0);
 }
 
@@ -50,16 +50,16 @@ gint main(gint argc, gchar **argv)
   setlocale(LC_ALL, "");
 
   q = quvi_new();
-  exit_if_error();
+  examples_exit_if_error();
 
-  quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) status);
+  quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) examples_status);
 
   for (; i<argc; ++i)
     {
       if (g_strcmp0("-v", argv[i]) == 0)
-        enable_verbose();
+        examples_enable_verbose();
       else if (g_strcmp0("-a", argv[i]) == 0)
-        enable_autoproxy();
+        examples_enable_autoproxy();
       else if (g_strcmp0("-h", argv[i]) == 0)
         help();
       else
@@ -76,7 +76,7 @@ gint main(gint argc, gchar **argv)
   g_printerr("[%s] url=%s\n", __func__, url);
 
   qr = quvi_resolve_new(q, url);
-  exit_if_error();
+  examples_exit_if_error();
 
   if (quvi_resolve_forwarded(qr) == QUVI_TRUE)
     {
@@ -86,7 +86,7 @@ gint main(gint argc, gchar **argv)
   else
     g_print("[%s] no redirection\n", __func__);
 
-  cleanup();
+  examples_cleanup();
 
   g_assert(qr == NULL);
   g_assert(q == NULL);

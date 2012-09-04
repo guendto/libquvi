@@ -48,14 +48,14 @@ gint main(gint argc, gchar **argv)
     usage();
 
   q = quvi_new();
-  exit_if_error();
+  examples_exit_if_error();
 
   for (; i<argc; ++i)
     {
       if (g_strcmp0("-v", argv[i]) == 0)
-        enable_verbose();
+        examples_enable_verbose();
       else if (g_strcmp0("-a", argv[i]) == 0)
-        enable_autoproxy();
+        examples_enable_autoproxy();
       else
         url = argv[i];
     }
@@ -63,10 +63,10 @@ gint main(gint argc, gchar **argv)
   if (url == NULL)
     usage();
 
-  quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) status);
+  quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) examples_status);
 
   qp = quvi_playlist_new(q, url);
-  exit_if_error();
+  examples_exit_if_error();
   {
     gchar *p_title, *p_thumb_url, *p_id;
     gchar *m_url, *m_title;
@@ -93,7 +93,7 @@ gint main(gint argc, gchar **argv)
       }
   }
 
-  cleanup();
+  examples_cleanup();
 
   g_assert(qp == NULL);
   g_assert(q == NULL);

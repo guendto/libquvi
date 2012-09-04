@@ -152,13 +152,13 @@ gint main(gint argc, gchar **argv)
 
   g_assert(q == NULL);
   q = quvi_new();
-  exit_if_error();
+  examples_exit_if_error();
 
   while (quvi_script_next(q, type) == QUVI_TRUE)
     dump_script(q);
 
   g_string_free(mask, TRUE);
-  cleanup();
+  examples_cleanup();
 
   g_assert(q == NULL);
 

@@ -79,7 +79,7 @@ gint main(gint argc, gchar **argv)
     usage();
 
   q = quvi_new();
-  exit_if_error();
+  examples_exit_if_error();
 
   for (; i<argc; ++i)
     {
@@ -89,10 +89,10 @@ gint main(gint argc, gchar **argv)
         m = QUVI_SUPPORTS_MODE_ONLINE;
 
       else if (g_strcmp0("-v", arg) == 0)
-        enable_verbose();
+        examples_enable_verbose();
 
       else if (g_strcmp0("-a", argv[i]) == 0)
-        enable_autoproxy();
+        examples_enable_autoproxy();
 
       else if (g_str_has_prefix(arg, "-t") == TRUE)
         {
@@ -115,7 +115,7 @@ gint main(gint argc, gchar **argv)
   if (url == NULL)
     {
       g_printerr("[%s] error: URL required\n", __func__);
-      cleanup();
+      examples_cleanup();
       return (2);
     }
 
@@ -124,7 +124,7 @@ gint main(gint argc, gchar **argv)
   g_printerr("[%s] mode=0x%x\n", __func__, (gint) m);
   g_printerr("[%s] type=0x%x\n", __func__, (gint) t);
 
-  quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) status);
+  quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) examples_status);
   {
     const QuviBoolean r = quvi_supports(q, url, m, t);
 
@@ -142,7 +142,7 @@ gint main(gint argc, gchar **argv)
 
     rc = (r == QUVI_TRUE) ? 0:1;
   }
-  cleanup();
+  examples_cleanup();
   g_assert(q == NULL);
 
   return (rc);
