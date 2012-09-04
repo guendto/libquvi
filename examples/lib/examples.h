@@ -27,11 +27,11 @@ extern quvi_media_t qm;
 extern quvi_scan_t qs;
 extern quvi_t q;
 
-QuviError status(glong param, gpointer p);
-void enable_autoproxy();
-void enable_verbose();
-void exit_if_error();
-void cleanup();
+QuviError examples_status(glong param, gpointer p);
+void examples_enable_autoproxy();
+void examples_enable_verbose();
+void examples_exit_if_error();
+void examples_cleanup();
 
 #endif /* examples_h */
 

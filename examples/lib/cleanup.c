@@ -24,7 +24,7 @@
 
 #include "examples.h"
 
-void cleanup()
+void examples_cleanup()
 {
   quvi_scan_free(qs);
   qs = NULL;

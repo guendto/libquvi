@@ -25,9 +25,9 @@
 
 extern quvi_t q;
 
-extern void cleanup();
+extern void examples_cleanup();
 
-void exit_if_error()
+void examples_exit_if_error()
 {
   QuviError rc = QUVI_OK;
 
@@ -37,7 +37,7 @@ void exit_if_error()
   g_printerr("\n[%s] error: %s\n", __func__, quvi_errmsg(q));
   quvi_get(q, QUVI_INFO_ERROR_CODE, &rc);
 
-  cleanup();
+  examples_cleanup();
   exit(rc);
 }
 

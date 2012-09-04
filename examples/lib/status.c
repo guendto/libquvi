@@ -57,7 +57,7 @@ static void verify(const quvi_word type)
     g_printerr("[%s] Verify URL ...", __func__);
 }
 
-QuviError status(glong param, gpointer p)
+QuviError examples_status(glong param, gpointer p)
 {
   const quvi_word status = quvi_loword(param);
   const quvi_word type = quvi_hiword(param);

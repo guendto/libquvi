@@ -25,7 +25,7 @@
 
 extern quvi_t q;
 
-void enable_verbose()
+void examples_enable_verbose()
 {
   CURL *c = NULL;
   g_assert(q != NULL);

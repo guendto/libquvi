@@ -24,7 +24,7 @@
 
 extern quvi_t q;
 
-void enable_autoproxy()
+void examples_enable_autoproxy()
 {
   quvi_set(q, QUVI_OPTION_AUTOPROXY, QUVI_TRUE);
 }
