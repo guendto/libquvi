@@ -1,5 +1,5 @@
 src=cleanup.c enable_verbose.c enable_autoproxy.c\
-  exit_if_error.c status.c var.c
+  exit_if_error.c status.c var.c chk.c
 
 hdr=examples.h
 

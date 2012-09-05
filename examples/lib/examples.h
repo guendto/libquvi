@@ -33,6 +33,9 @@ void examples_enable_verbose();
 void examples_exit_if_error();
 void examples_cleanup();
 
+gboolean examples_chk_val_sv(gchar**, gchar**, gchar**);
+gboolean examples_chk_val_s(gchar*, gchar**, gchar**);
+
 #endif /* examples_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
