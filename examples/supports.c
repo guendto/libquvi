@@ -27,125 +27,219 @@
 
 #include "examples.h"
 
-static void usage()
+struct _opts_s
 {
-  g_printerr(
-    "Usage: supports [options] <URL>\n"
-    "\nOptions:\n"
-    "  -t<value> .. Support type ('m'edia,'p'laylist,'a'ny)\n"
-    "  -s        .. Run online\n"
-    "\nExample:\n"
-    "  supports -s -tp URL ;# Check (online) against playlist scripts\n"
-    "  supports -ta URL    ;# Check against all types of scripts\n"
-    "\nNote: Checking online resolves shortened URLs, e.g. redirections\n");
-  exit(0);
+  gboolean autoproxy;
+  gboolean verbose;
+  gboolean online;
+  gchar *type;
+  gchar **url;
+};
+
+static struct _opts_s opts;
+
+static const GOptionEntry entries[] =
+{
+  {
+    "type", 't', 0, G_OPTION_ARG_STRING, &opts.type,
+    "Script type", "TYPE"
+  },
+  {
+    "online", 's', 0, G_OPTION_ARG_NONE, &opts.online,
+    "Check online", NULL
+  },
+  {
+    "autoproxy", 'a', 0, G_OPTION_ARG_NONE, &opts.autoproxy,
+    "Enable the autoproxy feature", NULL
+  },
+  {
+    "verbose", 'v', 0, G_OPTION_ARG_NONE, &opts.verbose,
+    "Verbose libcurl output", NULL
+  },
+  {
+    G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, &opts.url, "URL"
+  },
+  {NULL, 0, 0, 0, NULL, NULL, NULL}
+};
+
+struct _type_lookup_s
+{
+  QuviSupportsType to;
+  const gchar *from;
+};
+
+static const struct _type_lookup_s type_conv[] =
+{
+  {QUVI_SUPPORTS_TYPE_PLAYLIST, "playlist"},
+  {QUVI_SUPPORTS_TYPE_MEDIA,    "media"},
+  {QUVI_SUPPORTS_TYPE_ANY,      "any"},
+  {0, NULL}
+};
+
+static gchar **type_sv()
+{
+  gchar **r;
+  gint i,j;
+
+  i=0;
+  while (type_conv[i].from != NULL) ++i;
+  r = g_new(gchar*, i+1);
+
+  i=j=0;
+  while (type_conv[j].from != NULL)
+    r[i++] = g_strdup(type_conv[j++].from);
+  r[i] = NULL;
+
+  return (r);
+}
+
+static gboolean chk_type_values()
+{
+  gchar **v, *s;
+  gboolean r;
+
+  v = type_sv();
+  r = examples_chk_val_s(opts.type, v, &s);
+  if (r == FALSE)
+    {
+      g_printerr(
+        "error: invalid value (`%s') for the option `--type'\n", s);
+    }
+
+  g_strfreev(v);
+  v = NULL;
+
+  return (r);
+}
+
+static QuviSupportsType type_n()
+{
+  gint i;
+  for (i=0; type_conv[i].from != NULL; ++i)
+    {
+      if (g_strcmp0(opts.type, type_conv[i].from) == 0)
+        return (type_conv[i].to);
+    }
+  return (QUVI_SCRIPT_TYPE_MEDIA);
+}
+
+static gint opts_new(gint argc, gchar **argv)
+{
+  GOptionContext *c;
+  GOptionGroup *g;
+  GError *e;
+  gint r;
+
+  c = g_option_context_new("URL");
+  r = EXIT_SUCCESS;
+  g = NULL;
+  e = NULL;
+
+  g_option_context_set_help_enabled(c, TRUE);
+  g_option_context_add_main_entries(c, entries, NULL);
+
+  if (g_option_context_parse(c, &argc, &argv, &e) == FALSE)
+    {
+      g_printerr("error: %s\n", e->message);
+      g_error_free(e);
+      r = EXIT_FAILURE;
+      e = NULL;
+    }
+
+  g_option_context_free(c);
+  c = NULL;
+
+  /* Set default values. */
+
+  if (opts.type == NULL)
+    opts.type = g_strdup("any");
+
+  /* Check input. */
+
+  if (chk_type_values() == FALSE)
+    return (EXIT_FAILURE);
+
+  if (opts.url == NULL)
+    {
+      g_printerr("error: no input URL\n");
+      return (EXIT_FAILURE);
+    }
+
+  return (r);
+}
+
+static void opts_free()
+{
+  g_strfreev(opts.url);
+  opts.url = NULL;
+
+  g_free(opts.type);
+  opts.type = NULL;
+}
+
+static QuviSupportsMode mode = QUVI_SUPPORTS_MODE_OFFLINE;
+static QuviSupportsType type = QUVI_SUPPORTS_TYPE_ANY;
+
+static void chk_support(const gchar *url)
+{
+  const QuviBoolean r = quvi_supports(q, url, mode, type);
+
+  /* Always check for any network errors with QUVI_SUPPORTS_MODE_ONLINE. */
+  if (r == FALSE && mode == QUVI_SUPPORTS_MODE_ONLINE)
+    {
+      glong ec = 0;
+      quvi_get(q, QUVI_INFO_ERROR_CODE, &ec);
+
+      if (ec != QUVI_ERROR_NO_SUPPORT)
+        {
+          g_printerr("\nerror: %s\n", quvi_errmsg(q));
+          return;
+        }
+    }
+  g_print("%s: %s\n", url, (r == QUVI_TRUE) ? "yes":"no");
 }
 
 typedef quvi_callback_status qcs;
 
-static QuviSupportsMode m = QUVI_SUPPORTS_MODE_OFFLINE;
-static QuviSupportsType t = 0;
-
-static void update_type(gchar c)
-{
-  switch (c)
-    {
-    case 'p':
-      t |= QUVI_SUPPORTS_TYPE_PLAYLIST;
-      break;
-    case 'm':
-      t |= QUVI_SUPPORTS_TYPE_MEDIA;
-      break;
-    case 'a':
-      t = QUVI_SUPPORTS_TYPE_ANY;
-      break;
-    default:
-      g_printerr("[%s]: ignored `%c': unknown type\n", __func__, c);
-      break;
-    }
-}
-
-/* Exit status: 1=error or nosupport, otherwise 0. */
 gint main(gint argc, gchar **argv)
 {
-  gchar *url = NULL;
-  gint rc = 0;
-  gint i = 1;
+  gint i,r;
 
   g_assert(q == NULL);
+
+  memset(&opts, 0, sizeof(struct _opts_s));
   setlocale(LC_ALL, "");
 
-  if (argc <2)
-    usage();
+  r = opts_new(argc, argv);
+  if (r != EXIT_SUCCESS)
+    return (r);
 
   q = quvi_new();
   examples_exit_if_error();
 
-  for (; i<argc; ++i)
-    {
-      const gchar *arg = argv[i];
+  if (opts.autoproxy == TRUE)
+    examples_enable_autoproxy();
 
-      if (g_strcmp0("-s", arg) == 0)
-        m = QUVI_SUPPORTS_MODE_ONLINE;
+  if (opts.verbose == TRUE)
+    examples_enable_verbose();
 
-      else if (g_strcmp0("-v", arg) == 0)
-        examples_enable_verbose();
-
-      else if (g_strcmp0("-a", argv[i]) == 0)
-        examples_enable_autoproxy();
-
-      else if (g_str_has_prefix(arg, "-t") == TRUE)
-        {
-          if (strlen(arg) >1)
-            {
-              gchar *p = (gchar*) &arg[2];
-              while (*p != '\0')
-                {
-                  update_type(*p);
-                  ++p;
-                }
-            }
-          else
-            t = QUVI_SUPPORTS_TYPE_MEDIA;
-        }
-      else
-        url = (gchar*) arg;
-    }
-
-  if (url == NULL)
-    {
-      g_printerr("[%s] error: URL required\n", __func__);
-      examples_cleanup();
-      return (2);
-    }
-
-  t = (t == 0) ? QUVI_SUPPORTS_TYPE_MEDIA : t;
-
-  g_printerr("[%s] mode=0x%x\n", __func__, (gint) m);
-  g_printerr("[%s] type=0x%x\n", __func__, (gint) t);
+  if (opts.online == TRUE)
+    mode = QUVI_SUPPORTS_MODE_ONLINE;
 
   quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) examples_status);
-  {
-    const QuviBoolean r = quvi_supports(q, url, m, t);
+  type = type_n();
 
-    /* Always check for any network errors with QUVI_SUPPORTS_MODE_ONLINE. */
-    if (r == FALSE && m == QUVI_SUPPORTS_MODE_ONLINE)
-      {
-        glong ec = 0;
-        quvi_get(q, QUVI_INFO_ERROR_CODE, &ec);
+  g_printerr("[%s] type=%s (0x%x), mode=0x%x\n",
+             __func__, opts.type, type, mode);
 
-        if (ec != QUVI_ERROR_NO_SUPPORT) /* Ignore "no support". */
-          g_printerr("\nerror: %s\n", quvi_errmsg(q));
-      }
-    else
-      g_print("%s : %s\n", url, (r == QUVI_TRUE) ? "yes":"no");
+  for (i=0; opts.url[i] != NULL; ++i)
+    chk_support(opts.url[i]);
 
-    rc = (r == QUVI_TRUE) ? 0:1;
-  }
+  opts_free();
   examples_cleanup();
-  g_assert(q == NULL);
 
-  return (rc);
+  g_assert(q == NULL);
+  return (r);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
