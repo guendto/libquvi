@@ -26,21 +26,6 @@
 @brief Options to be used with @ref quvi_set */
 typedef enum
 {
-  /** Determines which of the media scripts of the protocol categories
-   * should be included when the library looks up the media scripts
-   * from the search paths.
-   *
-   * Normally, if an application could handle only some of the protocols,
-   * e.g. HTTP, it should set this option appropriately (e.g.
-   * QUVI_MEDIA_SCRIPT_PROTOCOL_CATEGORY_HTTP) to limit the media script
-   * support to those websites that return media stream URLs suitable to the
-   * application.
-   *
-   * Default: QUVI_MEDIA_SCRIPT_PROTOCOL_CATEGORY_ALL.
-   *
-   * @sa QuviMediaScriptProtocolCategory
-   * @sa @ref proto_cat */
-  QUVI_OPTION_MEDIA_SCRIPT_PROTOCOL_CATEGORY,
   /** Default: None */
   QUVI_OPTION_CALLBACK_STATUS,
   /** Autodetect and set the proxy for new connections.
