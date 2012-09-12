@@ -45,12 +45,15 @@ static const gchar script_func[] = "ident";
 
 static QuviError _chk_results(lua_State *l, _quvi_script_t qs)
 {
-  const QuviError rc = (l_chk_accepts(l, qs, PS_ACCEPTS,
-                                      PS_DOMAINS, script_func) == TRUE)
-                       ? QUVI_OK
-                       : QUVI_ERROR_NO_SUPPORT;
+  QuviError r;
+
+  r = (l_chk_can_parse_url(l, qs, PS_CAN_PARSE_URL,
+                           PS_DOMAINS, script_func) == TRUE)
+      ? QUVI_OK
+      : QUVI_ERROR_NO_SUPPORT;
+
   lua_pop(l, 1);
-  return (rc);
+  return (r);
 }
 
 QuviError l_exec_playlist_script_ident(gpointer p, GSList *sl)

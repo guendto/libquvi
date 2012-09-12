@@ -40,39 +40,26 @@
  * the time spent on locating the actual problem in the script.
  */
 
-gboolean l_chk_accepts(lua_State *l, _quvi_script_t qs,
-                       const gchar *k_accepts, const gchar *k_domains,
-                       const gchar *script_func)
+gboolean l_chk_can_parse_url(lua_State *l, _quvi_script_t qs,
+                             const gchar *k_can_parse_url,
+                             const gchar *k_domains,
+                             const gchar *script_func)
 {
   gboolean r = FALSE;
 
-  lua_pushstring(l, k_accepts);
-  lua_gettable(l, -2);
-
-  if (lua_istable(l, -1))
+  lua_pushnil(l);
+  while (lua_next(l, LI_KEY))
     {
-      lua_pushnil(l);
-      while (lua_next(l, LI_KEY))
-        {
-          l_chk_assign_s(l, k_domains, qs->domains);
-          l_chk_assign_b(l, k_accepts, &r);
-          lua_pop(l, 1);
-        }
-      if (qs->domains->len ==0)
-        {
-          luaL_error(l, "%s: %s: dictionary `%s' must contain "
-                     "a string value for `%s'", qs->fpath->str,
-                     script_func, k_accepts, k_domains);
-        }
+      l_chk_assign_s(l, k_domains, qs->domains);
+      l_chk_assign_b(l, k_can_parse_url, &r);
+      lua_pop(l, 1);
     }
-  else
+  if (qs->domains->len ==0)
     {
-      luaL_error(l, "%s: %s: the returned dictionary must contain "
-                 "a dictionary `%s'", qs->fpath->str, script_func,
-                 k_accepts);
+      luaL_error(l, "%s: %s: dictionary `%s' must contain "
+                 "a string value for `%s'", qs->fpath->str,
+                 script_func, k_can_parse_url, k_domains);
     }
-  lua_pop(l, 1);
-
   return (r);
 }
 

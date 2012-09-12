@@ -20,8 +20,8 @@
 #ifndef l_chk_h
 #define l_chk_h
 
-gboolean l_chk_accepts(lua_State*, _quvi_script_t, const gchar*,
-                       const gchar*, const gchar*);
+gboolean l_chk_can_parse_url(lua_State*, _quvi_script_t, const gchar*,
+                             const gchar*, const gchar*);
 
 gboolean l_chk_assign_s(lua_State*, const gchar*, GString*);
 gboolean l_chk_s(lua_State*, const gchar*, gchar**);
