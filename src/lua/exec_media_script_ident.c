@@ -47,14 +47,15 @@ static const gchar script_func[] = "ident";
 static QuviError _chk_results(lua_State *l, _quvi_script_t qs,
                               _quvi_media_t qm)
 {
-  QuviError rc;
+  QuviError r;
 
-  rc = l_chk_accepts(l, qs, MS_ACCEPTS, MS_DOMAINS, script_func) == TRUE
-       ? QUVI_OK
-       : QUVI_ERROR_NO_SUPPORT;
+  r = (l_chk_can_parse_url(l, qs, MS_CAN_PARSE_URL,
+                           MS_DOMAINS, script_func) == TRUE)
+      ? QUVI_OK
+      : QUVI_ERROR_NO_SUPPORT;
 
   lua_pop(l, 1);
-  return (rc);
+  return (r);
 }
 
 QuviError l_exec_media_script_ident(gpointer p, GSList *sl)
