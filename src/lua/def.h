@@ -28,12 +28,12 @@
 
 /* Media script: Media properties */
 
+#define MS_CAN_PARSE_URL    "can_parse_url" /* Script can parse URL */
 #define MS_START_TIME_MS    "start_time_ms" /* Start streaming at */
 #define MS_DURATION_MS      "duration_ms"   /* Media duration in ms */
 #define MS_INPUT_URL        "input_url"     /* App req. URL */
 #define MS_THUMB_URL        "thumb_url"     /* Image thumbnail URL */
 #define MS_GOTO_URL         "goto_url"      /* Redirect to URL */
-#define MS_ACCEPTS          "accepts"       /* Script accepts URL */
 #define MS_DOMAINS          "domains"       /* Accepted domains */
 #define MS_TITLE            "title"         /* Media title */
 #define MS_ID               "id"            /* Media ID */
@@ -62,13 +62,13 @@
 
 /* Playlist script */
 
-#define PS_INPUT_URL  "input_url" /* App req. URL */
-#define PS_THUMB_URL  "thumb_url" /* Playlist thumbnail URL */
-#define PS_ACCEPTS    "accepts"   /* Script accepts URL */
-#define PS_DOMAINS    "domains"   /* Accepted domains */
-#define PS_TITLE      "title"     /* Title */
-#define PS_MEDIA      "media"     /* Found media */
-#define PS_ID         "id"        /* Playlist ID */
+#define PS_CAN_PARSE_URL  "can_parse_url"   /* Script can parse URL */
+#define PS_INPUT_URL      "input_url"       /* App req. URL */
+#define PS_THUMB_URL      "thumb_url"       /* Playlist thumbnail URL */
+#define PS_DOMAINS        "domains"         /* Domains */
+#define PS_TITLE          "title"           /* Title */
+#define PS_MEDIA          "media"           /* Found media */
+#define PS_ID             "id"              /* Playlist ID */
 
 /* Playlist script: Media properties */
 
