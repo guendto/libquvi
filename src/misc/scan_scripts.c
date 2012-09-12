@@ -606,6 +606,15 @@ static void _chk_common_scripts(_quvi_t q)
       l_modify_pkgpath(q, path);
 
     g_free(path);
+
+    /* SCRIPTSDIR: Without the VERSION_MM. */
+
+    path = g_build_path(G_DIR_SEPARATOR_S, SCRIPTSDIR, Q_COMMON_DIR, NULL);
+
+    if (_dir_exists(path) == TRUE)
+      l_modify_pkgpath(q, path);
+
+    g_free(path);
     path = NULL;
   }
 #endif /* SCRIPTSDIR */
