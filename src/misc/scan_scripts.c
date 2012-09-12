@@ -512,6 +512,13 @@ static gboolean _glob_scripts(_quvi_t q, const GlobType t, GSList **dst)
                         SCRIPTSDIR, VERSION_MM, dir[t], NULL);
 
     _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
+    g_free(path);
+
+    /* SCRIPTSDIR: Without the VERSION_MM. */
+
+    path = g_build_path(G_DIR_SEPARATOR_S, SCRIPTSDIR, dir[t], NULL);
+
+    _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
 
     g_free(path);
     path = NULL;
