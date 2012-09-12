@@ -32,7 +32,6 @@
 #include <quvi/qplaylistprop.h>
 #include <quvi/qverifyprop.h>
 #include <quvi/qmediaprop.h>
-#include <quvi/qprotocat.h>
 #include <quvi/qcallback.h>
 #include <quvi/qversion.h>
 #include <quvi/qscript.h>

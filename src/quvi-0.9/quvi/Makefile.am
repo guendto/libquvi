@@ -3,7 +3,6 @@ libquvisubinclude_HEADERS=\
   qplaylistprop.h\
   qverifyprop.h\
   qmediaprop.h\
-  qprotocat.h\
   qcallback.h\
   qversion.h\
   qoption.h\
