@@ -31,9 +31,6 @@ static QuviError _set(_quvi_t q, QuviOption o, va_list arg)
 {
   switch (o)
     {
-    case QUVI_OPTION_MEDIA_SCRIPT_PROTOCOL_CATEGORY:
-      q->opt.scripts.category = va_arg(arg, glong);
-      break;
     case QUVI_OPTION_AUTOPROXY:
       q->opt.autoproxy = (gboolean) va_arg(arg, glong) >0;
       break;

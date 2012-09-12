@@ -63,7 +63,7 @@ static void test_quvi()
 
   /* quvi_set */
 
-  quvi_set(q, QUVI_OPTION_MEDIA_SCRIPT_PROTOCOL_CATEGORY-1, 0);
+  quvi_set(q, QUVI_OPTION_CALLBACK_STATUS-1, 0);
   g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
 
   quvi_set(q, QUVI_OPTION_AUTOPROXY+1, 0);

@@ -39,7 +39,6 @@ struct _quvi_s
     struct
     {
       gboolean verbose; /* LIBQUVI_VERBOSE_SCRIPTS */
-      glong category;
     } scripts;
   } opt;
   struct

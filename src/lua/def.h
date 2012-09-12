@@ -30,7 +30,6 @@
 
 #define MS_START_TIME_MS    "start_time_ms" /* Start streaming at */
 #define MS_DURATION_MS      "duration_ms"   /* Media duration in ms */
-#define MS_CATEGORIES       "categories"    /* Protocol categories */
 #define MS_INPUT_URL        "input_url"     /* App req. URL */
 #define MS_THUMB_URL        "thumb_url"     /* Image thumbnail URL */
 #define MS_GOTO_URL         "goto_url"      /* Redirect to URL */
