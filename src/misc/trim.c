@@ -24,7 +24,7 @@
 /* -- */
 #include "misc/re.h"
 
-#define _W "libquvi: %s: %s"
+#define _W "[%s] libquvi: %s"
 
 gchar *m_trim(const gchar *s, const gchar *p, const gchar *w)
 {
