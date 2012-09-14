@@ -16,6 +16,7 @@ lib_LTLIBRARIES=libquvi-0.9.la
 libquvi_0_9_la_SOURCES=$(hdr)
 
 libquvi_0_9_la_CPPFLAGS=\
+  -DLOCALEDIR=\""$(localedir)"\"\
   -I$(top_srcdir)/src/quvi-0.9/\
   -I$(top_srcdir)/src/\
   $(libcurl_CFLAGS)\
