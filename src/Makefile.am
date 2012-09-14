@@ -38,4 +38,7 @@ libquvi_0_9_la_LIBADD=\
   $(top_builddir)/src/api/libconvenience_api.la\
   $(libcurl_LIBS)\
   $(liblua_LIBS)\
-  $(glib_LIBS)
+  $(glib_LIBS)\
+  $(LTLIBINTL)
+
+# vim: set ts=2 sw=2 tw=72 expandtab:
