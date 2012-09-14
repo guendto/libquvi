@@ -21,9 +21,10 @@
 
 #include "config.h"
 
+#include <glib/gi18n-lib.h>
+#include <glib.h>
 #include <string.h>
 #include <proxy.h>
-#include <glib.h>
 
 #include "quvi.h"
 /* -- */
@@ -50,8 +51,11 @@ extern QuviError c_init(_quvi_t q);
 */
 quvi_t quvi_new()
 {
-  _quvi_t q = _quvi_new();
+  _quvi_t q;
 
+  bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
+
+  q = _quvi_new();
   q->status.rc = l_init(q);
 
   if (q->status.rc == QUVI_OK)
