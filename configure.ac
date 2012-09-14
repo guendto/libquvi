@@ -32,6 +32,12 @@ AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
 AM_SILENT_RULES([yes])
 #AM_PROG_AR
 
+AM_GNU_GETTEXT_VERSION([0.18.1])
+AM_GNU_GETTEXT([external])
+# GETTEXT_PACKAGE is used by glib.
+AC_DEFINE([GETTEXT_PACKAGE], [PACKAGE], [Define to the gettext package name])
+AC_SUBST([GETTEXT_PACKAGE], [PACKAGE])
+
 LT_INIT([disable-static])
 LT_PREREQ([2.2.6])
 
