@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <glib/gi18n-lib.h>
 #include <glib.h>
 
 #include "quvi.h"
@@ -29,19 +30,19 @@
 
 static const gchar *msg[] =
 {
-  "No error",
-  "Aborted by callback",
-  "'playlist scripts' not found in the path",
-  "'media scripts' not found in the path",
-  "'scan scripts' not found in the path",
-  "'utility scripts' not found in the path",
-  "Invalid argument to function",
-  "libproxy initialization failed",
-  "cURL initialization failed",
-  "Lua initialization failed"
+  N_("Not an error"),
+  N_("Operation aborted by a callback"),
+  N_("Could not find any playlist scripts in the path"),
+  N_("Could not find any media scripts in the path"),
+  N_("Could not find any scan scripts in the path"),
+  N_("Could not find any the utility scripts in the path"),
+  N_("An invalid argument to the function"),
+  N_("Initialization of libproxy failed"),
+  N_("Initialization of libcurl failed"),
+  N_("Initialization of liblua failed")
 };
 
-static const gchar inv_code_msg[] = "Invalid error code";
+static const gchar *inv_code_msg = N_("An invalid error code");
 
 /** @return NULL-terminated error string
 @note Do not attempt to free the returned string
@@ -56,7 +57,7 @@ const char *quvi_errmsg(quvi_t handle)
   gint i;
 
   if (handle == NULL)
-    return (msg[QUVI_ERROR_INVALID_ARG]);
+    return (g_dgettext(GETTEXT_PACKAGE, msg[QUVI_ERROR_INVALID_ARG]));
 
   q = (_quvi_t) handle;
   c = q->status.rc;
@@ -75,7 +76,7 @@ const char *quvi_errmsg(quvi_t handle)
   else
     s = msg[c];
 
-  return (s);
+  return (g_dgettext(GETTEXT_PACKAGE, s));
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
