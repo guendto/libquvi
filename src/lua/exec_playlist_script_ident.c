@@ -74,7 +74,10 @@ QuviError l_exec_playlist_script_ident(gpointer p, GSList *sl)
   lua_getglobal(l, script_func);
 
   if (!lua_isfunction(l, -1))
-    luaL_error(l, "%s: function `%s' not found", qs->fpath->str, script_func);
+    {
+      static const gchar *_E = "%s: the function `%s' was not found";
+      luaL_error(l, _E, qs->fpath->str, script_func);
+    }
 
   lua_newtable(l);
   l_setfield_b(l, GS_VERBOSE, qp->handle.quvi->opt.scripts.verbose);
