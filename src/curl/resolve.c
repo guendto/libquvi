@@ -19,8 +19,9 @@
 
 #include "config.h"
 
-#include <curl/curl.h>
+#include <glib/gi18n-lib.h>
 #include <glib.h>
+#include <curl/curl.h>
 
 #include "quvi.h"
 /* -- */
@@ -44,6 +45,8 @@ static void _reset_opts(CURL *c)
   curl_easy_setopt(c, CURLOPT_HTTPGET, 1L); /* HEAD -> GET. */
 }
 
+static const gchar *_EOK = N_("The server responded with the code %03ld");
+
 /* Check whether the server returned a redirection URL. */
 static QuviError _chk_redir(_quvi_net_resolve_t r, CURL *c)
 {
@@ -66,9 +69,9 @@ static QuviError _chk_redir(_quvi_net_resolve_t r, CURL *c)
     {
       if (curlcode == CURLE_OK)
         {
-#define _EOK "server responded with code %03ld"
-          g_string_printf(r->status.errmsg, _EOK, r->status.resp_code);
-#undef _EOK
+          g_string_printf(r->status.errmsg,
+                          g_dgettext(GETTEXT_PACKAGE, _EOK),
+                          r->status.resp_code);
         }
       else
         {
