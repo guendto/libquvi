@@ -70,8 +70,8 @@ static void _chk_media_url(lua_State *l, _quvi_scan_t qs,
   else
     {
       g_warning("%s: %s: should return a dictionary containing "
-                "the `qargs.%s'", script_path, script_func,
-                SS_MEDIA_URL);
+                "the `qargs.%s'",
+                script_path, script_func, SS_MEDIA_URL);
     }
   lua_pop(l, 1);
 }
@@ -96,7 +96,7 @@ QuviError l_exec_scan_script_parse(gpointer p, gpointer _qss,
 
   if (!lua_isfunction(l, -1))
     {
-      luaL_error(l, "%s: function `%s' not found",
+      luaL_error(l, "%s: the function `%s' was not found",
                  qss->fpath->str, script_func);
     }
 
@@ -114,8 +114,10 @@ QuviError l_exec_scan_script_parse(gpointer p, gpointer _qss,
 
   if (!lua_istable(l, -1))
     {
-      luaL_error(l, "%s: %s: must return a dictionary, typically `qargs'",
-                 qss->fpath->str, script_func);
+      static const gchar *_E =
+        "%s: %s: must return a dictionary, this is typically the `qargs'";
+
+      luaL_error(l, _E, qss->fpath->str, script_func);
     }
 
   _chk_media_url(l, qs, qss->fpath->str);
