@@ -19,8 +19,9 @@
 
 #include "config.h"
 
-#include <curl/curl.h>
+#include <glib/gi18n-lib.h>
 #include <glib.h>
+#include <curl/curl.h>
 
 #include "quvi.h"
 /* -- */
@@ -44,6 +45,8 @@ static void _set_opts(_quvi_net_t n, _c_temp_t t, CURL *c)
 
   c_autoproxy(n->handle.quvi, n->url.addr->str);
 }
+
+static const gchar *_EOK = N_("The server responded with the code %03ld");
 
 static QuviError _verify(_quvi_net_t n, CURL *c)
 {
@@ -71,7 +74,8 @@ static QuviError _verify(_quvi_net_t n, CURL *c)
         }
       else
         {
-          g_string_printf(n->status.errmsg, "server returned HTTP/%03ld",
+          g_string_printf(n->status.errmsg,
+                          g_dgettext(GETTEXT_PACKAGE, _EOK),
                           n->status.resp_code);
           rc = QUVI_ERROR_CALLBACK;
         }
