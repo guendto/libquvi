@@ -56,9 +56,12 @@ gboolean l_chk_can_parse_url(lua_State *l, _quvi_script_t qs,
     }
   if (qs->domains->len ==0)
     {
-      luaL_error(l, "%s: %s: dictionary `%s' must contain "
-                 "a string value for `%s'", qs->fpath->str,
-                 script_func, k_can_parse_url, k_domains);
+      static const gchar *_E =
+        "%s: %s: the dictionary `%s' must contain a string "
+        "value for `%s'";
+
+      luaL_error(l, _E,  qs->fpath->str, script_func,
+                 k_can_parse_url, k_domains);
     }
   return (r);
 }

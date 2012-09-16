@@ -32,14 +32,15 @@ gpointer l_get_reg_userdata(lua_State *l, const gchar *k)
   lua_gettable(l, LUA_REGISTRYINDEX);
 
   if (!lua_isuserdata(l, -1))
-    luaL_error(l, "expected `%s' in LUA_REGISTRYINDEX", k);
+    luaL_error(l, "expected to find the key `%s' in LUA_REGISTRYINDEX", k);
 
   return ((gpointer) lua_touserdata(l, -1));
 }
 
 #ifdef _1 /* Unused */
 
-static const gchar *_E = "%s: %s: expected `%s' in returned table";
+static const gchar *_E =
+  "%s: %s: expected to find the key `%s' in the returned table";
 
 #define _pop(ltype, ctype, dval) \
   do { \
@@ -88,7 +89,7 @@ QuviError l_getfield_table_iter_s(lua_State *l,
 
   if (!lua_istable(l, -1))
     {
-      luaL_error(l, "%s: %s: expected table `%s'",
+      luaL_error(l, "%s: %s: expected to find the table `%s'",
                  script_path, script_func, k);
     }
 

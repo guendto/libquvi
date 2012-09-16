@@ -128,7 +128,10 @@ static gboolean _chk(const gchar *s, const gchar *p)
   if (show_script != NULL && strlen(show_script) >0)
     {
       if (r == FALSE)
-        g_message("libquvi: %s: no match: `%s'", __func__, p);
+        {
+          g_message("[%s] libquvi: nothing matched the pattern `%s'",
+                    __func__, p);
+        }
     }
   return (r);
 }
@@ -363,7 +366,7 @@ static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
   GDir *dir;
 
   if (show_dir != NULL && strlen(show_dir) >0)
-    g_message("libquvi: %s: %s", __func__, path);
+    g_message("[%s] libquvi: %s", __func__, path);
 
   dir = g_dir_open(path, 0, NULL);
   if (dir == NULL)
@@ -380,7 +383,7 @@ static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
                * libquvi-script. */
               if (show_script != NULL && strlen(show_script) >0)
                 {
-                  g_message("libquvi: %s: rejected: %s [INVALID]",
+                  g_message("[%s] libquvi: rejected: %s [INVALID]",
                             __func__, fname);
                 }
             }
@@ -399,7 +402,7 @@ static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
 
               if (show_script != NULL && strlen(show_script) >0)
                 {
-                  g_message("libquvi: %s: %s: %s [%s]",
+                  g_message("[%s] libquvi: %s: %s [%s]",
                             __func__,
                             (r == FALSE) ? "accepted" : "rejected",
                             fname,

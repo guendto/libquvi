@@ -110,8 +110,8 @@ static void _chk_media(lua_State *l, _quvi_playlist_t qp,
   else
     {
       g_warning("%s: %s: should return a dictionary containing "
-                "the `qargs.%s' dictionary", script_path, script_func,
-                PS_MEDIA);
+                "the `qargs.%s' dictionary",
+                script_path, script_func, PS_MEDIA);
     }
   lua_pop(l, 1);
 }
@@ -141,7 +141,10 @@ QuviError l_exec_playlist_script_parse(gpointer p, GSList *sl)
   lua_getglobal(l, script_func);
 
   if (!lua_isfunction(l, -1))
-    luaL_error(l, "%s: function `%s' not found", qs->fpath->str, script_func);
+    {
+      luaL_error(l, "%s: the function `%s' was not found",
+                 qs->fpath->str, script_func);
+    }
 
   lua_newtable(l);
   l_set_reg_userdata(l, USERDATA_QUVI_T, (gpointer) qp->handle.quvi);
@@ -156,8 +159,10 @@ QuviError l_exec_playlist_script_parse(gpointer p, GSList *sl)
 
   if (!lua_istable(l, -1))
     {
-      luaL_error(l, "%s: %s: must return a dictionary, typically `qargs'",
-                 qs->fpath->str, script_func);
+      static const gchar *_E =
+        "%s: %s: must return a dictionary, this is typically the `qargs'";
+
+      luaL_error(l, _E, qs->fpath->str, script_func);
     }
 
   _chk_optional(l, qp);

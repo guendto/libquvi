@@ -76,7 +76,10 @@ QuviError l_exec_media_script_ident(gpointer p, GSList *sl)
   lua_getglobal(l, script_func);
 
   if (!lua_isfunction(l, -1))
-    luaL_error(l, "%s: function `%s' not found", qs->fpath->str, script_func);
+    {
+      luaL_error(l, "%s: the function `%s' was not found",
+                 qs->fpath->str, script_func);
+    }
 
   lua_newtable(l);
   l_setfield_b(l, GS_VERBOSE, qm->handle.quvi->opt.scripts.verbose);
