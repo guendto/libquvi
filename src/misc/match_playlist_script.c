@@ -43,8 +43,7 @@ extern const gchar *show_script; /* m_scan_scripts */
 typedef QuviMatchPlaylistScriptMode _qm_mode;
 
 QuviError m_match_playlist_script(_quvi_t q, _quvi_playlist_t *p,
-                                  const gchar *url, const _qm_mode mode,
-                                  gchar **result)
+                                  const gchar *url, const _qm_mode mode)
 {
   gboolean resolve_flag;
   QuviError rc;

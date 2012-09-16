@@ -54,8 +54,7 @@ extern const gchar *show_script; /* m_scan_scripts */
 typedef QuviMatchMediaScriptMode _qm_mode;
 
 QuviError m_match_media_script(_quvi_t q, _quvi_media_t *qm,
-                               const gchar *url, const _qm_mode mode,
-                               gchar **result)
+                               const gchar *url, const _qm_mode mode)
 {
   gboolean resolve_flag;
   QuviError rc;
@@ -105,7 +104,7 @@ QuviError m_match_media_script(_quvi_t q, _quvi_media_t *qm,
         {
           /* Check if goto_url was set. */
           if (_chk_goto_url(*qm) == TRUE)
-            return (m_match_media_script(q, qm, url, mode, result));
+            return (m_match_media_script(q, qm, url, mode));
         }
       break;
 

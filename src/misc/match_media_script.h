@@ -28,7 +28,7 @@ typedef enum
 } QuviMatchMediaScriptMode;
 
 QuviError m_match_media_script(_quvi_t, _quvi_media_t*, const gchar*,
-                               const QuviMatchMediaScriptMode, gchar**);
+                               const QuviMatchMediaScriptMode);
 
 #endif /* m_match_media_script_h */
 

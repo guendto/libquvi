@@ -48,8 +48,7 @@ quvi_playlist_t quvi_playlist_new(quvi_t handle, const char *url)
   q = (_quvi_t) handle;
   qp = NULL;
 
-  q->status.rc = m_match_playlist_script(q, &qp, url,
-                                         QM_MATCH_PS_PARSE, NULL);
+  q->status.rc = m_match_playlist_script(q, &qp, url, QM_MATCH_PS_PARSE);
   return (qp);
 }
 
