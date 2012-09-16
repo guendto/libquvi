@@ -77,6 +77,9 @@ Requirements
 * pkg-config for tracking the compilation flags needed for libraries
   http://www.freedesktop.org/software/pkgconfig/
 
+* GNU gettext is recommended
+  http://www.gnu.org/software/gettext/
+
 * GNU make is recommended
   http://www.gnu.org/software/make/
 
