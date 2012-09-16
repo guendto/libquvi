@@ -32,7 +32,7 @@ static const gchar URL_SHORT[] = "http://is.gd/jg9P5c";
 static const gchar URL_NOSUP[] = "http://example.com/";
 static const gchar URL_INV[] = "foobar";
 
-static void test_supports()
+static void test_supports_online()
 {
   QuviBoolean r;
   quvi_t q;
@@ -182,7 +182,7 @@ static void test_supports_net_err()
 gint main(gint argc, gchar **argv)
 {
   g_test_init(&argc, &argv, NULL);
-  g_test_add_func("/quvi/supports (online)", test_supports);
+  g_test_add_func("/quvi/supports (online)", test_supports_online);
   g_test_add_func("/quvi/supports (offline)", test_supports_offline);
   g_test_add_func("/quvi/supports (network error)", test_supports_net_err);
   return (g_test_run());
