@@ -62,7 +62,7 @@ static gchar *TITLEs[] =
     g_assert_cmpfloat(n, >, -1);\
   } while (0)
 
-static void test_media()
+static void test_media_core()
 {
   quvi_media_t qm;
   quvi_t q;
@@ -440,7 +440,7 @@ static void test_media_same_q()
 gint main(gint argc, gchar **argv)
 {
   g_test_init(&argc, &argv, NULL);
-  g_test_add_func("/quvi/media", test_media);
+  g_test_add_func("/quvi/media (core)", test_media_core);
   g_test_add_func("/quvi/media (>1 streams)", test_media_multi);
   g_test_add_func("/quvi/media (select)", test_media_select);
   g_test_add_func("/quvi/media (short)", test_media_short);
