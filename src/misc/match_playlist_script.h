@@ -28,8 +28,7 @@ typedef enum
 } QuviMatchPlaylistScriptMode;
 
 QuviError m_match_playlist_script(_quvi_t, _quvi_playlist_t*, const gchar*,
-                                  const QuviMatchPlaylistScriptMode,
-                                  gchar **);
+                                  const QuviMatchPlaylistScriptMode);
 
 #endif /* m_match_playlist_script_h */
 
