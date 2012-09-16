@@ -342,6 +342,34 @@ static void test_media_starttime()
   quvi_free(q);
 }
 
+static void test_media_escaped_url()
+{
+  static gchar URL[] =
+    "http://youtube.com/watch%3Fv%3DG4evlxq34og%23t%3D3m20s";
+
+  quvi_media_t qm;
+  quvi_t q;
+
+  if (chk_internet() == FALSE)
+    return;
+
+  if (chk_skip(__func__) == TRUE)
+    return;
+
+  q = quvi_new();
+  g_assert(q != NULL);
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+
+  chk_verbose(q);
+
+  qm = quvi_media_new(q, URL);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
+  g_assert(qm != NULL);
+
+  quvi_media_free(qm);
+  quvi_free(q);
+}
+
 static void test_media_nosupport()
 {
   static const gchar URL[] = "http://example.com";
@@ -416,6 +444,7 @@ gint main(gint argc, gchar **argv)
   g_test_add_func("/quvi/media (>1 streams)", test_media_multi);
   g_test_add_func("/quvi/media (select)", test_media_select);
   g_test_add_func("/quvi/media (short)", test_media_short);
+  g_test_add_func("/quvi/media (escaped URL)", test_media_escaped_url);
   g_test_add_func("/quvi/media (nosupport)", test_media_nosupport);
   g_test_add_func("/quvi/media (start_time)", test_media_starttime);
   g_test_add_func("/quvi/media (same handle)", test_media_same_q);
