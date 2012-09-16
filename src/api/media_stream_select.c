@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <glib/gi18n-lib.h>
 #include <glib.h>
 
 #include "quvi.h"
@@ -49,10 +50,14 @@ static QuviError _select(_quvi_media_t qm, const gchar *id)
     {
       if (g_strcmp0(r[i], "croak") == 0)
         {
+          static const gchar *_E =
+            N_("Could not match any available media stream IDs to `%s'; \
+operation aborted by the \"croak\" keyword");
+
           g_string_printf(q->status.errmsg,
-                          "Nothing in `%s' matched the available media "
-                          "streams, aborted by the croak keyword in the list",
+                          g_dgettext(GETTEXT_PACKAGE, _E),
                           id);
+
           rc = QUVI_ERROR_NO_STREAM_ID_CROAK;
           break;
         }

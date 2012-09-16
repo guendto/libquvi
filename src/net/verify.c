@@ -19,8 +19,9 @@
 
 #include "config.h"
 
-#include <lauxlib.h>
+#include <glib/gi18n-lib.h>
 #include <glib.h>
+#include <lauxlib.h>
 
 #include "quvi.h"
 /* -- */
@@ -82,7 +83,7 @@ static QuviError _verify(_quvi_verify_t v)
       else
         {
           g_string_assign(q->status.errmsg,
-                          "Unknown error: verify: callback returned "
+                          "unknown error: verify: callback returned "
                           "an empty errmsg");
         }
     }
@@ -115,7 +116,7 @@ QuviError n_verify(_quvi_verify_t v)
   else
     {
       g_string_printf(q->status.errmsg,
-                      "Unable to parse URI: %s", v->url.input->str);
+                      _("Failed to parse URL: %s"), v->url.input->str);
       return (QUVI_ERROR_INVALID_ARG); /* Skip verification. */
     }
 

@@ -16,6 +16,7 @@ noinst_LTLIBRARIES=libconvenience_curl.la
 libconvenience_curl_la_SOURCES=$(src) $(hdr)
 
 libconvenience_curl_la_CPPFLAGS=\
+  -DLOCALEDIR=\""$(localedir)"\"\
   -I$(top_srcdir)/src/quvi-0.9/\
   -I$(top_srcdir)/src/\
   $(libproxy_CFLAGS)\

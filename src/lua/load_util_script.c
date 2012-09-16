@@ -19,8 +19,9 @@
 
 #include "config.h"
 
-#include <lauxlib.h>
+#include <glib/gi18n-lib.h>
 #include <glib.h>
+#include <lauxlib.h>
 
 #include "quvi.h"
 /* -- */
@@ -66,7 +67,10 @@ QuviError l_load_util_script(_quvi_t q, const gchar *script_fname,
   l = q->handle.lua;
 
   if (s == NULL)
-    luaL_error(l, "Could not find utility script %s in path", script_fname);
+    {
+      luaL_error(l, _("Could not the find utility script `%s' in the path"),
+                 script_fname);
+    }
 
   lua_pushnil(l);
   lua_getglobal(l, script_func);
@@ -79,7 +83,10 @@ QuviError l_load_util_script(_quvi_t q, const gchar *script_fname,
   lua_getglobal(l, script_func);
 
   if (!lua_isfunction(l, -1))
-    luaL_error(l, "%s: %s: function not found", qs->fpath->str, script_func);
+    {
+      luaL_error(l, "%s: the function `%s' was not found",
+                 qs->fpath->str, script_func);
+    }
 
   lua_newtable(l);
   l_set_reg_userdata(l, USERDATA_QUVI_T, (gpointer) q);

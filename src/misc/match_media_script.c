@@ -19,8 +19,9 @@
 
 #include "config.h"
 
-#include <string.h>
+#include <glib/gi18n-lib.h>
 #include <glib.h>
+#include <string.h>
 
 #include "quvi.h"
 /* -- */
@@ -77,7 +78,10 @@ QuviError m_match_media_script(_quvi_t q, _quvi_media_t *qm,
 
   if (rc == QUVI_ERROR_NO_SUPPORT)
     {
-      g_string_printf(q->status.errmsg, "no support: %s", url);
+      static const gchar *_E =
+        N_("No support: %s: Could not find a media script for URL");
+
+      g_string_printf(q->status.errmsg, g_dgettext(GETTEXT_PACKAGE, _E), url);
       return (rc);
     }
   else if (rc != QUVI_OK)
@@ -87,7 +91,7 @@ QuviError m_match_media_script(_quvi_t q, _quvi_media_t *qm,
     {
       const _quvi_script_t qs = (const _quvi_script_t) s->data;
 
-      g_message("libquvi: %s: %s: input URL accepted",
+      g_message("[%s] libquvi: %s: input URL accepted",
                 __func__, qs->fpath->str);
     }
 

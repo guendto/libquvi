@@ -4,7 +4,7 @@ EXTRA_DIST=libquvi-0.9.pc.in gen-ver.sh VERSION
 pkgconfigdir=	$(libdir)/pkgconfig
 pkgconfig_DATA=	libquvi-0.9.pc
 
-SUBDIRS=	src examples doc tests
+SUBDIRS=po src examples doc tests
 
 .PHONY: doc distdoc distdoc-html ChangeLog VERSION test test-mem
 

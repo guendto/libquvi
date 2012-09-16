@@ -27,6 +27,7 @@ noinst_LTLIBRARIES=libconvenience_misc.la
 libconvenience_misc_la_SOURCES=$(src) $(hdr)
 
 libconvenience_misc_la_CPPFLAGS=\
+  -DLOCALEDIR=\""$(localedir)"\"\
   -I$(top_srcdir)/src/quvi-0.9/\
   -I$(top_srcdir)/src/\
   $(glib_CFLAGS)\

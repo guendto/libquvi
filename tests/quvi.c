@@ -37,8 +37,7 @@ static void test_quvi()
   q = quvi_new();
   g_assert(q != NULL);
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
-
-  g_assert_cmpstr(quvi_errmsg(q), ==, "No error");
+  g_assert_cmpstr(quvi_errmsg(q), ==, "Not an error");
 
   /* quvi_get */
 
