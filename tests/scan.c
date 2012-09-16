@@ -46,7 +46,7 @@ static void chk_results(quvi_scan_t qs)
   g_assert_cmpint(i, >=, 1);
 }
 
-static void test_scan()
+static void test_scan_core()
 {
   static const gchar URL[] =
     "http://www.fangoria.com/index.php/home/all-news/1-latest-news/"
@@ -123,7 +123,7 @@ static void test_scan_noresults()
 gint main(gint argc, gchar **argv)
 {
   g_test_init(&argc, &argv, NULL);
-  g_test_add_func("/quvi/scan", test_scan);
+  g_test_add_func("/quvi/scan (core)", test_scan_core);
   g_test_add_func("/quvi/scan (short)", test_scan_short);
   g_test_add_func("/quvi/scan (noresults)", test_scan_noresults);
   return (g_test_run());
