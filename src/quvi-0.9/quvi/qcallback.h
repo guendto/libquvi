@@ -34,9 +34,9 @@ typedef enum
 /** @enum QuviCallbackStatusFetch */
 typedef enum
 {
-  QUVI_CALLBACK_STATUS_FETCH_URL,
+  QUVI_CALLBACK_STATUS_FETCH_PLAYLIST,
   QUVI_CALLBACK_STATUS_FETCH_CONFIG,
-  QUVI_CALLBACK_STATUS_FETCH_PLAYLIST
+  QUVI_CALLBACK_STATUS_FETCH_URL
 } QuviCallbackStatusFetch;
 
 #endif /* qcallback_h */
