@@ -48,8 +48,7 @@ quvi_media_t quvi_media_new(quvi_t handle, const char *url)
   q = (_quvi_t) handle;
   qm = NULL;
 
-  q->status.rc = m_match_media_script(q, &qm, url,
-                                      QM_MATCH_MS_PARSE, NULL);
+  q->status.rc = m_match_media_script(q, &qm, url, QM_MATCH_MS_PARSE);
   return (qm);
 }
 
