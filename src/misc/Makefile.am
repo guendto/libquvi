@@ -6,6 +6,7 @@ src=\
   script_free.c\
   scan_new.c\
   playlist.c\
+  unescape.c\
   capture.c\
   resolve.c\
   to_utf8.c\
@@ -17,6 +18,7 @@ hdr=\
   match_playlist_script.h\
   match_media_script.h\
   script_free.h\
+  unescape.h\
   scan_new.h\
   playlist.h\
   resolve.h\

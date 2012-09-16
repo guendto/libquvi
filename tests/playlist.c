@@ -171,6 +171,34 @@ static void test_playlist_short()
   quvi_free(q);
 }
 
+static void test_playlist_escaped_url()
+{
+  static const gchar URL[] =
+    "http://youtube.com/watch%3Fv%3Dp5o7gBKHwtk%26list%3DPL954CCC04F8437E14%26feature%3Dplcp";
+
+  quvi_playlist_t qp;
+  quvi_t q;
+
+  if (chk_internet() == FALSE)
+    return;
+
+  if (chk_skip(__func__) == TRUE)
+    return;
+
+  q = quvi_new();
+  g_assert(q != NULL);
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+
+  chk_verbose(q);
+
+  qp = quvi_playlist_new(q, URL);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
+  g_assert(qp != NULL);
+
+  quvi_playlist_free(qp);
+  quvi_free(q);
+}
+
 static void test_playlist_nosupport()
 {
   static const gchar URL[] = "http://example.com/";
@@ -216,6 +244,7 @@ gint main(gint argc, gchar **argv)
   g_test_init(&argc, &argv, NULL);
   g_test_add_func("/quvi/playlist", test_playlist);
   g_test_add_func("/quvi/playlist (short)", test_playlist_short);
+  g_test_add_func("/quvi/playlist (escaped URL)", test_playlist_escaped_url);
   g_test_add_func("/quvi/playlist (nosupport)", test_playlist_nosupport);
   return (g_test_run());
 }

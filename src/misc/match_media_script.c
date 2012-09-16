@@ -31,6 +31,7 @@
 #include "_quvi_script_s.h"
 /* -- */
 #include "misc/match_media_script.h"
+#include "misc/unescape.h"
 #include "misc/resolve.h"
 #include "misc/media.h"
 #include "net/handle.h"
@@ -74,6 +75,7 @@ QuviError m_match_media_script(_quvi_t q, _quvi_media_t *qm,
         return (q->status.rc);
     }
 
+  m_unescape_url((*qm)->url.input);
   rc = l_match_url_to_media_script(*qm, &s);
 
   if (rc == QUVI_ERROR_NO_SUPPORT)

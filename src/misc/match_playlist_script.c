@@ -32,6 +32,7 @@
 /* -- */
 #include "misc/match_playlist_script.h"
 #include "misc/playlist.h"
+#include "misc/unescape.h"
 #include "misc/resolve.h"
 #include "net/handle.h"
 #include "lua/exec.h"
@@ -62,7 +63,9 @@ QuviError m_match_playlist_script(_quvi_t q, _quvi_playlist_t *p,
         return (q->status.rc);
     }
 
+  m_unescape_url((*p)->url.input);
   rc = l_match_url_to_playlist_script(*p, &s);
+
   if (rc == QUVI_ERROR_NO_SUPPORT)
     {
       static const gchar *_E =
