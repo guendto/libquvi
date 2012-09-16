@@ -25,7 +25,7 @@
 
 #include "tests.h"
 
-static void test_quvi()
+static void test_quvi_core()
 {
   gpointer p;
   quvi_t q;
@@ -97,7 +97,7 @@ static void test_version()
 gint main(gint argc, gchar **argv)
 {
   g_test_init(&argc, &argv, NULL);
-  g_test_add_func("/quvi", test_quvi);
+  g_test_add_func("/quvi (core)", test_quvi_core);
   g_test_add_func("/quvi/version", test_version);
   return (g_test_run());
 }

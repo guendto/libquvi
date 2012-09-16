@@ -25,7 +25,7 @@
 
 #include "tests.h"
 
-static void test_playlist()
+static void test_playlist_core()
 {
   static const gchar URL[] =
     "http://soundcloud.com/thelittleidiot/sets/destroyed/";
@@ -242,7 +242,7 @@ static void test_playlist_nosupport()
 gint main(gint argc, gchar **argv)
 {
   g_test_init(&argc, &argv, NULL);
-  g_test_add_func("/quvi/playlist", test_playlist);
+  g_test_add_func("/quvi/playlist (core)", test_playlist_core);
   g_test_add_func("/quvi/playlist (short)", test_playlist_short);
   g_test_add_func("/quvi/playlist (escaped URL)", test_playlist_escaped_url);
   g_test_add_func("/quvi/playlist (nosupport)", test_playlist_nosupport);

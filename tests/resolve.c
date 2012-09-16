@@ -24,7 +24,7 @@
 
 #include "tests.h"
 
-static void test_resolve()
+static void test_resolve_core()
 {
   static const gchar URL[] = "http://is.gd/9lrXf8";
 
@@ -194,7 +194,7 @@ static void test_resolve_shortened_with_t_param()
 gint main(gint argc, gchar **argv)
 {
   g_test_init(&argc, &argv, NULL);
-  g_test_add_func("/quvi/resolve", test_resolve);
+  g_test_add_func("/quvi/resolve (core)", test_resolve_core);
   g_test_add_func("/quvi/resolve (3)", test_resolve_3);
   g_test_add_func("/quvi/resolve (nodst)", test_resolve_nodst);
   g_test_add_func("/quvi/resolve (nodst #t param)",
