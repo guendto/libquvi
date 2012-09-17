@@ -279,13 +279,14 @@ QuviError l_exec_media_script_parse(gpointer p, GSList *sl)
     }
 
   if (_chk_goto_instr(l, qm) == FALSE)
-    {
       _chk_streams(l, qm, qs->fpath->str);
-      _chk_optional(l, qm);
-      rc = l_exec_util_convert_entities(qm);
-    }
-  lua_pop(l, 1);
 
+  _chk_optional(l, qm);
+
+  if (qm->title->len >0)
+    rc = l_exec_util_convert_entities(qm);
+
+  lua_pop(l, 1);
   return (rc);
 }
 
