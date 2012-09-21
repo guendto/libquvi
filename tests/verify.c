@@ -36,10 +36,10 @@
 
 #define chk_val(p)\
   do {\
-    gdouble n = -1;\
+    gdouble n = 0;\
     quvi_verify_get(qv, p, &n);\
     g_test_message("%s=%f", #p, n);\
-    g_assert_cmpfloat(n, >, -1);\
+    g_assert_cmpfloat(n, >, 0);\
   } while (0)
 
 static void test_verify()
