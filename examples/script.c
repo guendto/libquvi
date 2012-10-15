@@ -197,13 +197,11 @@ static QuviScriptType type_n()
 static gint opts_new(gint argc, gchar **argv)
 {
   GOptionContext *c;
-  GOptionGroup *g;
   GError *e;
   gint r;
 
   c = g_option_context_new(NULL);
   r = EXIT_SUCCESS;
-  g = NULL;
   e = NULL;
 
   g_option_context_set_help_enabled(c, TRUE);
