@@ -167,8 +167,9 @@ System types
   target          ${target}
   build           ${build}
   host            ${host}
-Options
-  install manual  ${with_manual}
+Install options
+  with
+  - manual        ${with_manual}
 libquvi-scripts
   .pc modversion  ${scriptsmodver}
   versionfile     ${versionfile}
