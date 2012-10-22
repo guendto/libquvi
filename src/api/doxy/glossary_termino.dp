@@ -4,7 +4,7 @@
 
 @subsection m_prop Media property
 
-A property that belongs to a media, e.g. title. These are parsed and
+A property that belongs to a medium, e.g. title. These are parsed and
 returned by a @ref m_script.
 
 @sa QuviMediaProperty
@@ -99,19 +99,6 @@ This URL should not be confused with @ref m_stream_url.
 An Internet address to the @ref m_stream.
 This URL should not be confused with @ref m_url.
 
-@section proto_cat Protocol category
-
-An umbrella of different protocol categories that the media scripts
-belong to. The category is determined by the @ref m_stream_url returned
-by the @ref m_script.
-
-For example, YouTube @ref m_stream_url is of HTTP, youtube.lua
-therefore returns the protocol category value of
-QUVI_MEDIA_SCRIPT_PROTOCOL_CATEGORY_HTTP.
-
-@sa QUVI_OPTION_MEDIA_SCRIPT_PROTOCOL_CATEGORY
-@sa QuviMediaScriptProtocolCategory
-
 @section plist Playlist
 
 A collection of @ref m_url s.
@@ -131,10 +118,12 @@ is.gd or bit.ly .
 
 @section verification Verification of an URL
 
-Until libquvi 0.9 this was a process that took place @ref m_stream_url
-immediately after returning it from a @ref m_script . The purpose of
-this process was to retrieve the content-length, the content-type and
-the file extension (parsed from the content-type) values.
+A step, previously until libquvi 0.9, was called a "media stream URL
+verification process", during which the library would send an HTTP HEAD
+request to the server to query the content-type and the content-length.
+This step would also try to guess the file extension to the media from
+the content-type. This step took place immediately after returning a
+@ref m_stream_url from a @ref m_script.
 
 This step was removed in libquvi 0.9, but an additional function set was
 added to the API that could be used if necessary.
