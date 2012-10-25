@@ -53,7 +53,5 @@ C<libquvi-scripts(7)>, C<quvi(1)>
 
 =head1 AUTHOR
 
-Toni Gundogdu E<lt>legatvs at sign gmail comE<gt>
-
-Thanks to all those who have contributed to the project by sending
-patches, reporting bugs and writing feedback. You know who you are.
+Toni Gundogdu and others. Use quvi-devel@lists.sourceforge.net to
+contact the developers.
