@@ -29,9 +29,7 @@
 
 struct _opts_s
 {
-  gboolean autoproxy;
   gchar **property;
-  gboolean verbose;
   gchar *type;
 };
 
@@ -46,14 +44,6 @@ static const GOptionEntry entries[] =
   {
     "type", 't', 0, G_OPTION_ARG_STRING, &opts.type,
     "Script type", "TYPE"
-  },
-  {
-    "autoproxy", 'a', 0, G_OPTION_ARG_NONE, &opts.autoproxy,
-    "Enable the autoproxy feature", NULL
-  },
-  {
-    "verbose", 'v', 0, G_OPTION_ARG_NONE, &opts.verbose,
-    "Verbose libcurl output", NULL
   },
   {NULL, 0, 0, 0, NULL, NULL, NULL}
 };
@@ -268,14 +258,7 @@ gint main(gint argc, gchar **argv)
   q = quvi_new();
   examples_exit_if_error();
 
-  if (opts.autoproxy == TRUE)
-    examples_enable_autoproxy();
-
-  if (opts.verbose == TRUE)
-    examples_enable_verbose();
-
   type = type_n();
-
   {
     gchar *p = g_strjoinv(",", opts.property);;
     g_printerr("[%s] type=%s (0x%x), property=%s\n",
