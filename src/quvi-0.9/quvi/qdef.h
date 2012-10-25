@@ -24,9 +24,9 @@
 
 typedef int (*quvi_callback_status)(long,void*); /**< Status callback type */
 
+typedef void *quvi_http_metainfo_t; /**< HTTP meta-info type */
 typedef void *quvi_playlist_t; /**< Playlist script type */
 typedef void *quvi_resolve_t; /**< Resolve type */
-typedef void *quvi_verify_t; /**< Verify type */
 typedef void *quvi_media_t; /**< Media type */
 typedef void *quvi_scan_t; /**< Scan type */
 typedef void *quvi_t; /**< Library handle type */
