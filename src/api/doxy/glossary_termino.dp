@@ -125,13 +125,10 @@ This step would also try to guess the file extension to the media from
 the content-type. This step took place immediately after returning a
 @ref m_stream_url from a @ref m_script.
 
-This step was removed in libquvi 0.9, but an additional function set was
-added to the API that could be used if necessary.
-
-The "verification" is a loose term here, and is being called as such
-(in 0.9) for historical reasons.
+The verification process step was removed in libquvi 0.9, but an
+additional function set was added to allow to querying this
+meta-info if necessary.
 
 @note Works with HTTP(S) URLs only
-
-@sa quvi_verify_new
+@sa http_metainfo
 */
