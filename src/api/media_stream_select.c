@@ -31,6 +31,9 @@
 /* -- */
 #include "misc/re.h"
 
+static const gchar *_E =
+  N_("Nothing matched the available media stream IDs; aborted by the \"croak\" keyword");
+
 static QuviError _select(_quvi_media_t qm, const gchar *id)
 {
   gboolean found_flag;
@@ -50,14 +53,7 @@ static QuviError _select(_quvi_media_t qm, const gchar *id)
     {
       if (g_strcmp0(r[i], "croak") == 0)
         {
-          static const gchar *_E =
-            N_("Could not match any available media stream IDs to `%s'; \
-operation aborted by the \"croak\" keyword");
-
-          g_string_printf(q->status.errmsg,
-                          g_dgettext(GETTEXT_PACKAGE, _E),
-                          id);
-
+          g_string_printf(q->status.errmsg, g_dgettext(GETTEXT_PACKAGE, _E));
           rc = QUVI_ERROR_NO_STREAM_ID_CROAK;
           break;
         }

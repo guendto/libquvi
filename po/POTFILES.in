@@ -1,5 +1,6 @@
 # List of source files which contain translatable strings.
 src/api/errmsg.c
+src/api/media_stream_select.c
 src/curl/fetch.c
 src/curl/http_metainfo.c
 src/curl/resolve.c
