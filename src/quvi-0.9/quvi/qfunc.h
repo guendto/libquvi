@@ -73,12 +73,13 @@ extern "C" {
   QuviBoolean quvi_resolve_forwarded(quvi_resolve_t);
   const char *quvi_resolve_destination_url(quvi_resolve_t);
 
-  /* Verify */
+  /* HTTP meta-info */
 
-  quvi_verify_t quvi_verify_new(quvi_t, const char*);
-  void quvi_verify_free(quvi_verify_t);
+  quvi_http_metainfo_t quvi_http_metainfo_new(quvi_t, const char*);
+  void quvi_http_metainfo_free(quvi_http_metainfo_t);
 
-  void quvi_verify_get(quvi_verify_t, QuviVerifyProperty, ...);
+  void quvi_http_metainfo_get(quvi_http_metainfo_t,
+                              QuviHTTPMetaInfoProperty, ...);
 
   /* Convenience */
 
