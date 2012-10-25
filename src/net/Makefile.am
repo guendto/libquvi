@@ -1,6 +1,6 @@
 src=\
+  http_metainfo.c\
   resolve.c\
-  verify.c\
   handle.c\
   fetch.c\
   opt.c
