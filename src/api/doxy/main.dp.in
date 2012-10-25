@@ -17,7 +17,7 @@ stream URLs.
 @li @subpage chk_support
 @li @subpage acc_script_prop
 @li @subpage select_stream
-@li @subpage verify_url
+@li @subpage http_metainfo
 @li @subpage proxy_support
 
 @section misc Other
