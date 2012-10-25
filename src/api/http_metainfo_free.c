@@ -17,7 +17,7 @@
  * 02110-1301  USA
  */
 
-/** @file verify_free.c */
+/** @file http_metainfo_free.c */
 
 #include "config.h"
 
@@ -26,15 +26,15 @@
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
-#include "_quvi_verify_s.h"
+#include "_quvi_http_metainfo_s.h"
 
-/** @brief Free all of memory used by a verify handle
+/** @brief Free all of memory used by a HTTP meta-info handle
 @note If handle is NULL the function simply returns
-@ingroup verify
+@ingroup http_metainfo
 */
-void quvi_verify_free(quvi_verify_t handle)
+void quvi_http_metainfo_free(quvi_http_metainfo_t handle)
 {
-  _quvi_verify_t v = (_quvi_verify_t) handle;
+  _quvi_http_metainfo_t v = (_quvi_http_metainfo_t) handle;
 
   if (handle == NULL)
     return;
