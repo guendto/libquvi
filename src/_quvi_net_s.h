@@ -40,7 +40,7 @@ struct _quvi_net_s
   {
     gdouble content_length;
     GString *content_type;
-  } verify;
+  } http_metainfo;
   struct
   {
     _quvi_t quvi;
