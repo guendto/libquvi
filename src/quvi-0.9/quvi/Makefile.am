@@ -1,7 +1,7 @@
 libquvisubincludedir=$(includedir)/quvi-0.9/quvi
 libquvisubinclude_HEADERS=\
   qplaylistprop.h\
-  qverifyprop.h\
+  qhttpmiprop.h\
   qmediaprop.h\
   qcallback.h\
   qversion.h\
