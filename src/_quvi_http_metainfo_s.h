@@ -17,10 +17,10 @@
  * 02110-1301  USA
  */
 
-#ifndef _quvi_verify_s_h
-#define _quvi_verify_s_h
+#ifndef _quvi_http_metainfo_s_h
+#define _quvi_http_metainfo_s_h
 
-struct _quvi_verify_s
+struct _quvi_http_metainfo_s
 {
   struct {
     GString *input;
@@ -34,8 +34,8 @@ struct _quvi_verify_s
   GString *file_ext;
 };
 
-typedef struct _quvi_verify_s *_quvi_verify_t;
+typedef struct _quvi_http_metainfo_s *_quvi_http_metainfo_t;
 
-#endif /* _quvi_verify_s_h */
+#endif /* _quvi_http_metainfo_s_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
