@@ -26,7 +26,7 @@
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
-#include "_quvi_verify_s.h"
+#include "_quvi_http_metainfo_s.h"
 #include "_quvi_net_s.h"
 /* -- */
 #include "lua/load_util_script.h"
@@ -34,20 +34,20 @@
 static const gchar script_fname[]= "to_file_ext.lua";
 static const gchar script_func[] = "to_file_ext";
 
-QuviError l_exec_util_to_file_ext(_quvi_verify_t v, _quvi_net_t n)
+QuviError l_exec_util_to_file_ext(_quvi_http_metainfo_t qmi, _quvi_net_t n)
 {
   lua_State *l;
   QuviError rc;
   _quvi_t q;
 
-  q = v->handle.quvi;
+  q = qmi->handle.quvi;
   rc = l_load_util_script(q, script_fname, script_func);
 
   if (rc != QUVI_OK)
     return (rc);
 
   l = q->handle.lua;
-  lua_pushstring(l, n->verify.content_type->str);
+  lua_pushstring(l, n->http_metainfo.content_type->str);
 
   /* 2=qargs,title [qargs: set in l_load_util_script]
    * 1=returns a string */
@@ -60,7 +60,7 @@ QuviError l_exec_util_to_file_ext(_quvi_verify_t v, _quvi_net_t n)
   if (!lua_isstring(l, -1))
     luaL_error(l, "%s: did not return a string", script_func);
 
-  g_string_assign(v->file_ext, lua_tostring(l,-1));
+  g_string_assign(qmi->file_ext, lua_tostring(l,-1));
   lua_pop(l, 1);
 
   return (QUVI_OK);

@@ -28,7 +28,7 @@
 
 static void usage()
 {
-  g_printerr("Usage: verify <URL>\n");
+  g_printerr("Usage: http_metainfo <URL>\n");
   exit(0);
 }
 
@@ -39,7 +39,7 @@ gint main(gint argc, gchar **argv)
   gchar *url = NULL;
   gint i = 1;
 
-  g_assert(qv == NULL);
+  g_assert(qmi == NULL);
   g_assert(q == NULL);
 
   setlocale(LC_ALL, "");
@@ -65,22 +65,27 @@ gint main(gint argc, gchar **argv)
 
   quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (qcs) examples_status);
 
-  qv = quvi_verify_new(q, url);
+  qmi = quvi_http_metainfo_new(q, url);
   examples_exit_if_error();
   {
     gchar *ct, *fe;
     gdouble cl;
 
-    quvi_verify_get(qv, QUVI_VERIFY_PROPERTY_FILE_EXTENSION, &fe);
-    quvi_verify_get(qv, QUVI_VERIFY_PROPERTY_CONTENT_TYPE, &ct);
-    quvi_verify_get(qv, QUVI_VERIFY_PROPERTY_LENGTH_BYTES, &cl);
+    quvi_http_metainfo_get(qmi,
+      QUVI_HTTP_METAINFO_PROPERTY_FILE_EXTENSION, &fe);
+
+    quvi_http_metainfo_get(qmi,
+      QUVI_HTTP_METAINFO_PROPERTY_CONTENT_TYPE, &ct);
+
+    quvi_http_metainfo_get(qmi,
+      QUVI_HTTP_METAINFO_PROPERTY_LENGTH_BYTES, &cl);
 
     g_print("content_type=%s\nlength_bytes=%.0f\nfile_ext=%s\n",
             ct, cl, fe);
   }
   examples_cleanup();
 
-  g_assert(qv == NULL);
+  g_assert(qmi == NULL);
   g_assert(q == NULL);
 
   return (0);

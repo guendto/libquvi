@@ -26,49 +26,49 @@
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
-#include "_quvi_verify_s.h"
+#include "_quvi_http_metainfo_s.h"
 #include "_quvi_net_s.h"
 #include "_quvi_macro.h"
 /* -- */
 #include "net/handle.h"
 #include "net/opt.h"
 
-extern QuviError l_exec_util_to_file_ext(_quvi_verify_t, _quvi_net_t);
-extern QuviError c_verify(_quvi_t, _quvi_net_t);
+extern QuviError l_exec_util_to_file_ext(_quvi_http_metainfo_t, _quvi_net_t);
+extern QuviError c_http_metainfo(_quvi_t, _quvi_net_t);
 
 static const gdouble MIN_LIKELY_MEDIA_LENGTH = 50*1024;
 
-static QuviError _verify(_quvi_verify_t v)
+static QuviError _http_metainfo(_quvi_http_metainfo_t qmi)
 {
   _quvi_net_t n;
   QuviError rc;
   lua_State *l;
   _quvi_t q;
 
-  q = v->handle.quvi;
-  n = n_new(q, v->url.input->str);
+  q = qmi->handle.quvi;
+  n = n_new(q, qmi->url.input->str);
   l = q->handle.lua;
 
   if (lua_istable(l, 2))
     n_chk_callback_opts(n, l);
 
-  if (q->cb.verify != NULL)
-    rc = q->cb.verify(n);
+  if (q->cb.http_metainfo != NULL)
+    rc = q->cb.http_metainfo(n);
   else
-    rc = c_verify(q, n); /* Verify using cURL (default). */
+    rc = c_http_metainfo(q, n); /* Query using cURL (default). */
 
   if (rc == QUVI_OK)
     {
-      rc = l_exec_util_to_file_ext(v, n);
+      rc = l_exec_util_to_file_ext(qmi, n);
       if (rc == QUVI_OK)
         {
-          g_string_assign(v->content_type, n->verify.content_type->str);
-          v->length_bytes = n->verify.content_length;
+          g_string_assign(qmi->content_type, n->http_metainfo.content_type->str);
+          qmi->length_bytes = n->http_metainfo.content_length;
         }
 
       if (q->cb.status != NULL)
         {
-          const glong p = q_makelong(QUVI_CALLBACK_STATUS_VERIFY,
+          const glong p = q_makelong(QUVI_CALLBACK_STATUS_HTTP_QUERY_METAINFO,
                                      QUVI_CALLBACK_STATUS_DONE);
 
           if (q->cb.status(p, 0) != QUVI_OK)
@@ -83,7 +83,7 @@ static QuviError _verify(_quvi_verify_t v)
       else
         {
           g_string_assign(q->status.errmsg,
-                          "unknown error: verify: callback returned "
+                          "unknown error: http_metainfo: callback returned "
                           "an empty errmsg");
         }
     }
@@ -94,15 +94,15 @@ static QuviError _verify(_quvi_verify_t v)
   return (rc);
 }
 
-QuviError n_verify(_quvi_verify_t v)
+QuviError n_http_metainfo(_quvi_http_metainfo_t qmi)
 {
   _quvi_t q;
   gchar *s;
 
-  q = v->handle.quvi;
-  s = g_uri_parse_scheme(v->url.input->str);
+  q = qmi->handle.quvi;
+  s = g_uri_parse_scheme(qmi->url.input->str);
 
-  if (s != NULL) /* Verify HTTP(S) media stream URLs only. */
+  if (s != NULL) /* HTTP(S) only. */
     {
       const gboolean r = (gboolean) g_strcmp0(s, "http") == 0
                          || g_strcmp0(s, "https") == 0;
@@ -111,24 +111,24 @@ QuviError n_verify(_quvi_verify_t v)
       s = NULL;
 
       if (r == FALSE)
-        return (QUVI_OK); /* Skip verification. */
+        return (QUVI_OK); /* Skip process. */
     }
   else
     {
       g_string_printf(q->status.errmsg,
-                      _("Failed to parse URL: %s"), v->url.input->str);
-      return (QUVI_ERROR_INVALID_ARG); /* Skip verification. */
+                      _("Failed to parse URL: %s"), qmi->url.input->str);
+      return (QUVI_ERROR_INVALID_ARG); /* Skip process. */
     }
 
   if (q->cb.status != NULL)
     {
-      const glong p = q_makelong(QUVI_CALLBACK_STATUS_VERIFY, 0);
+      const glong p = q_makelong(QUVI_CALLBACK_STATUS_HTTP_QUERY_METAINFO, 0);
 
       if (q->cb.status(p, 0) != QUVI_OK)
         return (QUVI_ERROR_CALLBACK_ABORTED);
     }
 
-  return (_verify(v));
+  return (_http_metainfo(qmi));
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

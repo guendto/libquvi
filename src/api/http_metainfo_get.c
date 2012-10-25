@@ -17,7 +17,7 @@
  * 02110-1301  USA
  */
 
-/** @file verify_get.c */
+/** @file http_metainfo_get.c */
 
 #include "config.h"
 
@@ -26,9 +26,10 @@
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
-#include "_quvi_verify_s.h"
+#include "_quvi_http_metainfo_s.h"
 
-static QuviError _verify_get(_quvi_verify_t v, QuviVerifyProperty n, ...)
+static QuviError _http_metainfo_get(_quvi_http_metainfo_t v,
+                                    QuviHTTPMetaInfoProperty n, ...)
 {
   QuviError rc;
   gdouble *dp;
@@ -37,7 +38,7 @@ static QuviError _verify_get(_quvi_verify_t v, QuviVerifyProperty n, ...)
   gint type;
 
   va_start(arg, n);
-  type = QUVI_VERIFY_PROPERTY_TYPE_MASK & (gint) n;
+  type = QUVI_HTTP_METAINFO_PROPERTY_TYPE_MASK & (gint) n;
 
   dp = NULL;
   sp = NULL;
@@ -46,12 +47,12 @@ static QuviError _verify_get(_quvi_verify_t v, QuviVerifyProperty n, ...)
 
   switch (type)
     {
-    case QUVI_VERIFY_PROPERTY_TYPE_STRING:
+    case QUVI_HTTP_METAINFO_PROPERTY_TYPE_STRING:
       sp = va_arg(arg, gchar**);
       if (sp == NULL)
         rc = QUVI_ERROR_INVALID_ARG;
       break;
-    case QUVI_VERIFY_PROPERTY_TYPE_DOUBLE:
+    case QUVI_HTTP_METAINFO_PROPERTY_TYPE_DOUBLE:
       dp = va_arg(arg, gdouble*);
       if (dp == NULL)
         rc = QUVI_ERROR_INVALID_ARG;
@@ -67,13 +68,13 @@ static QuviError _verify_get(_quvi_verify_t v, QuviVerifyProperty n, ...)
 
   switch (n)
     {
-    case QUVI_VERIFY_PROPERTY_FILE_EXTENSION:
+    case QUVI_HTTP_METAINFO_PROPERTY_FILE_EXTENSION:
       *sp = v->file_ext->str;
       break;
-    case QUVI_VERIFY_PROPERTY_LENGTH_BYTES:
+    case QUVI_HTTP_METAINFO_PROPERTY_LENGTH_BYTES:
       *dp = v->length_bytes;
       break;
-    case QUVI_VERIFY_PROPERTY_CONTENT_TYPE:
+    case QUVI_HTTP_METAINFO_PROPERTY_CONTENT_TYPE:
       *sp = v->content_type->str;
       break;
     default:
@@ -83,13 +84,14 @@ static QuviError _verify_get(_quvi_verify_t v, QuviVerifyProperty n, ...)
   return (rc);
 }
 
-/** @brief Return a verify property
-@sa @ref verify_url
-@ingroup verify
+/** @brief Return a HTTP meta-info property
+@sa @ref http_metainfo_url
+@ingroup http_metainfo
 */
-void quvi_verify_get(quvi_verify_t handle, QuviVerifyProperty property, ...)
+void quvi_http_metainfo_get(quvi_http_metainfo_t handle,
+                            QuviHTTPMetaInfoProperty property, ...)
 {
-  _quvi_verify_t v;
+  _quvi_http_metainfo_t v;
   va_list arg;
   gpointer p;
   _quvi_t q;
@@ -101,10 +103,10 @@ void quvi_verify_get(quvi_verify_t handle, QuviVerifyProperty property, ...)
   p = va_arg(arg, gpointer);
   va_end(arg);
 
-  v = (_quvi_verify_t) handle;
+  v = (_quvi_http_metainfo_t) handle;
   q = v->handle.quvi;
 
-  q->status.rc = _verify_get(v, property, p);
+  q->status.rc = _http_metainfo_get(v, property, p);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

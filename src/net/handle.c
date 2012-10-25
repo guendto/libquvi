@@ -34,7 +34,7 @@
 gpointer n_new(_quvi_t q, const gchar *url)
 {
   _quvi_net_t n = g_new0(struct _quvi_net_s, 1);
-  n->verify.content_type = g_string_new(NULL);
+  n->http_metainfo.content_type = g_string_new(NULL);
   n->status.errmsg = g_string_new(NULL);
   n->fetch.content = g_string_new(NULL);
   n->url.addr = g_string_new(url);
@@ -66,8 +66,8 @@ void n_free(gpointer p)
   g_string_free(n->fetch.content, TRUE);
   n->fetch.content = NULL;
 
-  g_string_free(n->verify.content_type, TRUE);
-  n->verify.content_type = NULL;
+  g_string_free(n->http_metainfo.content_type, TRUE);
+  n->http_metainfo.content_type = NULL;
 
   g_free(n);
   n = NULL;

@@ -83,13 +83,13 @@ goto_LDFLAGS=$(testsuite_common_ldflags)
 goto_LDADD=$(testsuite_common_ldadd)
 goto_CFLAGS=$(AM_CFLAGS)
 
-TEST_PROGS+=verify
+TEST_PROGS+=http_metainfo
 
-verify_SOURCES=verify.c
-verify_CPPFLAGS=$(testsuite_common_cppflags)
-verify_LDFLAGS=$(testsuite_common_ldflags)
-verify_LDADD=$(testsuite_common_ldadd)
-verify_CFLAGS=$(AM_CFLAGS)
+http_metainfo_SOURCES=http_metainfo.c
+http_metainfo_CPPFLAGS=$(testsuite_common_cppflags)
+http_metainfo_LDFLAGS=$(testsuite_common_ldflags)
+http_metainfo_LDADD=$(testsuite_common_ldadd)
+http_metainfo_CFLAGS=$(AM_CFLAGS)
 
 test: all
 	@ok=1; for t in $(TEST_PROGS); do \
@@ -127,3 +127,5 @@ clean-local:
 	@for t in $(TEST_PROGS); do rm -f $$t.xml $$t.html $$t.vgdump; done
 
 EXTRA_DIST=find_tests.sh run_tests.sh
+
+# vim: set ts=2 sw=2 tw=72 expandtab:

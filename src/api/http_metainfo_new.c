@@ -17,7 +17,7 @@
  * 02110-1301  USA
  */
 
-/** @file verify_new.c */
+/** @file http_metainfo_new.c */
 
 #include "config.h"
 
@@ -26,11 +26,11 @@
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
-#include "_quvi_verify_s.h"
+#include "_quvi_http_metainfo_s.h"
 
-static gpointer _verify_new(_quvi_t q, const gchar *url)
+static gpointer _http_metainfo_new(_quvi_t q, const gchar *url)
 {
-  _quvi_verify_t qv = g_new0(struct _quvi_verify_s, 1);
+  _quvi_http_metainfo_t qv = g_new0(struct _quvi_http_metainfo_s, 1);
   qv->content_type = g_string_new(NULL);
   qv->file_ext = g_string_new(NULL);
   qv->url.input = g_string_new(url);
@@ -39,19 +39,19 @@ static gpointer _verify_new(_quvi_t q, const gchar *url)
 }
 
 /** @cond NODOC */
-QuviError n_verify(_quvi_verify_t);
+QuviError n_http_metainfo(_quvi_http_metainfo_t);
 /** @endcond */
 
-/** @brief Verify URL
-@return New handle, @ref quvi_verify_free when done using it
+/** @brief Query meta-info properties for an URL
+@return New handle, @ref quvi_http_metainfo_free when done using it
 @note
  - Support for determining the file extension is very limited
  - Use @ref quvi_ok for checking if an error occurred
-@ingroup verify
+@ingroup http_metainfo
 */
-quvi_verify_t quvi_verify_new(quvi_t handle, const char *url)
+quvi_http_metainfo_t quvi_http_metainfo_new(quvi_t handle, const char *url)
 {
-  _quvi_verify_t v;
+  _quvi_http_metainfo_t v;
   _quvi_t q;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
@@ -59,9 +59,9 @@ quvi_verify_t quvi_verify_new(quvi_t handle, const char *url)
   g_return_val_if_fail(url != NULL, NULL);
 
   q = (_quvi_t) handle;
-  v = _verify_new(q, url);
+  v = _http_metainfo_new(q, url);
 
-  q->status.rc = n_verify(v);
+  q->status.rc = n_http_metainfo(v);
 
   return (v);
 }

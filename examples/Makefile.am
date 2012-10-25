@@ -70,10 +70,12 @@ scan_LDFLAGS=$(examples_common_ldflags)
 scan_LDADD=$(examples_common_ldadd)
 scan_CFLAGS=$(AM_CFLAGS)
 
-EXAMPLE_PROGS+=verify
+EXAMPLE_PROGS+=http_metainfo
 
-verify_SOURCES=verify.c
-verify_CPPFLAGS=$(examples_common_cppflags)
-verify_LDFLAGS=$(examples_common_ldflags)
-verify_LDADD=$(examples_common_ldadd)
-verify_CFLAGS=$(AM_CFLAGS)
+http_metainfo_SOURCES=http_metainfo.c
+http_metainfo_CPPFLAGS=$(examples_common_cppflags)
+http_metainfo_LDFLAGS=$(examples_common_ldflags)
+http_metainfo_LDADD=$(examples_common_ldadd)
+http_metainfo_CFLAGS=$(AM_CFLAGS)
+
+# vim: set ts=2 sw=2 tw=72 expandtab:

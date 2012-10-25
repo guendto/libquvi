@@ -14,7 +14,7 @@ EXTRA_DIST=\
   doxy/proxy_support.dp\
   doxy/scan_media.dp\
   doxy/select_stream.dp\
-  doxy/verify_url.dp
+  doxy/http_metainfo.dp
 
 src=\
   playlist_media_reset.c\
@@ -28,9 +28,9 @@ src=\
   resolve_new.c\
   script_next.c\
   script_get.c\
-  verify_free.c\
-  verify_new.c\
-  verify_get.c\
+  http_metainfo_free.c\
+  http_metainfo_new.c\
+  http_metainfo_get.c\
   media_stream_choose_best.c\
   media_stream_select.c\
   media_stream_reset.c\

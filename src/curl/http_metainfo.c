@@ -48,7 +48,7 @@ static void _set_opts(_quvi_net_t n, _c_temp_t t, CURL *c)
 
 static const gchar *_EOK = N_("The server responded with the code %03ld");
 
-static QuviError _verify(_quvi_net_t n, CURL *c)
+static QuviError _http_metainfo(_quvi_net_t n, CURL *c)
 {
   CURLcode curlcode;
   QuviError rc;
@@ -64,13 +64,13 @@ static QuviError _verify(_quvi_net_t n, CURL *c)
     {
       if (n->status.resp_code == 200 || n->status.resp_code == 206)
         {
-          gdouble *l = &n->verify.content_length;
+          gdouble *l = &n->http_metainfo.content_length;
           gchar *s = NULL;
 
           curl_easy_getinfo(c, CURLINFO_CONTENT_TYPE, &s);
           curl_easy_getinfo(c, CURLINFO_CONTENT_LENGTH_DOWNLOAD, l);
 
-          g_string_assign(n->verify.content_type, s);
+          g_string_assign(n->http_metainfo.content_type, s);
         }
       else
         {
@@ -93,7 +93,7 @@ static QuviError _verify(_quvi_net_t n, CURL *c)
   return (rc);
 }
 
-QuviError c_verify(_quvi_t q, _quvi_net_t n)
+QuviError c_http_metainfo(_quvi_t q, _quvi_net_t n)
 {
   QuviError rc;
   _c_temp_t t;
@@ -103,7 +103,7 @@ QuviError c_verify(_quvi_t q, _quvi_net_t n)
   t = c_temp_new();
 
   _set_opts(n, t, c);
-  rc = _verify(n, c);
+  rc = _http_metainfo(n, c);
 
   c_temp_free(t);
   t = NULL;

@@ -30,7 +30,7 @@
 #include <stdint.h>
 
 #include <quvi/qplaylistprop.h>
-#include <quvi/qverifyprop.h>
+#include <quvi/qhttpmiprop.h>
 #include <quvi/qmediaprop.h>
 #include <quvi/qcallback.h>
 #include <quvi/qversion.h>

@@ -20,9 +20,9 @@
 #ifndef examples_h
 #define examples_h
 
+extern quvi_http_metainfo_t qmi;
 extern quvi_playlist_t qp;
 extern quvi_resolve_t qr;
-extern quvi_verify_t qv;
 extern quvi_media_t qm;
 extern quvi_scan_t qs;
 extern quvi_t q;

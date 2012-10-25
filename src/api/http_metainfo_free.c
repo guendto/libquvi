@@ -17,25 +17,39 @@
  * 02110-1301  USA
  */
 
-#ifndef _quvi_verify_s_h
-#define _quvi_verify_s_h
+/** @file http_metainfo_free.c */
 
-struct _quvi_verify_s
+#include "config.h"
+
+#include <glib.h>
+
+#include "quvi.h"
+/* -- */
+#include "_quvi_s.h"
+#include "_quvi_http_metainfo_s.h"
+
+/** @brief Free all of memory used by a HTTP meta-info handle
+@note If handle is NULL the function simply returns
+@ingroup http_metainfo
+*/
+void quvi_http_metainfo_free(quvi_http_metainfo_t handle)
 {
-  struct {
-    GString *input;
-  } url;
-  struct
-  {
-    _quvi_t quvi;
-  } handle;
-  GString *content_type;
-  gdouble length_bytes;
-  GString *file_ext;
-};
+  _quvi_http_metainfo_t v = (_quvi_http_metainfo_t) handle;
 
-typedef struct _quvi_verify_s *_quvi_verify_t;
+  if (handle == NULL)
+    return;
 
-#endif /* _quvi_verify_s_h */
+  g_string_free(v->url.input, TRUE);
+  v->url.input = NULL;
+
+  g_string_free(v->content_type, TRUE);
+  v->content_type = NULL;
+
+  g_string_free(v->file_ext, TRUE);
+  v->file_ext = NULL;
+
+  g_free(v);
+  v = NULL;
+}
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

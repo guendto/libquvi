@@ -17,39 +17,25 @@
  * 02110-1301  USA
  */
 
-/** @file verify_free.c */
+#ifndef _quvi_http_metainfo_s_h
+#define _quvi_http_metainfo_s_h
 
-#include "config.h"
-
-#include <glib.h>
-
-#include "quvi.h"
-/* -- */
-#include "_quvi_s.h"
-#include "_quvi_verify_s.h"
-
-/** @brief Free all of memory used by a verify handle
-@note If handle is NULL the function simply returns
-@ingroup verify
-*/
-void quvi_verify_free(quvi_verify_t handle)
+struct _quvi_http_metainfo_s
 {
-  _quvi_verify_t v = (_quvi_verify_t) handle;
+  struct {
+    GString *input;
+  } url;
+  struct
+  {
+    _quvi_t quvi;
+  } handle;
+  GString *content_type;
+  gdouble length_bytes;
+  GString *file_ext;
+};
 
-  if (handle == NULL)
-    return;
+typedef struct _quvi_http_metainfo_s *_quvi_http_metainfo_t;
 
-  g_string_free(v->url.input, TRUE);
-  v->url.input = NULL;
-
-  g_string_free(v->content_type, TRUE);
-  v->content_type = NULL;
-
-  g_string_free(v->file_ext, TRUE);
-  v->file_ext = NULL;
-
-  g_free(v);
-  v = NULL;
-}
+#endif /* _quvi_http_metainfo_s_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

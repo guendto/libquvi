@@ -28,7 +28,7 @@
 #define chk_len(p)\
   do {\
     gchar *s = NULL;\
-    quvi_verify_get(qv, p, &s);\
+    quvi_http_metainfo_get(qv, p, &s);\
     g_assert(s != NULL);\
     g_test_message("%s=%s", #p, s);\
     g_assert_cmpint(strlen(s), >, 1);\
@@ -37,16 +37,16 @@
 #define chk_val(p)\
   do {\
     gdouble n = 0;\
-    quvi_verify_get(qv, p, &n);\
+    quvi_http_metainfo_get(qv, p, &n);\
     g_test_message("%s=%f", #p, n);\
     g_assert_cmpfloat(n, >, 0);\
   } while (0)
 
-static void test_verify()
+static void test_http_metainfo()
 {
   static const gchar URL[] = "http://is.gd/SKyg8m";
 
-  quvi_verify_t qv;
+  quvi_http_metainfo_t qv;
   quvi_t q;
   gchar *v;
 
@@ -62,29 +62,29 @@ static void test_verify()
 
   chk_verbose(q);
 
-  qv = quvi_verify_new(q, URL);
+  qv = quvi_http_metainfo_new(q, URL);
   g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qv != NULL);
 
-  quvi_verify_get(qv, QUVI_VERIFY_PROPERTY_FILE_EXTENSION-1, &v);
+  quvi_http_metainfo_get(qv, QUVI_HTTP_METAINFO_PROPERTY_FILE_EXTENSION-1,&v);
   g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
 
-  quvi_verify_get(qv, QUVI_VERIFY_PROPERTY_LENGTH_BYTES+1, &v);
+  quvi_http_metainfo_get(qv, QUVI_HTTP_METAINFO_PROPERTY_LENGTH_BYTES+1, &v);
   g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
 
-  chk_len(QUVI_VERIFY_PROPERTY_FILE_EXTENSION);
-  chk_len(QUVI_VERIFY_PROPERTY_CONTENT_TYPE);
+  chk_len(QUVI_HTTP_METAINFO_PROPERTY_FILE_EXTENSION);
+  chk_len(QUVI_HTTP_METAINFO_PROPERTY_CONTENT_TYPE);
 
-  chk_val(QUVI_VERIFY_PROPERTY_LENGTH_BYTES);
+  chk_val(QUVI_HTTP_METAINFO_PROPERTY_LENGTH_BYTES);
 
-  quvi_verify_free(qv);
+  quvi_http_metainfo_free(qv);
   quvi_free(q);
 }
 
 gint main(gint argc, gchar **argv)
 {
   g_test_init(&argc, &argv, NULL);
-  g_test_add_func("/quvi/verify", test_verify);
+  g_test_add_func("/quvi/http_metainfo", test_http_metainfo);
   return (g_test_run());
 }
 

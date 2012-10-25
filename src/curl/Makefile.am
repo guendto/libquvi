@@ -1,8 +1,8 @@
 
 src=\
+  http_metainfo.c\
   autoproxy.c\
   resolve.c\
-  verify.c\
   close.c\
   fetch.c\
   init.c\

@@ -49,12 +49,12 @@ static void resolve(const quvi_word type)
     g_printerr("[%s] Check for URL redirection ...", __func__);
 }
 
-static void verify(const quvi_word type)
+static void http_metainfo(const quvi_word type)
 {
   if (type == QUVI_CALLBACK_STATUS_DONE)
     g_printerr("done.\n");
   else
-    g_printerr("[%s] Verify URL ...", __func__);
+    g_printerr("[%s] Query meta-info for URL ...", __func__);
 }
 
 QuviError examples_status(glong param, gpointer p)
@@ -70,8 +70,8 @@ QuviError examples_status(glong param, gpointer p)
     case QUVI_CALLBACK_STATUS_FETCH:
       fetch(type, p);
       break;
-    case QUVI_CALLBACK_STATUS_VERIFY:
-      verify(type);
+    case QUVI_CALLBACK_STATUS_HTTP_QUERY_METAINFO:
+      http_metainfo(type);
       break;
     }
   return (QUVI_OK);

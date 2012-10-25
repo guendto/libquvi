@@ -35,8 +35,8 @@ void examples_cleanup()
   quvi_resolve_free(qr);
   qr = NULL;
 
-  quvi_verify_free(qv);
-  qv = NULL;
+  quvi_http_metainfo_free(qmi);
+  qmi = NULL;
 
   quvi_media_free(qm);
   qm = NULL;

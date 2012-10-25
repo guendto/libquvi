@@ -20,17 +20,17 @@
 #ifndef _quvi_s_h
 #define _quvi_s_h
 
-typedef gint (*quvi_callback_fetch)(gpointer);
+typedef gint (*quvi_callback_http_metainfo)(gpointer);
 typedef gint (*quvi_callback_resolve)(gpointer);
-typedef gint (*quvi_callback_verify)(gpointer);
+typedef gint (*quvi_callback_fetch)(gpointer);
 
 struct _quvi_s
 {
   struct
   {
+    quvi_callback_http_metainfo http_metainfo;
     quvi_callback_resolve resolve;
     quvi_callback_status status;
-    quvi_callback_verify verify;
     quvi_callback_fetch fetch;
   } cb;
   struct
