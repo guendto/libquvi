@@ -85,7 +85,7 @@ static QuviError _http_metainfo_get(_quvi_http_metainfo_t v,
 }
 
 /** @brief Return a HTTP meta-info property
-@sa @ref http_metainfo_url
+@sa @ref http_metainfo
 @ingroup http_metainfo
 */
 void quvi_http_metainfo_get(quvi_http_metainfo_t handle,
