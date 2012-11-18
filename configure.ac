@@ -24,9 +24,12 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CANONICAL_TARGET
 AC_USE_SYSTEM_EXTENSIONS
 
-AC_DEFINE_UNQUOTED([CANONICAL_TARGET], "$target", [...])
-AC_DEFINE_UNQUOTED([CANONICAL_BUILD], "$build", [...])
-AC_DEFINE_UNQUOTED([CANONICAL_HOST], "$host", [...])
+AC_DEFINE_UNQUOTED([CANONICAL_TARGET], "$target",
+  [Define to canonical target])
+AC_DEFINE_UNQUOTED([CANONICAL_BUILD], "$build",
+  [Define to canonical build])
+AC_DEFINE_UNQUOTED([CANONICAL_HOST], "$host",
+  [Define to canonical host])
 
 AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
 AM_SILENT_RULES([yes])
