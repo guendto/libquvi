@@ -29,6 +29,8 @@ gint main(gint argc, gchar **argv)
           quvi_version(QUVI_VERSION_BUILD_TIME),
           quvi_version(QUVI_VERSION_BUILD_TARGET));
   g_print("libquvi-scripts %s\n", quvi_version(QUVI_VERSION_SCRIPTS));
+  g_print("configuration:\n  %s\n",
+          quvi_version(QUVI_VERSION_CONFIGURATION));
   return (0);
 }
 
