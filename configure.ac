@@ -8,6 +8,9 @@ m4_include([m4/version.m4])
 AC_INIT([libquvi], m4_esyscmd([./gen-ver.sh -c | tr -d '\n']),
         [http://quvi.sf.net/bugs/],[],[http://quvi.sf.net/])
 
+AC_DEFINE_UNQUOTED([BUILD_OPTS], "$@",
+  [Define to configure invocation command line options])
+
 # Interface
 LT_CUR=libquvi_lt_cur
 LT_REV=libquvi_lt_rev

@@ -35,22 +35,19 @@ static const gchar *_version[] =
 #else
   PACKAGE_VERSION
 #endif
-  ,
+  , BUILD_OPTS,
   CANONICAL_TARGET,
   BUILD_TIME
 };
 
 static gchar version_scripts[32];
 
-static gchar *read_scripts_version()
+static const gchar *read_scripts_version()
 {
   gchar *c = NULL;
-
   if (g_file_get_contents(VERSIONFILE, &c, NULL, NULL) == TRUE)
     {
-      gchar *s;
-
-      s = g_strescape(g_strstrip(c), NULL);
+      gchar *s = g_strescape(g_strstrip(c), NULL);
       g_snprintf(version_scripts, sizeof(version_scripts), "%s", s);
 
       g_free(s);
@@ -61,8 +58,7 @@ static gchar *read_scripts_version()
     }
   else
     version_scripts[0] = '\0';
-
-  return ((gchar*) version_scripts);
+  return (version_scripts);
 }
 
 /** @return NULL-terminated version string
@@ -75,10 +71,12 @@ const char *quvi_version(QuviVersion version)
     {
     case QUVI_VERSION_SCRIPTS:
       return (read_scripts_version());
+
+    case QUVI_VERSION_CONFIGURATION:
     case QUVI_VERSION_BUILD_TARGET:
-      return ((gchar*) _version[QUVI_VERSION_BUILD_TARGET]);
     case QUVI_VERSION_BUILD_TIME:
-      return ((gchar*) _version[QUVI_VERSION_BUILD_TIME]);
+      return (_version[version]);
+
     default:
       break;
     }
