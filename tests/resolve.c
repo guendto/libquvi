@@ -145,25 +145,44 @@ static void test_resolve_nodst_t_param()
   g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
   g_assert(qr != NULL);
 
-  /* g00gle servers redirect to the media URL stripping the #t
-   * parameter.  The library should not be fooled by this trickery. */
+  /*
+   * [UPDATE] 2012-11-19: g00gle servers no longer strip the #t param
+   * The description below no longer applies, although we still test
+   * this, in case this changes back.
+   *
+   * [ISSUE] g00gle servers redirect to the media URL stripping #t
+   * g00gle servers redirect to the media URL stripping the #t
+   * parameter. The library should not be fooled by this trickery.
+   * The workaround is implemented in libquvi-scripts
+   * (resolve_redirections.lua).
+   */
   g_assert_cmpint(quvi_resolve_forwarded(qr), ==, QUVI_FALSE);
 
   quvi_resolve_free(qr);
   quvi_free(q);
 }
 
-/* Known limitation: Shortened Y0uTube media URLs with the #t parameter
- * do not work with the library. The test below should redirect to
- * "http://www.youtube.com/watch?v=G4evlxq34og", missing the #t
- * parameter, see the above example for the explanation. */
+/* [UPDATE] 2012-11-19: g00gle servers now seem to redirect to
+ * the media URL without stripping the #t parameter. The test has been
+ * modified to test that shortened URLs redirect to the expected media
+ * URL.
+ *
+ * [ISSUE] #t parameter is lost with shortened URLs
+ * Shortened Y0uTube media URLs with the #t parameter do not work
+ * with the library. The test below should redirect to
+ *   http://www.youtube.com/watch?v=G4evlxq34og
+ * missing the #t parameter, see the above test for the description.
+ */
 static void test_resolve_shortened_with_t_param()
 {
   static const gchar URL[] = "http://is.gd/TRWtNf";
   /* http://www.youtube.com/watch?v=G4evlxq34og#t=3m20 */
 
   static const gchar DST[] =
+    "http://www.youtube.com/watch?v=G4evlxq34og#t=3m20";
+#ifdef _1 /* [UPDATE] 2012-11-19: See above */
     "http://www.youtube.com/watch?v=G4evlxq34og";
+#endif
 
   quvi_resolve_t qr;
   quvi_t q;
