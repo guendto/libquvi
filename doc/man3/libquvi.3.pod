@@ -45,7 +45,7 @@ supported environment variables. libquvi uses libcurl to access the Internet.
 
 =head1 LICENSE
 
-libquvi is Free Software, licensed under the LGPLv2.1+
+libquvi is Free Software, licensed under the GNU Affero GPLv3+.
 
 =head1 SEE ALSO
 
