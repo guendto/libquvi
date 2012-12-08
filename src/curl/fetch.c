@@ -71,12 +71,6 @@ static void _set_opts(_quvi_net_t n, _c_temp_t t, CURL *c)
   c_autoproxy(n->handle.quvi, n->url.addr->str);
 }
 
-static void _reset_opts(CURL *c)
-{
-  curl_easy_setopt(c, CURLOPT_WRITEFUNCTION, NULL);
-  curl_easy_setopt(c, CURLOPT_WRITEDATA, NULL);
-}
-
 static const gchar *_EOK = N_("The server responded with the code %03ld");
 
 static QuviError _fetch(_quvi_net_t n, CURL *c)
@@ -124,7 +118,6 @@ QuviError c_fetch(_quvi_net_t n)
 
   _set_opts(n, t, c);
   rc = _fetch(n, c);
-  _reset_opts(c);
 
   if (rc == QUVI_OK)
     g_string_assign(n->fetch.content, t->p);
