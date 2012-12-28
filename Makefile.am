@@ -6,7 +6,7 @@ pkgconfig_DATA=	libquvi-0.9.pc
 
 SUBDIRS=po src examples doc tests
 
-.PHONY: doc distdoc distdoc-html ChangeLog VERSION test test-mem
+.PHONY: doc distdoc distdoc-html distdoc-latex distdoc-pdf ChangeLog VERSION test test-mem
 
 check: test
 
@@ -22,7 +22,13 @@ doc:
 distdoc-html:
 	@make -C $(top_builddir)/doc/dox/ distdoc-html
 
-distdoc: distdoc-html
+distdoc-latex:
+	@make -C $(top_builddir)/doc/dox/ distdoc-latex
+
+distdoc-pdf:
+	@make -C $(top_builddir)/doc/dox/ distdoc-pdf
+
+distdoc: distdoc-html distdoc-latex distdoc-pdf
 
 VERSION:
 	@if test -d "$(top_srcdir)/.git" -o -f "$(top_srcdir)/.git"; then \

@@ -83,6 +83,11 @@ Requirements
 * GNU make is recommended
   http://www.gnu.org/software/make/
 
+* Doxygen for producing the C API reference documentation
+  http://www.stack.nl/~dimitri/doxygen/
+    (to produce PDF: install LaTeX, e.g. TeX Live or teTeX, refer to
+    the Doxygen documentation for more information)
+
 
 Installation directories
 ------------------------
@@ -127,9 +132,21 @@ When building with GNU Autotools,
   not automatically.
 
   'make doc'  builds the C API reference documentation from the doxygen
-  comments.
+  comments. This produces the 'html' and 'latex' versions of the
+  documentation. They are stored under the directory:
+    $top_builddir/doc/dox/libquvi-$VERSION
+  The Doxygen configuration file can be found at:
+    $top_srcdir/doc/dox/Doxygen.in
+    $top_builddir/doc/dox/Doxygen
 
-  'make distdoc'  like above but produces a tarball from the documentation.
+  'make distdoc'  like above but produces tarballs from the documentation.
+  These tarballs are stored under the $top_builddir/ directory.
+  Alternatively,
+      'make distdoc-html'
+      'make distdoc-pdf'
+      'make distdoc-latex' (depends on distdoc-pdf)
+  Note that Doxygen produces the Makefile that will be used to
+  generate the PDF file from the LaTeX files.
 
 The tests use the gtester(1) and gtester-report(1) commands to produce
 the logs. These programs are part of GLib. The test programs will produce:
