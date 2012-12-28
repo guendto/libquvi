@@ -4,7 +4,7 @@ if HAVE_DOXYGEN
 doc:
 	@$(DOXYGEN) Doxyfile
 distdoc-html: doc
-	@tar chof - libquvi-@VERSION@ | \
+	@tar chof - libquvi-@VERSION@/html | \
 			XZ_OPT=-6 xz -c >@top_builddir@/libquvi-html-@VERSION@.tar.xz \
 			&& echo Created libquvi-html-@VERSION@.tar.xz
 else
