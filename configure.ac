@@ -55,6 +55,10 @@ AC_PATH_PROG([DOXYGEN], [doxygen], [no])
 AM_CONDITIONAL([HAVE_DOXYGEN], [test x"$DOXYGEN" != "xno"])
 AC_SUBST([DOXYGEN])
 
+AC_PATH_PROG([A2X], [a2x], [no])
+AM_CONDITIONAL([HAVE_A2X], [test x"$A2X" != "xno"])
+AC_SUBST([A2X])
+
 AC_PATH_PROG([DATE], [date], [no])
 AS_IF([test "$DATE" != x"$xno"], [build_time=`$DATE +"%F %T %z"`])
 AC_DEFINE_UNQUOTED([BUILD_TIME], ["$build_time"], [We have build time])

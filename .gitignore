@@ -24,7 +24,6 @@ config.h.in
 configure
 doc/Makefile.in
 doc/man3/Makefile.in
-doc/man3/libquvi.3
 doc/dox/Makefile.in
 examples/Makefile.in
 examples/lib/Makefile.in
