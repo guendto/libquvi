@@ -2,6 +2,17 @@
 
 @section glossary_scripts Glossary: Scripts
 
+@subsection c_script Common script
+
+A libquvi script that may be imported from a @ref m_script or a
+@ref pl_script. The common scripts reside under the "common/"
+subdirectory in the script tree. These scripts contain the
+reusable Lua code that is being used by the other scripts.
+
+@code
+local C = require 'quvi/const' -- would import 'quvi/const' (of "common") as C
+@endcode
+
 @subsection m_script Media script
 
 A libquvi script written for a website (media/*.lua) that is
