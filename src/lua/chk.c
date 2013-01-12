@@ -51,18 +51,15 @@ gboolean l_chk_can_parse_url(lua_State *l, _quvi_script_t qs,
   lua_pushnil(l);
   while (lua_next(l, LI_KEY))
     {
-      l_chk_assign_s(l, k_domains, qs->domains);
+      l_chk_assign_s(l, k_domains, qs->domains, TRUE);
       l_chk_assign_b(l, k_can_parse_url, &r);
       lua_pop(l, 1);
     }
   if (qs->domains->len ==0)
     {
-      static const gchar *_E =
-        "%s: %s: the dictionary `%s' must contain a string "
-        "value for `%s'";
-
-      luaL_error(l, _E,  qs->fpath->str, script_func,
-                 k_can_parse_url, k_domains);
+      luaL_error(l, "%s: %s: the returned dictionary must contain "
+                 "a string value `%s'",
+                 qs->fpath->str, script_func, k_domains);
     }
   return (r);
 }
@@ -73,27 +70,30 @@ gboolean l_chk_can_parse_url(lua_State *l, _quvi_script_t qs,
  *
  * NOTE: g_free the returned value when done using it.
  */
-gboolean l_chk_s(lua_State *l, const gchar *w, gchar **v)
+gboolean l_chk_s(lua_State *l, const gchar *w, gchar **v, gboolean trim_flag)
 {
   if (lua_isstring(l, LI_KEY) && lua_isstring(l, LI_VALUE))
     {
       if (g_strcmp0(lua_tostring(l, LI_KEY), w) == 0)
         {
-          *v = m_trim_ws(lua_tostring(l, LI_VALUE));
+          const gchar *s = lua_tostring(l, LI_VALUE);
+          *v = (trim_flag == TRUE)
+               ? m_trim_ws(s)
+               : g_strdup(s);
           return (TRUE);
         }
     }
   return (FALSE);
 }
 
-gboolean l_chk_assign_s(lua_State *l, const gchar *k, GString *v)
+gboolean l_chk_assign_s(lua_State *l, const gchar *k, GString *v,
+                        gboolean trim_flag)
 {
   gchar *s = NULL;
-  if (l_chk_s(l, k, &s) == TRUE)
+  if (l_chk_s(l, k, &s, trim_flag) == TRUE)
     {
       g_string_assign(v, s);
       g_free(s);
-      s = NULL;
       return (TRUE);
     }
   return (FALSE);
