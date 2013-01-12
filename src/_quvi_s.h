@@ -54,10 +54,14 @@ struct _quvi_s
   {
     struct
     {
+      GSList *subtitle_export;
+      GSList *subtitle;
       GSList *playlist;
       GSList *media;
       GSList *scan;
     } curr;
+    GSList *subtitle_export;
+    GSList *subtitle;
     GSList *playlist;
     GSList *media;
     GSList *scan;
