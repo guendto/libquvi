@@ -59,6 +59,22 @@ void quvi_free(quvi_t handle)
   /* Scripts. */
 
 #ifdef HAVE_GLIB_2_28
+  g_slist_free_full(q->scripts.subtitle_export, m_script_free);
+#else
+  g_slist_foreach(q->scripts.subtitle_export, m_script_free, NULL);
+  g_slist_free(q->scripts.subtitle_export);
+#endif
+  q->scripts.subtitle_export = NULL;
+
+#ifdef HAVE_GLIB_2_28
+  g_slist_free_full(q->scripts.subtitle, m_script_free);
+#else
+  g_slist_foreach(q->scripts.subtitle, m_script_free, NULL);
+  g_slist_free(q->scripts.subtitle);
+#endif
+  q->scripts.subtitle = NULL;
+
+#ifdef HAVE_GLIB_2_28
   g_slist_free_full(q->scripts.playlist, m_script_free);
 #else
   g_slist_foreach(q->scripts.playlist, m_script_free, NULL);
