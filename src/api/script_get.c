@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -47,13 +47,23 @@ static QuviError _get(_quvi_t q, QuviScriptType stype,
 
   switch (stype)
     {
+    case QUVI_SCRIPT_TYPE_SUBTITLE_EXPORT:
+      qs = (_qs_t) q->scripts.curr.subtitle_export->data;
+      break;
+
+    case QUVI_SCRIPT_TYPE_SUBTITLE:
+      qs = (_qs_t) q->scripts.curr.subtitle->data;
+      break;
+
     case QUVI_SCRIPT_TYPE_PLAYLIST:
       qs = (_qs_t) q->scripts.curr.playlist->data;
       break;
+
     case QUVI_SCRIPT_TYPE_MEDIA:
     default:
       qs = (_qs_t) q->scripts.curr.media->data;
       break;
+
     case QUVI_SCRIPT_TYPE_SCAN:
       qs = (_qs_t) q->scripts.curr.scan->data;
       break;
@@ -76,21 +86,25 @@ static QuviError _get(_quvi_t q, QuviScriptType stype,
       if (dp == NULL)
         rc = QUVI_ERROR_INVALID_ARG;
       break;
+
     case QUVI_SCRIPT_PROPERTY_TYPE_STRING:
       sp = va_arg(arg, gchar**);
       if (sp == NULL)
         rc = QUVI_ERROR_INVALID_ARG;
       break;
+
     case QUVI_SCRIPT_PROPERTY_TYPE_LONG:
       lp = va_arg(arg, glong*);
       if (lp == NULL)
         rc = QUVI_ERROR_INVALID_ARG;
       break;
+
     case QUVI_SCRIPT_PROPERTY_TYPE_VOID:
       vp = va_arg(arg, gpointer*);
       if (vp == NULL)
         rc = QUVI_ERROR_INVALID_ARG;
       break;
+
     default:
       rc = QUVI_ERROR_INVALID_ARG;
       break;
@@ -102,10 +116,16 @@ static QuviError _get(_quvi_t q, QuviScriptType stype,
 
   switch (n)
     {
+      /* Export (e.g. subtitle) */
+    case QUVI_SCRIPT_PROPERTY_EXPORT_FORMAT:
+      *sp = qs->export.format->str;
+      break;
+
       /* Media, playlist. */
     case QUVI_SCRIPT_PROPERTY_DOMAINS:
       *sp = qs->domains->str;
       break;
+
       /* Any */
     case QUVI_SCRIPT_PROPERTY_FILEPATH:
       *sp = qs->fpath->str;
@@ -116,6 +136,7 @@ static QuviError _get(_quvi_t q, QuviScriptType stype,
     case QUVI_SCRIPT_PROPERTY_SHA1:
       *sp = qs->sha1->str;
       break;
+
     default:
       rc = QUVI_ERROR_INVALID_ARG;
       break;
@@ -123,7 +144,7 @@ static QuviError _get(_quvi_t q, QuviScriptType stype,
   return (rc);
 }
 
-/** @brief Return a media script property
+/** @brief Return a script property
 @ingroup script
 */
 void quvi_script_get(quvi_t handle, QuviScriptType type,
@@ -141,7 +162,6 @@ void quvi_script_get(quvi_t handle, QuviScriptType type,
   va_end(arg);
 
   q = (_quvi_t) handle;
-
   q->status.rc = _get(handle, type, id, p);
 }
 

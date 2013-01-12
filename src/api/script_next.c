@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -34,7 +34,7 @@
 #endif
 /** @endcond */
 
-/** @brief Traverse to next media script
+/** @brief Traverse to the next script
 @return QUVI_TRUE if succeeded, otherwise QUVI_FALSE
 @ingroup script
 */
@@ -51,6 +51,14 @@ QuviBoolean quvi_script_next(quvi_t handle, QuviScriptType type)
 
   switch (type)
     {
+    case QUVI_SCRIPT_TYPE_SUBTITLE_EXPORT:
+      l = q->scripts.subtitle_export;
+      break;
+
+    case QUVI_SCRIPT_TYPE_SUBTITLE:
+      l = q->scripts.subtitle;
+      break;
+
     case QUVI_SCRIPT_TYPE_PLAYLIST:
       l = q->scripts.playlist;
       break;
@@ -72,6 +80,25 @@ QuviBoolean quvi_script_next(quvi_t handle, QuviScriptType type)
 
   switch (type)
     {
+    case QUVI_SCRIPT_TYPE_SUBTITLE_EXPORT:
+      q->scripts.curr.subtitle_export =
+        (q->scripts.curr.subtitle_export != NULL)
+        ? g_slist_next(q->scripts.curr.subtitle_export)
+        : l;
+      r = (q->scripts.curr.subtitle_export != NULL)
+          ? QUVI_TRUE
+          : QUVI_FALSE;
+      break;
+
+    case QUVI_SCRIPT_TYPE_SUBTITLE:
+      q->scripts.curr.subtitle = (q->scripts.curr.subtitle != NULL)
+                                 ? g_slist_next(q->scripts.curr.subtitle)
+                                 : l;
+      r = (q->scripts.curr.subtitle != NULL)
+          ? QUVI_TRUE
+          : QUVI_FALSE;
+      break;
+
     case QUVI_SCRIPT_TYPE_PLAYLIST:
       q->scripts.curr.playlist = (q->scripts.curr.playlist != NULL)
                                  ? g_slist_next(q->scripts.curr.playlist)
