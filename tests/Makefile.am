@@ -91,6 +91,14 @@ http_metainfo_LDFLAGS=$(testsuite_common_ldflags)
 http_metainfo_LDADD=$(testsuite_common_ldadd)
 http_metainfo_CFLAGS=$(AM_CFLAGS)
 
+TEST_PROGS+=subtitle
+
+subtitle_SOURCES=subtitle.c
+subtitle_CPPFLAGS=$(testsuite_common_cppflags)
+subtitle_LDFLAGS=$(testsuite_common_ldflags)
+subtitle_LDADD=$(testsuite_common_ldadd)
+subtitle_CFLAGS=$(AM_CFLAGS)
+
 test: all
 	@ok=1; for t in $(TEST_PROGS); do \
 		gtester $(TEST_OPTS) $(top_builddir)/tests/$$t -o $$t.xml \
