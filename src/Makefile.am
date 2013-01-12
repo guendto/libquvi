@@ -1,8 +1,10 @@
 SUBDIRS=quvi-0.9 api misc lua curl net
 
 hdr=\
+  _quvi_subtitle_export_s.h\
   _quvi_http_metainfo_s.h\
   _quvi_net_resolve_s.h\
+  _quvi_subtitle_s.h\
   _quvi_playlist_s.h\
   _quvi_net_opt_s.h\
   _quvi_script_s.h\
