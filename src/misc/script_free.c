@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -35,6 +35,11 @@ void m_script_free(gpointer p, gpointer userdata)
 
   if (p == NULL)
     return;
+
+  /* Export. */
+
+  g_string_free(qs->export.format, TRUE);
+  qs->export.format = NULL;
 
   /* Media, playlist. */
 
