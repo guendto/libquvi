@@ -48,11 +48,12 @@ gchar *l_exec_util_resolve_redirections(_quvi_t q, const gchar *url)
     return (NULL);
 
   l = q->handle.lua;
+  l_setfield_s(l, US_INPUT_URL, url); /* Set as qargs.input_url */
 
-  l_setfield_s(l, US_INPUT_URL, url); /* Set qargs.input_url */
-
-  /* 1=qargs [qargs: set in l_load_util_script]
-   * 1=returns a string */
+  /*
+   * 1=qargs [qargs: set in l_load_util_script]
+   * 1=returns a string
+   */
   if (lua_pcall(l, 1, 1, 0))
     {
       g_string_assign(q->status.errmsg, lua_tostring(l, -1));

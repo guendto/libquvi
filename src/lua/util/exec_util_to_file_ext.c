@@ -50,8 +50,10 @@ QuviError l_exec_util_to_file_ext(_quvi_http_metainfo_t qmi, _quvi_net_t n)
   l = q->handle.lua;
   lua_pushstring(l, n->http_metainfo.content_type->str);
 
-  /* 2=qargs,title [qargs: set in l_load_util_script]
-   * 1=returns a string */
+  /*
+   * 2=qargs,content-type [qargs: set in l_load_util_script]
+   * 1=returns a string
+   */
   if (lua_pcall(l, 2, 1, 0))
     {
       g_string_assign(q->status.errmsg, lua_tostring(l, -1));

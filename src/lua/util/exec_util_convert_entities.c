@@ -50,8 +50,10 @@ QuviError l_exec_util_convert_entities(_quvi_media_t qm)
   l = q->handle.lua;
   lua_pushstring(l, qm->title->str);
 
-  /* 2=qargs,title [qargs: set in l_load_util_script]
-   * 1=returns a string */
+  /*
+   * 2=qargs,string [qargs: set in l_load_util_script]
+   * 1=returns a string
+   */
   if (lua_pcall(l, 2, 1, 0))
     {
       g_string_assign(q->status.errmsg, lua_tostring(l, -1));
