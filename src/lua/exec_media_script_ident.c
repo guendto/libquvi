@@ -18,6 +18,15 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * NOTE: The error messages produced in these functions are intended for
+ *       developers. They would typically be seen when a new script is
+ *       being developed or an old one is being maintained.
+ *
+ *       These messages should be clear, indicating the actual error,
+ *       minimizing the time spent on locating the problem in the script.
+ */
+
 #include "config.h"
 
 #include <lauxlib.h>
@@ -34,19 +43,9 @@
 #include "lua/chk.h"
 #include "lua/def.h"
 
-/*
- * NOTE: The error messages produced in these functions are intended for
- * developers. They would typically be seen when a new media script is
- * being developed.
- *
- * The messages should be clear, indicating the actual error, minimizing
- * the time spent on locating the actual problem in the script.
- */
-
 static const gchar script_func[] = "ident";
 
-static QuviError _chk_results(lua_State *l, _quvi_script_t qs,
-                              _quvi_media_t qm)
+static QuviError _chk_results(lua_State *l, _quvi_script_t qs)
 {
   QuviError r;
 
@@ -96,7 +95,7 @@ QuviError l_exec_media_script_ident(gpointer p, GSList *sl)
       luaL_error(l, "%s: %s: must return a dictionary",
                  qs->fpath->str, script_func);
     }
-  return (_chk_results(l, qs, qm));
+  return (_chk_results(l, qs));
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
