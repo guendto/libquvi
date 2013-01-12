@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -34,6 +34,8 @@
 /** @enum QuviScriptType */
 typedef enum
 {
+  QUVI_SCRIPT_TYPE_SUBTITLE_EXPORT,
+  QUVI_SCRIPT_TYPE_SUBTITLE,
   QUVI_SCRIPT_TYPE_PLAYLIST,
   QUVI_SCRIPT_TYPE_MEDIA,
   QUVI_SCRIPT_TYPE_SCAN
@@ -42,7 +44,9 @@ typedef enum
 /** @enum QuviScriptProperty */
 typedef enum
 {
-  QUVI_SCRIPT_PROPERTY_FILEPATH = QUVI_SCRIPT_PROPERTY_TYPE_STRING+1,
+  QUVI_SCRIPT_PROPERTY_EXPORT_FORMAT = QUVI_SCRIPT_PROPERTY_TYPE_STRING+1,
+  /**< Unique to export scripts, e.g. @ref subex_script */
+  QUVI_SCRIPT_PROPERTY_FILEPATH,
   QUVI_SCRIPT_PROPERTY_FILENAME,
   QUVI_SCRIPT_PROPERTY_DOMAINS, /**< Unique to @ref m_script and @ref pl_script */
   QUVI_SCRIPT_PROPERTY_SHA1
