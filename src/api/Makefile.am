@@ -17,6 +17,18 @@ EXTRA_DIST=\
   doxy/http_metainfo.dp
 
 src=\
+  subtitle_export_data.c\
+  subtitle_export_free.c\
+  subtitle_export_new.c\
+  subtitle_lang_get.c\
+  subtitle_lang_next.c\
+  subtitle_lang_reset.c\
+  subtitle_free.c\
+  subtitle_new.c\
+  subtitle_select.c\
+  subtitle_type_get.c\
+  subtitle_type_next.c\
+  subtitle_type_reset.c\
   playlist_media_reset.c\
   playlist_media_next.c\
   playlist_free.c\
