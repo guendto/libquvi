@@ -51,10 +51,7 @@ static void test_http_metainfo()
   quvi_t q;
   gchar *v;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();

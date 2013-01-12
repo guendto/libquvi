@@ -39,10 +39,7 @@ static void test_goto_url()
   quvi_t q;
   gchar *s;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();

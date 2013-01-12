@@ -35,10 +35,7 @@ static void test_resolve_core()
   quvi_resolve_t qr;
   quvi_t q;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
@@ -70,10 +67,7 @@ static void test_resolve_3()
   quvi_resolve_t qr;
   quvi_t q;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
@@ -100,10 +94,7 @@ static void test_resolve_nodst()
   quvi_resolve_t qr;
   quvi_t q;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
@@ -130,10 +121,7 @@ static void test_resolve_nodst_t_param()
   quvi_resolve_t qr;
   quvi_t q;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
@@ -188,10 +176,7 @@ static void test_resolve_shortened_with_t_param()
   quvi_resolve_t qr;
   quvi_t q;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();

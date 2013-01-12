@@ -69,10 +69,7 @@ static void test_media_core()
   quvi_t q;
   gchar *s;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
@@ -119,10 +116,7 @@ static void test_media_multi()
   quvi_t q;
   gint i;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
@@ -188,10 +182,7 @@ static void test_media_select()
   gchar *s;
   quvi_t q;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
@@ -283,10 +274,7 @@ static void test_media_short()
   quvi_t q;
   gchar *s;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
@@ -316,10 +304,7 @@ static void test_media_starttime()
   gdouble st = 0;
   quvi_t q;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
@@ -351,10 +336,7 @@ static void test_media_escaped_url()
   quvi_media_t qm;
   quvi_t q;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
@@ -379,10 +361,7 @@ static void test_media_nosupport()
   quvi_t q;
   gchar *s;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
@@ -409,10 +388,7 @@ static void test_media_same_q()
   gint i = 0;
   quvi_t q;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();

@@ -38,10 +38,7 @@ static void test_supports_online()
   QuviBoolean r;
   quvi_t q;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
@@ -152,10 +149,7 @@ static void test_supports_net_err()
   quvi_t q;
   CURL *c;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();

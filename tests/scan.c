@@ -56,10 +56,7 @@ static void test_scan_core()
   quvi_scan_t qs;
   quvi_t q;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = new_q();
@@ -80,10 +77,7 @@ static void test_scan_short()
   quvi_scan_t qs;
   quvi_t q;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = new_q();
@@ -104,10 +98,7 @@ static void test_scan_noresults()
   quvi_scan_t qs;
   quvi_t q;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = new_q();

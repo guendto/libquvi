@@ -36,10 +36,7 @@ static void test_playlist_core()
   quvi_t q;
   gchar *s;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
@@ -128,10 +125,7 @@ static void test_playlist_short()
   quvi_t q;
   gchar *s;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
@@ -180,10 +174,7 @@ static void test_playlist_escaped_url()
   quvi_playlist_t qp;
   quvi_t q;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
@@ -208,10 +199,7 @@ static void test_playlist_nosupport()
   quvi_t q;
   gchar *s;
 
-  if (chk_internet() == FALSE)
-    return;
-
-  if (chk_skip(__func__) == TRUE)
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
