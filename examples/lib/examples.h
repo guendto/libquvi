@@ -22,6 +22,7 @@
 #define examples_h
 
 extern quvi_http_metainfo_t qmi;
+extern quvi_subtitle_t qsub;
 extern quvi_playlist_t qp;
 extern quvi_resolve_t qr;
 extern quvi_media_t qm;

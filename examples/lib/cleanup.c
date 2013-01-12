@@ -27,6 +27,9 @@
 
 void examples_cleanup()
 {
+  quvi_subtitle_free(qsub);
+  qsub = NULL;
+
   quvi_scan_free(qs);
   qs = NULL;
 
