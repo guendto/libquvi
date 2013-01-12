@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -56,6 +56,36 @@
 #define MSS_ID                    "id"
 
 #define MS_EMPTY         ""
+
+/* Subtitle export script */
+
+#define SUES_CAN_EXPORT_DATA  "can_export_data" /* Script can export data */
+#define SUES_EXPORT_FORMAT    "export_format"   /* Script generates this format */
+#define SUES_FROM_FORMAT      "from_format"     /* Export from this format */
+#define SUES_INPUT_URL        "input_url"       /* Subtitle language URL */
+#define SUES_TO_FORMAT        "to_format"       /* Export to this format */
+#define SUES_DATA             "data"            /* Exported data */
+
+/* Subtitle script */
+
+#define SUS_CAN_PARSE_URL "can_parse_url"   /* Script can parse URL */
+#define SUS_INPUT_URL     "input_url"       /* App req. URL */
+#define SUS_DOMAINS       "domains"         /* Domains */
+#define SUS_SUBTITLES     "subtitles"       /* Subtitles */
+
+/* Subtitles - qargs.subtitles */
+
+#define SUSS_FORMAT       "format"          /* Internal subtitle format */
+#define SUSS_TYPE         "type"            /* Subtitle type {cc,tts,...} */
+#define SUSS_LANG         "lang"            /* Subtitles: Language */
+
+/* Subtitles - qargs.subtitles[n].lang */
+
+#define SUSSL_TRANSLATED "translated"  /* Translated (English) language */
+#define SUSSL_ORIGINAL   "original"    /* Original language */
+#define SUSSL_CODE       "code"        /* Code {en,fi,...} */
+#define SUSSL_URL        "url"         /* URL */
+#define SUSSL_ID         "id"          /* ID {cc_en,tts_fi,...} */
 
 /* Playlist script */
 
