@@ -51,4 +51,14 @@ URLs.
 libquvi-scripts contain misc. utility scripts, some of which are used
 by the library directly (util/*.lua), some of which may be used
 from the media scripts (lua/common/quvi/*.lua) by importing them first.
+
+@subsection sub_script Subtitle script
+
+A libquvi script written to retrieve the available @ref sub_type and
+@ref sub_lang properties.
+
+@subsection subex_script Subtitle export script
+
+A libquvi script written to export the @ref sub_data into the
+requested format, e.g. SubRip.
 */
