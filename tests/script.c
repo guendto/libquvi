@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -82,7 +82,7 @@ static void test_script()
   {
     const gint c = count(q, QUVI_SCRIPT_TYPE_MEDIA);
 
-    g_assert_cmpint(c, ==, count(q, QUVI_SCRIPT_TYPE_PLAYLIST-1));
+    g_assert_cmpint(c, ==, count(q, QUVI_SCRIPT_TYPE_SUBTITLE_EXPORT-1));
     g_assert_cmpint(c, ==, count(q, QUVI_SCRIPT_TYPE_SCAN+1));
   }
 
@@ -93,7 +93,7 @@ static void test_script()
     t = QUVI_SCRIPT_TYPE_MEDIA;
     g_assert(quvi_script_next(q, t) == QUVI_TRUE);
 
-    quvi_script_get(q, t, QUVI_SCRIPT_PROPERTY_FILEPATH-1, &s);
+    quvi_script_get(q, t, QUVI_SCRIPT_PROPERTY_EXPORT_FORMAT-1, &s);
     g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
 
     quvi_script_get(q, t, QUVI_SCRIPT_PROPERTY_SHA1+1, &s);
