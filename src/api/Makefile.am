@@ -9,12 +9,13 @@ EXTRA_DIST=\
   doxy/glossary_scripts.dp\
   doxy/glossary_termino.dp\
   doxy/groups.dp\
+  doxy/http_metainfo.dp\
   doxy/parse_media.dp\
   doxy/parse_playlist.dp\
+  doxy/parse_subtitle.dp\
   doxy/proxy_support.dp\
   doxy/scan_media.dp\
-  doxy/select_stream.dp\
-  doxy/http_metainfo.dp
+  doxy/select_stream.dp
 
 src=\
   subtitle_export_data.c\
