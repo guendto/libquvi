@@ -89,7 +89,7 @@ static void test_resolve_3()
 
 static void test_resolve_nodst()
 {
-  static const gchar URL[] = "http://www.iana.org/domains/example/";
+  static const gchar URL[] = "http://www.iana.org/domains/example";
 
   quvi_resolve_t qr;
   quvi_t q;
