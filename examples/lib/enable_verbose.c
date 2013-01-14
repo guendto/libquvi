@@ -30,6 +30,7 @@ void examples_enable_verbose()
 {
   CURL *c = NULL;
   g_assert(q != NULL);
+  g_setenv("LIBQUVI_SCRIPTS_VERBOSE", "1", TRUE);
   quvi_get(q, QUVI_INFO_CURL_HANDLE, &c);
   curl_easy_setopt(c, CURLOPT_VERBOSE, 1L);
 }
