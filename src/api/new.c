@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -71,14 +71,6 @@ quvi_t quvi_new()
       if (q->handle.proxy == NULL)
         q->status.rc = QUVI_ERROR_PROXY_INIT;
     }
-
-  if (q->status.rc == QUVI_OK)
-    {
-      const gchar *v = g_getenv("LIBQUVI_VERBOSE_SCRIPTS");
-      if (v != NULL && strlen(v) >0)
-        q->opt.scripts.verbose = TRUE;
-    }
-
   return (q);
 }
 

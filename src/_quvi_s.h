@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -37,10 +37,6 @@ struct _quvi_s
   struct
   {
     gboolean autoproxy;
-    struct
-    {
-      gboolean verbose; /* LIBQUVI_VERBOSE_SCRIPTS */
-    } scripts;
   } opt;
   struct
   {

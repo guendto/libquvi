@@ -23,10 +23,6 @@
 
 #define USERDATA_QUVI_T   "_quvi_t"
 
-/* Common to all scripts */
-
-#define GS_VERBOSE  "verbose"   /* Verbose flag */
-
 /* Media script: Media properties */
 
 #define MS_CAN_PARSE_URL    "can_parse_url" /* Script can parse URL */

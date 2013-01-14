@@ -91,7 +91,6 @@ QuviError l_load_util_script(_quvi_t q, const gchar *script_fname,
 
   lua_newtable(l);
   l_set_reg_userdata(l, USERDATA_QUVI_T, (gpointer) q);
-  l_setfield_b(l, GS_VERBOSE, q->opt.scripts.verbose);
 
   return (QUVI_OK);
 }
