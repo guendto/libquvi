@@ -17,6 +17,10 @@ LIBQUVI_SCRIPTS_DIR::
   The library will additionally look in the colon-separated list of
   directories specified by the LIBQUVI_SCRIPTS_DIR environment variable.
 
+LIBQUVI_SCRIPTS_VERBOSE::
+  When defined, enables the output from any libquvi scripts using the
+  debug facility ('quvi/debug' module).
+
 LIBQUVI_SHOW_DIR::
   When defined, the library will output the paths of the searched
   directories to the stderr.
