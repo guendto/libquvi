@@ -30,11 +30,13 @@
 
 /* 'quvi' object functions for media scripts, e.g. 'quvi.fetch' */
 
+extern gint l_quvi_metainfo(lua_State*);
 extern gint l_quvi_resolve(lua_State*);
 extern gint l_quvi_fetch(lua_State*);
 
-static const luaL_Reg reg_meth[] =
+static const luaL_Reg quvi_reg_meth[] =
 {
+  {"metainfo", l_quvi_metainfo},
   {"resolve", l_quvi_resolve},
   {"fetch", l_quvi_fetch},
   {NULL, NULL}
@@ -47,7 +49,7 @@ QuviError l_init(_quvi_t q)
     return (QUVI_ERROR_LUA_INIT);
 
   luaL_openlibs(q->handle.lua);
-  luaL_openlib(q->handle.lua, "quvi", reg_meth, 1);
+  luaL_openlib(q->handle.lua, "quvi", quvi_reg_meth, 1);
 
   return (QUVI_OK);
 }
