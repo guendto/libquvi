@@ -239,7 +239,7 @@ static void test_media_select()
   g_assert_cmpstr(curr->data, ==, s);
 
   quvi_media_stream_select(qm, "foo,bar,baz,croak");
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_NO_STREAM_ID_CROAK);
+  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_KEYWORD_CROAK);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
   curr = g_slist_nth(ids, 0);
   g_assert_cmpstr(curr->data, ==, s);

@@ -78,4 +78,12 @@ http_metainfo_LDFLAGS=$(examples_common_ldflags)
 http_metainfo_LDADD=$(examples_common_ldadd)
 http_metainfo_CFLAGS=$(AM_CFLAGS)
 
+EXAMPLE_PROGS+=subtitle
+
+subtitle_SOURCES=subtitle.c
+subtitle_CPPFLAGS=$(examples_common_cppflags)
+subtitle_LDFLAGS=$(examples_common_ldflags)
+subtitle_LDADD=$(examples_common_ldadd)
+subtitle_CFLAGS=$(AM_CFLAGS)
+
 # vim: set ts=2 sw=2 tw=72 expandtab:

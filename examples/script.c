@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -57,6 +57,7 @@ struct _property_lookup_s
 
 static const struct _property_lookup_s property_conv[] =
 {
+  {QUVI_SCRIPT_PROPERTY_EXPORT_FORMAT, "export.format"},
   {QUVI_SCRIPT_PROPERTY_FILEPATH, "filepath"},
   {QUVI_SCRIPT_PROPERTY_FILENAME, "filename"},
   {QUVI_SCRIPT_PROPERTY_DOMAINS,  "domains"},
@@ -117,10 +118,7 @@ static gboolean chk_property_values()
       g_printerr(
         "error: invalid value (`%s') for the option `--property'\n", s);
     }
-
   g_strfreev(v);
-  v = NULL;
-
   return (r);
 }
 
@@ -132,6 +130,8 @@ struct _type_lookup_s
 
 static const struct _type_lookup_s type_conv[] =
 {
+  {QUVI_SCRIPT_TYPE_SUBTITLE_EXPORT, "subtitle.export"},
+  {QUVI_SCRIPT_TYPE_SUBTITLE, "subtitle"},
   {QUVI_SCRIPT_TYPE_PLAYLIST, "playlist"},
   {QUVI_SCRIPT_TYPE_MEDIA,    "media"},
   {QUVI_SCRIPT_TYPE_SCAN,     "scan"},
@@ -203,11 +203,8 @@ static gint opts_new(gint argc, gchar **argv)
       g_printerr("error: %s\n", e->message);
       g_error_free(e);
       r = EXIT_FAILURE;
-      e = NULL;
     }
-
   g_option_context_free(c);
-  c = NULL;
 
   /* Set the defaults. */
 
@@ -265,14 +262,13 @@ gint main(gint argc, gchar **argv)
     g_printerr("[%s] type=%s (0x%x), property=%s\n",
                __func__, opts.type, type, p);
     g_free(p);
-    p = NULL;
   }
 
   while (quvi_script_next(q, type) == QUVI_TRUE)
     dump_script(type);
 
-  opts_free();
   examples_cleanup();
+  opts_free();
 
   g_assert(q == NULL);
   return (r);

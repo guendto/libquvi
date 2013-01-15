@@ -87,6 +87,35 @@ to identify this stream.
 This is whatever the @ref m_script returns as the first stream. This
 stream is returned always.
 
+@subsection sub_data Subtitle data
+
+The subtitle data format varies per website, e.g. YouTube uses
+a custom timed-text (TT) format for CCs and TTSes. Generally speaking,
+the applications may ignore this format as the API has been designed
+so that the library provides the data in the requested format.
+
+@sa @ref subex_script
+
+@subsection sub_lang Subtitle language
+
+An available subtitle language. Each @ref sub_type consists of
+(available) languages.
+
+@sa @ref sub_type
+
+@subsection sub_lang_id Subtitle language ID
+
+A string value that is used to identify the @ref sub_lang. They are
+generated for each available language.
+
+@subsection sub_type Subtitle type
+
+Either a closed-caption (CC) or a text-to-speech (TTS, sometimes
+referred to as "automatic captions"). Each subtitle consists of a
+varying number of available languages.
+
+@sa @ref sub_lang
+
 @subsection m_url Media URL
 
 An Internet address to the media, e.g. "http://youtube.com/watch?v=foo".

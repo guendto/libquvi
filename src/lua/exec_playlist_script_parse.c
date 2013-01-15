@@ -18,6 +18,15 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * NOTE: The error messages produced in these functions are intended for
+ *       developers. They would typically be seen when a new script is
+ *       being developed or an old one is being maintained.
+ *
+ *       These messages should be clear, indicating the actual error,
+ *       minimizing the time spent on locating the problem in the script.
+ */
+
 #include "config.h"
 
 #include <lauxlib.h>
@@ -33,15 +42,6 @@
 #include "lua/chk.h"
 #include "lua/def.h"
 #include "misc/playlist.h"
-
-/*
- * NOTE: The error messages produced in these functions are intended for
- * developers. They would typically be seen when a new media script is
- * being developed or an old one is being maintained.
- *
- * The messages should be clear, indicating the actual error, minimizing
- * the time spent on locating the actual problem in the script.
- */
 
 static const gchar script_func[] = "parse";
 
@@ -63,8 +63,8 @@ static gboolean _new_media(lua_State *l, _quvi_playlist_t qp,
   while (lua_next(l, LI_KEY)) /* For each qargs.media */
     {
       l_chk_assign_n(l, PSM_DURATION_MS, &(*qpm)->duration_ms);
-      l_chk_assign_s(l, PSM_TITLE, (*qpm)->title);
-      l_chk_assign_s(l, PSM_URL, (*qpm)->url);
+      l_chk_assign_s(l, PSM_TITLE, (*qpm)->title, TRUE);
+      l_chk_assign_s(l, PSM_URL, (*qpm)->url, TRUE);
       lua_pop(l, 1);
     }
 
@@ -122,9 +122,9 @@ static void _chk_optional(lua_State *l, _quvi_playlist_t qp)
   lua_pushnil(l);
   while (lua_next(l, LI_KEY))
     {
-      l_chk_assign_s(l, PS_THUMB_URL, qp->url.thumbnail);
-      l_chk_assign_s(l, PS_ID, qp->id.playlist);
-      l_chk_assign_s(l, PS_TITLE, qp->title);
+      l_chk_assign_s(l, PS_THUMB_URL, qp->url.thumbnail, TRUE);
+      l_chk_assign_s(l, PS_ID, qp->id.playlist, TRUE);
+      l_chk_assign_s(l, PS_TITLE, qp->title, TRUE);
       lua_pop(l, 1);
     }
 }
@@ -169,7 +169,6 @@ QuviError l_exec_playlist_script_parse(gpointer p, GSList *sl)
   _chk_media(l, qp, qs->fpath->str);
 
   lua_pop(l, 1);
-
   return (QUVI_OK);
 }
 

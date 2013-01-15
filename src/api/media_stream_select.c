@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -32,11 +32,9 @@
 /* -- */
 #include "misc/re.h"
 
-static const gchar *_E =
-  N_("Nothing matched the available media stream IDs; aborted by the \"croak\" keyword");
-
 static QuviError _select(_quvi_media_t qm, const gchar *id)
 {
+  _quvi_media_stream_t qms;
   gboolean found_flag;
   QuviError rc;
   _quvi_t q;
@@ -50,12 +48,11 @@ static QuviError _select(_quvi_media_t qm, const gchar *id)
   found_flag = FALSE;
   rc = QUVI_OK;
 
-  for (i=0; r[i] != NULL && found_flag == FALSE; ++i)
+  for (i=0; (r[i] != NULL && found_flag == FALSE); ++i)
     {
-      if (g_strcmp0(r[i], "croak") == 0)
+      if (g_strcmp0(r[i], "croak") ==0)
         {
-          g_string_printf(q->status.errmsg, g_dgettext(GETTEXT_PACKAGE, _E));
-          rc = QUVI_ERROR_NO_STREAM_ID_CROAK;
+          rc = QUVI_ERROR_KEYWORD_CROAK;
           break;
         }
       else if (g_strcmp0(r[i], "best") == 0)
@@ -65,10 +62,9 @@ static QuviError _select(_quvi_media_t qm, const gchar *id)
         }
       else
         {
-          _quvi_media_stream_t qms;
-
-          while (quvi_media_stream_next(qm) == TRUE)
+          while (quvi_media_stream_next(qm) == QUVI_TRUE)
             {
+              /* TODO: Use quvi_media_get? */
               qms = (_quvi_media_stream_t) qm->curr.stream->data;
 
               found_flag = m_match(qms->id->str, r[i]);
@@ -81,34 +77,29 @@ static QuviError _select(_quvi_media_t qm, const gchar *id)
         }
     }
   g_strfreev(r);
-  r = NULL;
-
   return (rc);
 }
 
 /** @brief Select a @ref m_stream matching a @ref m_stream_id
 
 Matches the @ref m_stream_id (pattern) to the available media stream
-IDs and selects the stream if the IDs matched. The function returns
-immediately if the IDs matched. The ID value may be a
-comma-separated value (e.g. "foo,bar,baz"). The ID value may
-contain the keywords 'croak' and 'best' (see notes below).
+IDs and selects the stream. This function returns immediately
+if a matching ID was found.  The ID value may be a comma-separated value
+(e.g. "foo,bar,baz"). The ID may also contain the keywords 'croak' and
+'best' (see the notes below).
 @note
-  - ID value is used as a regular expression pattern
-    - The only exception to this is when it contains a comma-separated
-      list of patterns
-  - ID may contain the keywords 'best' and 'croak'
-    - These are reserved keywords used by both the library and the
-      scripts
-    - The function returns immediately after reaching either
-    - 'croak' will cause the function register an error when the
-      keyword is reached by the function
-      - The error may be checked with @ref quvi_ok and returned with
-        either @ref quvi_get (for code) and @ref quvi_errmsg
-    - 'best' is identical to calling @ref quvi_media_stream_choose_best
-  - If nothing matched (and the 'croak' keyword was not specified) the
-    function falls back to the first available stream (the default)
-  - Always check the result with @ref quvi_ok
+  - ID value is used as regular expression pattern
+  - ID may contain the reserved keyword 'best'
+    - Defining this in the ID is identical to calling
+      @ref quvi_media_stream_choose_best, refer to it for details
+  - ID may contain the reserved keyword 'croak'
+    - This will cause the function to exit immediately when it is reached
+    - The result may be checked with @ref quvi_ok
+      - The code may be retrieved using @ref quvi_get
+      - The error message may be retrieved using @ref quvi_errmsg
+  - If nothing matched (and the 'croak' keyword was specified) the
+    function will return the first (default) available language
+  - Always confirm the result with @ref quvi_ok
 @sa @ref parse_media
 @ingroup mediaprop
 */
@@ -117,11 +108,11 @@ void quvi_media_stream_select(quvi_media_t handle, const char *id)
   _quvi_media_t qm;
   _quvi_t q;
 
-  qm = (_quvi_media_t) handle;
-  q = qm->handle.quvi;
-
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_if_fail(handle != NULL);
+
+  qm = (_quvi_media_t) handle;
+  q = qm->handle.quvi;
 
   q->status.rc = _select(qm, id);
 }

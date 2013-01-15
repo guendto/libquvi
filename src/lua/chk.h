@@ -24,8 +24,8 @@
 gboolean l_chk_can_parse_url(lua_State*, _quvi_script_t, const gchar*,
                              const gchar*, const gchar*);
 
-gboolean l_chk_assign_s(lua_State*, const gchar*, GString*);
-gboolean l_chk_s(lua_State*, const gchar*, gchar**);
+gboolean l_chk_assign_s(lua_State*, const gchar*, GString*, gboolean);
+gboolean l_chk_s(lua_State*, const gchar*, gchar**, gboolean);
 
 gboolean l_chk_assign_n(lua_State*, const gchar*, gdouble*);
 gboolean l_chk_n(lua_State*, const gchar*, gdouble*);

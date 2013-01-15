@@ -24,6 +24,7 @@
 #include <quvi.h>
 
 quvi_http_metainfo_t qmi = NULL;
+quvi_subtitle_t qsub = NULL;
 quvi_playlist_t qp = NULL;
 quvi_resolve_t qr = NULL;
 quvi_media_t qm = NULL;

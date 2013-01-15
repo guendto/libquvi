@@ -27,10 +27,14 @@
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_media_s.h"
+#include "_quvi_subtitle_export_s.h"
+#include "_quvi_subtitle_s.h"
 #include "_quvi_playlist_s.h"
 #include "_quvi_script_s.h"
 /* -- */
 #include "misc/script_free.h"
+#include "misc/subtitle_export.h"
+#include "misc/subtitle.h"
 #include "misc/playlist.h"
 #include "misc/media.h"
 #include "misc/re.h"
@@ -96,24 +100,20 @@ static void _chk_script_ident(_quvi_t q, _quvi_script_t qs, gboolean *ok,
 {
   static const gchar URL[] = "http://foo";
 
-  QuviError rc;
+  QuviError r;
   gpointer p;
   GSList *s;
 
+  s = g_slist_prepend(NULL, qs);
   p = cb_new(q, URL);
-  s = NULL;
-  s = g_slist_prepend(s, qs);
-  rc = cb_exec(p, s);
-
-  cb_free(p);
-  p = NULL;
+  r = cb_exec(p, s);
 
   g_slist_free(s);
-  s = NULL;
+  cb_free(p);
 
   /* Script ident function should return "no support". If anything else
    * is returned, there's something wrong with the script. */
-  if (rc == QUVI_ERROR_NO_SUPPORT)
+  if (r == QUVI_ERROR_NO_SUPPORT)
     *ok = TRUE;
   else
     {
@@ -138,14 +138,15 @@ static gboolean _chk(const gchar *s, const gchar *p)
 }
 
 /* New script */
-static gpointer _script_new(const gchar *fpath, const gchar *fname,
-                            const GString *c)
+static gpointer _script_new(const gchar *fpath, const gchar *fname, GString *c)
 {
   _quvi_script_t qs = g_new0(struct _quvi_script_s, 1);
+  qs->export.format = g_string_new(NULL);
   qs->domains = g_string_new(NULL);
   qs->fpath = g_string_new(fpath);
   qs->fname = g_string_new(fname);
   qs->sha1 = _file_sha1(c);
+  g_string_free(c, TRUE);
   return (qs);
 }
 
@@ -170,17 +171,12 @@ static gpointer _new_media_script(_quvi_t q, const gchar *path,
 
       if (OK == TRUE)
         {
-          typedef free_ident_callback fic;
-
           qs = _script_new(fpath->str, fname, c);
 
           _chk_script_ident(q, qs, &OK, m_media_new,
                             l_exec_media_script_ident,
-                            (fic) m_media_free);
+                            (free_ident_callback) m_media_free);
         }
-
-      g_string_free(c, TRUE);
-      c = NULL;
 
       if (OK == FALSE)
         {
@@ -188,13 +184,83 @@ static gpointer _new_media_script(_quvi_t q, const gchar *path,
           qs = NULL;
         }
     }
+  g_string_free(fpath, TRUE);
+  return (qs);
+}
 
-  if (fpath != NULL)
+/* New subtitle export script. */
+static gpointer
+_new_subtitle_export_script(_quvi_t q, const gchar *path, const gchar *fname)
+{
+  _quvi_script_t qs;
+  GString *fpath;
+  GString *c;
+
+  fpath = _get_fpath(path, fname);
+  c = _contents(fpath);
+  qs = NULL;
+
+  if (c != NULL)
     {
-      g_string_free(fpath, TRUE);
-      fpath = NULL;
-    }
+      gboolean OK =
+        (_chk(c->str, "^\\-\\-\\s+libquvi\\-scripts") == TRUE
+         && _chk(c->str, "^function ident") == TRUE
+         && _chk(c->str, "^function export") == TRUE);
 
+      if (OK == TRUE)
+        {
+          qs = _script_new(fpath->str, fname, c);
+
+          _chk_script_ident(q, qs, &OK, m_subtitle_export_new,
+                            l_exec_subtitle_export_script_ident,
+                            (free_ident_callback) m_subtitle_export_free);
+        }
+
+      if (OK == FALSE)
+        {
+          m_script_free(qs, NULL);
+          qs = NULL;
+        }
+    }
+  g_string_free(fpath, TRUE);
+  return (qs);
+}
+
+/* New subtitle script. */
+static gpointer _new_subtitle_script(_quvi_t q, const gchar *path,
+                                     const gchar *fname)
+{
+  _quvi_script_t qs;
+  GString *fpath;
+  GString *c;
+
+  fpath = _get_fpath(path, fname);
+  c = _contents(fpath);
+  qs = NULL;
+
+  if (c != NULL)
+    {
+      gboolean OK =
+        (_chk(c->str, "^\\-\\-\\s+libquvi\\-scripts") == TRUE
+         && _chk(c->str, "^function ident") == TRUE
+         && _chk(c->str, "^function parse") == TRUE);
+
+      if (OK == TRUE)
+        {
+          qs = _script_new(fpath->str, fname, c);
+
+          _chk_script_ident(q, qs, &OK, m_subtitle_new,
+                            l_exec_subtitle_script_ident,
+                            (free_ident_callback) m_subtitle_free);
+        }
+
+      if (OK == FALSE)
+        {
+          m_script_free(qs, NULL);
+          qs = NULL;
+        }
+    }
+  g_string_free(fpath, TRUE);
   return (qs);
 }
 
@@ -219,17 +285,12 @@ static gpointer _new_playlist_script(_quvi_t q, const gchar *path,
 
       if (OK == TRUE)
         {
-          typedef free_ident_callback fic;
-
           qs = _script_new(fpath->str, fname, c);
 
           _chk_script_ident(q, qs, &OK, m_playlist_new,
                             l_exec_playlist_script_ident,
-                            (fic) m_playlist_free);
+                            (free_ident_callback) m_playlist_free);
         }
-
-      g_string_free(c, TRUE);
-      c = NULL;
 
       if (OK == FALSE)
         {
@@ -237,13 +298,7 @@ static gpointer _new_playlist_script(_quvi_t q, const gchar *path,
           qs = NULL;
         }
     }
-
-  if (fpath != NULL)
-    {
-      g_string_free(fpath, TRUE);
-      fpath = NULL;
-    }
-
+  g_string_free(fpath, TRUE);
   return (qs);
 }
 
@@ -268,22 +323,13 @@ static gpointer _new_scan_script(_quvi_t q, const gchar *path,
       if (OK == TRUE)
         qs = _script_new(fpath->str, fname, c);
 
-      g_string_free(c, TRUE);
-      c = NULL;
-
       if (OK == FALSE)
         {
           m_script_free(qs, NULL);
           qs = NULL;
         }
     }
-
-  if (fpath != NULL)
-    {
-      g_string_free(fpath, TRUE);
-      fpath = NULL;
-    }
-
+  g_string_free(fpath, TRUE);
   return (qs);
 }
 
@@ -307,22 +353,13 @@ static gpointer _new_util_script(_quvi_t q, const gchar *path,
       if (OK == TRUE)
         qs = _script_new(fpath->str, fname, c);
 
-      g_string_free(c, TRUE);
-      c = NULL;
-
       if (OK == FALSE)
         {
           m_script_free(qs, NULL);
           qs = NULL;
         }
     }
-
-  if (fpath != NULL)
-    {
-      g_string_free(fpath, TRUE);
-      fpath = NULL;
-    }
-
+  g_string_free(fpath, TRUE);
   return (qs);
 }
 
@@ -373,7 +410,7 @@ static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
   if (dir == NULL)
     return (FALSE);
 
-  while ((fname = g_dir_read_name(dir)) != NULL)
+  while ( (fname = g_dir_read_name(dir)) != NULL)
     {
       if (_lua_files_only(fname) != 0)
         {
@@ -423,44 +460,58 @@ static gboolean _glob_scripts_dir(_quvi_t q, const gchar *path, GSList **dst,
 
 typedef enum
 {
+  GLOB_SUBTITLE_EXPORT_SCRIPTS,
+  GLOB_SUBTITLE_SCRIPTS,
   GLOB_PLAYLIST_SCRIPTS,
   GLOB_MEDIA_SCRIPTS,
   GLOB_SCAN_SCRIPTS,
-  GLOB_UTIL_SCRIPTS
+  GLOB_UTIL_SCRIPTS,
+  _GLOB_COUNT
 } GlobType;
 
-static const gchar *dir[] =
+static const gchar *glob_dir[_GLOB_COUNT] =
 {
+  "subtitle/export/",
+  "subtitle/",
   "playlist/",
   "media/",
   "scan/",
-  "util/",
-  NULL
+  "util/"
 };
 
-static gboolean _glob_scripts(_quvi_t q, const GlobType t, GSList **dst)
+static gboolean _glob_scripts(_quvi_t q, const GlobType t)
 {
   chkdup_script_callback cb_chkdup;
   free_script_callback cb_free;
   new_script_callback cb_new;
+  GSList **dst;
   gchar *path;
-
-  cb_new = NULL;
-  *dst = NULL;
 
   switch (t)
     {
+    case GLOB_SUBTITLE_EXPORT_SCRIPTS:
+      cb_new = _new_subtitle_export_script;
+      dst = &q->scripts.subtitle_export;
+      break;
+    case GLOB_SUBTITLE_SCRIPTS:
+      cb_new = _new_subtitle_script;
+      dst = &q->scripts.subtitle;
+      break;
     case GLOB_PLAYLIST_SCRIPTS:
       cb_new = _new_playlist_script;
+      dst = &q->scripts.playlist;
       break;
     case GLOB_MEDIA_SCRIPTS:
       cb_new = _new_media_script;
+      dst = &q->scripts.media;
       break;
     case GLOB_SCAN_SCRIPTS:
       cb_new = _new_scan_script;
+      dst = &q->scripts.scan;
       break;
     case GLOB_UTIL_SCRIPTS:
       cb_new = _new_util_script;
+      dst = &q->scripts.util;
       break;
     default:
       g_error("%s: %d: invalid mode", __func__, __LINE__);
@@ -478,18 +529,15 @@ static gboolean _glob_scripts(_quvi_t q, const GlobType t, GSList **dst)
         gint i;
 
         r = g_strsplit(scripts_dir, G_SEARCHPATH_SEPARATOR_S, 0);
-
         for (i=0; r[i] != NULL; ++i)
           {
-            path = g_build_path(G_DIR_SEPARATOR_S, r[i], dir[t], NULL);
+            path = g_build_path(G_DIR_SEPARATOR_S, r[i], glob_dir[t], NULL);
             _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
 
             g_free(path);
             path = NULL;
           }
-
         g_strfreev(r);
-        r = NULL;
       }
   }
 
@@ -497,15 +545,11 @@ static gboolean _glob_scripts(_quvi_t q, const GlobType t, GSList **dst)
     /* Current working directory. */
 
     gchar *cwd = g_get_current_dir();
-    path = g_build_path(G_DIR_SEPARATOR_S, cwd, dir[t], NULL);
-
+    path = g_build_path(G_DIR_SEPARATOR_S, cwd, glob_dir[t], NULL);
     g_free(cwd);
-    cwd = NULL;
 
     _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
-
     g_free(path);
-    path = NULL;
   }
 
 #ifdef SCRIPTSDIR
@@ -513,23 +557,20 @@ static gboolean _glob_scripts(_quvi_t q, const GlobType t, GSList **dst)
     /* SCRIPTSDIR from config.h */
 
     path = g_build_path(G_DIR_SEPARATOR_S,
-                        SCRIPTSDIR, VERSION_MM, dir[t], NULL);
+                        SCRIPTSDIR, VERSION_MM, glob_dir[t], NULL);
 
     _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
     g_free(path);
 
     /* SCRIPTSDIR: Without the VERSION_MM. */
 
-    path = g_build_path(G_DIR_SEPARATOR_S, SCRIPTSDIR, dir[t], NULL);
-
+    path = g_build_path(G_DIR_SEPARATOR_S, SCRIPTSDIR, glob_dir[t], NULL);
     _glob_scripts_dir(q, path, dst, cb_new, cb_free, cb_chkdup);
-
     g_free(path);
-    path = NULL;
   }
 #endif /* SCRIPTSDIR */
 
-  return (*dst != NULL);
+  return ((*dst != NULL) ? TRUE:FALSE);
 }
 
 static gboolean _dir_exists(const gchar *path)
@@ -628,7 +669,8 @@ static void _chk_common_scripts(_quvi_t q)
 
 QuviError m_scan_scripts(_quvi_t q)
 {
-  QuviError rc;
+  QuviError r, e;
+  GlobType t;
 
   scripts_dir = g_getenv("LIBQUVI_SCRIPTS_DIR");
   show_script = g_getenv("LIBQUVI_SHOW_SCRIPT");
@@ -636,32 +678,16 @@ QuviError m_scan_scripts(_quvi_t q)
 
   _chk_common_scripts(q);
 
-  rc = _glob_scripts(q, GLOB_UTIL_SCRIPTS, &q->scripts.util)
-       ? QUVI_OK
-       : QUVI_ERROR_NO_UTIL_SCRIPTS;
+  e = QUVI_ERROR_CALLBACK_ABORTED+1;
+  r = QUVI_OK;
+  t = -1;
 
-  if (rc == QUVI_OK)
+  while (++t <_GLOB_COUNT && r ==QUVI_OK)
     {
-      rc = _glob_scripts(q, GLOB_MEDIA_SCRIPTS, &q->scripts.media)
-           ? QUVI_OK
-           : QUVI_ERROR_NO_MEDIA_SCRIPTS;
+      r = (_glob_scripts(q,t) == TRUE)  ? QUVI_OK : e;
+      ++e;
     }
-
-  if (rc == QUVI_OK)
-    {
-      rc = _glob_scripts(q, GLOB_PLAYLIST_SCRIPTS, &q->scripts.playlist)
-           ? QUVI_OK
-           : QUVI_ERROR_NO_PLAYLIST_SCRIPTS;
-    }
-
-  if (rc == QUVI_OK)
-    {
-      rc = _glob_scripts(q, GLOB_SCAN_SCRIPTS, &q->scripts.scan)
-           ? QUVI_OK
-           : QUVI_ERROR_NO_SCAN_SCRIPTS;
-    }
-
-  return (rc);
+  return (r);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

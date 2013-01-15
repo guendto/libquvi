@@ -1,10 +1,14 @@
 
 src=\
+  match_subtitle_export_script.c\
+  match_subtitle_script.c\
   match_playlist_script.c\
   match_media_script.c\
   scan_scripts.c\
   script_free.c\
   scan_new.c\
+  subtitle_export.c\
+  subtitle.c\
   playlist.c\
   unescape.c\
   capture.c\
@@ -15,9 +19,13 @@ src=\
   trim.c
 
 hdr=\
+  match_subtitle_export_script.h\
+  match_subtitle_script.h\
   match_playlist_script.h\
   match_media_script.h\
+  subtitle_export.h\
   script_free.h\
+  subtitle.h\
   unescape.h\
   scan_new.h\
   playlist.h\

@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -33,10 +33,13 @@ static const gchar *msg[] =
 {
   N_("Not an error"),
   N_("Operation aborted by a callback"),
+  N_("Could not find any subtitle export scripts in the path"),
+  N_("Could not find any subtitle scripts in the path"),
   N_("Could not find any playlist scripts in the path"),
   N_("Could not find any media scripts in the path"),
   N_("Could not find any scan scripts in the path"),
   N_("Could not find any the utility scripts in the path"),
+  N_("Operation aborted by the \"croak\" keyword"),
   N_("An invalid argument to the function"),
   N_("Initialization of libproxy failed"),
   N_("Initialization of libcurl failed"),

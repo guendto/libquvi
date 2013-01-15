@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -23,6 +23,12 @@
 
 QuviError l_exec_media_script_ident(gpointer, GSList*);
 QuviError l_exec_media_script_parse(gpointer, GSList*);
+
+QuviError l_exec_subtitle_export_script_ident(gpointer, GSList*);
+QuviError l_exec_subtitle_export_script_export(gpointer, GSList*);
+
+QuviError l_exec_subtitle_script_ident(gpointer, GSList*);
+QuviError l_exec_subtitle_script_parse(gpointer, GSList*);
 
 QuviError l_exec_playlist_script_ident(gpointer, GSList*);
 QuviError l_exec_playlist_script_parse(gpointer, GSList*);

@@ -1,9 +1,10 @@
 /** @page select_stream Selecting a media stream 
 
 When the library returns >1 media streams, you can access them using the
-@ref quvi_media_stream_next and @ref quvi_media_get as described above.
-The library API provides also a few convenience functions that may be
-used to make this easier.
+@ref quvi_media_stream_next and @ref quvi_media_get as described in
+@ref parse_media. Alternatively, the convenience functions
+@ref quvi_media_stream_choose_best  and @ref quvi_media_stream_select
+could also be used.
 
 @code
 quvi_media_t qm = quvi_media_new(q, URL);

@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -81,6 +81,32 @@ extern "C" {
 
   void quvi_http_metainfo_get(quvi_http_metainfo_t,
                               QuviHTTPMetaInfoProperty, ...);
+
+  /* Subtitle */
+
+  quvi_subtitle_t quvi_subtitle_new(quvi_t, const char*);
+  void quvi_subtitle_free(quvi_subtitle_t);
+
+  const quvi_subtitle_type_t quvi_subtitle_type_next(quvi_subtitle_t);
+  const quvi_subtitle_lang_t quvi_subtitle_lang_next(quvi_subtitle_type_t);
+
+  void quvi_subtitle_type_get(quvi_subtitle_type_t,
+                              QuviSubtitleTypeProperty, ...);
+
+  void quvi_subtitle_lang_get(quvi_subtitle_lang_t,
+                              QuviSubtitleLangProperty, ...);
+
+  void quvi_subtitle_type_reset(quvi_subtitle_t);
+  void quvi_subtitle_lang_reset(quvi_subtitle_type_t);
+
+  const quvi_subtitle_lang_t quvi_subtitle_select(quvi_subtitle_t, const char*);
+
+  /* Subtitle - export */
+
+  quvi_subtitle_export_t quvi_subtitle_export_new(quvi_subtitle_lang_t, char*);
+  void quvi_subtitle_export_free(quvi_subtitle_export_t);
+
+  const char *quvi_subtitle_export_data(quvi_subtitle_export_t);
 
   /* Convenience */
 

@@ -4,11 +4,16 @@ src=\
   util/exec_util_convert_entities.c\
   util/exec_util_to_file_ext.c\
   chk.c\
+  exec_subtitle_export_script_export.c\
+  exec_subtitle_export_script_ident.c\
+  exec_subtitle_script_ident.c\
+  exec_subtitle_script_parse.c\
   exec_playlist_script_ident.c\
   exec_playlist_script_parse.c\
   exec_media_script_ident.c\
   exec_media_script_parse.c\
   exec_scan_script_parse.c\
+  match_url_to_subtitle_script.c\
   match_url_to_playlist_script.c\
   match_url_to_media_script.c\
   load_util_script.c\

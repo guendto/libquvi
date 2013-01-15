@@ -40,6 +40,7 @@ static void _chk_curr_stream(_quvi_media_t qm, _quvi_media_stream_t *qms)
     }
   g_assert(qm->curr.stream != NULL);
   *qms = (_quvi_media_stream_t) qm->curr.stream->data;
+  g_assert(*qms != NULL);
 }
 
 static QuviError _media_get(_quvi_media_t qm, QuviMediaProperty n, ...)
@@ -114,47 +115,38 @@ static QuviError _media_get(_quvi_media_t qm, QuviMediaProperty n, ...)
 
     case QUVI_MEDIA_STREAM_PROPERTY_VIDEO_ENCODING:
       _chk_curr_stream(qm, &qms);
-      g_assert(qms != NULL);
       *sp = qms->video.encoding->str;
       break;
     case QUVI_MEDIA_STREAM_PROPERTY_AUDIO_ENCODING:
       _chk_curr_stream(qm, &qms);
-      g_assert(qms != NULL);
       *sp = qms->audio.encoding->str;
       break;
     case QUVI_MEDIA_STREAM_PROPERTY_CONTAINER:
       _chk_curr_stream(qm, &qms);
-      g_assert(qms != NULL);
       *sp = qms->container->str;
       break;
     case QUVI_MEDIA_STREAM_PROPERTY_URL:
       _chk_curr_stream(qm, &qms);
-      g_assert(qms != NULL);
       *sp = qms->url->str;
       break;
     case QUVI_MEDIA_STREAM_PROPERTY_ID:
       _chk_curr_stream(qm, &qms);
-      g_assert(qms != NULL);
       *sp = qms->id->str;
       break;
     case QUVI_MEDIA_STREAM_PROPERTY_VIDEO_BITRATE_KBIT_S:
       _chk_curr_stream(qm, &qms);
-      g_assert(qms != NULL);
       *dp = qms->video.bitrate_kbit_s;
       break;
     case QUVI_MEDIA_STREAM_PROPERTY_AUDIO_BITRATE_KBIT_S:
       _chk_curr_stream(qm, &qms);
-      g_assert(qms != NULL);
       *dp = qms->audio.bitrate_kbit_s;
       break;
     case QUVI_MEDIA_STREAM_PROPERTY_VIDEO_HEIGHT:
       _chk_curr_stream(qm, &qms);
-      g_assert(qms != NULL);
       *dp = qms->video.height;
       break;
     case QUVI_MEDIA_STREAM_PROPERTY_VIDEO_WIDTH:
       _chk_curr_stream(qm, &qms);
-      g_assert(qms != NULL);
       *dp = qms->video.width;
       break;
 
@@ -168,10 +160,11 @@ static QuviError _media_get(_quvi_media_t qm, QuviMediaProperty n, ...)
 /** @brief Return a media property
 @sa @ref parse_media
 @ingroup mediaprop
-@note Using any of the QUVI_MEDIA_STREAM_PROPERTY_* values will cause
-the library to advance to the first stream in the list, this will
-conflict with the use of @ref quvi_media_stream_next, causing it to
-continue from the second stream, not the first one
+@note Accessing any of the QUVI_MEDIA_STREAM_PROPERTY_* values using
+this function will cause the library to advance to the first stream
+in the list, this will conflict with @ref quvi_media_stream_next,
+causing @ref quvi_media_stream_next to advance from the second stream,
+not the first stream
 */
 void quvi_media_get(quvi_media_t handle, QuviMediaProperty property, ...)
 {

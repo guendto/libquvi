@@ -18,6 +18,15 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * NOTE: The error messages produced in these functions are intended for
+ *       developers. They would typically be seen when a new script is
+ *       being developed or an old one is being maintained.
+ *
+ *       These messages should be clear, indicating the actual error,
+ *       minimizing the time spent on locating the problem in the script.
+ */
+
 #include "config.h"
 
 #include <lauxlib.h>
@@ -31,15 +40,6 @@
 /* -- */
 #include "lua/setfield.h"
 #include "lua/def.h"
-
-/*
- * NOTE: The error messages produced in these functions are intended for
- * developers. They would typically be seen when a new media script is
- * being developed or an old one is being maintained.
- *
- * The messages should be clear, indicating the actual error, minimizing
- * the time spent on locating the actual problem in the script.
- */
 
 static const gchar script_func[] = "parse";
 
