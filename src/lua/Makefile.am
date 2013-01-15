@@ -22,7 +22,8 @@ src=\
   setfield.c\
   init.c\
   quvi/resolve.c\
-  quvi/fetch.c
+  quvi/fetch.c\
+  quvi/opts.c
 
 hdr=\
   chk.h\
@@ -30,7 +31,8 @@ hdr=\
   getfield.h\
   setfield.h\
   exec.h\
-  def.h
+  def.h\
+  quvi/opts.h
 
 noinst_LTLIBRARIES=libconvenience_lua.la
 libconvenience_lua_la_SOURCES=$(src) $(hdr)
