@@ -2,14 +2,12 @@ src=\
   http_metainfo.c\
   resolve.c\
   handle.c\
-  fetch.c\
-  opt.c
+  fetch.c
 
 hdr=\
   resolve.h\
   handle.h\
   fetch.h\
-  opt.h\
   def.h
 
 noinst_LTLIBRARIES=libconvenience_net.la
