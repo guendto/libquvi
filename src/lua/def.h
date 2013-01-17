@@ -115,11 +115,12 @@
 
 /* quvi object */
 
-#define QO_CONTENT_LENGTH  "content_length"
-#define QO_RESPONSE_CODE   "response_code"
-#define QO_ERROR_MESSAGE   "error_message"
-#define QO_CONTENT_TYPE    "content_type"
-#define QO_QUVI_CODE       "quvi_code"
+#define QO_CONTENT_LENGTH "content_length"
+#define QO_RESPONSE_CODE  "response_code"
+#define QO_ERROR_MESSAGE  "error_message"
+#define QO_CONTENT_TYPE   "content_type"
+#define QO_RESOLVED_URL   "resolved_url"
+#define QO_QUVI_CODE      "quvi_code"
 
 /* Lua indexes.
  *

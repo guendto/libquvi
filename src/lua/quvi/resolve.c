@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -31,42 +31,58 @@
 /* -- */
 #include "lua/def.h"
 #include "lua/getfield.h"
+#include "lua/setfield.h"
+#include "lua/quvi/opts.h"
 #include "net/resolve.h"
 #include "net/handle.h"
 
-/* quvi.resolve is callable from the Lua scripts. */
+/* quvi.resolve */
 gint l_quvi_resolve(lua_State *l)
 {
+  gboolean croak_if_error;
   _quvi_net_resolve_t r;
+  const gchar *url, *r_url;
+  GSList *opts;
   _quvi_t q;
-  gint c;
 
   q = (_quvi_t) l_get_reg_userdata(l, USERDATA_QUVI_T);
-  r = n_resolve_new(q, luaL_checkstring(l, 1));
 
+  url = luaL_checkstring(l, 1);
+  lua_pop(l, 1);
+
+  opts = l_quvi_object_opts_new(l);
+  croak_if_error = l_quvi_object_opts_croak_if_error(opts);
+  l_quvi_object_opts_curl(opts, q);
+
+  r = n_resolve_new(q, url);
   q->status.rc = n_resolve(q, r);
-  c = 0;  /* No. of quvi.resolve returned values. */
+
+  lua_newtable(l);
+  l_setfield_n(l, QO_RESPONSE_CODE, q->status.resp_code);
+  l_setfield_n(l, QO_QUVI_CODE, q->status.rc);
+  l_setfield_s(l, QO_ERROR_MESSAGE, (q->status.rc != QUVI_OK)
+               ? q->status.errmsg->str
+               : MS_EMPTY);
+
+  r_url = MS_EMPTY;
 
   if (quvi_ok(q) == QUVI_TRUE)
     {
-      lua_pushnil(l);
-      if (r->url.dst->len >0) /* New location. */
-        {
-          lua_pushboolean(l, 1);
-          lua_pushstring(l, r->url.dst->str);
-          ++c;
-        }
-      else
-        lua_pushboolean(l, 0); /* No redirection. */
-      ++c;
+      r_url = (r->url.dst->len >0)
+              ? r->url.dst->str
+              : MS_EMPTY;
     }
   else
-    luaL_error(l, "%s", q->status.errmsg->str);
+    {
+      if (croak_if_error == TRUE)
+        luaL_error(l, "%s", q->status.errmsg->str);
+    }
+  l_setfield_s(l, QO_RESOLVED_URL, r_url);
 
+  l_quvi_object_opts_free(opts);
   n_resolve_free(r);
-  r = NULL;
 
-  return (c);
+  return (1); /* no. of returned values (one table) */
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
