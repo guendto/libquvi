@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -27,50 +27,62 @@
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_net_s.h"
-#include "_quvi_net_resolve_s.h"
 /* -- */
 #include "lua/def.h"
 #include "lua/getfield.h"
+#include "lua/setfield.h"
+#include "lua/quvi/opts.h"
 #include "net/handle.h"
 #include "net/fetch.h"
 
 gint l_quvi_fetch(lua_State *l)
 {
-  const gchar *url;
-  QuviBoolean ok;
+  gboolean croak_if_error;
+  const gchar *data, *url;
   _quvi_net_t n;
+  GSList *opts;
   _quvi_t q;
-  gint c;
 
   q = (_quvi_t) l_get_reg_userdata(l, USERDATA_QUVI_T);
   n = NULL;
 
-  if (lua_isstring(l, 1))
-    url = lua_tostring(l, 1);
-  else
-    luaL_error(l, "quvi.fetch: expects an URL argument");
+  url = luaL_checkstring(l, 1);
   lua_pop(l, 1);
+
+  opts = l_quvi_object_opts_new(l);
+  croak_if_error = l_quvi_object_opts_croak_if_error(opts);
+  l_quvi_object_opts_curl(opts, q);
 
   n_fetch(q, &n, url);
 
-  ok = quvi_ok(q);
-  c = 0; /* No. of quvi.fetch returned values. */
+  lua_newtable(l);
+  l_setfield_n(l, QO_RESPONSE_CODE, q->status.resp_code);
+  l_setfield_n(l, QO_QUVI_CODE, q->status.rc);
+  l_setfield_s(l, QO_ERROR_MESSAGE, (q->status.rc != QUVI_OK)
+               ? q->status.errmsg->str
+               : MS_EMPTY);
 
-  if (ok == QUVI_TRUE)
+  /*
+   * The string (data) cannot contain embedded zeros; it is assumed
+   * to end at the first zero.
+   *  -- http://pgl.yoyo.org/luai/i/lua_pushstring
+   */
+
+  data = MS_EMPTY;
+
+  if (quvi_ok(q) == QUVI_TRUE)
+    data = n->fetch.content->str;
+  else
     {
-      lua_pushnil(l);
-      /* The string cannot contain embedded zeros; it is assumed to end
-       * at the first zero. <http://pgl.yoyo.org/luai/i/lua_pushstring> */
-      lua_pushstring(l, n->fetch.content->str);
-      ++c;
+      if (croak_if_error == TRUE)
+        luaL_error(l, "%s", q->status.errmsg->str);
     }
+  l_setfield_s(l, QO_DATA, n->fetch.content->str);
 
+  l_quvi_object_opts_free(opts);
   n_free(n);
-  n = NULL;
 
-  return ((ok == QUVI_FALSE)
-          ? luaL_error(l, "%s", q->status.errmsg->str)
-          : c);
+  return (1);  /* no. of returned values (one table) */
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

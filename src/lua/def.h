@@ -121,6 +121,7 @@
 #define QO_CONTENT_TYPE   "content_type"
 #define QO_RESOLVED_URL   "resolved_url"
 #define QO_QUVI_CODE      "quvi_code"
+#define QO_DATA           "data"
 
 /* Lua indexes.
  *
