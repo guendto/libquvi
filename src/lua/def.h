@@ -113,6 +113,14 @@
 
 #define US_INPUT_URL "input_url" /* App req. URL */
 
+/* quvi object */
+
+#define QO_CONTENT_LENGTH  "content_length"
+#define QO_RESPONSE_CODE   "response_code"
+#define QO_ERROR_MESSAGE   "error_message"
+#define QO_CONTENT_TYPE    "content_type"
+#define QO_QUVI_CODE       "quvi_code"
+
 /* Lua indexes.
  *
  * Used as 'key' (at index -2) and 'value' (at index -1). Many of
