@@ -33,7 +33,7 @@
 #include "lua/setfield.h"
 #include "lua/quvi/opts.h"
 
-gint l_quvi_metainfo(lua_State *l)
+gint l_quvi_http_metainfo(lua_State *l)
 {
   _quvi_http_metainfo_t qmi;
   gboolean croak_if_error;

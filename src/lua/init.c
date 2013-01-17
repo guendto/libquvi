@@ -28,28 +28,34 @@
 /* -- */
 #include "_quvi_s.h"
 
-/* 'quvi' object functions for media scripts, e.g. 'quvi.fetch' */
+/* 'quvi' object functions for scripts, e.g. 'quvi.http.fetch' */
 
-extern gint l_quvi_metainfo(lua_State*);
-extern gint l_quvi_resolve(lua_State*);
-extern gint l_quvi_fetch(lua_State*);
+extern gint l_quvi_http_metainfo(lua_State*);
+extern gint l_quvi_http_resolve(lua_State*);
+extern gint l_quvi_http_fetch(lua_State*);
 
 static const luaL_Reg quvi_reg_meth[] =
 {
-  {"metainfo", l_quvi_metainfo},
-  {"resolve", l_quvi_resolve},
-  {"fetch", l_quvi_fetch},
+  {NULL, NULL}
+};
+
+static const luaL_Reg quvi_http_reg_meth[] =
+{
+  {"metainfo", l_quvi_http_metainfo},
+  {"resolve", l_quvi_http_resolve},
+  {"fetch", l_quvi_http_fetch},
   {NULL, NULL}
 };
 
 QuviError l_init(_quvi_t q)
 {
-  q->handle.lua = (lua_State*)luaL_newstate();
+  q->handle.lua = (lua_State*) luaL_newstate();
   if (q->handle.lua == NULL)
     return (QUVI_ERROR_LUA_INIT);
 
   luaL_openlibs(q->handle.lua);
   luaL_openlib(q->handle.lua, "quvi", quvi_reg_meth, 1);
+  luaL_openlib(q->handle.lua, "quvi.http", quvi_http_reg_meth, 1);
 
   return (QUVI_OK);
 }

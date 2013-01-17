@@ -35,7 +35,7 @@
 #include "net/handle.h"
 #include "net/fetch.h"
 
-gint l_quvi_fetch(lua_State *l)
+gint l_quvi_http_fetch(lua_State *l)
 {
   gboolean croak_if_error;
   const gchar *data, *url;

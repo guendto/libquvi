@@ -36,8 +36,7 @@
 #include "net/resolve.h"
 #include "net/handle.h"
 
-/* quvi.resolve */
-gint l_quvi_resolve(lua_State *l)
+gint l_quvi_http_resolve(lua_State *l)
 {
   gboolean croak_if_error;
   _quvi_net_resolve_t r;
