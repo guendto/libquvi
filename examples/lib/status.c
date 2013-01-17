@@ -25,43 +25,34 @@
 
 static void fetch(const quvi_word type, const gpointer p)
 {
-  switch (type)
-    {
-    default:
-      g_printerr("[%s] Fetch %s ...", __func__, (gchar*) p);
-      break;
-    case QUVI_CALLBACK_STATUS_FETCH_CONFIG:
-      g_printerr("[%s] Fetch config ...", __func__);
-      break;
-    case QUVI_CALLBACK_STATUS_FETCH_PLAYLIST:
-      g_printerr("[%s] Fetch playlist ...", __func__);
-      break;
-    case QUVI_CALLBACK_STATUS_DONE:
-      g_printerr("done.\n");
-      break;
-    }
+  if (type != QUVI_CALLBACK_STATUS_DONE)
+    g_printerr("[%s] Fetch %s ...", __func__, (gchar*) p);
+  else
+    g_printerr("done.\n");
 }
 
 static void resolve(const quvi_word type)
 {
-  if (type == QUVI_CALLBACK_STATUS_DONE)
-    g_printerr("done.\n");
-  else
+  if (type != QUVI_CALLBACK_STATUS_DONE)
     g_printerr("[%s] Check for URL redirection ...", __func__);
+  else
+    g_printerr("done.\n");
 }
 
 static void http_metainfo(const quvi_word type)
 {
-  if (type == QUVI_CALLBACK_STATUS_DONE)
-    g_printerr("done.\n");
-  else
+  if (type != QUVI_CALLBACK_STATUS_DONE)
     g_printerr("[%s] Query meta-info for URL ...", __func__);
+  else
+    g_printerr("done.\n");
 }
 
 QuviError examples_status(glong param, gpointer p)
 {
-  const quvi_word status = quvi_loword(param);
-  const quvi_word type = quvi_hiword(param);
+  quvi_word status, type;
+
+  status = quvi_loword(param);
+  type = quvi_hiword(param);
 
   switch (status)
     {

@@ -32,14 +32,6 @@ typedef enum
   QUVI_CALLBACK_STATUS_DONE
 } QuviCallbackStatus;
 
-/** @enum QuviCallbackStatusFetch */
-typedef enum
-{
-  QUVI_CALLBACK_STATUS_FETCH_PLAYLIST,
-  QUVI_CALLBACK_STATUS_FETCH_CONFIG,
-  QUVI_CALLBACK_STATUS_FETCH_URL
-} QuviCallbackStatusFetch;
-
 #endif /* qcallback_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
