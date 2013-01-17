@@ -28,66 +28,22 @@
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_net_s.h"
-#include "_quvi_net_opt_s.h"
 #include "_quvi_macro.h"
 /* -- */
+#include "lua/quvi/opts.h"
 #include "net/def.h"
 #include "net/handle.h"
-#include "net/opt.h"
-
-/* Return status type. */
-static glong _cb_status_type(_quvi_net_t n)
-{
-  _quvi_net_opt_t o;
-  GSList *curr;
-  glong st;
-
-  st = QUVI_CALLBACK_STATUS_FETCH_URL; /* default */
-  curr = n->options;
-
-  while (curr != NULL)
-    {
-      o = (_quvi_net_opt_t) curr->data;
-      if (o->id == QUVI_FETCH_OPTION_TYPE)
-        {
-          st = (glong) o->value.n;
-          break;
-        }
-      curr = g_slist_next(curr);
-    }
-  return (st);
-}
-
-static gchar *_chk_opt_from_charset(_quvi_net_t n)
-{
-  _quvi_net_opt_t o;
-  GSList *curr;
-
-  curr = n->options;
-  while (curr != NULL)
-    {
-      o = (_quvi_net_opt_t) curr->data;
-
-      if (o->id == QUVI_FETCH_OPTION_FROM_CHARSET)
-        return (g_strdup(o->value.s->str));
-
-      curr = g_slist_next(curr);
-    }
-  return (NULL);
-}
 
 extern gchar* to_utf8(const gchar*, const gchar*);
 extern QuviError c_fetch(_quvi_net_t);
 
-void n_fetch(_quvi_t q, _quvi_net_t *n, const gchar *url)
+void n_fetch(_quvi_t q, _quvi_net_t *n, const gchar *url, GSList *opts)
 {
   *n = n_new(q, url);
-  n_chk_callback_opts(*n, q->handle.lua);
 
   if (q->cb.status != NULL)
     {
-      const glong st = _cb_status_type(*n);
-      const glong p = q_makelong(QUVI_CALLBACK_STATUS_FETCH, st);
+      const glong p = q_makelong(QUVI_CALLBACK_STATUS_FETCH, 0);
 
       if (q->cb.status(p, (gpointer) url) != QUVI_OK)
         {
@@ -104,20 +60,27 @@ void n_fetch(_quvi_t q, _quvi_net_t *n, const gchar *url)
   if (quvi_ok(q) == QUVI_TRUE && (*n)->status.resp_code == 200)
     {
       /* To UTF8. */
-      gchar *from = _chk_opt_from_charset(*n);
-      gchar *c = to_utf8((*n)->fetch.content->str, from);
 
-      if (c != NULL)
+      if (opts != NULL)
         {
-          g_string_assign((*n)->fetch.content, c);
-          g_free(c);
-          c = NULL;
-        }
+          GSList *from;
 
-      if (from != NULL)
-        {
-          g_free(from);
-          from = NULL;
+          if (l_quvi_object_opts_is_set(opts,
+                                        QUVI_OBJECT_OPTION_FETCH_FROM_CHARSET,
+                                        &from) == TRUE)
+            {
+              l_quvi_object_opt_t o;
+              gchar *c;
+
+              o = (l_quvi_object_opt_t) from->data;
+              c = to_utf8((*n)->fetch.content->str, o->value.str);
+
+              if (c != NULL)
+                {
+                  g_string_assign((*n)->fetch.content, c);
+                  g_free(c);
+                }
+            }
         }
 
       /* Update status. */

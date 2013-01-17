@@ -53,7 +53,7 @@ gint l_quvi_fetch(lua_State *l)
   croak_if_error = l_quvi_object_opts_croak_if_error(opts);
   l_quvi_object_opts_curl(opts, q);
 
-  n_fetch(q, &n, url);
+  n_fetch(q, &n, url, opts);
 
   lua_newtable(l);
   l_setfield_n(l, QO_RESPONSE_CODE, q->status.resp_code);

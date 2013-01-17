@@ -29,7 +29,6 @@
 #include "_quvi_s.h"
 #include "_quvi_media_s.h"
 #include "_quvi_net_s.h"
-#include "_quvi_net_opt_s.h"
 /* -- */
 #include "curl/autoproxy.h"
 #include "curl/temp.h"
