@@ -1,20 +1,20 @@
 /* libquvi
- * Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
- * This program is free software: you can redistribute it and/or
+ * This library is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General
- * Public License along with this program.  If not, see
+ * Public License along with this library.  If not, see
  * <http://www.gnu.org/licenses/>.
  */
 
@@ -26,22 +26,25 @@
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
-#include "_quvi_http_metainfo_s.h"
+#include "_quvi_net_s.h"
 /* -- */
 #include "lua/def.h"
 #include "lua/getfield.h"
 #include "lua/setfield.h"
 #include "lua/quvi/opts.h"
+#include "net/handle.h"
+#include "net/fetch.h"
 
-gint l_quvi_metainfo(lua_State *l)
+gint l_quvi_http_fetch(lua_State *l)
 {
-  _quvi_http_metainfo_t qmi;
   gboolean croak_if_error;
-  const gchar *url;
+  const gchar *data, *url;
+  _quvi_net_t n;
   GSList *opts;
   _quvi_t q;
 
   q = (_quvi_t) l_get_reg_userdata(l, USERDATA_QUVI_T);
+  n = NULL;
 
   url = luaL_checkstring(l, 1);
   lua_pop(l, 1);
@@ -50,7 +53,7 @@ gint l_quvi_metainfo(lua_State *l)
   croak_if_error = l_quvi_object_opts_croak_if_error(opts);
   l_quvi_object_opts_curl(opts, q);
 
-  qmi = quvi_http_metainfo_new(q, url);
+  n_fetch(q, &n, url, opts);
 
   lua_newtable(l);
   l_setfield_n(l, QO_RESPONSE_CODE, q->status.resp_code);
@@ -59,21 +62,27 @@ gint l_quvi_metainfo(lua_State *l)
                ? q->status.errmsg->str
                : MS_EMPTY);
 
+  /*
+   * The string (data) cannot contain embedded zeros; it is assumed
+   * to end at the first zero.
+   *  -- http://pgl.yoyo.org/luai/i/lua_pushstring
+   */
+
+  data = MS_EMPTY;
+
   if (quvi_ok(q) == QUVI_TRUE)
-    {
-      l_setfield_s(l, QO_CONTENT_TYPE, qmi->content_type->str);
-      l_setfield_n(l, QO_CONTENT_LENGTH, qmi->length_bytes);
-    }
+    data = n->fetch.content->str;
   else
     {
       if (croak_if_error == TRUE)
         luaL_error(l, "%s", q->status.errmsg->str);
     }
+  l_setfield_s(l, QO_DATA, n->fetch.content->str);
 
   l_quvi_object_opts_free(opts);
-  quvi_http_metainfo_free(qmi);
+  n_free(n);
 
-  return (1); /* no. of returned values (one table) */
+  return (1);  /* no. of returned values (one table) */
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

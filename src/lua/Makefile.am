@@ -21,9 +21,9 @@ src=\
   getfield.c\
   setfield.c\
   init.c\
-  quvi/metainfo.c\
-  quvi/resolve.c\
-  quvi/fetch.c\
+  quvi/http/metainfo.c\
+  quvi/http/resolve.c\
+  quvi/http/fetch.c\
   quvi/opts.c
 
 hdr=\

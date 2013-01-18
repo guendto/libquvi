@@ -27,24 +27,24 @@
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_net_s.h"
+#include "_quvi_net_resolve_s.h"
 /* -- */
 #include "lua/def.h"
 #include "lua/getfield.h"
 #include "lua/setfield.h"
 #include "lua/quvi/opts.h"
+#include "net/resolve.h"
 #include "net/handle.h"
-#include "net/fetch.h"
 
-gint l_quvi_fetch(lua_State *l)
+gint l_quvi_http_resolve(lua_State *l)
 {
   gboolean croak_if_error;
-  const gchar *data, *url;
-  _quvi_net_t n;
+  _quvi_net_resolve_t r;
+  const gchar *url, *r_url;
   GSList *opts;
   _quvi_t q;
 
   q = (_quvi_t) l_get_reg_userdata(l, USERDATA_QUVI_T);
-  n = NULL;
 
   url = luaL_checkstring(l, 1);
   lua_pop(l, 1);
@@ -53,7 +53,8 @@ gint l_quvi_fetch(lua_State *l)
   croak_if_error = l_quvi_object_opts_croak_if_error(opts);
   l_quvi_object_opts_curl(opts, q);
 
-  n_fetch(q, &n, url, opts);
+  r = n_resolve_new(q, url);
+  q->status.rc = n_resolve(q, r);
 
   lua_newtable(l);
   l_setfield_n(l, QO_RESPONSE_CODE, q->status.resp_code);
@@ -62,27 +63,25 @@ gint l_quvi_fetch(lua_State *l)
                ? q->status.errmsg->str
                : MS_EMPTY);
 
-  /*
-   * The string (data) cannot contain embedded zeros; it is assumed
-   * to end at the first zero.
-   *  -- http://pgl.yoyo.org/luai/i/lua_pushstring
-   */
-
-  data = MS_EMPTY;
+  r_url = MS_EMPTY;
 
   if (quvi_ok(q) == QUVI_TRUE)
-    data = n->fetch.content->str;
+    {
+      r_url = (r->url.dst->len >0)
+              ? r->url.dst->str
+              : MS_EMPTY;
+    }
   else
     {
       if (croak_if_error == TRUE)
         luaL_error(l, "%s", q->status.errmsg->str);
     }
-  l_setfield_s(l, QO_DATA, n->fetch.content->str);
+  l_setfield_s(l, QO_RESOLVED_URL, r_url);
 
   l_quvi_object_opts_free(opts);
-  n_free(n);
+  n_resolve_free(r);
 
-  return (1);  /* no. of returned values (one table) */
+  return (1); /* no. of returned values (one table) */
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

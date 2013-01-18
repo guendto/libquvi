@@ -1,20 +1,20 @@
 /* libquvi
- * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
- * This library is free software: you can redistribute it and/or
+ * This program is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General
- * Public License along with this library.  If not, see
+ * Public License along with this program.  If not, see
  * <http://www.gnu.org/licenses/>.
  */
 
@@ -26,22 +26,18 @@
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
-#include "_quvi_net_s.h"
-#include "_quvi_net_resolve_s.h"
+#include "_quvi_http_metainfo_s.h"
 /* -- */
 #include "lua/def.h"
 #include "lua/getfield.h"
 #include "lua/setfield.h"
 #include "lua/quvi/opts.h"
-#include "net/resolve.h"
-#include "net/handle.h"
 
-/* quvi.resolve */
-gint l_quvi_resolve(lua_State *l)
+gint l_quvi_http_metainfo(lua_State *l)
 {
+  _quvi_http_metainfo_t qmi;
   gboolean croak_if_error;
-  _quvi_net_resolve_t r;
-  const gchar *url, *r_url;
+  const gchar *url;
   GSList *opts;
   _quvi_t q;
 
@@ -54,8 +50,7 @@ gint l_quvi_resolve(lua_State *l)
   croak_if_error = l_quvi_object_opts_croak_if_error(opts);
   l_quvi_object_opts_curl(opts, q);
 
-  r = n_resolve_new(q, url);
-  q->status.rc = n_resolve(q, r);
+  qmi = quvi_http_metainfo_new(q, url);
 
   lua_newtable(l);
   l_setfield_n(l, QO_RESPONSE_CODE, q->status.resp_code);
@@ -64,23 +59,19 @@ gint l_quvi_resolve(lua_State *l)
                ? q->status.errmsg->str
                : MS_EMPTY);
 
-  r_url = MS_EMPTY;
-
   if (quvi_ok(q) == QUVI_TRUE)
     {
-      r_url = (r->url.dst->len >0)
-              ? r->url.dst->str
-              : MS_EMPTY;
+      l_setfield_s(l, QO_CONTENT_TYPE, qmi->content_type->str);
+      l_setfield_n(l, QO_CONTENT_LENGTH, qmi->length_bytes);
     }
   else
     {
       if (croak_if_error == TRUE)
         luaL_error(l, "%s", q->status.errmsg->str);
     }
-  l_setfield_s(l, QO_RESOLVED_URL, r_url);
 
   l_quvi_object_opts_free(opts);
-  n_resolve_free(r);
+  quvi_http_metainfo_free(qmi);
 
   return (1); /* no. of returned values (one table) */
 }
