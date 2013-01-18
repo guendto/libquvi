@@ -29,32 +29,10 @@
 #include "_quvi_s.h"
 #include "_quvi_media_s.h"
 #include "_quvi_net_s.h"
-#include "_quvi_net_opt_s.h"
 /* -- */
 #include "curl/autoproxy.h"
 #include "curl/temp.h"
 #include "net/def.h"
-
-static void _set_opt(gpointer p, gpointer userdata)
-{
-  _quvi_net_opt_t o;
-  CURL *c;
-
-  o = (_quvi_net_opt_t) p;
-  c = userdata;
-
-  switch ((glong) o->id)
-    {
-    case QUVI_FETCH_OPTION_USER_AGENT:
-      curl_easy_setopt(c, CURLOPT_USERAGENT, o->value.s->str);
-      break;
-    case QUVI_FETCH_OPTION_COOKIE:
-      curl_easy_setopt(c, CURLOPT_COOKIE, o->value.s->str);
-      break;
-    default:
-      break;
-    }
-}
 
 static void _set_opts(_quvi_net_t n, _c_temp_t t, CURL *c)
 {
@@ -65,8 +43,6 @@ static void _set_opts(_quvi_net_t n, _c_temp_t t, CURL *c)
   curl_easy_setopt(c, CURLOPT_WRITEDATA, t);
   /* CURLOPT_ENCODING -> CURLOPT_ACCEPT_ENCODING 7.21.6+ */
   curl_easy_setopt(c, CURLOPT_ENCODING, "");
-  /* Set cURL options from script fetch args (if any), e.g. user-agent */
-  g_slist_foreach(n->options, _set_opt, c);
 
   c_autoproxy(n->handle.quvi, n->url.addr->str);
 }

@@ -30,7 +30,6 @@
 #include "_quvi_net_resolve_s.h"
 /* -- */
 #include "net/handle.h"
-#include "net/opt.h"
 
 gpointer n_new(_quvi_t q, const gchar *url)
 {
@@ -49,14 +48,6 @@ void n_free(gpointer p)
 
   if (n == NULL)
     return;
-
-#ifdef HAVE_GLIB_2_28
-  g_slist_free_full(n->options, n_opt_free);
-#else
-  g_slist_foreach(n->options, n_opt_free, NULL);
-  g_slist_free(n->options);
-#endif
-  n->options = NULL;
 
   g_string_free(n->url.addr, TRUE);
   n->url.addr = NULL;

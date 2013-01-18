@@ -21,7 +21,7 @@
 #ifndef n_fetch_h
 #define n_fetch_h
 
-void n_fetch(_quvi_t, _quvi_net_t*, const gchar*);
+void n_fetch(_quvi_t, _quvi_net_t*, const gchar*, GSList*);
 
 #endif /* n_fetch_h */
 

@@ -32,7 +32,6 @@
 #include "_quvi_macro.h"
 /* -- */
 #include "net/handle.h"
-#include "net/opt.h"
 
 extern QuviError l_exec_util_to_file_ext(_quvi_http_metainfo_t, _quvi_net_t);
 extern QuviError c_http_metainfo(_quvi_t, _quvi_net_t);
@@ -49,9 +48,6 @@ static QuviError _http_metainfo(_quvi_http_metainfo_t qmi)
   q = qmi->handle.quvi;
   n = n_new(q, qmi->url.input->str);
   l = q->handle.lua;
-
-  if (lua_istable(l, 2))
-    n_chk_callback_opts(n, l);
 
   if (q->cb.http_metainfo != NULL)
     rc = q->cb.http_metainfo(n);

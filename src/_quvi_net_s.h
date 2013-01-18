@@ -23,7 +23,6 @@
 
 struct _quvi_net_s
 {
-  GSList *options;
   struct
   {
     GString *addr;

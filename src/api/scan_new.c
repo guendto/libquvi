@@ -82,7 +82,7 @@ quvi_scan_t quvi_scan_new(quvi_t handle, const char *url)
   qs = m_scan_new(q, url);
   {
     _quvi_net_t n = NULL;
-    n_fetch(q, &n, qs->url.input->str);
+    n_fetch(q, &n, qs->url.input->str, NULL);
 
     if (quvi_ok(q) == QUVI_TRUE)
       {
