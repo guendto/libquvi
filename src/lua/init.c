@@ -54,8 +54,8 @@ QuviError l_init(_quvi_t q)
     return (QUVI_ERROR_LUA_INIT);
 
   luaL_openlibs(q->handle.lua);
-  luaL_openlib(q->handle.lua, "quvi", quvi_reg_meth, 1);
-  luaL_openlib(q->handle.lua, "quvi.http", quvi_http_reg_meth, 1);
+  luaL_register(q->handle.lua, "quvi", quvi_reg_meth);
+  luaL_register(q->handle.lua, "quvi.http", quvi_http_reg_meth);
 
   return (QUVI_OK);
 }
