@@ -37,12 +37,10 @@ static QuviError _select(_quvi_media_t qm, const gchar *id)
   _quvi_media_stream_t qms;
   gboolean found_flag;
   QuviError rc;
-  _quvi_t q;
   gchar **r;
   gint i;
 
   quvi_media_stream_reset(qm);
-  q = qm->handle.quvi;
 
   r = g_strsplit(id, ",", 0);
   found_flag = FALSE;
