@@ -42,6 +42,7 @@ static gpointer _quvi_new()
 extern QuviError m_scan_scripts(_quvi_t q);
 extern QuviError l_init(_quvi_t q);
 extern QuviError c_init(_quvi_t q);
+extern QuviError g_init();
 /** @endcond */
 
 /** @brief Create a new library handle
@@ -64,6 +65,9 @@ quvi_t quvi_new()
 
   if (q->status.rc == QUVI_OK)
     q->status.rc = c_init(q);
+
+  if (q->status.rc == QUVI_OK)
+    q->status.rc = g_init();
 
   if (q->status.rc == QUVI_OK)
     {
