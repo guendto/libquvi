@@ -43,7 +43,7 @@ struct l_quvi_object_opt_s
 
 typedef struct l_quvi_object_opt_s *l_quvi_object_opt_t;
 
-GSList *l_quvi_object_opts_new(lua_State*);
+GSList *l_quvi_object_opts_new(lua_State*, gint);
 void l_quvi_object_opts_free(GSList*);
 
 gboolean l_quvi_object_opts_is_set(GSList*, QuviObjectOption, GSList**);

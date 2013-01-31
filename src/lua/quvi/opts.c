@@ -42,7 +42,7 @@ static gpointer _opt_new(const QuviObjectOption qoo, const gchar *vs,
 }
 
 /* Return a single-linked list of options passed with quvi.* function. */
-GSList *l_quvi_object_opts_new(lua_State *l)
+GSList *l_quvi_object_opts_new(lua_State *l, gint index)
 {
   l_quvi_object_opt_t o;
   GSList *r;
@@ -51,7 +51,7 @@ GSList *l_quvi_object_opts_new(lua_State *l)
 
   r = NULL;
 
-  if (!lua_istable(l, 2))
+  if (!lua_istable(l, index))
     return (NULL);
 
   lua_pushnil(l);

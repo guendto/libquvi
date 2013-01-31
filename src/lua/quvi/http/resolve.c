@@ -49,7 +49,7 @@ gint l_quvi_http_resolve(lua_State *l)
   url = luaL_checkstring(l, 1);
   lua_pop(l, 1);
 
-  opts = l_quvi_object_opts_new(l);
+  opts = l_quvi_object_opts_new(l, 2);
   croak_if_error = l_quvi_object_opts_croak_if_error(opts);
   l_quvi_object_opts_curl(opts, q);
 
