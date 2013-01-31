@@ -155,6 +155,7 @@ AC_CONFIG_FILES([
   examples/Makefile
   examples/lib/Makefile
   src/misc/Makefile
+  src/gcrypt/Makefile
   src/curl/Makefile
   src/net/Makefile
   src/api/Makefile
