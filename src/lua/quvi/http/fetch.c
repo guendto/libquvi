@@ -60,7 +60,7 @@ gint l_quvi_http_fetch(lua_State *l)
   l_setfield_n(l, QO_QUVI_CODE, q->status.rc);
   l_setfield_s(l, QO_ERROR_MESSAGE, (q->status.rc != QUVI_OK)
                ? q->status.errmsg->str
-               : MS_EMPTY);
+               : MS_EMPTY, -1);
 
   /*
    * The string (data) cannot contain embedded zeros; it is assumed
@@ -77,7 +77,7 @@ gint l_quvi_http_fetch(lua_State *l)
       if (croak_if_error == TRUE)
         luaL_error(l, "%s", q->status.errmsg->str);
     }
-  l_setfield_s(l, QO_DATA, n->fetch.content->str);
+  l_setfield_s(l, QO_DATA, n->fetch.content->str, -1);
 
   l_quvi_object_opts_free(opts);
   n_free(n);

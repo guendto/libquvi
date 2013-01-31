@@ -48,7 +48,7 @@ gchar *l_exec_util_resolve_redirections(_quvi_t q, const gchar *url)
     return (NULL);
 
   l = q->handle.lua;
-  l_setfield_s(l, US_INPUT_URL, url); /* Set as qargs.input_url */
+  l_setfield_s(l, US_INPUT_URL, url, -1); /* Set as qargs.input_url */
 
   /*
    * 1=qargs [qargs: set in l_load_util_script]

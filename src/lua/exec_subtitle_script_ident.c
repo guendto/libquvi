@@ -81,7 +81,7 @@ QuviError l_exec_subtitle_script_ident(gpointer p, GSList *sl)
     }
 
   lua_newtable(l);
-  l_setfield_s(l, SUS_INPUT_URL, qsub->url.input->str);
+  l_setfield_s(l, SUS_INPUT_URL, qsub->url.input->str, -1);
 
   if (lua_pcall(l, 1, 1, 0))
     {

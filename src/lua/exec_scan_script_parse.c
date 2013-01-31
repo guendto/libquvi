@@ -103,8 +103,8 @@ QuviError l_exec_scan_script_parse(gpointer p, gpointer _qss,
 
   lua_newtable(l);
   l_set_reg_userdata(l, USERDATA_QUVI_T, (gpointer) qs->handle.quvi);
-  l_setfield_s(l, SS_INPUT_URL, qs->url.input->str);
-  l_setfield_s(l, SS_CONTENT, data);
+  l_setfield_s(l, SS_INPUT_URL, qs->url.input->str, -1);
+  l_setfield_s(l, SS_CONTENT, data, -1);
 
   if (lua_pcall(l, 1, 1, 0))
     {

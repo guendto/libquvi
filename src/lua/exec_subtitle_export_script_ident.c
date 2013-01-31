@@ -93,7 +93,7 @@ QuviError l_exec_subtitle_export_script_ident(gpointer p, GSList *sl)
     }
 
   lua_newtable(l);
-  l_setfield_s(l, SUES_TO_FORMAT, qse->format.to->str);
+  l_setfield_s(l, SUES_TO_FORMAT, qse->format.to->str, -1);
 
   if (lua_pcall(l, 1, 1, 0))
     {

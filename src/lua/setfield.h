@@ -21,7 +21,7 @@
 #ifndef l_setfield_h
 #define l_setfield_h
 
-void l_setfield_s(lua_State*, const gchar*, const gchar*);
+void l_setfield_s(lua_State*, const gchar*, const gchar*, const gint);
 void l_setfield_n(lua_State*, const gchar*, const glong);
 void l_setfield_b(lua_State*, const gchar*, const gint);
 void l_set_reg_userdata(lua_State*, const gchar*, gpointer);

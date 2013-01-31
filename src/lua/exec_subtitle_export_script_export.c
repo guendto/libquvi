@@ -85,7 +85,7 @@ QuviError l_exec_subtitle_export_script_export(gpointer p, GSList *sl)
 
   lua_newtable(l);
   l_set_reg_userdata(l, USERDATA_QUVI_T, (gpointer) qse->handle.quvi);
-  l_setfield_s(l, SUES_INPUT_URL, qse->url.input->str);
+  l_setfield_s(l, SUES_INPUT_URL, qse->url.input->str, -1);
   l_setfield_n(l, SUES_FROM_FORMAT, qse->format.from);
 
   if (lua_pcall(l, 1, 1, 0))

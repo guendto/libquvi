@@ -262,7 +262,7 @@ QuviError l_exec_media_script_parse(gpointer p, GSList *sl)
 
   lua_newtable(l);
   l_set_reg_userdata(l, USERDATA_QUVI_T, (gpointer) qm->handle.quvi);
-  l_setfield_s(l, MS_INPUT_URL, qm->url.input->str);
+  l_setfield_s(l, MS_INPUT_URL, qm->url.input->str, -1);
 
   if (lua_pcall(l, 1, 1, 0))
     {

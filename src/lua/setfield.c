@@ -30,8 +30,15 @@
     lua_settable(l,-3); \
   } while (0)
 
-void l_setfield_s(lua_State *l, const gchar *k, const gchar *s)
+void l_setfield_s(lua_State *l, const gchar *k, const gchar *s, const gint n)
 {
+  if (n >0)
+    {
+      lua_pushstring(l,k);
+      lua_pushlstring(l,s,n);
+      lua_settable(l,-3);
+      return;
+    }
   _push(string, s);
 }
 

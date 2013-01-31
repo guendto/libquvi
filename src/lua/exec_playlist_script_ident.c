@@ -81,7 +81,7 @@ QuviError l_exec_playlist_script_ident(gpointer p, GSList *sl)
     }
 
   lua_newtable(l);
-  l_setfield_s(l, PS_INPUT_URL, qp->url.input->str);
+  l_setfield_s(l, PS_INPUT_URL, qp->url.input->str, -1);
 
   if (lua_pcall(l, 1, 1, 0))
     {

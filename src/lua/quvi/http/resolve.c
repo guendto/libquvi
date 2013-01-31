@@ -61,7 +61,7 @@ gint l_quvi_http_resolve(lua_State *l)
   l_setfield_n(l, QO_QUVI_CODE, q->status.rc);
   l_setfield_s(l, QO_ERROR_MESSAGE, (q->status.rc != QUVI_OK)
                ? q->status.errmsg->str
-               : MS_EMPTY);
+               : MS_EMPTY, -1);
 
   r_url = MS_EMPTY;
 
@@ -76,7 +76,7 @@ gint l_quvi_http_resolve(lua_State *l)
       if (croak_if_error == TRUE)
         luaL_error(l, "%s", q->status.errmsg->str);
     }
-  l_setfield_s(l, QO_RESOLVED_URL, r_url);
+  l_setfield_s(l, QO_RESOLVED_URL, r_url, -1);
 
   l_quvi_object_opts_free(opts);
   n_resolve_free(r);
