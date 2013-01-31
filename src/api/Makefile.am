@@ -84,3 +84,5 @@ libconvenience_api_la_LIBADD=\
   $(libproxy_LIBS)\
   $(liblua_LIBS)\
   $(glib_LIBS)
+
+# vim: set ts=2 sw=2 tw=72 expandtab:
