@@ -74,6 +74,9 @@ Requirements
 * libproxy 0.3.1
   http://code.google.com/p/libproxy/
 
+* libgcrypt 1.4.5
+  http://directory.fsf.org/wiki/Libgcrypt
+
 * pkg-config for tracking the compilation flags needed for libraries
   http://www.freedesktop.org/software/pkgconfig/
 
