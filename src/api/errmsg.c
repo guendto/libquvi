@@ -41,6 +41,7 @@ static const gchar *msg[] =
   N_("Could not find any the utility scripts in the path"),
   N_("Operation aborted by the \"croak\" keyword"),
   N_("An invalid argument to the function"),
+  N_("libgcrypt version mismatch"),
   N_("Initialization of libproxy failed"),
   N_("Initialization of libcurl failed"),
   N_("Initialization of liblua failed")
