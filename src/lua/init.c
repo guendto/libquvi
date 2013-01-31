@@ -47,6 +47,16 @@ static const luaL_Reg quvi_http_reg_meth[] =
   {NULL, NULL}
 };
 
+extern gint l_quvi_base64_encode(lua_State*);
+extern gint l_quvi_base64_decode(lua_State*);
+
+static const luaL_Reg quvi_base64_reg_meth[] =
+{
+  {"encode",    l_quvi_base64_encode},
+  {"decode",    l_quvi_base64_decode},
+  {NULL, NULL}
+};
+
 QuviError l_init(_quvi_t q)
 {
   q->handle.lua = (lua_State*) luaL_newstate();
@@ -56,6 +66,7 @@ QuviError l_init(_quvi_t q)
   luaL_openlibs(q->handle.lua);
   luaL_register(q->handle.lua, "quvi", quvi_reg_meth);
   luaL_register(q->handle.lua, "quvi.http", quvi_http_reg_meth);
+  luaL_register(q->handle.lua, "quvi.base64", quvi_base64_reg_meth);
 
   return (QUVI_OK);
 }

@@ -21,6 +21,8 @@ src=\
   getfield.c\
   setfield.c\
   init.c\
+  quvi/base64/decode.c\
+  quvi/base64/encode.c\
   quvi/http/metainfo.c\
   quvi/http/resolve.c\
   quvi/http/fetch.c\
