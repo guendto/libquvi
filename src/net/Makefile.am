@@ -1,14 +1,14 @@
 src=\
-  http_metainfo.c\
-  resolve.c\
+  fetch.c\
   handle.c\
-  fetch.c
+  http_metainfo.c\
+  resolve.c
 
 hdr=\
-  resolve.h\
-  handle.h\
+  def.h\
   fetch.h\
-  def.h
+  handle.h\
+  resolve.h
 
 noinst_LTLIBRARIES=libconvenience_net.la
 libconvenience_net_la_SOURCES=$(src) $(hdr)
@@ -29,3 +29,5 @@ libconvenience_net_la_LDFLAGS=\
 libconvenience_net_la_LIBADD=\
   $(liblua_LIBS)\
   $(glib_LIBS)
+
+# vim: set ts=2 sw=2 tw=72 expandtab:

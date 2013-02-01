@@ -1,19 +1,20 @@
 libquvisubincludedir=$(includedir)/quvi-0.9/quvi
+
 libquvisubinclude_HEADERS=\
-  qplaylistprop.h\
-  qhttpmiprop.h\
-  qmediaprop.h\
-  qsubtprop.h\
-  qcallback.h\
-  qversion.h\
-  qoption.h\
-  qscript.h\
-  qerror.h\
-  qsupp.h\
   qbool.h\
-  qinfo.h\
+  qcallback.h\
+  qdef.h\
+  qerror.h\
   qfunc.h\
-  qdef.h
+  qhttpmiprop.h\
+  qinfo.h\
+  qmediaprop.h\
+  qoption.h\
+  qplaylistprop.h\
+  qscript.h\
+  qsubtprop.h\
+  qsupp.h\
+  qversion.h
 
 install-data-local:
 	@if test -f $(libquvisubincludedir)/qfunc.h ; then \
@@ -22,3 +23,5 @@ install-data-local:
 		echo "** install' again." ; \
 		false ; \
 	fi
+
+# vim: set ts=2 sw=2 tw=72 expandtab:

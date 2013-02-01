@@ -1,5 +1,11 @@
-src=cleanup.c enable_verbose.c enable_autoproxy.c\
-  exit_if_error.c status.c var.c chk.c
+src=\
+  chk.c\
+  cleanup.c\
+  enable_autoproxy.c\
+  enable_verbose.c\
+  exit_if_error.c\
+  status.c\
+  var.c
 
 hdr=examples.h
 
@@ -19,3 +25,5 @@ libconvenience_example_la_LDFLAGS=\
 libconvenience_example_la_LIBADD=\
   $(libcurl_LIBS)\
   $(glib_LIBS)
+
+# vim: set ts=2 sw=2 tw=72 expandtab:

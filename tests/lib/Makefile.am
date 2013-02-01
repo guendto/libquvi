@@ -1,4 +1,8 @@
-src=env.c qerr.c re.c
+src=\
+  env.c\
+  qerr.c\
+  re.c
+
 hdr=tests.h
 
 noinst_LTLIBRARIES=libconvenience_test.la
@@ -17,3 +21,5 @@ libconvenience_test_la_LDFLAGS=\
 libconvenience_test_la_LIBADD=\
   $(libcurl_LIBS)\
   $(glib_LIBS)
+
+# vim: set ts=2 sw=2 tw=72 expandtab:

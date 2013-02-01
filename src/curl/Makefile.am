@@ -1,11 +1,10 @@
-
 src=\
-  http_metainfo.c\
   autoproxy.c\
-  resolve.c\
   close.c\
   fetch.c\
+  http_metainfo.c\
   init.c\
+  resolve.c\
   temp.c
 
 hdr=\
@@ -33,3 +32,5 @@ libconvenience_curl_la_LIBADD=\
   $(libproxy_LIBS)\
   $(libcurl_LIBS)\
   $(glib_LIBS)
+
+# vim: set ts=2 sw=2 tw=72 expandtab:

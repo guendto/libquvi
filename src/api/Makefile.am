@@ -1,4 +1,3 @@
-
 EXTRA_DIST=\
   doxy/acc_script_prop.dp\
   doxy/chk_support.dp\
@@ -18,50 +17,50 @@ EXTRA_DIST=\
   doxy/select_stream.dp
 
 src=\
+  errmsg.c\
+  free.c\
+  get.c\
+  http_metainfo_free.c\
+  http_metainfo_get.c\
+  http_metainfo_new.c\
+  media_free.c\
+  media_get.c\
+  media_new.c\
+  media_stream_choose_best.c\
+  media_stream_next.c\
+  media_stream_reset.c\
+  media_stream_select.c\
+  new.c\
+  ok.c\
+  playlist_free.c\
+  playlist_get.c\
+  playlist_media_next.c\
+  playlist_media_reset.c\
+  playlist_new.c\
+  resolve_destination_url.c\
+  resolve_forwarded.c\
+  resolve_free.c\
+  resolve_new.c\
+  scan_free.c\
+  scan_new.c\
+  scan_next_media_url.c\
+  script_get.c\
+  script_next.c\
+  set.c\
   subtitle_export_data.c\
   subtitle_export_free.c\
   subtitle_export_new.c\
+  subtitle_free.c\
   subtitle_lang_get.c\
   subtitle_lang_next.c\
   subtitle_lang_reset.c\
-  subtitle_free.c\
   subtitle_new.c\
   subtitle_select.c\
   subtitle_type_get.c\
   subtitle_type_next.c\
   subtitle_type_reset.c\
-  playlist_media_reset.c\
-  playlist_media_next.c\
-  playlist_free.c\
-  playlist_new.c\
-  playlist_get.c\
-  resolve_destination_url.c\
-  resolve_forwarded.c\
-  resolve_free.c\
-  resolve_new.c\
-  script_next.c\
-  script_get.c\
-  http_metainfo_free.c\
-  http_metainfo_new.c\
-  http_metainfo_get.c\
-  media_stream_choose_best.c\
-  media_stream_select.c\
-  media_stream_reset.c\
-  media_stream_next.c\
-  media_free.c\
-  media_new.c\
-  media_get.c\
-  scan_next_media_url.c\
-  scan_free.c\
-  scan_new.c\
   supports.c\
-  version.c\
-  errmsg.c\
-  free.c\
-  new.c\
-  set.c\
-  get.c\
-  ok.c
+  version.c
 
 noinst_LTLIBRARIES=libconvenience_api.la
 libconvenience_api_la_SOURCES=$(src)

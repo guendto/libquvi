@@ -1,39 +1,38 @@
-
 src=\
+  capture.c\
+  match.c\
+  match_media_script.c\
+  match_playlist_script.c\
   match_subtitle_export_script.c\
   match_subtitle_script.c\
-  match_playlist_script.c\
-  match_media_script.c\
+  media.c\
+  playlist.c\
+  resolve.c\
+  scan_new.c\
   scan_scripts.c\
   script_free.c\
-  scan_new.c\
   slst.c\
-  subtitle_export.c\
   subtitle.c\
-  playlist.c\
-  unescape.c\
-  capture.c\
-  resolve.c\
+  subtitle_export.c\
   to_utf8.c\
-  media.c\
-  match.c\
-  trim.c
+  trim.c\
+  unescape.c
 
 hdr=\
+  match_media_script.h\
+  match_playlist_script.h\
   match_subtitle_export_script.h\
   match_subtitle_script.h\
-  match_playlist_script.h\
-  match_media_script.h\
-  subtitle_export.h\
+  media.h\
+  playlist.h\
+  re.h\
+  resolve.h\
+  scan_new.h\
   script_free.h\
   slst.h\
+  subtitle_export.h\
   subtitle.h\
-  unescape.h\
-  scan_new.h\
-  playlist.h\
-  resolve.h\
-  media.h\
-  re.h
+  unescape.h
 
 noinst_LTLIBRARIES=libconvenience_misc.la
 libconvenience_misc_la_SOURCES=$(src) $(hdr)
@@ -52,3 +51,5 @@ libconvenience_misc_la_LDFLAGS=\
 
 libconvenience_misc_la_LIBADD=\
   $(glib_LIBS)
+
+# vim: set ts=2 sw=2 tw=72 expandtab:

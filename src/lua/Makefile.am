@@ -1,47 +1,46 @@
-
 src=\
-  util/exec_util_resolve_redirections.c\
-  util/exec_util_convert_entities.c\
-  util/exec_util_to_file_ext.c\
   chk.c\
+  exec_media_script_ident.c\
+  exec_media_script_parse.c\
+  exec_playlist_script_ident.c\
+  exec_playlist_script_parse.c\
+  exec_scan_script_parse.c\
   exec_subtitle_export_script_export.c\
   exec_subtitle_export_script_ident.c\
   exec_subtitle_script_ident.c\
   exec_subtitle_script_parse.c\
-  exec_playlist_script_ident.c\
-  exec_playlist_script_parse.c\
-  exec_media_script_ident.c\
-  exec_media_script_parse.c\
-  exec_scan_script_parse.c\
-  match_url_to_subtitle_script.c\
-  match_url_to_playlist_script.c\
-  match_url_to_media_script.c\
-  load_util_script.c\
-  modify_pkgpath.c\
   getfield.c\
-  setfield.c\
   init.c\
+  load_util_script.c\
+  match_url_to_media_script.c\
+  match_url_to_playlist_script.c\
+  match_url_to_subtitle_script.c\
+  modify_pkgpath.c\
   quvi/base64/decode.c\
   quvi/base64/encode.c\
-  quvi/crypto/en_decrypt.c\
   quvi/crypto/copts.c\
-  quvi/crypto/hash.c\
+  quvi/crypto/en_decrypt.c\
   quvi/crypto/err.c\
+  quvi/crypto/hash.c\
+  quvi/http/fetch.c\
   quvi/http/metainfo.c\
   quvi/http/resolve.c\
-  quvi/http/fetch.c\
-  quvi/opts.c
+  quvi/opts.c\
+  setfield.c\
+  util/exec_util_convert_entities.c\
+  util/exec_util_resolve_redirections.c\
+  util/exec_util_to_file_ext.c
 
 hdr=\
   chk.h\
-  load_util_script.h\
-  getfield.h\
-  setfield.h\
-  exec.h\
   def.h\
-  quvi/crypto/opts.h\
+  exec.h\
+  getfield.h\
+  load_util_script.h\
   quvi/crypto/err.h\
-  quvi/opts.h
+  quvi/crypto/opts.h\
+  quvi/opts.h\
+  setfield.h
 
 noinst_LTLIBRARIES=libconvenience_lua.la
 libconvenience_lua_la_SOURCES=$(src) $(hdr)
@@ -62,3 +61,5 @@ libconvenience_lua_la_LDFLAGS=\
 libconvenience_lua_la_LIBADD=\
   $(liblua_LIBS)\
   $(glib_LIBS)
+
+# vim: set ts=2 sw=2 tw=72 expandtab:
