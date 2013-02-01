@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -36,6 +36,7 @@ typedef enum
   QUVI_ERROR_NO_UTIL_SCRIPTS,
   QUVI_ERROR_KEYWORD_CROAK,
   QUVI_ERROR_INVALID_ARG,
+  QUVI_ERROR_GCRYPT_INIT,
   QUVI_ERROR_PROXY_INIT,
   QUVI_ERROR_CURL_INIT,
   QUVI_ERROR_LUA_INIT,

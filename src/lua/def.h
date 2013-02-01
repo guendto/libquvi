@@ -115,13 +115,31 @@
 
 /* quvi object */
 
+  /* http */
 #define QO_CONTENT_LENGTH "content_length"
 #define QO_RESPONSE_CODE  "response_code"
-#define QO_ERROR_MESSAGE  "error_message"
 #define QO_CONTENT_TYPE   "content_type"
 #define QO_RESOLVED_URL   "resolved_url"
-#define QO_QUVI_CODE      "quvi_code"
 #define QO_DATA           "data"
+  /* crypto */
+#define QO_CIPHERTEXT     "ciphertext"
+#define QO_PLAINTEXT      "plaintext"
+#define QO_DIGEST         "digest"
+  /* base64 */
+#define QO_BASE64         "base64"
+  /* common */
+#define QO_ERROR_MESSAGE  "error_message"
+#define QO_QUVI_CODE      "quvi_code"
+
+/*
+ * quvi object crypto option names
+ *  (not to be used in scripts directly)
+ */
+
+#define QOCO_CIPHER_FLAGS "cipher flags"
+#define QOCO_CIPHER_MODE  "cipher mode"
+#define QOCO_CIPHER_KEY   "cipher key"
+#define QOCO_ALGORITHM    "algorithm"
 
 /* Lua indexes.
  *

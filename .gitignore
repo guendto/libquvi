@@ -45,6 +45,7 @@ src/net/Makefile.in
 src/lua/Makefile.in
 src/curl/Makefile.in
 src/api/Makefile.in
+src/gcrypt/Makefile.in
 src/misc/Makefile.in
 src/quvi-0.9/quvi/Makefile.in
 src/quvi-0.9/Makefile.in

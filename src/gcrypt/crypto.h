@@ -18,44 +18,53 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#ifndef l_quvi_opts_h
-#define l_quvi_opts_h
+#ifndef crypto_h
 
 typedef enum
 {
-  QUVI_OBJECT_OPTION_CROAK_IF_ERROR     = 0x01,
-  /* fetch */
-  QUVI_OBJECT_OPTION_FETCH_FROM_CHARSET = 0x20,
-  /* http */
-  QUVI_OBJECT_OPTION_HTTP_USER_AGENT    = 0x40,
-  QUVI_OBJECT_OPTION_HTTP_COOKIE,
-  /* crypto */
-  QUVI_OBJECT_OPTION_CRYPTO_CIPHER_FLAGS = 0x60,
-  QUVI_OBJECT_OPTION_CRYPTO_CIPHER_MODE,
-  QUVI_OBJECT_OPTION_CRYPTO_CIPHER_KEY,
-  QUVI_OBJECT_OPTION_CRYPTO_ALGORITHM
-} QuviObjectOption;
+  CRYPTO_MODE_ENCRYPT,
+  CRYPTO_MODE_DECRYPT,
+  CRYPTO_MODE_HASH
+} CryptoMode;
 
-struct l_quvi_object_opt_s
+struct crypto_s
 {
   struct
   {
-    gchar *str;
-    gdouble n;
-  } value;
-  gdouble id;
+    gboolean should_pad;
+    gcry_cipher_hd_t h;
+    gsize blklen;
+    gsize keylen;
+    guint flags;
+    gchar *key;
+    gint mode;
+  } cipher;
+  struct
+  {
+    guchar *data;
+    gsize dlen;
+  } out;
+  CryptoMode mode;
+  gchar *errmsg;
+  gint algo;
+  gint rc;
 };
 
-typedef struct l_quvi_object_opt_s *l_quvi_object_opt_t;
+typedef struct crypto_s *crypto_t;
 
-GSList *l_quvi_object_opts_new(lua_State*, gint);
-void l_quvi_object_opts_free(GSList*);
+crypto_t crypto_new(const gchar*, const CryptoMode, gchar*,
+                    const gint, const guint);
+void crypto_free(crypto_t);
 
-gboolean l_quvi_object_opts_is_set(GSList*, QuviObjectOption, GSList**);
-void l_quvi_object_opts_curl(GSList*, _quvi_t);
+gint crypto_exec(crypto_t, const guchar*, const gsize);
 
-gboolean l_quvi_object_opts_croak_if_error(GSList*);
+void crypto_dump(const gchar*, const guchar*, const gsize);
+gboolean crypto_ok(crypto_t);
 
-#endif /* l_quvi_opts_h */
+gchar *crypto_bytes2hex(const guchar*, const gsize);
+guchar *crypto_hex2bytes(const gchar*, gsize*);
+
+#endif /* crypto_h */
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
+

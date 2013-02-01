@@ -21,6 +21,12 @@ src=\
   getfield.c\
   setfield.c\
   init.c\
+  quvi/base64/decode.c\
+  quvi/base64/encode.c\
+  quvi/crypto/en_decrypt.c\
+  quvi/crypto/copts.c\
+  quvi/crypto/hash.c\
+  quvi/crypto/err.c\
   quvi/http/metainfo.c\
   quvi/http/resolve.c\
   quvi/http/fetch.c\
@@ -33,6 +39,8 @@ hdr=\
   setfield.h\
   exec.h\
   def.h\
+  quvi/crypto/opts.h\
+  quvi/crypto/err.h\
   quvi/opts.h
 
 noinst_LTLIBRARIES=libconvenience_lua.la

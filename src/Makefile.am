@@ -1,4 +1,4 @@
-SUBDIRS=quvi-0.9 api misc lua curl net
+SUBDIRS=quvi-0.9 api gcrypt misc lua curl net
 
 hdr=\
   _quvi_subtitle_export_s.h\
@@ -32,6 +32,7 @@ libquvi_0_9_la_LDFLAGS=\
   $(AM_LDFLAGS)
 
 libquvi_0_9_la_LIBADD=\
+  $(top_builddir)/src/gcrypt/libconvenience_gcrypt.la\
   $(top_builddir)/src/misc/libconvenience_misc.la\
   $(top_builddir)/src/curl/libconvenience_curl.la\
   $(top_builddir)/src/net/libconvenience_net.la\
