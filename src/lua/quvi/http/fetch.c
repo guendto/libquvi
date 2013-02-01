@@ -38,7 +38,7 @@
 gint l_quvi_http_fetch(lua_State *l)
 {
   gboolean croak_if_error;
-  const gchar *data, *url;
+  const gchar *url;
   _quvi_net_t n;
   GSList *opts;
   _quvi_t q;
@@ -68,11 +68,7 @@ gint l_quvi_http_fetch(lua_State *l)
    *  -- http://pgl.yoyo.org/luai/i/lua_pushstring
    */
 
-  data = MS_EMPTY;
-
-  if (quvi_ok(q) == QUVI_TRUE)
-    data = n->fetch.content->str;
-  else
+  if (quvi_ok(q) == QUVI_FALSE)
     {
       if (croak_if_error == TRUE)
         luaL_error(l, "%s", q->status.errmsg->str);
