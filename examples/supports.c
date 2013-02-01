@@ -121,7 +121,7 @@ static QuviSupportsType type_n()
       if (g_strcmp0(opts.type, type_conv[i].from) == 0)
         return (type_conv[i].to);
     }
-  return (QUVI_SCRIPT_TYPE_MEDIA);
+  return (QUVI_SUPPORTS_TYPE_MEDIA);
 }
 
 static gint opts_new(gint argc, gchar **argv)
