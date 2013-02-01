@@ -42,12 +42,10 @@ static QuviError _http_metainfo(_quvi_http_metainfo_t qmi)
 {
   _quvi_net_t n;
   QuviError rc;
-  lua_State *l;
   _quvi_t q;
 
   q = qmi->handle.quvi;
   n = n_new(q, qmi->url.input->str);
-  l = q->handle.lua;
 
   if (q->cb.http_metainfo != NULL)
     rc = q->cb.http_metainfo(n);
