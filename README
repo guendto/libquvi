@@ -29,7 +29,7 @@ first, before you continue with the new one. You would, typically, run
 "make install" from.
 
   * If you are building libquvi from the git repository code, run the
-`autogen.sh' first. This generates the configuration files. See also
+`bootstrap.sh' first. This generates the configuration files. See also
 the -h output for any additional info.
 
 
