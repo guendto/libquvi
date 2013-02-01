@@ -61,15 +61,15 @@ gint l_quvi_http_resolve(lua_State *l)
   l_setfield_n(l, QO_QUVI_CODE, q->status.rc);
   l_setfield_s(l, QO_ERROR_MESSAGE, (q->status.rc != QUVI_OK)
                ? q->status.errmsg->str
-               : MS_EMPTY, -1);
+               : GS_EMPTY_S, -1);
 
-  r_url = MS_EMPTY;
+  r_url = GS_EMPTY_S;
 
   if (quvi_ok(q) == QUVI_TRUE)
     {
       r_url = (r->url.dst->len >0)
               ? r->url.dst->str
-              : MS_EMPTY;
+              : GS_EMPTY_S;
     }
   else
     {

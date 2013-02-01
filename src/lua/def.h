@@ -22,6 +22,7 @@
 #define l_def_h
 
 #define USERDATA_QUVI_T   "_quvi_t"
+#define GS_EMPTY_S        ""
 
 /* Media script: Media properties */
 
@@ -54,8 +55,6 @@
 #define MSS_CONTAINER             "container"
 #define MSS_URL                   "url"
 #define MSS_ID                    "id"
-
-#define MS_EMPTY         ""
 
 /* Subtitle export script */
 

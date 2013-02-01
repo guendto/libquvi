@@ -57,7 +57,7 @@ gint l_quvi_http_metainfo(lua_State *l)
   l_setfield_n(l, QO_QUVI_CODE, q->status.rc);
   l_setfield_s(l, QO_ERROR_MESSAGE, (q->status.rc != QUVI_OK)
                ? q->status.errmsg->str
-               : MS_EMPTY, -1);
+               : GS_EMPTY_S, -1);
 
   if (quvi_ok(q) == QUVI_TRUE)
     {
