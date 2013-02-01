@@ -28,6 +28,7 @@
 #include "_quvi_subtitle_s.h"
 /* -- */
 #include "misc/subtitle.h"
+#include "misc/slst.h"
 
 gpointer m_subtitle_new(_quvi_t q, const gchar *url)
 {
@@ -73,12 +74,7 @@ void m_subtitle_type_free(_quvi_subtitle_type_t qst)
   if (qst == NULL)
     return;
 
-#ifdef HAVE_GLIB_2_28
-  g_slist_free_full(qst->languages, _lang_free);
-#else
-  g_slist_foreach(qst->languages, _lang_free, NULL);
-  g_slist_free(qst->languages);
-#endif
+  m_slist_free_full(qst->languages, _lang_free);
   qst->languages = NULL;
 
   g_free(qst);
@@ -95,12 +91,7 @@ void m_subtitle_free(_quvi_subtitle_t qsub)
   if (qsub == NULL)
     return;
 
-#ifdef HAVE_GLIB_2_28
-  g_slist_free_full(qsub->types, _type_free);
-#else
-  g_slist_foreach(qsub->types, _type_free, NULL);
-  g_slist_free(qsub->types);
-#endif
+  m_slist_free_full(qsub->types, _type_free);
   qsub->types = NULL;
 
   g_string_free(qsub->url.input, TRUE);

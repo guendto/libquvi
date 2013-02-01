@@ -7,6 +7,7 @@ src=\
   scan_scripts.c\
   script_free.c\
   scan_new.c\
+  slst.c\
   subtitle_export.c\
   subtitle.c\
   playlist.c\
@@ -25,6 +26,7 @@ hdr=\
   match_media_script.h\
   subtitle_export.h\
   script_free.h\
+  slst.h\
   subtitle.h\
   unescape.h\
   scan_new.h\

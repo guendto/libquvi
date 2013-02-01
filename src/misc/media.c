@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -28,6 +28,7 @@
 #include "_quvi_media_s.h"
 /* -- */
 #include "misc/media.h"
+#include "misc/slst.h"
 
 gpointer m_media_new(_quvi_t q, const gchar *url)
 {
@@ -77,12 +78,7 @@ void m_media_free(_quvi_media_t qm)
 
   /* Streams */
 
-#ifdef HAVE_GLIB_2_28
-  g_slist_free_full(qm->streams, _stream_free);
-#else
-  g_slist_foreach(qm->streams, _stream_free, NULL);
-  g_slist_free(qm->streams);
-#endif
+  m_slist_free_full(qm->streams, _stream_free);
   qm->streams = NULL;
 
   /* URLs */

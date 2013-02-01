@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -32,6 +32,7 @@
 #include "_quvi_script_s.h"
 /* -- */
 #include "misc/script_free.h"
+#include "misc/slst.h"
 
 /** @cond NODOC */
 extern void c_close(_quvi_t);
@@ -58,52 +59,22 @@ void quvi_free(quvi_t handle)
 
   /* Scripts. */
 
-#ifdef HAVE_GLIB_2_28
-  g_slist_free_full(q->scripts.subtitle_export, m_script_free);
-#else
-  g_slist_foreach(q->scripts.subtitle_export, m_script_free, NULL);
-  g_slist_free(q->scripts.subtitle_export);
-#endif
+  m_slist_free_full(q->scripts.subtitle_export, m_script_free);
   q->scripts.subtitle_export = NULL;
 
-#ifdef HAVE_GLIB_2_28
-  g_slist_free_full(q->scripts.subtitle, m_script_free);
-#else
-  g_slist_foreach(q->scripts.subtitle, m_script_free, NULL);
-  g_slist_free(q->scripts.subtitle);
-#endif
+  m_slist_free_full(q->scripts.subtitle, m_script_free);
   q->scripts.subtitle = NULL;
 
-#ifdef HAVE_GLIB_2_28
-  g_slist_free_full(q->scripts.playlist, m_script_free);
-#else
-  g_slist_foreach(q->scripts.playlist, m_script_free, NULL);
-  g_slist_free(q->scripts.playlist);
-#endif
+  m_slist_free_full(q->scripts.playlist, m_script_free);
   q->scripts.playlist = NULL;
 
-#ifdef HAVE_GLIB_2_28
-  g_slist_free_full(q->scripts.media, m_script_free);
-#else
-  g_slist_foreach(q->scripts.media, m_script_free, NULL);
-  g_slist_free(q->scripts.media);
-#endif
+  m_slist_free_full(q->scripts.media, m_script_free);
   q->scripts.media = NULL;
 
-#ifdef HAVE_GLIB_2_28
-  g_slist_free_full(q->scripts.scan, m_script_free);
-#else
-  g_slist_foreach(q->scripts.scan, m_script_free, NULL);
-  g_slist_free(q->scripts.scan);
-#endif
+  m_slist_free_full(q->scripts.scan, m_script_free);
   q->scripts.scan = NULL;
 
-#ifdef HAVE_GLIB_2_28
-  g_slist_free_full(q->scripts.util, m_script_free);
-#else
-  g_slist_foreach(q->scripts.util, m_script_free, NULL);
-  g_slist_free(q->scripts.util);
-#endif
+  m_slist_free_full(q->scripts.util, m_script_free);
   q->scripts.util = NULL;
 
   /* Handles. */

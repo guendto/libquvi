@@ -30,6 +30,7 @@
 /* -- */
 #include "lua/quvi/opts.h"
 #include "lua/def.h"
+#include "misc/slst.h"
 
 static gpointer _opt_new(const QuviObjectOption qoo, const gchar *vs,
                          const gdouble vn)
@@ -105,16 +106,7 @@ static void _opt_free(gpointer p, gpointer userdata)
 
 void l_quvi_object_opts_free(GSList *p)
 {
-  if (p == NULL)
-    return;
-
-#ifdef HAVE_GLIB_2_28
-  g_slist_free_full(p, _opt_free);
-#else
-  g_slist_foreach(p, _opt_free, NULL);
-  g_slist_free(p);
-#endif
-  p = NULL;
+  m_slist_free_full(p, _opt_free);
 }
 
 void l_quvi_object_opts_curl(GSList *opts, _quvi_t q)

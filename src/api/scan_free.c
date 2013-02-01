@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -28,6 +28,8 @@
 /* -- */
 #include "_quvi_s.h"
 #include "_quvi_scan_s.h"
+/* -- */
+#include "misc/slst.h"
 
 static void _url_free(gpointer p, gpointer userdata)
 {
@@ -52,12 +54,7 @@ void quvi_scan_free(quvi_scan_t handle)
 
   /* URLs */
 
-#ifdef HAVE_GLIB_2_28
-  g_slist_free_full(qs->url.media, _url_free);
-#else
-  g_slist_foreach(qs->url.media, _url_free, NULL);
-  g_slist_free(qs->url.media);
-#endif
+  m_slist_free_full(qs->url.media, _url_free);
   qs->url.media = NULL;
 
   g_string_free(qs->url.input, TRUE);

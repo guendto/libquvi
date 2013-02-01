@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -28,6 +28,7 @@
 #include "_quvi_playlist_s.h"
 /* -- */
 #include "misc/playlist.h"
+#include "misc/slst.h"
 
 gpointer m_playlist_new(_quvi_t q, const gchar *url)
 {
@@ -69,12 +70,7 @@ void m_playlist_free(_quvi_playlist_t qp)
   if (qp == NULL)
     return;
 
-#ifdef HAVE_GLIB_2_28
-  g_slist_free_full(qp->media, _playlist_media_free);
-#else
-  g_slist_foreach(qp->media, _playlist_media_free, NULL);
-  g_slist_free(qp->media);
-#endif
+  m_slist_free_full(qp->media, _playlist_media_free);
   qp->media = NULL;
 
   /* URL */
