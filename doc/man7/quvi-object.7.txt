@@ -1,0 +1,386 @@
+quvi-object(7)
+==============
+
+NAME
+----
+quvi-object - Overview of the libquvi quvi-object
+
+DESCRIPTION
+-----------
+'quvi-object' is a collection of libquvi functions provided for the
+'libquvi-scripts(7)'. These functions vary from HTTP functions to
+cryptographic functions. All of the 'quvi-object' functions are
+implemented in C.
+
+NOTE: The 'quvi-object' should not be confused with the 'quvi-modules(7)'
+      which are a selection of importable modules implemented in Lua. These
+      modules are intended to be loaded ('require') from the
+      'libquvi-scripts(7)'.
+
+OPTIONS
+-------
+Each of the quvi-object functions may be passed a dictionary defining
+the additional option properties. The following options are supported by
+all of the functions:
+
+qoo_croak_if_error=<boolean>::
+  By default the library terminates the process if an error occurs. By
+  setting this option to 'false', it will register the error and
+  continues execution, leaving the error handling for the script to
+  determine. See also "RETURN VALUES".
+
+The 'qoo' prefix is short for 'quvi object option'. The functions will
+ignore any unknown options, e.g. the crypto functions would ignore the
+HTTP options.
+
+NOTE: The options have been defined in the 'quvi/const' of
+      the 'quvi-modules(7)'
+
+Crypto
+~~~~~~
+
+These options are specific to the quvi.crypto.* functions of the
+quvi-object.
+
+qoo_crypto_algorithm=<value>::
+  Specifies the algorithm that should be used. The 'value' is expected to
+  be a string, e.g. 'sha1' or 'aes256'.
+
+qoo_crypto_cipher_flags=<value>::
+  Specifies the cipher flags (bit OR'd, see 'quvi-modules-3rdparty(7)'
+  for 'bit operations') to be used with the cipher.  These values
+  are identical to those defined by libgcrypt. See the 'quvi/const'
+  of the 'quvi-modules(7)' for a complete list of the available
+  cipher flags.
+
+qoo_crypto_cipher_mode=<value>::
+  Specifies the cipher mode to be used. These are identical to the values
+  defined by libgcrypt. See the 'quvi/const' of the 'quvi-modules(7)'
+  for a complete list of the available cipher modes.
+
+qoo_crypto_cipher_key=<value>::
+  Used to specify the cipher key. It should be noted that the 'key' is
+  expected to be passed in hexadecimal form. See 'quvi/hex' of the
+  'quvi-modules(7)' for the conversion functions.
+  +
+  NOTE: The key derivation is left for the script to do
+  +
+  NOTE: The key is not a pass{word,phrase}
+  +
+  See also:
+    http://www.di-mgt.com.au/cryptokeys.html#passwordpassphraseandkey
+
+HTTP
+~~~~
+
+These options are specific to the quvi.http.* functions of the
+quvi-object.
+
+qoo_fetch_from_charset=<charset>::
+  Instructs the library to convert from this charset to UTF-8. Using this
+  option may be required with the websites that use a specific (non-UTF8)
+  encoding.
+  +
+  The purpose of this option is to make sure that the data is encoded to
+  unicode (UTF-8) before any of it is parsed and returned to the
+  application using libquvi.
+  +
+  By default, libquvi converts the data which is in the encoding used for
+  the strings by the C runtime in the current locale into UTF-8.  IF this
+  fails, and the 'from charset' option is set, the library will then try
+  to convert to UTF-8 using the 'from charset' value.
+
+qoo_http_user_agent=<value>::
+  Identify to HTTP servers as the string 'value'. The library uses the
+  default value of 'Mozilla/5.0'.
+
+qoo_http_cookie=<value[; value; ...]>::
+  When set, the arbitrary cookie will be used with the quvi.http.fetch
+  function. The cookies are handled by libcurl, look up the CURLOPT_COOKIE
+  description for details. If you must define >1 cookies, use the
+  following format: "foo=1; bar=2;" .
+
+RETURN VALUES
+-------------
+Each quvi-object function will return a dictionary containing the
+following values:
+
+error_message::
+  The error message, or an empty value.
+
+quvi_code::
+  The code returned by the library. See also 'quvi/const'
+  of 'quvi-modules(7)'.
+
+Refer to the function documentation for the information about the additional
+values returned in the dictionary.
+
+FUNCTIONS
+---------
+
+Base64
+~~~~~~
+
+quvi.base64.encode(<plaintext>[,qoo])::
+  Encode the 'plaintext' to base64 format. The 'plaintext' is expected
+  to be passed in hexadecimal form. See 'quvi/hex' of the 'quvi-modules(7)'
+  for the conversion functions.
+  +
+  The second argument ('qoo') is expected to be a dictionary of
+  additional 'quvi object options', if defined at all.
+  +
+  The function will return the 'base64' value in the dictionary.
+
+quvi.base64.decode(<base64>)::
+  Decode the 'base64' value to plaintext.
+  +
+  The function will return the 'plaintext' value in the dictionary.
+  The value is returned in hexadecimal form.
+
+Crypto
+~~~~~~
+
+The crypto facility of the quvi-object wraps the libgcrypt symmetric
+cryptography and the hash (message digest) functions.
+
+NOTE: The availability of the algorithms is determined by libgcrypt, and
+      how it was built
+
+quvi.crypto.encrypt(<plaintext>, <qoo>)::
+  Encrypt the 'plaintext'. The 'plaintext' is expected to be passed in
+  hexadecimal form. See 'quvi/hex' of the 'quvi-modules(7)' for the
+  conversion functions.
+  +
+  The second argument ('qoo') is expected to be a dictionary containing
+  the cipher options.
+  +
+  The function will return the 'ciphertext' value in the dictionary.
+  The value is returned in hexadecimal form.
+
+quvi.crypto.decrypt(<ciphertext>, <qoo>)::
+  Decrypt the 'ciphertext'. The 'ciphertext' is expected to be passed in
+  hexadecimal form. See 'quvi/hex' of the 'quvi-modules(7)' for the
+  conversion functions.
+  +
+  The second argument ('qoo') is expected to be a dictionary containing
+  the cipher options.
+  +
+  The function will return the 'plaintext' value in the dictionary.
+  This value is returned in hexadecimal form.
+
+quvi.crypto.hash(<value>, <qoo>)::
+  Generate a hash from the 'value'. The 'value' is expected to be passed
+  in hexadecimal format. See 'quvi/hex' of the 'quvi-modules(7)' for the
+  conversion functions.
+  +
+  The second argument ('qoo') is expected to be a dictionary containing
+  the hash options, e.g. the algorithm that should be used.
+  +
+  The function will return the 'digest' value in the dictionary.
+  The value is returned in hexadecimal form.
+
+HTTP
+~~~~
+
+The HTTP functions will return 'response_code' along the other "RETURN
+VALUES", and the values specific to the HTTP function.
+
+quvi.http.fetch(<URL>[,qoo])::
+  Fetch an URL over an HTTP connection.
+  +
+  The second argument ('qoo') is expected to be a dictionary of
+  additional 'quvi object options', if defined at all.
+  +
+  The function will return the 'data' value among the values in
+  the returned dictionary.
+
+quvi.http.metainfo(<URL>[,qoo])::
+  Query the HTTP metainfo for the URL.
+  +
+  The second argument ('qoo') is expected to be a dictionary of
+  additional 'quvi object options', if defined at all.
+  +
+  The function will return the 'content_length' and the 'content_type'
+  values among the values in the returned dictionary.
+
+quvi.http.resolve(<URL>[,qoo])::
+  Resolve an URL redirection.
+  +
+  The second argument ('qoo') is expected to be a dictionary of
+  additional 'quvi object options', if defined at all.
+  +
+  The function will return the 'resolved_url' among the values in the
+  returned dictionary. If the URL did not redirect to another location,
+  the value of the 'resolved_url' is left empty.
+
+EXAMPLES
+--------
+
+Base64
+~~~~~~
+
+* Base64 encode a string:
++
+----
+local H = require 'quvi/hex'
+local s = H.to_hex('foo') -- Pass in hexadecimal form
+
+local r = quvi.base64.encode(s)
+print(r.base64)
+----
+
+* Reverse the process:
++
+----
+local r = quvi.base64.decode(r.base64)
+local s = H.to_str(r.plaintext)
+----
+
+Crypto
+~~~~~~
+
+* Encrypt plaintext:
++
+----
+local plaintext = 'f34481ec3cc627bacd5dc3fb08f273e6'
+local key = '00000000000000000000000000000000'
+
+local C = require 'quvi/const'
+local o = {
+  [C.qoo_crypto_cipher_mode] = C.qoco_cipher_mode_cbc,
+  [C.qoo_crypto_algorithm] = 'aes',
+  [C.qoo_crypto_cipher_key = key
+}
+
+local r = quvi.crypto.encrypt(plaintext, o)
+print(r.ciphertext)
+----
+
+* Reverse the process:
++
+----
+local r = quvi.crypto.decrypt(r.ciphertext, o)
+print(r.plaintext)
+----
+
+* Generate a hash (message digest):
++
+----
+local H = require 'quvi/hex'
+local s = H.to_hex('foo') -- Pass in hexadecimal form
+
+local C = require 'quvi/const'
+local o = { [C.qoo_crypto_algorithm] = 'sha1' }
+
+local r = quvi.crypto.hash(s, o)
+print(r.digest)
+----
+
+* Same as above, but use the shorthand function:
++
+----
+local A = require 'quvi/hash'
+local r = A.sha1sum('foo')
+print(r)
+----
+
+HTTP
+~~~~
+
+* Fetch an URL:
++
+----
+local r = quvi.fetch('http://example.com')
+----
++
+r.data would now hold the contents. If an error occurred, e.g.
+connection failed, the library would exit the process with an error.
+
+* Same as above, but handle the error in the script:
++
+----
+local C = require 'quvi/const'
+local o = { [C.qoo_croak_if_error] = false }
+
+local r = quvi.http.fetch('http://example.com', o)
+if r.quvi_code ~= C.qerr_ok then
+  local s =
+    string.format('quvi.http.fetch: %s (libquvi=%d, http/%d)',
+                  r.error_message, r.quvi_code, r.response_code)
+  error(s)
+end
+----
++
+By setting qoo_croak_if_error to 'false', we tell the library to
+only register that an error occurred and return the control to
+the script. Handling of the error is then left for the script to do.
++
+NOTE: Normally, the scripts would not need to handle the error
+
+* Force conversion from ISO-8859-1 to UTF-8:
++
+----
+local C = require 'quvi/const'
+local o = { [C.qoo_fetch_from_charset] = 'ISO-8859-1' }
+local r = quvi.http.fetch('http://example.com', o)
+----
+
+* Set arbitrary cookies:
++
+----
+local o = { [C.qoo_http_cookie] = 'foo=1; bar=2;' }
+local r = quvi.http.fetch('http://example.com', o)
+----
+
+* Query metainfo for an URL:
++
+----
+local r = quvi.http.metainfo('http://is.gd/SKyg8m')
+print(r.content_length, r.content_type)
+----
+
+* Resolve URL redirection:
++
+----
+local r = quvi.http.resolve('http://is.gd/SKyg8m')
+if #r.resolved_url >0 then
+  print('new location:', r.resolved_url)
+end
+----
+
+FURTHER RESOURCES
+-----------------
+GLib::
+  http://developer.gnome.org/glib/stable/glib-Base64-Encoding.html
+
+libcurl::
+  http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTUSERAGENT
+  http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTCOOKIE
+
+libgcrypt reference manual::
+  http://www.gnupg.org/documentation/manuals/gcrypt/
+
+Authors
+-------
+Toni Gundogdu <legatvs@gmail.com>::
+  Author.
+
+Reporting bugs
+--------------
+Report bugs to the quvi-devel mailing list
+<quvi-devel@lists.sourceforge.net> where the development and the
+maintenance is primarily done.  You do not have to be subscribed
+to the list to send a message there.
+
+LICENSE
+-------
+libquvi is Free Software licensed under the GNU Affero GPLv3+
+
+SEE ALSO
+--------
+'libquvi-scripts(7)', 'libquvi(3)', 'quvi-modules(7)',
+'quvi-modules-3rdparty(7)'
+
+LIBQUVI
+-------
+Part of the 'libquvi(3)' suite
