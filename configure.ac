@@ -149,6 +149,7 @@ AM_CONDITIONAL([WITH_MANUAL], [test x"$with_manual" != "xno"])
 AC_CONFIG_FILES([
   Makefile
   doc/man3/Makefile
+  doc/man7/Makefile
   doc/dox/Makefile
   doc/dox/Doxyfile
   doc/Makefile
