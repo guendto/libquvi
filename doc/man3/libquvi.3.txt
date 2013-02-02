@@ -65,4 +65,5 @@ libquvi is Free Software licensed under the GNU Affero GPLv3+
 
 SEE ALSO
 --------
-'libquvi-scripts(7)', 'quvi(1)'
+'libquvi-scripts(7)', 'quvi(1)', 'quvi-object(7)', 'quvi-modules(7)',
+'quvi-modules-3rdparty(7)'
