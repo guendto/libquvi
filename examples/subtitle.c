@@ -197,7 +197,7 @@ gint main(gint argc, gchar **argv)
           dump_language(l);
           if (opts.format_subrip == TRUE)
             {
-              e = quvi_subtitle_export_new(l, "subrip");
+              e = quvi_subtitle_export_new(l, "srt");
               examples_exit_if_error();
               g_print("%s", quvi_subtitle_export_data(e));
               quvi_subtitle_export_free(e);

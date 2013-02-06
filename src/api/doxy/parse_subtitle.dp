@@ -89,7 +89,7 @@ internal subtitle format that the website uses to a more standard-like
 format, e.g. SubRip, the media players support.
 
 @code
-quvi_subtitle_export_t qse = quvi_subtitle_export_new(qsl, "subrip");
+quvi_subtitle_export_t qse = quvi_subtitle_export_new(qsl, "srt");
 abort_if_error();
 puts(quvi_subtitle_export_data(qse));
 quvi_subtitle_export_free(qse);
