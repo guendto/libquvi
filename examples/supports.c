@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -72,6 +72,7 @@ struct _type_lookup_s
 static const struct _type_lookup_s type_conv[] =
 {
   {QUVI_SUPPORTS_TYPE_PLAYLIST, "playlist"},
+  {QUVI_SUPPORTS_TYPE_SUBTITLE, "subtitle"},
   {QUVI_SUPPORTS_TYPE_MEDIA,    "media"},
   {QUVI_SUPPORTS_TYPE_ANY,      "any"},
   {0, NULL}
