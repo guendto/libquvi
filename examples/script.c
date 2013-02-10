@@ -237,8 +237,6 @@ static void opts_free()
   opts.type = NULL;
 }
 
-typedef quvi_callback_status qcs;
-
 gint main(gint argc, gchar **argv)
 {
   QuviScriptType type;
@@ -258,7 +256,7 @@ gint main(gint argc, gchar **argv)
 
   type = type_n();
   {
-    gchar *p = g_strjoinv(",", opts.property);;
+    gchar *p = g_strjoinv(",", opts.property);
     g_printerr("[%s] type=%s (0x%x), property=%s\n",
                __func__, opts.type, type, p);
     g_free(p);
