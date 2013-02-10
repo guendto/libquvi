@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -34,9 +34,11 @@ typedef enum
 typedef enum
 {
   QUVI_SUPPORTS_TYPE_PLAYLIST = 1<<0,
-  QUVI_SUPPORTS_TYPE_MEDIA = 1<<1,
+  QUVI_SUPPORTS_TYPE_SUBTITLE = 1<<1,
+  QUVI_SUPPORTS_TYPE_MEDIA = 1<<2,
   QUVI_SUPPORTS_TYPE_ANY =
   (QUVI_SUPPORTS_TYPE_PLAYLIST
+   |QUVI_SUPPORTS_TYPE_SUBTITLE
    |QUVI_SUPPORTS_TYPE_MEDIA)
 } QuviSupportsType;
 
