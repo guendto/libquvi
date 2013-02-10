@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -29,8 +29,10 @@
 #include "_quvi_s.h"
 #include "_quvi_media_s.h"
 #include "_quvi_playlist_s.h"
+#include "_quvi_subtitle_s.h"
 /* -- */
 #include "misc/match_playlist_script.h"
+#include "misc/match_subtitle_script.h"
 #include "misc/match_media_script.h"
 
 static QuviBoolean _supports_playlist(_quvi_t q, const gchar *url,
@@ -46,6 +48,24 @@ static QuviBoolean _supports_playlist(_quvi_t q, const gchar *url,
     {
       quvi_playlist_free((quvi_playlist_t) qp);
       qp = NULL;
+    }
+  return (quvi_ok(q));
+}
+
+static QuviBoolean _supports_subtitle(_quvi_t q, const gchar *url,
+                                      const QuviSupportsMode mode)
+{
+  _quvi_subtitle_t qsub = NULL;
+
+  q->status.rc = m_match_subtitle_script(q, &qsub, url,
+                                         (mode == QUVI_SUPPORTS_MODE_OFFLINE)
+                                         ? QM_MATCH_SUBS_SUPPORTED_OFFLINE
+                                         : QM_MATCH_SUBS_SUPPORTED_ONLINE);
+
+  if (qsub != NULL)
+    {
+      quvi_subtitle_free((quvi_subtitle_t) qsub);
+      qsub = NULL;
     }
   return (quvi_ok(q));
 }
@@ -101,6 +121,12 @@ QuviBoolean quvi_supports(quvi_t handle, const char *url,
 
   if (type & QUVI_SUPPORTS_TYPE_PLAYLIST)
     found = _supports_playlist(q, url, mode);
+
+  if (q->status.rc == QUVI_OK || q->status.rc == QUVI_ERROR_NO_SUPPORT)
+    {
+      if (type & QUVI_SUPPORTS_TYPE_SUBTITLE)
+        found = _supports_subtitle(q, url, mode);
+    }
 
   if (q->status.rc == QUVI_OK || q->status.rc == QUVI_ERROR_NO_SUPPORT)
     {
