@@ -10,16 +10,17 @@ And, either:
 Or, if the library was compiled with the --with-scriptsdir=DIR option:
 - $DIR/x.y/
 
-The above directories are searched for the following subdirectories and
-any Lua scripts identified as libquvi scripts:
+The library will search the following subdirectories of the above
+directories for the scripts identified as the libquvi scripts:
 - common/
-- playlist/
 - media/
+- playlist/
 - scan/
+- subtitle/
+- subtitle/export/
 - util/
 
-The library will ignore any duplicate scripts. This is done by a basic
-SHA1 comparison.
+The process will ignore identical (with the same sha1 hash) scripts.
 
 @sa @ref env
 */
