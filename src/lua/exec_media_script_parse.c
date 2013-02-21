@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -238,7 +238,8 @@ static gboolean _chk_goto_instr(lua_State *l, _quvi_media_t qm)
   return ((qm->url.redirect_to->len >0) ? TRUE:FALSE);
 }
 
-extern QuviError l_exec_util_convert_entities(_quvi_media_t qm);
+extern QuviError l_exec_util_convert_entities(_quvi_media_t);
+extern gint c_reset(_quvi_t);
 
 QuviError l_exec_media_script_parse(gpointer p, GSList *sl)
 {
@@ -248,8 +249,10 @@ QuviError l_exec_media_script_parse(gpointer p, GSList *sl)
   QuviError rc;
 
   qm = (_quvi_media_t) p;
-  l = qm->handle.quvi->handle.lua;
   rc = QUVI_OK;
+
+  l = qm->handle.quvi->handle.lua;
+  c_reset(qm->handle.quvi);
 
   qs = (_quvi_script_t) sl->data;
   lua_getglobal(l, script_func);

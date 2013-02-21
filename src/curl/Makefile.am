@@ -4,6 +4,7 @@ src=\
   fetch.c\
   http_metainfo.c\
   init.c\
+  reset.c\
   resolve.c\
   temp.c
 

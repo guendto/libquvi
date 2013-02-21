@@ -33,7 +33,11 @@
 
 /** @brief Parse subtitle properties for URL
 @return New handle, @ref quvi_subtitle_free when done using it
-@note Use @ref quvi_ok for checking if an error occurred
+@note
+  - Calling this function restores the current @ref sess_handle to its
+    initial state (cookies cleared, custom headers cleared, default
+    user-agent string restored, ...)
+  - Use @ref quvi_ok for checking if an error occurred
 @sa @ref parse_subtitle
 @ingroup subprop
 */

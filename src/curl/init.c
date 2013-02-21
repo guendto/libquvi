@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -27,26 +27,17 @@
 /* -- */
 #include "_quvi_s.h"
 
+extern gint c_reset(_quvi_t);
+
 QuviError c_init(_quvi_t q)
 {
-  CURL *c;
-
   curl_global_init(CURL_GLOBAL_ALL);
 
   q->handle.curl = curl_easy_init();
   if (q->handle.curl == NULL)
     return (QUVI_ERROR_CURL_INIT);
 
-  c = q->handle.curl;
-
-  curl_easy_setopt(c, CURLOPT_USERAGENT, "Mozilla/5.0");
-  curl_easy_setopt(c, CURLOPT_FOLLOWLOCATION, 1L);
-#ifdef _1 /* Use whatever libcurl defaults to. */
-  curl_easy_setopt(c, CURLOPT_MAXREDIRS, 5L); /* http://is.gd/kFsvE4 */
-#endif
-  curl_easy_setopt(c, CURLOPT_NOBODY, 0L);
-
-  return (QUVI_OK);
+  return (c_reset(q));
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

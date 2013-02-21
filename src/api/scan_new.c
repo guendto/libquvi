@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -64,9 +64,15 @@ static void _exec_scan_script(gpointer p, gpointer userdata)
 }
 /** @endcond */
 
+extern gint c_reset(_quvi_t);
+
 /** @brief Scan URL contents for supported embedded media URLs
 @return New handle, @ref quvi_scan_free it when done using it
-@note Use @ref quvi_ok for checking if an error occurred
+@note
+  - Calling this function restores the current @ref sess_handle to its
+    initial state (cookies cleared, custom headers cleared, default
+    user-agent string restored, ...)
+  - Use @ref quvi_ok for checking if an error occurred
 @sa @ref scan_media
 @ingroup scan
 */
@@ -78,6 +84,8 @@ quvi_scan_t quvi_scan_new(quvi_t handle, const char *url)
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_val_if_fail(handle != NULL, NULL);
   g_return_val_if_fail(url != NULL, NULL);
+
+  c_reset(q);
 
   qs = m_scan_new(q, url);
   {

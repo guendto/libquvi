@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -33,7 +33,11 @@
 
 /** @brief Parse playlist properties for URL
 @return New handle, @ref quvi_playlist_free it when done using it
-@note Use @ref quvi_ok for checking if an error occurred
+@note
+  - Calling this function restores the current @ref sess_handle to its
+    initial state (cookies cleared, custom headers cleared, default
+    user-agent string restored, ...)
+  - Use @ref quvi_ok for checking if an error occurred
 @sa @ref parse_playlist
 @ingroup playlistprop
 */

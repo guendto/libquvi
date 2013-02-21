@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -129,6 +129,8 @@ static void _chk_optional(lua_State *l, _quvi_playlist_t qp)
     }
 }
 
+extern gint c_reset(_quvi_t);
+
 QuviError l_exec_playlist_script_parse(gpointer p, GSList *sl)
 {
   _quvi_playlist_t qp;
@@ -137,6 +139,8 @@ QuviError l_exec_playlist_script_parse(gpointer p, GSList *sl)
 
   qp = (_quvi_playlist_t) p;
   l = qp->handle.quvi->handle.lua;
+
+  c_reset(qp->handle.quvi);
 
   qs = (_quvi_script_t) sl->data;
   lua_getglobal(l, script_func);

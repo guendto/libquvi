@@ -257,6 +257,8 @@ static void _chk_subtitles(lua_State *l, _quvi_subtitle_t qsub,
   lua_pop(l, 1);
 }
 
+extern gint c_reset(_quvi_t);
+
 QuviError l_exec_subtitle_script_parse(gpointer p, GSList *sl)
 {
   _quvi_subtitle_t qsub;
@@ -265,6 +267,8 @@ QuviError l_exec_subtitle_script_parse(gpointer p, GSList *sl)
 
   qsub = (_quvi_subtitle_t) p;
   l = qsub->handle.quvi->handle.lua;
+
+  c_reset(qsub->handle.quvi);
 
   qs = (_quvi_script_t) sl->data;
   lua_getglobal(l, script_func);
