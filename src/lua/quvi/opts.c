@@ -125,13 +125,6 @@ void l_quvi_object_opts_curl(GSList *opts, _quvi_t q)
       o = (l_quvi_object_opt_t) p->data;
       curl_easy_setopt(c, CURLOPT_USERAGENT, o->value.str);
     }
-
-  if (l_quvi_object_opts_is_set(opts, QUVI_OBJECT_OPTION_HTTP_COOKIE, &p)
-      == TRUE)
-    {
-      o = (l_quvi_object_opt_t) p->data;
-      curl_easy_setopt(c, CURLOPT_COOKIE, o->value.str);
-    }
 }
 
 gboolean l_quvi_object_opts_is_set(GSList *opts, QuviObjectOption qoo,
