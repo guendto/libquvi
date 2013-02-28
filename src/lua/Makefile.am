@@ -22,6 +22,7 @@ src=\
   quvi/crypto/en_decrypt.c\
   quvi/crypto/err.c\
   quvi/crypto/hash.c\
+  quvi/http/cookie.c\
   quvi/http/fetch.c\
   quvi/http/metainfo.c\
   quvi/http/resolve.c\
