@@ -33,4 +33,6 @@ Compiling libquvi applications on UNIX:
 @code
 cc foo.c `pkg-config --cflags --libs libquvi-0.9` -o foo
 @endcode
+
+@sa @ref sess_handle
 */

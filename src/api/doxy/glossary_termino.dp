@@ -1,5 +1,37 @@
 /** @page glossary_termino Glossary: Terminology
 
+@section sess_handle libcURL session handle
+
+Calling @ref quvi_new creates a libcURL session handle. This handle is
+reused by libquvi to access the Internet until @ref quvi_free is called.
+libcURL sets most of the initial values for the handle when it is
+created by calling curl_easy_init(3). libquvi will, additionally, make
+the following changes to the handle when @ref quvi_new is called:
+
+- CURLOPT_USERAGENT is set to "Mozilla/5.0"
+- CURLOPT_FOLLOWLOCATION is set to 1L (enabled)
+- CURLOPT_COOKIELIST is set to "ALL" (clear and enable cookies)
+- CURLOPT_HTTPHEADER is set to NULL (clear custom headers)
+- CURLOPT_NOBODY is set to 0L (disabled)
+
+The scripts (e.g. @ref m_script) may modify the cookie and HTTP header
+settings dynamically which may be required in order to access some of
+the resources, e.g. @ref m_stream. For this reason, it may be necessary
+for the 3rd party applications using libquvi to reuse the current
+session handle in order to access these sources. The session handle may
+be queried using the @ref quvi_get function.
+
+The following functions will reset the session handle to its initial
+state when they are called:
+
+- @ref quvi_media_new
+- @ref quvi_playlist_new
+- @ref quvi_scan_new
+- @ref quvi_subtitle_new
+
+Any cookie and header settings that were set by any of the scripts
+previously, will be lost when those functions are called.
+
 @section media_sect Media
 
 @subsection m_prop Media property
