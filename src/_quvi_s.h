@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -50,6 +50,10 @@ struct _quvi_s
     gpointer curl;
     gpointer lua;
   } handle;
+  struct
+  {
+    struct curl_slist *headers;
+  } http;
   struct
   {
     struct
