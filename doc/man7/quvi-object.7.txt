@@ -215,6 +215,20 @@ quvi.http.fetch(<URL>[,qoo])::
   The function will return the 'data' value among the values in
   the returned dictionary.
 
+quvi.http.header(<VALUE>[,qoo])::
+  Add, remove or replace internally used libcurl HTTP headers.
+  +
+  The second argument ('qoo') is expected to be a dictionary of
+  additional 'quvi object options', if defined at all.
+  +
+  This function essentially wraps CURLOPT_HTTPHEADER, and will not
+  return any additional values in the dictionary. See
+  'curl_easy_setopt(3)' for the full description of CURLOPT_HTTPHEADER.
+
+NOTE: To clear the custom headers, pass "" as the VALUE; the custom
+      headers are also cleared automatically when a support script
+      function 'parse' is called
+
 quvi.http.metainfo(<URL>[,qoo])::
   Query the HTTP metainfo for the URL.
   +
@@ -359,6 +373,27 @@ NOTE: Typically, the scripts would not need to handle the error
 local C = require 'quvi/const'
 local o = { [C.qoo_fetch_from_charset] = 'ISO-8859-1' }
 local r = quvi.http.fetch('http://example.com', o)
+----
+
+* Override user-agent header in the HTTP request:
++
+----
+local r = quvi.http.header('User-Agent: foo/1.0')
+r = quvi.http.fetch(...)
+----
+
+* Disable an internal header in the HTTP request:
++
+----
+local r = quvi.http.header('Accept:')
+r = quvi.http.fetch(...)
+----
+
+* Send a cookie in the HTTP request:
++
+----
+local r = quvi.http.header('Cookie: foo=1')
+r = quvi.http.fetch(...)
 ----
 
 * Query metainfo for an URL:
