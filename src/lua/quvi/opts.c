@@ -109,6 +109,7 @@ void l_quvi_object_opts_free(GSList *p)
   m_slist_free_full(p, _opt_free);
 }
 
+#ifdef _UNUSED
 void l_quvi_object_opts_curl(GSList *opts, _quvi_t q)
 {
   l_quvi_object_opt_t o;
@@ -126,6 +127,7 @@ void l_quvi_object_opts_curl(GSList *opts, _quvi_t q)
       curl_easy_setopt(c, CURLOPT_USERAGENT, o->value.str);
     }
 }
+#endif /* _UNUSED */
 
 gboolean l_quvi_object_opts_is_set(GSList *opts, QuviObjectOption qoo,
                                    GSList **dst)

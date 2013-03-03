@@ -28,7 +28,9 @@ typedef enum
   QUVI_OBJECT_OPTION_FETCH_FROM_CHARSET = 0x20,
   /* http */
   QUVI_OBJECT_OPTION_HTTP_COOKIE_MODE   = 0x40,
+#ifdef _UNUSED
   QUVI_OBJECT_OPTION_HTTP_USER_AGENT,
+#endif
   /* crypto */
   QUVI_OBJECT_OPTION_CRYPTO_CIPHER_FLAGS = 0x60,
   QUVI_OBJECT_OPTION_CRYPTO_CIPHER_MODE,
@@ -52,7 +54,9 @@ GSList *l_quvi_object_opts_new(lua_State*, gint);
 void l_quvi_object_opts_free(GSList*);
 
 gboolean l_quvi_object_opts_is_set(GSList*, QuviObjectOption, GSList**);
+#ifdef _UNUSED
 void l_quvi_object_opts_curl(GSList*, _quvi_t);
+#endif
 
 gboolean l_quvi_object_opts_croak_if_error(GSList*);
 

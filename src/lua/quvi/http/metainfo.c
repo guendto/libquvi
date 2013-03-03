@@ -48,8 +48,9 @@ gint l_quvi_http_metainfo(lua_State *l)
 
   opts = l_quvi_object_opts_new(l, 2);
   croak_if_error = l_quvi_object_opts_croak_if_error(opts);
+#ifdef _UNUSED
   l_quvi_object_opts_curl(opts, q);
-
+#endif
   qmi = quvi_http_metainfo_new(q, url);
 
   lua_newtable(l);
