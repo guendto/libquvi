@@ -99,10 +99,6 @@ qoo_http_cookie_mode=<value>::
   See also 'libcurl-tutorial(3)' which covers the use of cookies with
   the library in greater detail.
 
-qoo_http_user_agent=<value>::
-  Identify to HTTP servers as the string 'value'. The library uses the
-  default value of 'Mozilla/5.0'.
-
 RETURN VALUES
 -------------
 Each quvi-object function will return a dictionary containing the
