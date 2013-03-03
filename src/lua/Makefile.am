@@ -24,6 +24,7 @@ src=\
   quvi/crypto/hash.c\
   quvi/http/cookie.c\
   quvi/http/fetch.c\
+  quvi/http/header.c\
   quvi/http/metainfo.c\
   quvi/http/resolve.c\
   quvi/opts.c\
