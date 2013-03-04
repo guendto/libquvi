@@ -114,23 +114,26 @@ void l_quvi_object_opts_curl(GSList *opts, _quvi_t q)
 {
   l_quvi_object_opt_t o;
   GSList *p;
-  CURL *c;
 
   if (opts == NULL)
     return;
 
-  c = q->handle.curl;
-  if (l_quvi_object_opts_is_set(opts, QUVI_OBJECT_OPTION_HTTP_USER_AGENT, &p)
+  if (l_quvi_object_opts_is_set(q->handle.lua, opts,
+                                QUVI_OBJECT_OPTION_HTTP_USER_AGENT, &p,
+                                NULL, FALSE)
       == TRUE)
     {
       o = (l_quvi_object_opt_t) p->data;
-      curl_easy_setopt(c, CURLOPT_USERAGENT, o->value.str);
+      curl_easy_setopt(q->handle.curl, CURLOPT_USERAGENT, o->value.str);
     }
 }
 #endif /* _UNUSED */
 
-gboolean l_quvi_object_opts_is_set(GSList *opts, QuviObjectOption qoo,
-                                   GSList **dst)
+gboolean l_quvi_object_opts_is_set(lua_State *l, GSList *opts,
+                                   const QuviObjectOption qoo, GSList **dst,
+                                   const gchar *w,
+                                   const gboolean croak_if_error)
+
 {
   *dst = opts;
   while (*dst != NULL)
@@ -140,17 +143,29 @@ gboolean l_quvi_object_opts_is_set(GSList *opts, QuviObjectOption qoo,
         return (TRUE);
       *dst = g_slist_next(*dst);
     }
+
+  if (croak_if_error == TRUE && w != NULL)
+    luaL_error(l, "%s is required", w);
+
   return (FALSE);
 }
 
-gboolean l_quvi_object_opts_croak_if_error(GSList *opts)
+void l_quvi_object_opts_chk_given(lua_State *l, GSList *opts,
+                                  const gchar *w)
+{
+  if (opts == NULL)
+    luaL_error(l, "expects a table of %s options passed as an arg", w);
+}
+
+gboolean l_quvi_object_opts_croak_if_error(lua_State *l, GSList *opts)
 {
   GSList *p;
 
   if (opts == NULL)
     return (TRUE);
 
-  if (l_quvi_object_opts_is_set(opts, QUVI_OBJECT_OPTION_CROAK_IF_ERROR, &p)
+  if (l_quvi_object_opts_is_set(l, opts, QUVI_OBJECT_OPTION_CROAK_IF_ERROR,
+                                &p, NULL, FALSE)
       == TRUE)
     {
       l_quvi_object_opt_t o = (l_quvi_object_opt_t) p->data;
