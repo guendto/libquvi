@@ -58,7 +58,7 @@ gint l_quvi_crypto_hash(lua_State *l)
   /* options */
 
   opts = l_quvi_object_opts_new(l, 2);
-  croak_if_error = l_quvi_object_opts_croak_if_error(opts);
+  croak_if_error = l_quvi_object_opts_croak_if_error(l, opts);
   l_quvi_object_crypto_hash_chk_opts(l, opts, &co);
 
   /* generate message digest (return as a hexstring). */

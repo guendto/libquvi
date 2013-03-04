@@ -78,39 +78,16 @@ static gint _setopt(lua_State *l, const _quvi_t q, const CURLoption copt,
   return (1); /* no. of returned values (a table) */
 }
 
-static gboolean _chk_if_set(lua_State *l, GSList *opts,
-                            const gboolean croak_flag,
-                            const QuviObjectOption qoo, GSList **dst,
-                            const gchar *w)
-{
-  const gboolean r = l_quvi_object_opts_is_set(opts, qoo, dst);
-  if (croak_flag == TRUE && r == FALSE)
-    luaL_error(l, "%s required", w);
-  return (r);
-}
-
-#define _chk_req_as(qoo,what,dst,type)\
-  do {\
-    _chk_if_set(l, opts, TRUE, qoo, &p, what);\
-    dst = ((l_quvi_object_opt_t) p->data)->value.type;\
-  } while (0)
-
-static void _chk_opts_given(lua_State *l, GSList *opts)
-{
-  if (opts == NULL)
-    luaL_error(l, "expects a table of cookie options passed as an arg");
-}
-
 static void _chk_cookie_opts(lua_State *l, GSList *opts, _cookie_opts_t co)
 {
   GSList *p;
 
-  _chk_opts_given(l, opts);
+  l_quvi_object_opts_chk_given(l, opts, "cookie");
 
   /* required */
 
-  _chk_req_as(QUVI_OBJECT_OPTION_HTTP_COOKIE_MODE,
-              HRE_COOKIE_MODE, co->mode, n);
+  l_quvi_object_opts_chk_req_s(QUVI_OBJECT_OPTION_HTTP_COOKIE_MODE,
+                               HRE_COOKIE_MODE, co->mode, n);
 }
 
 gint l_quvi_http_cookie(lua_State *l)
@@ -136,7 +113,7 @@ gint l_quvi_http_cookie(lua_State *l)
   /* options */
 
   opts = l_quvi_object_opts_new(l, 2);
-  croak_if_error = l_quvi_object_opts_croak_if_error(opts);
+  croak_if_error = l_quvi_object_opts_croak_if_error(l, opts);
 
   _chk_cookie_opts(l, opts, &co);
   l_quvi_object_opts_free(opts);

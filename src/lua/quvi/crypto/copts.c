@@ -33,47 +33,13 @@
 #include "lua/quvi/opts.h"
 #include "lua/def.h"
 
-static gboolean _chk_if_set(lua_State *l, GSList *opts, gboolean croak_flag,
-                            const QuviObjectOption qoo, GSList **dst,
-                            const gchar *w)
-{
-  const gboolean r = l_quvi_object_opts_is_set(opts, qoo, dst);
-  if (croak_flag == TRUE && r == FALSE)
-    luaL_error(l, "%s required", w);
-  return (r);
-}
-
-#define _chk_req_as(qoo,what,dst,type)\
-  do {\
-    _chk_if_set(l, opts, TRUE, qoo, &p, what);\
-    dst = ((l_quvi_object_opt_t) p->data)->value.type;\
-  } while (0)
-
-#define _chk_req_cb(n,what,cb)\
-  do {\
-    _chk_if_set(l, opts, TRUE, n, &p, what);\
-    cb(l, co, p);\
-  } while (0)
-
-#define _chk_opt_as(qoo,dst,type)\
-  do {\
-    if (_chk_if_set(l, opts, FALSE, qoo, &p, NULL) == TRUE)\
-      dst = ((l_quvi_object_opt_t) p->data)->value.type;\
-  } while (0)
-
-static void _chk_opts_given(lua_State *l, GSList *opts)
-{
-  if (opts == NULL)
-    luaL_error(l, "expects a table of crypto options passed as an arg");
-}
-
 static void _chk_opts_common_req(lua_State *l, GSList *opts,
                                  l_quvi_object_crypto_opts_t co)
 {
   GSList *p;
 
-  _chk_req_as(QUVI_OBJECT_OPTION_CRYPTO_ALGORITHM,
-              HRE_ALGORITHM, co->algoname, str);
+  l_quvi_object_opts_chk_req_s(QUVI_OBJECT_OPTION_CRYPTO_ALGORITHM,
+                               HRE_ALGORITHM, co->algoname, str);
 }
 
 /* Encrypt and decrypt option checks. */
@@ -82,28 +48,28 @@ void l_quvi_object_crypto_chk_opts(lua_State *l, GSList *opts,
 {
   GSList *p;
 
-  _chk_opts_given(l, opts);
+  l_quvi_object_opts_chk_given(l, opts, "crypto");
   _chk_opts_common_req(l, opts, co);
 
   /* required */
 
-  _chk_req_as(QUVI_OBJECT_OPTION_CRYPTO_CIPHER_MODE,
-              HRE_CIPHER_MODE, co->cipher.mode, n);
+  l_quvi_object_opts_chk_req_s(QUVI_OBJECT_OPTION_CRYPTO_CIPHER_MODE,
+                               HRE_CIPHER_MODE, co->cipher.mode, n);
 
-  _chk_req_as(QUVI_OBJECT_OPTION_CRYPTO_CIPHER_KEY,
-              HRE_CIPHER_KEY, co->cipher.key, str);
+  l_quvi_object_opts_chk_req_s(QUVI_OBJECT_OPTION_CRYPTO_CIPHER_KEY,
+                               HRE_CIPHER_KEY, co->cipher.key, str);
 
   /* optional */
 
-  _chk_opt_as(QUVI_OBJECT_OPTION_CRYPTO_CIPHER_FLAGS,
-              co->cipher.flags, n);
+  l_quvi_object_opts_chk_opt_s(QUVI_OBJECT_OPTION_CRYPTO_CIPHER_FLAGS,
+                               co->cipher.flags, n);
 }
 
 /* Hash option checks. */
 void l_quvi_object_crypto_hash_chk_opts(lua_State *l, GSList *opts,
                                         l_quvi_object_crypto_opts_t co)
 {
-  _chk_opts_given(l, opts);
+  l_quvi_object_opts_chk_given(l, opts, "crypto");
   _chk_opts_common_req(l, opts, co);
 }
 

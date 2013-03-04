@@ -50,15 +50,36 @@ struct l_quvi_object_opt_s
 
 typedef struct l_quvi_object_opt_s *l_quvi_object_opt_t;
 
+#define l_quvi_object_opts_chk_req_s(qoo,what,dst,type)\
+  do {\
+    l_quvi_object_opts_is_set(l, opts, qoo, &p, what, TRUE);\
+    dst = ((l_quvi_object_opt_t) p->data)->value.type;\
+  } while (0)
+
+#define l_quvi_object_opts_chk_req_cb(n,what,cb)\
+  do {\
+    l_quvi_object_opts_is_set(l, opts, n, &p, what, TRUE);\
+    cb(l, co, p);\
+  } while (0)
+
+#define l_quvi_object_opts_chk_opt_s(qoo,dst,type)\
+  do {\
+    if (l_quvi_object_opts_is_set(l, opts, qoo, &p, NULL, FALSE) == TRUE)\
+      dst = ((l_quvi_object_opt_t) p->data)->value.type;\
+  } while (0)
+
 GSList *l_quvi_object_opts_new(lua_State*, gint);
 void l_quvi_object_opts_free(GSList*);
 
-gboolean l_quvi_object_opts_is_set(GSList*, QuviObjectOption, GSList**);
+gboolean l_quvi_object_opts_is_set(lua_State*, GSList*,
+                                   const QuviObjectOption, GSList**,
+                                   const gchar*, const gboolean);
 #ifdef _UNUSED
 void l_quvi_object_opts_curl(GSList*, _quvi_t);
 #endif
 
-gboolean l_quvi_object_opts_croak_if_error(GSList*);
+void l_quvi_object_opts_chk_given(lua_State*, GSList*, const gchar*);
+gboolean l_quvi_object_opts_croak_if_error(lua_State *l, GSList*);
 
 #endif /* l_quvi_opts_h */
 

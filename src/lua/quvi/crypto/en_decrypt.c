@@ -66,7 +66,7 @@ static gint _exec(lua_State *l, const CryptoMode crypto_mode,
   /* options */
 
   opts = l_quvi_object_opts_new(l, 2);
-  croak_if_error = l_quvi_object_opts_croak_if_error(opts);
+  croak_if_error = l_quvi_object_opts_croak_if_error(l, opts);
   l_quvi_object_crypto_chk_opts(l, opts, &co);
 
   /* encrypt/decrypt (return as a hexstring). */
