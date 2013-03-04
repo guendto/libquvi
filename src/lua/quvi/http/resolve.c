@@ -51,8 +51,9 @@ gint l_quvi_http_resolve(lua_State *l)
 
   opts = l_quvi_object_opts_new(l, 2);
   croak_if_error = l_quvi_object_opts_croak_if_error(opts);
+#ifdef _UNUSED
   l_quvi_object_opts_curl(opts, q);
-
+#endif
   r = n_resolve_new(q, url);
   q->status.rc = n_resolve(q, r);
 

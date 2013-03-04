@@ -20,61 +20,73 @@
 
 #include "config.h"
 
+#include <string.h>
 #include <lauxlib.h>
 #include <glib.h>
+#include <curl/curl.h>
 
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
-#include "_quvi_http_metainfo_s.h"
 /* -- */
-#include "lua/def.h"
+#include "lua/quvi/opts.h"
 #include "lua/getfield.h"
 #include "lua/setfield.h"
-#include "lua/quvi/opts.h"
+#include "lua/def.h"
 
-gint l_quvi_http_metainfo(lua_State *l)
+extern glong c_reset_headers(_quvi_t);
+
+gint l_quvi_http_header(lua_State *l)
 {
-  _quvi_http_metainfo_t qmi;
   gboolean croak_if_error;
-  const gchar *url;
+  const gchar *s;
   GSList *opts;
+  CURLcode cc;
   _quvi_t q;
 
-  q = (_quvi_t) l_get_reg_userdata(l, USERDATA_QUVI_T);
+  /* quvi handle */
 
-  url = luaL_checkstring(l, 1);
+  q = (_quvi_t) l_get_reg_userdata(l, USERDATA_QUVI_T);
+  g_assert(q != NULL);
+
+  /* arg1 */
+
+  s = luaL_checkstring(l, 1);
   lua_pop(l, 1);
+
+  /* options */
 
   opts = l_quvi_object_opts_new(l, 2);
   croak_if_error = l_quvi_object_opts_croak_if_error(opts);
-#ifdef _UNUSED
-  l_quvi_object_opts_curl(opts, q);
-#endif
-  qmi = quvi_http_metainfo_new(q, url);
+  l_quvi_object_opts_free(opts);
 
-  lua_newtable(l);
-  l_setfield_n(l, QO_RESPONSE_CODE, q->status.resp_code);
-  l_setfield_n(l, QO_QUVI_CODE, q->status.rc);
-  l_setfield_s(l, QO_ERROR_MESSAGE, (q->status.rc != QUVI_OK)
-               ? q->status.errmsg->str
-               : GS_EMPTY_S, -1);
+  /* apply */
 
-  if (quvi_ok(q) == QUVI_TRUE)
+  if (strlen(s) >0)
     {
-      l_setfield_s(l, QO_CONTENT_TYPE, qmi->content_type->str, -1);
-      l_setfield_n(l, QO_CONTENT_LENGTH, qmi->length_bytes);
+      CURL *c = q->handle.curl;
+      q->http.headers = curl_slist_append(q->http.headers, s);
+      cc = curl_easy_setopt(c, CURLOPT_HTTPHEADER, q->http.headers);
     }
   else
+    cc = c_reset_headers(q);
+
+  if (cc != CURLE_OK)
     {
+      g_string_printf(q->status.errmsg, "%s", curl_easy_strerror(cc));
+      q->status.rc = QUVI_ERROR_CALLBACK;
+
       if (croak_if_error == TRUE)
         luaL_error(l, "%s", q->status.errmsg->str);
     }
 
-  l_quvi_object_opts_free(opts);
-  quvi_http_metainfo_free(qmi);
+  /* Return a table of results. */
 
-  return (1); /* no. of returned values (one table) */
+  lua_newtable(l);
+  l_setfield_s(l, QO_ERROR_MESSAGE, q->status.errmsg->str, -1);
+  l_setfield_n(l, QO_QUVI_CODE, q->status.rc);
+
+  return (1); /* no. of returned values (a table) */
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

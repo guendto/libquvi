@@ -27,16 +27,36 @@
 /* -- */
 #include "_quvi_s.h"
 
+glong c_reset_headers(_quvi_t q)
+{
+  CURLcode cc;
+  CURL *c;
+
+  c = q->handle.curl;
+  cc = curl_easy_setopt(c, CURLOPT_HTTPHEADER, NULL); /* clear custom headers */
+
+  curl_slist_free_all(q->http.headers);
+  q->http.headers = NULL;
+
+  return (cc);
+}
+
 gint c_reset(_quvi_t q)
 {
   CURL *c = q->handle.curl;
 
+#ifdef _1
+  /*
+   * If a program re-using the libquvi's curl session handle sets the
+   * CURLOPT_USERAGENT (or other options), the value would be lost.
+   */
   curl_easy_reset(c);
+#endif
+  c_reset_headers(q);
 
   curl_easy_setopt(c, CURLOPT_USERAGENT, "Mozilla/5.0");
   curl_easy_setopt(c, CURLOPT_FOLLOWLOCATION, 1L);
   curl_easy_setopt(c, CURLOPT_COOKIELIST, "ALL"); /* clear, enable cookies */
-  curl_easy_setopt(c, CURLOPT_HTTPHEADER, NULL); /* clear custom headers */
 #ifdef _1 /* Use whatever libcurl defaults to. */
   curl_easy_setopt(c, CURLOPT_MAXREDIRS, 5L); /* http://is.gd/kFsvE4 */
 #endif

@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -27,8 +27,12 @@
 /* -- */
 #include "_quvi_s.h"
 
+extern glong c_reset_headers(_quvi_t);
+
 void c_close(_quvi_t q)
 {
+  c_reset_headers(q);
+
   curl_easy_cleanup(q->handle.curl);
   q->handle.curl = NULL;
 

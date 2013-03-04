@@ -33,6 +33,7 @@
 extern gint l_quvi_http_metainfo(lua_State*);
 extern gint l_quvi_http_resolve(lua_State*);
 extern gint l_quvi_http_cookie(lua_State*);
+extern gint l_quvi_http_header(lua_State*);
 extern gint l_quvi_http_fetch(lua_State*);
 
 static const luaL_Reg quvi_reg_meth[] =
@@ -45,6 +46,7 @@ static const luaL_Reg quvi_http_reg_meth[] =
   {"metainfo", l_quvi_http_metainfo},
   {"resolve", l_quvi_http_resolve},
   {"cookie", l_quvi_http_cookie},
+  {"header", l_quvi_http_header},
   {"fetch", l_quvi_http_fetch},
   {NULL, NULL}
 };
