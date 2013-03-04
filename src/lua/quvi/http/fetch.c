@@ -50,7 +50,7 @@ gint l_quvi_http_fetch(lua_State *l)
   lua_pop(l, 1);
 
   opts = l_quvi_object_opts_new(l, 2);
-  croak_if_error = l_quvi_object_opts_croak_if_error(opts);
+  croak_if_error = l_quvi_object_opts_croak_if_error(l, opts);
 #ifdef _UNUSED
   l_quvi_object_opts_curl(opts, q);
 #endif

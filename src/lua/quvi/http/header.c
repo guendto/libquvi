@@ -57,7 +57,7 @@ gint l_quvi_http_header(lua_State *l)
   /* options */
 
   opts = l_quvi_object_opts_new(l, 2);
-  croak_if_error = l_quvi_object_opts_croak_if_error(opts);
+  croak_if_error = l_quvi_object_opts_croak_if_error(l, opts);
   l_quvi_object_opts_free(opts);
 
   /* apply */
