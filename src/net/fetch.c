@@ -65,9 +65,10 @@ void n_fetch(_quvi_t q, _quvi_net_t *n, const gchar *url, GSList *opts)
         {
           GSList *from;
 
-          if (l_quvi_object_opts_is_set(opts,
+          if (l_quvi_object_opts_is_set(q->handle.lua, opts,
                                         QUVI_OBJECT_OPTION_FETCH_FROM_CHARSET,
-                                        &from) == TRUE)
+                                        &from, NULL, FALSE)
+              == TRUE)
             {
               l_quvi_object_opt_t o;
               gchar *c;
