@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -27,7 +27,6 @@ typedef enum
 {
   QUVI_FETCH_OPTION_FROM_CHARSET,
   QUVI_FETCH_OPTION_USER_AGENT,
-  QUVI_FETCH_OPTION_COOKIE,
   QUVI_FETCH_OPTION_TYPE
 } QuviFetchOption;
 

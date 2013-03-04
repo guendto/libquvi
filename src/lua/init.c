@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -32,6 +32,7 @@
 
 extern gint l_quvi_http_metainfo(lua_State*);
 extern gint l_quvi_http_resolve(lua_State*);
+extern gint l_quvi_http_cookie(lua_State*);
 extern gint l_quvi_http_fetch(lua_State*);
 
 static const luaL_Reg quvi_reg_meth[] =
@@ -43,6 +44,7 @@ static const luaL_Reg quvi_http_reg_meth[] =
 {
   {"metainfo", l_quvi_http_metainfo},
   {"resolve", l_quvi_http_resolve},
+  {"cookie", l_quvi_http_cookie},
   {"fetch", l_quvi_http_fetch},
   {NULL, NULL}
 };

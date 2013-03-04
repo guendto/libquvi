@@ -90,15 +90,18 @@ qoo_fetch_from_charset=<charset>::
   fails, and the 'from charset' option is set, the library will then try
   to convert to UTF-8 using the 'from charset' value.
 
+qoo_http_cookie_mode=<value>::
+  Modify the cookie settings for the libcurl session handle. This
+  feature wraps the cookie features provided by
+  'libcurl_easy_setopt(3)'.  See the 'quvi/const' of the
+  'quvi-modules(7)' for a complete list of the available cookie modes.
+  +
+  See also 'libcurl-tutorial(3)' which covers the use of cookies with
+  the library in greater detail.
+
 qoo_http_user_agent=<value>::
   Identify to HTTP servers as the string 'value'. The library uses the
   default value of 'Mozilla/5.0'.
-
-qoo_http_cookie=<value[; value; ...]>::
-  When set, the arbitrary cookie will be used with the quvi.http.fetch
-  function. The cookies are handled by libcurl, look up the CURLOPT_COOKIE
-  description for details. If you must define >1 cookies, use the
-  following format: "foo=1; bar=2;" .
 
 RETURN VALUES
 -------------
@@ -184,6 +187,24 @@ HTTP
 
 The HTTP functions will return 'response_code' along the other "RETURN
 VALUES", and the values specific to the HTTP function.
+
+quvi.http.cookie(<VALUE>,<qoo>)::
+  Modify the libcurl session handle cookie settings that libquvi
+  currently uses.
+  +
+  The second argument ('qoo') is expected to be a dictionary containing
+  the cookie options, e.g. the cookie mode that should be used.
+  +
+  The complete list of the available cookie modes can be found in the
+  'quvi/const' module of the 'quvi-modules(7)'. The mode names are named
+  after their equivalent CURLOPT_COOKIE{SESSION,FILE,LIST,JAR} variable
+  names. For a description of each option, see 'libcurl_easy_setopt(3)'.
+  +
+  This function will not return any additional values in the dictionary.
+
+NOTE: Cookies are always enabled for the current libcurl session handle,
+      meaning that libcurl will parse the received cookies and use them
+      in the subsequent HTTP requests
 
 quvi.http.fetch(<URL>[,qoo])::
   Fetch an URL over an HTTP connection.
@@ -287,10 +308,25 @@ print(r)
 HTTP
 ~~~~
 
+* Dump the cookies in the memory to stdout:
++
+----
+local C = require 'quvi/const'
+local o = { [C.qoo_http_cookie_mode] = C.qohco_mode_jar }
+local r = quvi.http.cookie('-', o)
+----
+
+* Identical to the above but use the wrapper module:
++
+----
+local K = require 'quvi/http/cookie'
+local r = K.jar('-')
+----
+
 * Fetch an URL:
 +
 ----
-local r = quvi.fetch('http://example.com')
+local r = quvi.http.fetch('http://example.com')
 ----
 +
 r.data would now hold the contents. If an error occurred, e.g.
@@ -315,20 +351,13 @@ By setting qoo_croak_if_error to 'false', we tell the library to
 only register that an error occurred and return the control to
 the script. Handling of the error is then left for the script to do.
 +
-NOTE: Normally, the scripts would not need to handle the error
+NOTE: Typically, the scripts would not need to handle the error
 
 * Force conversion from ISO-8859-1 to UTF-8:
 +
 ----
 local C = require 'quvi/const'
 local o = { [C.qoo_fetch_from_charset] = 'ISO-8859-1' }
-local r = quvi.http.fetch('http://example.com', o)
-----
-
-* Set arbitrary cookies:
-+
-----
-local o = { [C.qoo_http_cookie] = 'foo=1; bar=2;' }
 local r = quvi.http.fetch('http://example.com', o)
 ----
 

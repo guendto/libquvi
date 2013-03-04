@@ -130,15 +130,13 @@
 #define QO_ERROR_MESSAGE  "error_message"
 #define QO_QUVI_CODE      "quvi_code"
 
-/*
- * quvi object crypto option names
- *  (not to be used in scripts directly)
- */
-
-#define QOCO_CIPHER_FLAGS "cipher flags"
-#define QOCO_CIPHER_MODE  "cipher mode"
-#define QOCO_CIPHER_KEY   "cipher key"
-#define QOCO_ALGORITHM    "algorithm"
+/* Human-readable quvi object crypto option names */
+#define HRE_CIPHER_FLAGS "cipher flags"
+#define HRE_CIPHER_MODE  "cipher mode"
+#define HRE_CIPHER_KEY   "cipher key"
+#define HRE_ALGORITHM    "algorithm"
+/* Human-readable quvi object HTTP cookie option names */
+#define HRE_COOKIE_MODE  "cookie mode"
 
 /* Lua indexes.
  *

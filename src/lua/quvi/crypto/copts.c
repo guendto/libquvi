@@ -73,7 +73,7 @@ static void _chk_opts_common_req(lua_State *l, GSList *opts,
   GSList *p;
 
   _chk_req_as(QUVI_OBJECT_OPTION_CRYPTO_ALGORITHM,
-              QOCO_ALGORITHM, co->algoname, str);
+              HRE_ALGORITHM, co->algoname, str);
 }
 
 /* Encrypt and decrypt option checks. */
@@ -88,10 +88,10 @@ void l_quvi_object_crypto_chk_opts(lua_State *l, GSList *opts,
   /* required */
 
   _chk_req_as(QUVI_OBJECT_OPTION_CRYPTO_CIPHER_MODE,
-              QOCO_CIPHER_MODE, co->cipher.mode, n);
+              HRE_CIPHER_MODE, co->cipher.mode, n);
 
   _chk_req_as(QUVI_OBJECT_OPTION_CRYPTO_CIPHER_KEY,
-              QOCO_CIPHER_KEY, co->cipher.key, str);
+              HRE_CIPHER_KEY, co->cipher.key, str);
 
   /* optional */
 
