@@ -86,4 +86,12 @@ subtitle_LDFLAGS=$(examples_common_ldflags)
 subtitle_LDADD=$(examples_common_ldadd)
 subtitle_CFLAGS=$(AM_CFLAGS)
 
+EXAMPLE_PROGS+=file_ext
+
+file_ext_SOURCES=file_ext.c
+file_ext_CPPFLAGS=$(examples_common_cppflags)
+file_ext_LDFLAGS=$(examples_common_ldflags)
+file_ext_LDADD=$(examples_common_ldadd)
+file_ext_CFLAGS=$(AM_CFLAGS)
+
 # vim: set ts=2 sw=2 tw=72 expandtab:

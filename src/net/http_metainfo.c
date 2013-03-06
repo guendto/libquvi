@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -33,7 +33,7 @@
 /* -- */
 #include "net/handle.h"
 
-extern QuviError l_exec_util_to_file_ext(_quvi_http_metainfo_t, _quvi_net_t);
+extern QuviError l_exec_util_to_file_ext(_quvi_t, const gchar*, GString*);
 extern QuviError c_http_metainfo(_quvi_t, _quvi_net_t);
 
 static const gdouble MIN_LIKELY_MEDIA_LENGTH = 50*1024;
@@ -54,7 +54,8 @@ static QuviError _http_metainfo(_quvi_http_metainfo_t qmi)
 
   if (rc == QUVI_OK)
     {
-      rc = l_exec_util_to_file_ext(qmi, n);
+      rc = l_exec_util_to_file_ext(q, n->http_metainfo.content_type->str,
+                                   qmi->file_ext);
       if (rc == QUVI_OK)
         {
           g_string_assign(qmi->content_type, n->http_metainfo.content_type->str);

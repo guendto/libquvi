@@ -18,6 +18,9 @@ EXTRA_DIST=\
 
 src=\
   errmsg.c\
+  file_ext_free.c\
+  file_ext_get.c\
+  file_ext_new.c\
   free.c\
   get.c\
   http_metainfo_free.c\

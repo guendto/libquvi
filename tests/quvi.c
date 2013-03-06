@@ -95,11 +95,52 @@ static void test_version()
                   ==, quvi_version(QUVI_VERSION));
 }
 
+static void test_file_ext()
+{
+  struct lookup_s
+  {
+    gchar *input;
+    gchar *output;
+  };
+
+  static const struct lookup_s l[] =
+  {
+    {"video/x-flv", "flv"},
+    {"audio/mpeg", "mp3"},
+    {"video/mp4", "mp4"},
+    {"foo", "flv"},
+    {NULL, NULL}
+  };
+
+  quvi_file_ext_t qfe;
+  quvi_t q;
+  gint i;
+
+  if (chk_skip(__func__) == TRUE)
+    return;
+
+  q = quvi_new();
+  g_assert(q != NULL);
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+
+  i = 0;
+  while (l[i].input != NULL)
+    {
+      qfe = quvi_file_ext_new(q, l[i].input);
+      g_assert_cmpint(qerr(q), ==, QUVI_OK);
+      g_assert_cmpstr(l[i].output, ==, quvi_file_ext_get(qfe));
+      quvi_file_ext_free(qfe);
+      ++i;
+    }
+  quvi_free(q);
+}
+
 gint main(gint argc, gchar **argv)
 {
   g_test_init(&argc, &argv, NULL);
   g_test_add_func("/quvi (core)", test_quvi_core);
   g_test_add_func("/quvi/version", test_version);
+  g_test_add_func("/quvi/file_ext", test_file_ext);
   return (g_test_run());
 }
 
