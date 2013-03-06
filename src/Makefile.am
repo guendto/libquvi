@@ -1,6 +1,7 @@
 SUBDIRS=quvi-0.9 api gcrypt misc lua curl net
 
 hdr=\
+  _quvi_file_ext_s.h\
   _quvi_http_metainfo_s.h\
   _quvi_macro.h\
   _quvi_media_s.h\
