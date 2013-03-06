@@ -108,6 +108,10 @@ extern "C" {
 
   const char *quvi_subtitle_export_data(quvi_subtitle_export_t);
 
+  /* Convenience - file extension */
+
+  quvi_file_ext_t quvi_file_ext_new(quvi_t, const char*);
+
   /* Convenience */
 
   QuviBoolean quvi_supports(quvi_t, const char*,
