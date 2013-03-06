@@ -99,6 +99,7 @@ static void _chk_shared_properties(quvi_t q, quvi_subtitle_t qsub,
 
 static void test_subtitle_core()
 {
+  quvi_subtitle_export_t qse;
   quvi_subtitle_type_t qst;
   quvi_subtitle_lang_t qsl;
   quvi_subtitle_t qsub;
@@ -154,11 +155,25 @@ static void test_subtitle_core()
       for (; (qsl = quvi_subtitle_lang_next(qst)) != NULL; ++j);
     }
 
-  quvi_subtitle_free(qsub);
-  quvi_free(q);
-
   g_assert_cmpint(i, ==, 2);
   g_assert_cmpint(j, >, 12);
+
+  /* export */
+
+  qsl = quvi_subtitle_select(qsub, "foo"); /* use the first available */
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+
+  qse = quvi_subtitle_export_new(qsl, "srt");
+  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(strlen(quvi_subtitle_export_data(qse)), >, 0);
+  quvi_subtitle_export_free(qse);
+
+  qse = quvi_subtitle_export_new(qsl, "foo");
+  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_NO_SUPPORT);
+  quvi_subtitle_export_free(qse);
+
+  quvi_subtitle_free(qsub);
+  quvi_free(q);
 }
 
 static void test_subtitle_short()
