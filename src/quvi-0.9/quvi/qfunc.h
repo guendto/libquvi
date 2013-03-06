@@ -111,6 +111,7 @@ extern "C" {
   /* Convenience - file extension */
 
   quvi_file_ext_t quvi_file_ext_new(quvi_t, const char*);
+  void quvi_file_ext_free(quvi_file_ext_t);
 
   /* Convenience */
 
