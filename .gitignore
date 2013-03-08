@@ -13,6 +13,7 @@ Makefile.in
 aclocal.m4
 config.aux/config.guess
 config.aux/config.sub
+config.aux/compile
 config.aux/depcomp
 config.aux/install-sh
 config.aux/ltmain.sh
