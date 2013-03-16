@@ -34,6 +34,7 @@
 static gpointer _quvi_new()
 {
   _quvi_t q = g_new0(struct _quvi_s, 1);
+  q->opt.user_agent = g_string_new(NULL);
   q->status.errmsg = g_string_new(NULL);
   return (q);
 }

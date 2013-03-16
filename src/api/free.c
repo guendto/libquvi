@@ -54,6 +54,9 @@ void quvi_free(quvi_t handle)
 
   /* Strings. */
 
+  g_string_free(q->opt.user_agent, TRUE);
+  q->opt.user_agent = NULL;
+
   g_string_free(q->status.errmsg, TRUE);
   q->status.errmsg = NULL;
 
