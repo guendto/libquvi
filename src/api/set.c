@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -23,12 +23,13 @@
 #include "config.h"
 
 #include <glib.h>
+#include <curl/curl.h>
 
 #include "quvi.h"
 /* -- */
 #include "_quvi_s.h"
 
-static QuviError _set(_quvi_t q, QuviOption o, va_list arg)
+static QuviError _set(_quvi_t q, const QuviOption o, va_list arg)
 {
   switch (o)
     {
@@ -36,13 +37,17 @@ static QuviError _set(_quvi_t q, QuviOption o, va_list arg)
       q->opt.autoproxy = (gboolean) va_arg(arg, glong) >0;
       break;
 
-      /* Callback */
+    case QUVI_OPTION_USER_AGENT:
+      /* Save for later use: c_reset will reuse this value. */
+      g_string_assign(q->opt.user_agent, va_arg(arg, char*));
+      /* Apply for immediate effect. */
+      curl_easy_setopt(q->handle.curl, CURLOPT_USERAGENT,
+                       q->opt.user_agent->str);
+      break;
 
     case QUVI_OPTION_CALLBACK_STATUS:
       q->cb.status = va_arg(arg, quvi_callback_status);
       break;
-
-      /* Default */
 
     default:
       return (QUVI_ERROR_INVALID_ARG);
