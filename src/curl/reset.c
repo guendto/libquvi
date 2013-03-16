@@ -54,7 +54,10 @@ gint c_reset(_quvi_t q)
 #endif
   c_reset_headers(q);
 
-  curl_easy_setopt(c, CURLOPT_USERAGENT, "Mozilla/5.0");
+  curl_easy_setopt(c, CURLOPT_USERAGENT, (q->opt.user_agent->len >0)
+                   ? q->opt.user_agent->str
+                   : "Mozilla/5.0");
+
   curl_easy_setopt(c, CURLOPT_FOLLOWLOCATION, 1L);
   curl_easy_setopt(c, CURLOPT_COOKIELIST, "ALL"); /* clear, enable cookies */
 #ifdef _1 /* Use whatever libcurl defaults to. */
