@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -29,6 +29,16 @@ typedef enum
 {
   /** Default: None */
   QUVI_OPTION_CALLBACK_STATUS,
+  /** Identify as the user-agent to the HTTP servers
+   * Default: "Mozilla/5.0".
+   * @note
+   *    libquvi scripts may override this setting at any time. The
+   *    original value set using this option will be restored each time
+   *    the network accessing functions are called, e.g.
+   *    quvi.http.fetch
+   * @sa http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTUSERAGENT
+   */
+  QUVI_OPTION_USER_AGENT,
   /** Autodetect and set the proxy for new connections.
    * Default: QUVI_FALSE. When enabled (QUVI_TRUE), libquvi uses libproxy
    * to detect the system proxy settings and sets the CURLOPT_PROXY to the

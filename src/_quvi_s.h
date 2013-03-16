@@ -36,6 +36,7 @@ struct _quvi_s
   } cb;
   struct
   {
+    GString *user_agent;
     gboolean autoproxy;
   } opt;
   struct
