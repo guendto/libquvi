@@ -19,6 +19,7 @@ test-mem: all
 doc:
 	@make -C $(top_builddir)/doc/dox/ doc
 	@make -C $(top_builddir)/doc/man3/ doc
+	@make -C $(top_builddir)/doc/man7/ doc
 
 distdoc-html:
 	@make -C $(top_builddir)/doc/dox/ distdoc-html
