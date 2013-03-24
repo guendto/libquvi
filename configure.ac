@@ -34,7 +34,10 @@ AC_DEFINE_UNQUOTED([CANONICAL_BUILD], "$build",
 AC_DEFINE_UNQUOTED([CANONICAL_HOST], "$host",
   [Define to canonical host])
 
-AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
+# GNU Automake 1.13 spews a warning about AM_GNU_GETTEXT (0.18.1,
+# 0.18.2) using the deprecated AM_PROG_MKDIR_P macro. Do not specify
+# '-Werror` in the options to work around this.
+AM_INIT_AUTOMAKE([1.11.1 -Wall dist-xz no-dist-gzip tar-ustar])
 AM_SILENT_RULES([yes])
 
 # GNU Automake 1.12 requires this macro. Earlier versions do not
