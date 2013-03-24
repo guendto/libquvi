@@ -122,7 +122,7 @@ AC_DEFINE_UNQUOTED([VERSIONFILE], ["$versionfile"], [We have versionfile])
 scriptsver=`head -n1 "$versionfile" 2>/dev/null`
 
 # Checks for header files.
-AC_CHECK_HEADERS([stdint.h string.h])
+AC_CHECK_HEADERS([stdint.h string.h locale.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_UINT32_T
