@@ -36,7 +36,10 @@ AC_DEFINE_UNQUOTED([CANONICAL_HOST], "$host",
 
 AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
 AM_SILENT_RULES([yes])
-#AM_PROG_AR
+
+# GNU Automake 1.12 requires this macro. Earlier versions do not
+# recognize this macro. Work around this.
+m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 
 AM_GNU_GETTEXT_VERSION([0.18.1])
 AM_GNU_GETTEXT([external])
