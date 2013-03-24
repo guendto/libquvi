@@ -130,7 +130,7 @@ AC_TYPE_UINT64_T
 AC_TYPE_UINT8_T
 
 # Checks for library functions.
-AC_CHECK_FUNCS([strrchr])
+AC_CHECK_FUNCS([strrchr memset setlocale])
 
 # Version.
 VN=`$srcdir/gen-ver.sh`
