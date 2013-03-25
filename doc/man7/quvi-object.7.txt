@@ -8,14 +8,14 @@ quvi-object - Overview of the libquvi quvi-object
 DESCRIPTION
 -----------
 'quvi-object' is a collection of libquvi functions provided for the
-'libquvi-scripts(7)'. These functions vary from HTTP functions to
+linkman:libquvi-scripts[7]. These functions vary from HTTP functions to
 cryptographic functions. All of the 'quvi-object' functions are
 implemented in C.
 
-NOTE: The 'quvi-object' should not be confused with the 'quvi-modules(7)'
-      which are a selection of importable modules implemented in Lua. These
-      modules are intended to be loaded ('require') from the
-      'libquvi-scripts(7)'.
+NOTE: The 'quvi-object' should not be confused with the
+      linkman:quvi-modules[7] which are a selection of importable
+      modules implemented in Lua. These modules are intended to be
+      loaded ('require') from the linkman:libquvi-scripts[7].
 
 OPTIONS
 -------
@@ -34,7 +34,7 @@ ignore any unknown options, e.g. the crypto functions would ignore the
 HTTP options.
 
 NOTE: The options have been defined in the 'quvi/const' of
-      the 'quvi-modules(7)'
+      the linkman:quvi-modules[7]
 
 Crypto
 ~~~~~~
@@ -47,21 +47,22 @@ qoo_crypto_algorithm=<value>::
   be a string, e.g. 'sha1' or 'aes256'.
 
 qoo_crypto_cipher_flags=<value>::
-  Specifies the cipher flags (bit OR'd, see 'quvi-modules-3rdparty(7)'
-  for 'bit operations') to be used with the cipher.  These values
-  are identical to those defined by libgcrypt. See the 'quvi/const'
-  of the 'quvi-modules(7)' for a complete list of the available
-  cipher flags.
+  Specifies the cipher flags (bit OR'd, see
+  linkman:quvi-modules-3rdparty[7] for 'bit operations') to be used with
+  the cipher.  These values are identical to those defined by libgcrypt.
+  See the 'quvi/const' of the linkman:quvi-modules[7] for a complete
+  list of the available cipher flags.
 
 qoo_crypto_cipher_mode=<value>::
-  Specifies the cipher mode to be used. These are identical to the values
-  defined by libgcrypt. See the 'quvi/const' of the 'quvi-modules(7)'
-  for a complete list of the available cipher modes.
+  Specifies the cipher mode to be used. These are identical to the
+  values defined by libgcrypt. See the 'quvi/const' of the
+  linkman:quvi-modules[7] for a complete list of the available cipher
+  modes.
 
 qoo_crypto_cipher_key=<value>::
   Used to specify the cipher key. It should be noted that the 'key' is
   expected to be passed in hexadecimal form. See 'quvi/hex' of the
-  'quvi-modules(7)' for the conversion functions.
+  linkman:quvi-modules[7] for the conversion functions.
   +
   NOTE: The key derivation is left for the script to do
   +
@@ -93,11 +94,12 @@ qoo_fetch_from_charset=<charset>::
 qoo_http_cookie_mode=<value>::
   Modify the cookie settings for the libcurl session handle. This
   feature wraps the cookie features provided by
-  'libcurl_easy_setopt(3)'.  See the 'quvi/const' of the
-  'quvi-modules(7)' for a complete list of the available cookie modes.
+  linkman:libcurl_easy_setopt[3].  See the 'quvi/const' of the
+  linkman:quvi-modules[7] for a complete list of the available cookie
+  modes.
   +
-  See also 'libcurl-tutorial(3)' which covers the use of cookies with
-  the library in greater detail.
+  See also linkman:libcurl-tutorial[3] which covers the use of cookies
+  with the library in greater detail.
 
 RETURN VALUES
 -------------
@@ -109,7 +111,7 @@ error_message::
 
 quvi_code::
   The code returned by the library. See also 'quvi/const'
-  of 'quvi-modules(7)'.
+  of linkman:quvi-modules[7].
 
 Refer to the function documentation for the information about the additional
 values returned in the dictionary.
@@ -122,8 +124,8 @@ Base64
 
 quvi.base64.encode(<plaintext>[,qoo])::
   Encode the 'plaintext' to base64 format. The 'plaintext' is expected
-  to be passed in hexadecimal form. See 'quvi/hex' of the 'quvi-modules(7)'
-  for the conversion functions.
+  to be passed in hexadecimal form. See 'quvi/hex' of the
+  linkman:quvi-modules[7] for the conversion functions.
   +
   The second argument ('qoo') is expected to be a dictionary of
   additional 'quvi object options', if defined at all.
@@ -147,8 +149,8 @@ NOTE: The availability of the algorithms is determined by libgcrypt, and
 
 quvi.crypto.encrypt(<plaintext>, <qoo>)::
   Encrypt the 'plaintext'. The 'plaintext' is expected to be passed in
-  hexadecimal form. See 'quvi/hex' of the 'quvi-modules(7)' for the
-  conversion functions.
+  hexadecimal form. See 'quvi/hex' of the linkman:quvi-modules[7] for
+  the conversion functions.
   +
   The second argument ('qoo') is expected to be a dictionary containing
   the cipher options.
@@ -158,8 +160,8 @@ quvi.crypto.encrypt(<plaintext>, <qoo>)::
 
 quvi.crypto.decrypt(<ciphertext>, <qoo>)::
   Decrypt the 'ciphertext'. The 'ciphertext' is expected to be passed in
-  hexadecimal form. See 'quvi/hex' of the 'quvi-modules(7)' for the
-  conversion functions.
+  hexadecimal form. See 'quvi/hex' of the linkman:quvi-modules[7] for
+  the conversion functions.
   +
   The second argument ('qoo') is expected to be a dictionary containing
   the cipher options.
@@ -169,8 +171,8 @@ quvi.crypto.decrypt(<ciphertext>, <qoo>)::
 
 quvi.crypto.hash(<value>, <qoo>)::
   Generate a hash from the 'value'. The 'value' is expected to be passed
-  in hexadecimal format. See 'quvi/hex' of the 'quvi-modules(7)' for the
-  conversion functions.
+  in hexadecimal format. See 'quvi/hex' of the linkman:quvi-modules[7]
+  for the conversion functions.
   +
   The second argument ('qoo') is expected to be a dictionary containing
   the hash options, e.g. the algorithm that should be used.
@@ -192,9 +194,10 @@ quvi.http.cookie(<VALUE>,<qoo>)::
   the cookie options, e.g. the cookie mode that should be used.
   +
   The complete list of the available cookie modes can be found in the
-  'quvi/const' module of the 'quvi-modules(7)'. The mode names are named
-  after their equivalent CURLOPT_COOKIE{SESSION,FILE,LIST,JAR} variable
-  names. For a description of each option, see 'libcurl_easy_setopt(3)'.
+  'quvi/const' module of the linkman:quvi-modules[7]. The mode names are
+  named after their equivalent CURLOPT_COOKIE{SESSION,FILE,LIST,JAR}
+  variable names. For a description of each option, see
+  linkman:libcurl_easy_setopt[3].
   +
   This function will not return any additional values in the dictionary.
 
@@ -219,7 +222,8 @@ quvi.http.header(<VALUE>[,qoo])::
   +
   This function essentially wraps CURLOPT_HTTPHEADER, and will not
   return any additional values in the dictionary. See
-  'curl_easy_setopt(3)' for the full description of CURLOPT_HTTPHEADER.
+  linkman:curl_easy_setopt[3] for the full description of
+  CURLOPT_HTTPHEADER.
 
 NOTE: To clear the custom headers, pass "" as the VALUE; the custom
       headers are also cleared automatically when a support script
@@ -408,39 +412,9 @@ if #r.resolved_url >0 then
 end
 ----
 
-FURTHER RESOURCES
------------------
-GLib::
-  http://developer.gnome.org/glib/stable/glib-Base64-Encoding.html
-
-libcurl::
-  http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTUSERAGENT
-  http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTCOOKIE
-
-libgcrypt reference manual::
-  http://www.gnupg.org/documentation/manuals/gcrypt/
-
-Authors
--------
-Toni Gundogdu <legatvs@gmail.com>::
-  Author.
-
-Reporting bugs
---------------
-Report bugs to the quvi-devel mailing list
-<quvi-devel@lists.sourceforge.net> where the development and the
-maintenance is primarily done.  You do not have to be subscribed
-to the list to send a message there.
-
-LICENSE
--------
-libquvi is Free Software licensed under the GNU Affero GPLv3+
-
 SEE ALSO
 --------
-'libquvi-scripts(7)', 'libquvi(3)', 'quvi-modules(7)',
-'quvi-modules-3rdparty(7)'
+linkman:libquvi-scripts[7], linkman:libquvi[3], linkman:quvi-modules[7],
+linkman:quvi-modules-3rdparty[7]
 
-LIBQUVI
--------
-Part of the 'libquvi(3)' suite
+include::../footer.txt[]
