@@ -1,4 +1,5 @@
-EXTRA_DIST=
+EXTRA_DIST=asciidoc.conf
+
 SUBDIRS=
 if WITH_MANUAL
 SUBDIRS+=man3 man7
