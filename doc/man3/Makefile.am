@@ -3,9 +3,14 @@ DOC_MAN3=libquvi.3
 
 MAN_TXT=$(MAN3_TXT)
 
+ASCIIDOC_OPTS=\
+  -f $(top_srcdir)/doc/asciidoc.conf\
+  -a pkg_version="$(VERSION)"
+
 if HAVE_A2X
 $(DOC_MAN3):
-	$(AM_V_GEN)$(A2X) -f manpage -D $(builddir) $(srcdir)/$@.txt
+	$(AM_V_GEN)$(A2X) -f manpage --asciidoc-opts="$(ASCIIDOC_OPTS)" \
+		-D $(builddir) $(srcdir)/$@.txt
 doc: $(DOC_MAN3)
 else
 doc:
