@@ -3,9 +3,14 @@ DOC_MAN7=quvi-object.7
 
 MAN_TXT=$(MAN7_TXT)
 
+ASCIIDOC_OPTS=\
+  -f $(top_srcdir)/doc/asciidoc.conf\
+  -a pkg_version="$(VERSION)"
+
 if HAVE_A2X
 $(DOC_MAN7):
-	$(AM_V_GEN)$(A2X) -f manpage -D $(builddir) $(srcdir)/$@.txt
+	$(AM_V_GEN)$(A2X) -f manpage --asciidoc-opts="$(ASCIIDOC_OPTS)" \
+		-D $(builddir) $(srcdir)/$@.txt
 doc: $(DOC_MAN7)
 else
 doc:

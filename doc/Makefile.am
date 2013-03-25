@@ -1,4 +1,5 @@
-EXTRA_DIST=
+EXTRA_DIST=asciidoc.conf footer.txt
+
 SUBDIRS=
 if WITH_MANUAL
 SUBDIRS+=man3 man7
