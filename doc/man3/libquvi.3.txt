@@ -35,35 +35,13 @@ LIBQUVI_VERBOSE_SCRIPTS::
   functions will output to stderr.
 
 Proxy::
-  "libcurl" is used by libquvi. See the libcurl documentation (C API
-  and/or 'curl(1)') for a complete list of the supported proxy
+  libquvi uses linkman:libcurl[3]. See the libcurl documentation (C API
+  and/or linkman:curl[1]) for a complete list of the supported proxy
   environment variables.
-
-FURTHER RESOURCES
------------------
-
-The latest C API reference documentation may be viewed at
-`http://quvi.sf.net/doc/`.  The development code may be cloned
-from `git://repo.or.cz/libquvi.git`. The gitweb is accessible at
-`http://repo.or.cz/w/libquvi.git`.
-
-Authors
--------
-Toni Gundogdu <legatvs@gmail.com>::
-  Author.
-
-Reporting bugs
---------------
-Report bugs to the quvi-devel mailing list
-<quvi-devel@lists.sourceforge.net> where the development and the
-maintenance is primarily done.  You do not have to be subscribed
-to the list to send a message there.
-
-LICENSE
--------
-libquvi is Free Software licensed under the GNU Affero GPLv3+
 
 SEE ALSO
 --------
-'libquvi-scripts(7)', 'quvi(1)', 'quvi-object(7)', 'quvi-modules(7)',
-'quvi-modules-3rdparty(7)'
+linkman:libquvi-scripts[7], linkman:quvi[1], linkman:quvi-object[7],
+linkman:quvi-modules[7], linkman:quvi-modules-3rdparty[7]
+
+include::../footer.txt[]
