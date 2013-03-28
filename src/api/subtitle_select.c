@@ -59,6 +59,9 @@ static _quvi_subtitle_lang_t _default(_quvi_subtitle_t qsub)
   quvi_subtitle_type_reset(qsub);
   qst = quvi_subtitle_type_next(qsub);
 
+  if (qst == NULL)
+    return (NULL);
+
   quvi_subtitle_lang_reset(qst);
   return (quvi_subtitle_lang_next(qst));
 }
@@ -106,8 +109,11 @@ the notes below).
     - The result may be checked with @ref quvi_ok
       - The code may be retrieved using @ref quvi_get
       - The error message may be retrieved using @ref quvi_errmsg
-  - If nothing matched (and the 'croak' keyword was specified) the
-    function will return the first (default) available language
+  - If nothing matched (and the 'croak' keyword was not specified) the
+    function will either:
+      - return the first (default) available language, or
+      - NULL if the library failed to find any subtitle languages for
+        the media
   - Always confirm the result with @ref quvi_ok
   - Calling this function will reset the list pointers for both
     @ref sub_type and @ref sub_lang
