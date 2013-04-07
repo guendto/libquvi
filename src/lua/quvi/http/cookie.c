@@ -139,9 +139,13 @@ gint l_quvi_http_cookie(lua_State *l)
       break;
 
     default:
-      g_string_printf(q->status.errmsg, "[%s] invalid cookie function `0x%02x'",
+      g_string_printf(q->status.errmsg,
+                      "[%s] invalid cookie function `0x%02x'",
                       __func__, co.mode);
+
       q->status.rc = QUVI_ERROR_CALLBACK;
+      copt = CURLOPT_COOKIESESSION;
+
       g_warning("%s", q->status.errmsg->str);
     }
   return (_setopt(l, q, copt, &co, croak_if_error));
