@@ -1,0 +1,37 @@
+FURTHER RESOURCES
+-----------------
+The latest C API reference documentation may be viewed at
+`http://quvi.sf.net/doc/`.  The development code may be cloned from
+`git://repo.or.cz/libquvi.git`. The gitweb is accessible at
+`http://repo.or.cz/w/libquvi.git`.
+
+GLib::
+  http://developer.gnome.org/glib/stable/glib-Base64-Encoding.html
+
+libcurl::
+  http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTUSERAGENT
+  http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTCOOKIE
+
+libgcrypt reference manual::
+  http://www.gnupg.org/documentation/manuals/gcrypt/
+
+Authors
+-------
+Toni Gundogdu <legatvs@gmail.com>::
+  Author.
+
+Reporting bugs
+--------------
+Report bugs to the quvi-devel mailing list
+<quvi-devel@lists.sourceforge.net> where the development and the
+maintenance is primarily done.  You do not have to be subscribed to the
+list to send a message there.
+
+LICENSE
+-------
+libquvi is Free Software licensed under the GNU Affero GPLv3+
+
+LIBQUVI
+-------
+Part of the linkman:libquvi[3] suite
+
