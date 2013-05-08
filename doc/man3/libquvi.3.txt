@@ -30,10 +30,6 @@ LIBQUVI_SHOW_SCRIPT::
   scripts to stderr. The output will also indicate whether the script
   was accepted by the library.
 
-LIBQUVI_VERBOSE_SCRIPTS::
-  When defined, scripts using the 'quvi/debug' module messaging
-  functions will output to stderr.
-
 Proxy::
   libquvi uses linkman:libcurl[3]. See the libcurl documentation (C API
   and/or linkman:curl[1]) for a complete list of the supported proxy
