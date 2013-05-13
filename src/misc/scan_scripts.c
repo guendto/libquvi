@@ -600,7 +600,7 @@ static void _chk_common_scripts(_quvi_t q)
   gchar *path = NULL;
 
   {
-    /* LIBQUVI_SCRIPTS_DIR (excl.) */
+    /* LIBQUVI_SCRIPTS_DIR */
 
     if (scripts_dir != NULL && strlen(scripts_dir) >0)
       {
