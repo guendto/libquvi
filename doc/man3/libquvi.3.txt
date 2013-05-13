@@ -13,6 +13,16 @@ flash media properties. "quvi" is an acronym for "query video".
 ENVIRONMENT
 -----------
 
+LIBQUVI_EXCLUSIVE_SCRIPTS_DIR::
+  When defined, the library will *only* use those scripts found at the
+  directories specified by the LIBQUVI_SCRIPTS_DIR.
++
+NOTE: Useful, for example, when the current set of the scripts at
+      $top_srcdir/share/ (of libquvi-scripts) are being tested by the
+      testsuite of the libquvi-scripts.  The library would, otherwise,
+      include the scripts from the libquvi-scripts instance built with
+      the library and likely interfere with the tests.
+
 LIBQUVI_SCRIPTS_DIR::
   The library will additionally look in the colon-separated list of
   directories specified by the LIBQUVI_SCRIPTS_DIR environment variable.

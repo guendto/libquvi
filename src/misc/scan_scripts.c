@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -84,6 +84,7 @@ static GString *_contents(GString *fpath)
   return (NULL);
 }
 
+static gboolean excl_scripts_dir;
 const gchar *scripts_dir;
 const gchar *show_script;
 const gchar *show_dir;
@@ -538,6 +539,9 @@ static gboolean _glob_scripts(_quvi_t q, const GlobType t)
             path = NULL;
           }
         g_strfreev(r);
+
+        if (excl_scripts_dir == TRUE)
+          return ((*dst != NULL) ? TRUE:FALSE);
       }
   }
 
@@ -621,6 +625,9 @@ static void _chk_common_scripts(_quvi_t q)
           }
         g_strfreev(r);
         r = NULL;
+
+        if (excl_scripts_dir == TRUE)
+          return;
       }
   }
 
@@ -671,6 +678,14 @@ QuviError m_scan_scripts(_quvi_t q)
 {
   QuviError r, e;
   GlobType t;
+
+  {
+    const gchar *s = g_getenv("LIBQUVI_EXCLUSIVE_SCRIPTS_DIR");
+
+    excl_scripts_dir = (s != NULL && strlen(s) >0)
+                       ? TRUE
+                       : FALSE;
+  }
 
   scripts_dir = g_getenv("LIBQUVI_SCRIPTS_DIR");
   show_script = g_getenv("LIBQUVI_SHOW_SCRIPT");
