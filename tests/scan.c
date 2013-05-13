@@ -72,7 +72,7 @@ static void test_scan_core()
 
 static void test_scan_short()
 {
-  static const gchar URL[] = "http://is.gd/gQ4pYW";
+  static const gchar URL[] = "http://is.gd/yUeWit";
 
   quvi_scan_t qs;
   quvi_t q;
