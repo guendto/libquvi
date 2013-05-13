@@ -85,7 +85,7 @@ static GString *_contents(GString *fpath)
 }
 
 static gboolean excl_scripts_dir;
-const gchar *scripts_dir;
+static const gchar *scripts_dir;
 const gchar *show_script;
 const gchar *show_dir;
 
