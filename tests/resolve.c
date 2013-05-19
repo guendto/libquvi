@@ -55,6 +55,7 @@ static void test_resolve_core()
   quvi_free(q);
 }
 
+#ifdef _1 /* Comment out until a new one with >1 redirections is found. */
 static void test_resolve_3()
 {
   static const gchar URL[] = "http://is.gd/gQ4pYW";
@@ -86,6 +87,7 @@ static void test_resolve_3()
   quvi_resolve_free(qr);
   quvi_free(q);
 }
+#endif /* _1 */
 
 static void test_resolve_nodst()
 {
@@ -200,7 +202,9 @@ gint main(gint argc, gchar **argv)
 {
   g_test_init(&argc, &argv, NULL);
   g_test_add_func("/quvi/resolve (core)", test_resolve_core);
+#ifdef _1
   g_test_add_func("/quvi/resolve (3)", test_resolve_3);
+#endif
   g_test_add_func("/quvi/resolve (nodst)", test_resolve_nodst);
   g_test_add_func("/quvi/resolve (nodst #t param)",
                   test_resolve_nodst_t_param);
