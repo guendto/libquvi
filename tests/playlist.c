@@ -29,7 +29,7 @@
 static void test_playlist_core()
 {
   static const gchar URL[] =
-    "http://soundcloud.com/thelittleidiot/sets/destroyed/";
+    "http://soundcloud.com/volt-icarus2-otherupload/sets/bgm/";
 
   quvi_playlist_t qp;
   gdouble n;
@@ -63,24 +63,26 @@ static void test_playlist_core()
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_TITLE, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
-  g_assert_cmpstr(s, ==, "Destroyed");
+  g_assert_cmpstr(s, ==, "허스키익스프레스bgm");
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
-  g_assert_cmpstr(s, ==, "thelittleidiot_destroyed");
+  g_assert_cmpstr(s, ==, "volt-icarus2-otherupload_bgm");
 
   /* This should advance the current media pointer to the first media
    * item in the returned list. */
   quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_TITLE, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
-  g_assert_cmpstr(s, ==, "The Broken Places"); /* First media title. */
+  /* First media title. */
+  g_assert_cmpstr(s, ==, "은빛설원의 노래(허스키익스프레스 메인 bgm)");
 
   /* This should continue from the 2nd item, not the 1st in the list. */
   quvi_playlist_media_next(qp);
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_TITLE, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
-  g_assert_cmpstr(s, ==, "Be The One"); /* Second media title. */
+  /* Second media title. */
+  g_assert_cmpstr(s, ==, "햇살을 가르며Hike(허스키익스프레스bgm)");
 
   quvi_playlist_media_reset(qp);
 
@@ -101,7 +103,7 @@ static void test_playlist_core()
             /* Confirm that this is the first item, the call to
              * quvi_playlist_reset earlier should have reset the
              * current location. */
-            g_assert_cmpstr(s, ==, "The Broken Places");
+            g_assert_cmpstr(s, ==, "은빛설원의 노래(허스키익스프레스 메인 bgm)");
           }
 
         quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &s);
@@ -119,7 +121,7 @@ static void test_playlist_core()
 
 static void test_playlist_short()
 {
-  static const gchar URL[] = "http://is.gd/BjbpVn";
+  static const gchar URL[] = "http://is.gd/3oNTko";
 
   quvi_playlist_t qp;
   quvi_t q;
@@ -144,11 +146,11 @@ static void test_playlist_short()
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_TITLE, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
-  g_assert_cmpstr(s, ==, "Destroyed");
+  g_assert_cmpstr(s, ==, "허스키익스프레스bgm");
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
-  g_assert_cmpstr(s, ==, "thelittleidiot_destroyed");
+  g_assert_cmpstr(s, ==, "volt-icarus2-otherupload_bgm");
 
   {
     gint i = 0;
@@ -169,7 +171,7 @@ static void test_playlist_short()
 static void test_playlist_escaped_url()
 {
   static const gchar URL[] =
-    "http://youtube.com/watch%3Fv%3Dp5o7gBKHwtk%26list%3DPL954CCC04F8437E14%26feature%3Dplcp";
+    "http://www.youtube.com/playlist%3Flist%3DPLlbnzwCkgkTBBXWz595XaKs_kkXek0gQP%26";
 
   quvi_playlist_t qp;
   quvi_t q;
