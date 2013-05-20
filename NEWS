@@ -1,3 +1,13 @@
+v0.9.1  [2013-05-20]
+
+This is the first official release of the 0.9 of libquvi. The typical
+list of the changes (commit-by-commit), since the 0.4, were omitted.
+
+For a detailed list of the changes, see the git commit log. For an
+overview of the changes made in the quvi project 0.9+ series, see:
+  http://quvi.sourceforge.net/doc/other/quvi-prj-ptnine.html (WIP)
+
+
 v0.4.1 (2012-03-23) / Toni Gundogdu
 
 Toni Gundogdu:
