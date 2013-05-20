@@ -60,22 +60,28 @@ Requirements
 ------------
 
 * libquvi-scripts 0.9
-  http://quvi.sf.net/
+  http://quvi.sourceforge.net/
 
 * libcurl 7.21.0
   http://curl.haxx.se/
+    $ sudo aptitude install libcurl4-gnutls-dev
+       (or libcurl4-openssl-dev)
 
 * GLib 2.24.2
   http://library.gnome.org/devel/glib/
+    $ sudo aptitude install libglib2.0-dev
 
 * liblua 5.1
   http://lua.org/
+    $ sudo aptitude install liblua5.1-0-dev
 
 * libproxy 0.3.1
   http://code.google.com/p/libproxy/
+    $ sudo aptitude install libproxy-dev
 
 * libgcrypt 1.4.5
   http://directory.fsf.org/wiki/Libgcrypt
+    $ sudo aptitude install libgcrypt11-dev
 
 * pkg-config for tracking the compilation flags needed for libraries
   http://www.freedesktop.org/software/pkgconfig/
