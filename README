@@ -75,6 +75,11 @@ Requirements
   http://lua.org/
     $ sudo aptitude install liblua5.1-0-dev
 
+      2013-06-04: (Debian, Wheezy)
+        At the time of writing this, the lua-socket (listed among the
+        libquvi-scripts prerequisites) package does not contain the
+        files for Lua 5.2, forcing the installation of liblua 5.1.
+
 * libproxy 0.3.1
   http://code.google.com/p/libproxy/
     $ sudo aptitude install libproxy-dev
