@@ -25,7 +25,7 @@
 extern "C" {
 #endif
 
-  quvi_t quvi_new();
+  quvi_t quvi_new(void);
   void quvi_free(quvi_t);
 
   void quvi_set(quvi_t, QuviOption, ...);
