@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -74,7 +74,9 @@ static void test_playlist_core()
   quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_TITLE, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
   /* First media title. */
-  g_assert_cmpstr(s, ==, "은빛설원의 노래(허스키익스프레스 메인 bgm)");
+  g_assert_cmpstr(s, ==,
+                  "은빛설원의 노래(Song of silver snowy)_Husky "
+                  "Express Main bgm");
 
   /* This should continue from the 2nd item, not the 1st in the list. */
   quvi_playlist_media_next(qp);
@@ -82,7 +84,9 @@ static void test_playlist_core()
   quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_TITLE, &s);
   g_assert_cmpint(qerr(q), ==, QUVI_OK);
   /* Second media title. */
-  g_assert_cmpstr(s, ==, "햇살을 가르며Hike(허스키익스프레스bgm)");
+  g_assert_cmpstr(s, ==,
+                  "햇살을 가르며Hike(Hike bisecting the "
+                  "sunshine)_Husky Express bgm");
 
   quvi_playlist_media_reset(qp);
 
@@ -103,7 +107,9 @@ static void test_playlist_core()
             /* Confirm that this is the first item, the call to
              * quvi_playlist_reset earlier should have reset the
              * current location. */
-            g_assert_cmpstr(s, ==, "은빛설원의 노래(허스키익스프레스 메인 bgm)");
+            g_assert_cmpstr(s, ==,
+                            "은빛설원의 노래(Song of silver snowy)_Husky "
+                            "Express Main bgm");
           }
 
         quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &s);
