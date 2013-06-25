@@ -25,16 +25,9 @@
 
 #include "tests.h"
 
-glong qerr(quvi_t q)
-{
-  glong n;
-  quvi_get(q, QUVI_INFO_ERROR_CODE, &n);
-  return (n);
-}
-
 glong qerr_m(quvi_t q, const gchar *url)
 {
-  glong n = qerr(q);
+  glong n = quvi_errcode(q);
   g_test_message("url=%s", url);
   g_test_message("errmsg=%s", quvi_errmsg(q));
   return (n);
