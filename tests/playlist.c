@@ -41,7 +41,7 @@ static void test_playlist_core()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -51,28 +51,28 @@ static void test_playlist_core()
 
   /* Boundary check: the first -1 */
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_THUMBNAIL_URL-1, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
 
   /* Boundary check: the last +1 */
   quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_DURATION_MS+1, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_THUMBNAIL_URL, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpint(strlen(s), >, 0);
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_TITLE, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "허스키익스프레스bgm");
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "volt-icarus2-otherupload_bgm");
 
   /* This should advance the current media pointer to the first media
    * item in the returned list. */
   quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_TITLE, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   /* First media title. */
   g_assert_cmpstr(s, ==,
                   "은빛설원의 노래(Song of silver snowy)_Husky "
@@ -82,7 +82,7 @@ static void test_playlist_core()
   quvi_playlist_media_next(qp);
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_TITLE, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   /* Second media title. */
   g_assert_cmpstr(s, ==,
                   "햇살을 가르며Hike(Hike bisecting the "
@@ -95,11 +95,11 @@ static void test_playlist_core()
     while (quvi_playlist_media_next(qp) == QUVI_TRUE)
       {
         quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_DURATION_MS, &n);
-        g_assert_cmpint(qerr(q), ==, QUVI_OK);
+        g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
         g_assert_cmpfloat(n, >, 0);
 
         quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_TITLE, &s);
-        g_assert_cmpint(qerr(q), ==, QUVI_OK);
+        g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
         g_assert_cmpint(strlen(s), >, 0);
 
         if (i == 0)
@@ -113,7 +113,7 @@ static void test_playlist_core()
           }
 
         quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &s);
-        g_assert_cmpint(qerr(q), ==, QUVI_OK);
+        g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
         g_assert_cmpint(strlen(s), >, 0);
 
         ++i;
@@ -138,7 +138,7 @@ static void test_playlist_short()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -147,15 +147,15 @@ static void test_playlist_short()
   g_assert(qp != NULL);
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_THUMBNAIL_URL, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpint(strlen(s), >, 0);
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_TITLE, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "허스키익스프레스bgm");
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "volt-icarus2-otherupload_bgm");
 
   {
@@ -163,7 +163,7 @@ static void test_playlist_short()
     while (quvi_playlist_media_next(qp) == QUVI_TRUE)
       {
         quvi_playlist_get(qp, QUVI_PLAYLIST_MEDIA_PROPERTY_URL, &s);
-        g_assert_cmpint(qerr(q), ==, QUVI_OK);
+        g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
         g_assert_cmpint(strlen(s), >, 0);
         ++i;
       }
@@ -187,7 +187,7 @@ static void test_playlist_escaped_url()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -212,7 +212,7 @@ static void test_playlist_nosupport()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -221,15 +221,15 @@ static void test_playlist_nosupport()
   g_assert(qp != NULL);
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_THUMBNAIL_URL, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "");
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_TITLE, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "");
 
   quvi_playlist_get(qp, QUVI_PLAYLIST_PROPERTY_ID, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "");
 
   quvi_playlist_free(qp);

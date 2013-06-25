@@ -30,7 +30,7 @@ static quvi_t new_q()
 {
   quvi_t q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   chk_verbose(q);
   return (q);
 }

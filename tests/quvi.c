@@ -30,44 +30,49 @@ static void test_quvi_core()
 {
   gpointer p;
   quvi_t q;
-  gint n;
+  glong n;
 
   if (chk_skip(__func__) == TRUE)
     return;
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpstr(quvi_errmsg(q), ==, "Not an error");
 
   /* quvi_get */
 
+  n = 0;
   quvi_get(q, QUVI_INFO_RESPONSE_CODE-1, &n);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
   g_assert_cmpint(n, ==, 0);
 
+  p = NULL;
   quvi_get(q, QUVI_INFO_RESPONSE_CODE-1, &p);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
   g_assert(p == NULL);
 
-  quvi_get(q, QUVI_INFO_ERROR_CODE+1, &n);
+  n = 0;
+  quvi_get(q, QUVI_INFO_RESPONSE_CODE+1, &n);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
   g_assert_cmpint(n, ==, 0);
 
-  quvi_get(q, QUVI_INFO_ERROR_CODE+1, &p);
-  g_assert(p == NULL);
-
+  p = NULL;
   quvi_get(q, QUVI_INFO_CURL_HANDLE, &p);
   g_assert(p != NULL);
-  p = NULL;
 
+  p = NULL;
   quvi_get(q, QUVI_INFO_CURL_HANDLE+1, &p);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
   g_assert(p == NULL);
 
   /* quvi_set */
 
   quvi_set(q, QUVI_OPTION_CALLBACK_STATUS-1, 0);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
 
   quvi_set(q, QUVI_OPTION_AUTOPROXY+1, 0);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
 
   quvi_free(q);
 }
@@ -121,13 +126,13 @@ static void test_file_ext()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   i = 0;
   while (l[i].input != NULL)
     {
       qfe = quvi_file_ext_new(q, l[i].input);
-      g_assert_cmpint(qerr(q), ==, QUVI_OK);
+      g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
       g_assert_cmpstr(l[i].output, ==, quvi_file_ext_get(qfe));
       quvi_file_ext_free(qfe);
       ++i;

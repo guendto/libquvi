@@ -56,7 +56,7 @@ static void test_http_metainfo()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -65,10 +65,10 @@ static void test_http_metainfo()
   g_assert(qv != NULL);
 
   quvi_http_metainfo_get(qv, QUVI_HTTP_METAINFO_PROPERTY_FILE_EXTENSION-1,&v);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
 
   quvi_http_metainfo_get(qv, QUVI_HTTP_METAINFO_PROPERTY_LENGTH_BYTES+1, &v);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
 
   chk_len(QUVI_HTTP_METAINFO_PROPERTY_FILE_EXTENSION);
   chk_len(QUVI_HTTP_METAINFO_PROPERTY_CONTENT_TYPE);

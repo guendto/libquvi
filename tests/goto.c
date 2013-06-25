@@ -45,7 +45,7 @@ static void test_goto_url()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -54,7 +54,7 @@ static void test_goto_url()
   g_assert(qm != NULL);
 
   quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, TITLE);
 
   quvi_media_free(qm);
