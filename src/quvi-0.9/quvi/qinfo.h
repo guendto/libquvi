@@ -37,11 +37,9 @@ typedef enum
   /* long */
   QUVI_INFO_RESPONSE_CODE = QUVI_INFO_TYPE_LONG+1,
     /**< Last server response code */
-  QUVI_INFO_ERROR_CODE,
-    /**< Last libquvi error/return code */
   /* void */
   QUVI_INFO_CURL_HANDLE =
-  ((QUVI_INFO_ERROR_CODE - QUVI_INFO_TYPE_LONG) + QUVI_INFO_TYPE_VOID + 0x20)
+  ((QUVI_INFO_RESPONSE_CODE - QUVI_INFO_TYPE_LONG) + QUVI_INFO_TYPE_VOID + 0x20)
     /**< Current @ref sess_handle */
 } QuviInfo;
 
