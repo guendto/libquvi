@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -29,7 +29,7 @@ extern quvi_media_t qm;
 extern quvi_scan_t qs;
 extern quvi_t q;
 
-QuviError examples_status(glong param, gpointer p);
+QuviError examples_status(glong, gpointer, gpointer);
 void examples_enable_autoproxy();
 void examples_enable_verbose();
 void examples_exit_if_error();

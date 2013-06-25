@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -47,12 +47,13 @@ static void http_metainfo(const quvi_word type)
     g_printerr("done.\n");
 }
 
-QuviError examples_status(glong param, gpointer p)
+QuviError examples_status(glong status_type, gpointer data,
+                          gpointer user_data)
 {
   quvi_word status, type;
 
-  status = quvi_loword(param);
-  type = quvi_hiword(param);
+  status = quvi_loword(status_type);
+  type = quvi_hiword(status_type);
 
   switch (status)
     {
@@ -60,7 +61,7 @@ QuviError examples_status(glong param, gpointer p)
       resolve(type);
       break;
     case QUVI_CALLBACK_STATUS_FETCH:
-      fetch(type, p);
+      fetch(type, data);
       break;
     case QUVI_CALLBACK_STATUS_HTTP_QUERY_METAINFO:
       http_metainfo(type);
