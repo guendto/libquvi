@@ -31,7 +31,6 @@
 #include "_quvi_macro.h"
 /* -- */
 #include "lua/quvi/opts.h"
-#include "net/def.h"
 #include "net/handle.h"
 
 extern gchar* to_utf8(const gchar*, const gchar*);

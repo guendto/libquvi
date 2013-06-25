@@ -32,7 +32,6 @@
 /* -- */
 #include "curl/autoproxy.h"
 #include "curl/temp.h"
-#include "net/def.h"
 
 static void _set_opts(_quvi_net_t n, _c_temp_t t, CURL *c)
 {

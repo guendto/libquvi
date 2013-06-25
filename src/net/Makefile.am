@@ -5,7 +5,6 @@ src=\
   resolve.c
 
 hdr=\
-  def.h\
   fetch.h\
   handle.h\
   resolve.h
