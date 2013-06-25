@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -43,7 +43,7 @@ static void _chk_curr_stream(_quvi_media_t qm, _quvi_media_stream_t *qms)
   g_assert(*qms != NULL);
 }
 
-static QuviError _media_get(_quvi_media_t qm, QuviMediaProperty n, ...)
+static QuviError _media_get(_quvi_media_t qm, const QuviMediaProperty n, ...)
 {
   _quvi_media_stream_t qms;
   QuviError rc;
