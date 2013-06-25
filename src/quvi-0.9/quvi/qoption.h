@@ -29,6 +29,8 @@ typedef enum
 {
   /** Default: None */
   QUVI_OPTION_CALLBACK_STATUS,
+  /** Default: None */
+  QUVI_OPTION_CALLBACK_STATUS_USERDATA,
   /** Identify as the user-agent to the HTTP servers
    * Default: "Mozilla/5.0".
    * @note
