@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -112,12 +112,57 @@ static void test_scan_noresults()
   quvi_free(q);
 }
 
+struct user_data_s
+{
+  gint n;
+};
+
+typedef struct user_data_s *user_data_t;
+
+static QuviError status_cb(glong status_type, gpointer data,
+                           gpointer user_data)
+{
+  user_data_t u = (user_data_t) user_data;
+  g_assert(user_data != NULL);
+  ++u->n;
+  return (QUVI_OK);
+}
+
+static void test_scan_userdata()
+{
+  static const gchar URL[] = "http://is.gd/yUeWit";
+
+  struct user_data_s u;
+  quvi_scan_t qs;
+  quvi_t q;
+
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
+    return;
+
+  q = new_q();
+  u.n = 0;
+
+  quvi_set(q, QUVI_OPTION_CALLBACK_STATUS, (quvi_callback_status) status_cb);
+  quvi_set(q, QUVI_OPTION_CALLBACK_STATUS_USERDATA, &u);
+
+  g_assert_cmpint(u.n, ==, 0);
+  qs = quvi_scan_new(q, URL);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
+  g_assert(qs != NULL);
+
+  quvi_scan_free(qs);
+  quvi_free(q);
+
+  g_assert_cmpint(u.n, >, 0);
+}
+
 gint main(gint argc, gchar **argv)
 {
   g_test_init(&argc, &argv, NULL);
   g_test_add_func("/quvi/scan (core)", test_scan_core);
   g_test_add_func("/quvi/scan (short)", test_scan_short);
   g_test_add_func("/quvi/scan (noresults)", test_scan_noresults);
+  g_test_add_func("/quvi/scan (userdata)", test_scan_userdata);
   return (g_test_run());
 }
 

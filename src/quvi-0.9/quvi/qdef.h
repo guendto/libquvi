@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -23,7 +23,7 @@
 
 /** @file qdef.h */
 
-typedef int (*quvi_callback_status)(long,void*); /**< Status callback type */
+typedef int (*quvi_callback_status)(long,void*,void*); /**< Status callback type */
 
 typedef void *quvi_subtitle_export_t; /**< Subtitle export handle type */
 typedef void *quvi_subtitle_type_t; /**< Subtitle type handle type */

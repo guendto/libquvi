@@ -33,6 +33,10 @@ struct _quvi_s
     quvi_callback_resolve resolve;
     quvi_callback_status status;
     quvi_callback_fetch fetch;
+    struct
+    {
+      gpointer status;
+    } userdata;
   } cb;
   struct
   {

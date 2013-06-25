@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -45,7 +45,7 @@ void n_fetch(_quvi_t q, _quvi_net_t *n, const gchar *url, GSList *opts)
     {
       const glong p = q_makelong(QUVI_CALLBACK_STATUS_FETCH, 0);
 
-      if (q->cb.status(p, (gpointer) url) != QUVI_OK)
+      if (q->cb.status(p, (gpointer) url, q->cb.userdata.status) != QUVI_OK)
         {
           q->status.rc = QUVI_ERROR_CALLBACK_ABORTED;
           return;
@@ -90,7 +90,7 @@ void n_fetch(_quvi_t q, _quvi_net_t *n, const gchar *url, GSList *opts)
           const glong p = q_makelong(QUVI_CALLBACK_STATUS_FETCH,
                                      QUVI_CALLBACK_STATUS_DONE);
 
-          if (q->cb.status(p, 0) != QUVI_OK)
+          if (q->cb.status(p, 0, q->cb.userdata.status) != QUVI_OK)
             q->status.rc = QUVI_ERROR_CALLBACK_ABORTED;
         }
     }
