@@ -67,7 +67,7 @@ static QuviError _http_metainfo(_quvi_http_metainfo_t qmi)
           const glong p = q_makelong(QUVI_CALLBACK_STATUS_HTTP_QUERY_METAINFO,
                                      QUVI_CALLBACK_STATUS_DONE);
 
-          if (q->cb.status(p, 0) != QUVI_OK)
+          if (q->cb.status(p, 0, q->cb.userdata.status) != QUVI_OK)
             rc = QUVI_ERROR_CALLBACK_ABORTED;
         }
     }
@@ -120,7 +120,7 @@ QuviError n_http_metainfo(_quvi_http_metainfo_t qmi)
     {
       const glong p = q_makelong(QUVI_CALLBACK_STATUS_HTTP_QUERY_METAINFO, 0);
 
-      if (q->cb.status(p, 0) != QUVI_OK)
+      if (q->cb.status(p, 0, q->cb.userdata.status) != QUVI_OK)
         return (QUVI_ERROR_CALLBACK_ABORTED);
     }
 
