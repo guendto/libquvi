@@ -49,6 +49,10 @@ static QuviError _set(_quvi_t q, const QuviOption o, va_list arg)
       q->cb.status = va_arg(arg, quvi_callback_status);
       break;
 
+    case QUVI_OPTION_CALLBACK_STATUS_USERDATA:
+      q->cb.userdata.status = va_arg(arg, void*);
+      break;
+
     default:
       return (QUVI_ERROR_INVALID_ARG);
     }
