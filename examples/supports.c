@@ -187,9 +187,7 @@ static void chk_support(const gchar *url)
   /* Always check for any network errors with QUVI_SUPPORTS_MODE_ONLINE. */
   if (r == FALSE && mode == QUVI_SUPPORTS_MODE_ONLINE)
     {
-      glong ec = 0;
-      quvi_get(q, QUVI_INFO_ERROR_CODE, &ec);
-
+      const glong ec = quvi_errcode(q);
       if (ec != QUVI_ERROR_NO_SUPPORT)
         {
           g_printerr("\nerror: %s\n", quvi_errmsg(q));
