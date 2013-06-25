@@ -22,7 +22,6 @@
 #define tests_h
 
 glong qerr_m(quvi_t, const gchar*);
-glong qerr(quvi_t);
 
 gboolean chk_skip(const gchar*);
 void chk_verbose(quvi_t);

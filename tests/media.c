@@ -74,7 +74,7 @@ static void test_media_core()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -84,11 +84,11 @@ static void test_media_core()
 
   /* Boundary check: the first -1 */
   quvi_media_get(qm, QUVI_MEDIA_PROPERTY_THUMBNAIL_URL-1, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
 
   /* Boundary check: the last +1 */
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_VIDEO_WIDTH+1, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
 
   /* string */
   chk_len(QUVI_MEDIA_PROPERTY_THUMBNAIL_URL);
@@ -121,7 +121,7 @@ static void test_media_multi()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -147,7 +147,7 @@ static void test_media_multi()
       chk_len(QUVI_MEDIA_STREAM_PROPERTY_ID);
 
       quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_URL, &s);
-      g_assert_cmpint(qerr(q), ==, QUVI_OK);
+      g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
       if (b->len >0) /* Make sure each media stream URL is unique */
         g_assert_cmpstr(b->str, !=, s);
@@ -187,7 +187,7 @@ static void test_media_select()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -233,31 +233,31 @@ static void test_media_select()
   /* Select. */
 
   quvi_media_stream_select(qm, "foo,bar,baz,best,croak");
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
   curr = g_slist_last(ids); /* Assumes the best is the last. */
   g_assert_cmpstr(curr->data, ==, s);
 
   quvi_media_stream_select(qm, "foo,bar,baz,croak");
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_KEYWORD_CROAK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_KEYWORD_CROAK);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
   curr = g_slist_nth(ids, 0);
   g_assert_cmpstr(curr->data, ==, s);
 
   quvi_media_stream_select(qm, "foo,bar,baz");
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
   curr = g_slist_nth(ids, 0); /* Should be the default stream (first) */
   g_assert_cmpstr(curr->data, ==, s);
 
   quvi_media_stream_select(qm, "^\\w\\w_\\w+_\\w+_\\d40p$,bar,baz,croak");
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
   curr = g_slist_nth(ids, 0); /* Should be "ld_mp4_h264_240p". */
   g_assert_cmpstr(curr->data, ==, s);
 
   quvi_media_stream_select(qm, "foo,^\\w\\w_\\w+_\\w+_\\d+4p$,baz,croak");
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
   curr = g_slist_nth(ids, 1); /* Should be "sd_mp4_h264_384p". */
   g_assert_cmpstr(curr->data, ==, s);
@@ -279,7 +279,7 @@ static void test_media_short()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -288,7 +288,7 @@ static void test_media_short()
   g_assert(qm != NULL);
 
   quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, TITLEs[1]);
 
   quvi_media_free(qm);
@@ -309,7 +309,7 @@ static void test_media_starttime()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -318,7 +318,7 @@ static void test_media_starttime()
   g_assert(qm != NULL);
 
   quvi_media_get(qm, QUVI_MEDIA_PROPERTY_START_TIME_MS, &st);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpint(st, ==, 142000);
 
   /* YouTube videos should give us this data. */
@@ -341,7 +341,7 @@ static void test_media_escaped_url()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -366,7 +366,7 @@ static void test_media_nosupport()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -375,7 +375,7 @@ static void test_media_nosupport()
   g_assert(qm != NULL);
 
   quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "");
 
   quvi_media_free(qm);
@@ -393,7 +393,7 @@ static void test_media_same_q()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -406,7 +406,7 @@ static void test_media_same_q()
       g_assert(qm != NULL);
 
       quvi_media_get(qm, QUVI_MEDIA_PROPERTY_TITLE, &s);
-      g_assert_cmpint(qerr(q), ==, QUVI_OK);
+      g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
       g_assert_cmpstr(s, ==, TITLEs[i]);
 
       quvi_media_free(qm);

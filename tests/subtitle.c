@@ -82,11 +82,11 @@ static void _chk_shared_properties(quvi_t q, quvi_subtitle_t qsub,
   g_assert(qst != NULL); /* Advance to the CC which should be next. */
 
   quvi_subtitle_type_get(qst, QUVI_SUBTITLE_TYPE_PROPERTY_FORMAT, &v);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpint(v, ==, QUVI_SUBTITLE_FORMAT_TT);
 
   quvi_subtitle_type_get(qst, QUVI_SUBTITLE_TYPE_PROPERTY_TYPE, &v);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpint(v, ==, QUVI_SUBTITLE_TYPE_CC);
 
   qsl = quvi_subtitle_lang_next(qst);
@@ -113,7 +113,7 @@ static void test_subtitle_core()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -127,11 +127,11 @@ static void test_subtitle_core()
 
   /* type: Boundary check: the first -1 */
   quvi_subtitle_type_get(qst, QUVI_SUBTITLE_TYPE_PROPERTY_FORMAT-1, &v);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
 
   /* type: Boundary check: the last +1 */
   quvi_subtitle_type_get(qst, QUVI_SUBTITLE_TYPE_PROPERTY_TYPE+1, &v);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
 
   /* The first language of the first language. */
   qsl = quvi_subtitle_lang_next(qst);
@@ -139,11 +139,11 @@ static void test_subtitle_core()
 
   /* lang: Boundary check: the first -1 */
   quvi_subtitle_lang_get(qst, QUVI_SUBTITLE_LANG_PROPERTY_TRANSLATED-1, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
 
   /* lang: Boundary check: the last +1 */
   quvi_subtitle_lang_get(qst, QUVI_SUBTITLE_LANG_PROPERTY_ID+1, &v);
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
 
   _chk_shared_properties(q, qsub, qst, qsl);
 
@@ -161,15 +161,15 @@ static void test_subtitle_core()
   /* export */
 
   qsl = quvi_subtitle_select(qsub, "foo"); /* use the first available */
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   qse = quvi_subtitle_export_new(qsl, "srt");
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpint(strlen(quvi_subtitle_export_data(qse)), >, 0);
   quvi_subtitle_export_free(qse);
 
   qse = quvi_subtitle_export_new(qsl, "foo");
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_NO_SUPPORT);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_NO_SUPPORT);
   quvi_subtitle_export_free(qse);
 
   quvi_subtitle_free(qsub);
@@ -190,7 +190,7 @@ static void test_subtitle_short()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -224,7 +224,7 @@ static void test_subtitle_select()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -247,43 +247,43 @@ static void test_subtitle_select()
   /* Should croak. */
 
   qsl = quvi_subtitle_select(qsub, "foo,bar,baz,croak,cc_en");
-  g_assert_cmpint(qerr(q), ==, QUVI_ERROR_KEYWORD_CROAK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_KEYWORD_CROAK);
   g_assert(qsl == NULL);
 
   /* Should return cc_en. */
 
   qsl = quvi_subtitle_select(qsub, "foo,bar,baz,cc_en");
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert(qsl != NULL);
 
   quvi_subtitle_lang_get(qsl, QUVI_SUBTITLE_LANG_PROPERTY_TRANSLATED, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "English");
 
   quvi_subtitle_lang_get(qsl, QUVI_SUBTITLE_LANG_PROPERTY_ORIGINAL, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "English");
 
   quvi_subtitle_lang_get(qsl, QUVI_SUBTITLE_LANG_PROPERTY_CODE, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "en");
 
   quvi_subtitle_lang_get(qsl, QUVI_SUBTITLE_LANG_PROPERTY_URL, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpint(strlen(s), >, 1);
 
   quvi_subtitle_lang_get(qsl, QUVI_SUBTITLE_LANG_PROPERTY_ID, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert_cmpstr(s, ==, "cc_en");
 
   /* Should return the default language (the first). */
 
   qsl = quvi_subtitle_select(qsub, "foo,bar,baz");
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   g_assert(qsl != NULL);
 
   quvi_subtitle_lang_get(qsl, QUVI_SUBTITLE_LANG_PROPERTY_ID, &s);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   curr = g_slist_nth(ids, 0);
   g_assert_cmpstr(curr->data, ==, s);
 
@@ -306,7 +306,7 @@ static void test_subtitle_nosupport()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 
@@ -332,7 +332,7 @@ static void test_subtitle_sameq()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   chk_verbose(q);
 

@@ -17,6 +17,7 @@ EXTRA_DIST=\
   doxy/select_stream.dp
 
 src=\
+  errcode.c\
   errmsg.c\
   file_ext_free.c\
   file_ext_get.c\

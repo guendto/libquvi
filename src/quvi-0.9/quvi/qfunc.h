@@ -123,6 +123,7 @@ extern "C" {
   const char *quvi_version(QuviVersion);
 
   const char *quvi_errmsg(quvi_t);
+  QuviError quvi_errcode(quvi_t);
   QuviBoolean quvi_ok(quvi_t);
 
 #ifdef __cplusplus

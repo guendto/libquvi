@@ -36,7 +36,7 @@ void examples_exit_if_error()
     return;
 
   g_printerr("\n[%s] error: %s\n", __func__, quvi_errmsg(q));
-  quvi_get(q, QUVI_INFO_ERROR_CODE, &rc);
+  rc = quvi_errcode(q);
 
   examples_cleanup();
   exit(rc);

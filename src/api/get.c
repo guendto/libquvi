@@ -28,64 +28,69 @@
 /* -- */
 #include "_quvi_s.h"
 
-static void _get(_quvi_t q, QuviInfo info, ...)
+static QuviError _get(_quvi_t q, const QuviInfo n, ...)
 {
+  QuviError rc;
   gpointer *vp;
   va_list arg;
-  glong *lp;
-  gint type;
-#ifdef _CURRENTLY_UNUSED
   gdouble *dp;
   gchar **sp;
-#endif
+  glong *lp;
+  gint type;
 
-  va_start(arg, info);
-  type = QUVI_INFO_TYPE_MASK & (gint) info;
+  va_start(arg, n);
+  type = QUVI_INFO_TYPE_MASK & (gint) n;
 
+  rc = QUVI_OK;
   vp = NULL;
   lp = NULL;
-#ifdef _CURRENTLY_UNUSED
   dp = NULL;
   sp = NULL;
-#endif
 
   switch (type)
     {
     case QUVI_INFO_TYPE_LONG:
       lp = va_arg(arg, glong*);
+      if (lp == NULL)
+        rc = QUVI_ERROR_INVALID_ARG;
       break;
     case QUVI_INFO_TYPE_VOID:
       vp = va_arg(arg, gpointer*);
+      if (vp == NULL)
+        rc = QUVI_ERROR_INVALID_ARG;
       break;
-#ifdef _CURRENTLY_UNUSED
     case QUVI_INFO_TYPE_DOUBLE:
       dp = va_arg(arg, gdouble*);
+      if (dp == NULL)
+        rc = QUVI_ERROR_INVALID_ARG;
       break;
     case QUVI_INFO_TYPE_STRING:
       sp = va_arg(arg, gchar**);
+      if (sp == NULL)
+        rc = QUVI_ERROR_INVALID_ARG;
       break;
-#endif
     default:
+      rc = QUVI_ERROR_INVALID_ARG;
       break;
     }
   va_end(arg);
 
-  switch (info)
+  if (rc != QUVI_OK)
+    return (rc);
+
+  switch (n)
     {
     case QUVI_INFO_RESPONSE_CODE:
-    default:
-      if (lp != NULL)
-        *lp = q->status.resp_code;
-      break;
-    case QUVI_INFO_ERROR_CODE:
-      if (lp != NULL)
-        *lp = q->status.rc;
+      *lp = q->status.resp_code;
       break;
     case QUVI_INFO_CURL_HANDLE:
-      if (vp != NULL)
-        *vp = q->handle.curl;
+      *vp = q->handle.curl;
+      break;
+    default:
+      rc = QUVI_ERROR_INVALID_ARG;
       break;
     }
+  return (rc);
 }
 
 /** @brief Return information about the library handle
@@ -96,6 +101,7 @@ void quvi_get(quvi_t handle, QuviInfo info, ...)
 {
   va_list arg;
   gpointer p;
+  _quvi_t q;
 
   /* If G_DISABLE_CHECKS is defined then the check is not performed. */
   g_return_if_fail(handle != NULL);
@@ -104,7 +110,8 @@ void quvi_get(quvi_t handle, QuviInfo info, ...)
   p = va_arg(arg, gpointer);
   va_end(arg);
 
-  _get((_quvi_t) handle, info, p);
+  q = (_quvi_t) handle;
+  q->status.rc = _get(q, info, p);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

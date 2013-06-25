@@ -56,7 +56,7 @@ static void test_script()
 
   q = quvi_new();
   g_assert(q != NULL);
-  g_assert_cmpint(qerr(q), ==, QUVI_OK);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
   /* Properties. */
   for (t=QUVI_SCRIPT_TYPE_PLAYLIST; t<QUVI_SCRIPT_TYPE_SCAN+1; ++t)
@@ -94,10 +94,10 @@ static void test_script()
     g_assert(quvi_script_next(q, t) == QUVI_TRUE);
 
     quvi_script_get(q, t, QUVI_SCRIPT_PROPERTY_EXPORT_FORMAT-1, &s);
-    g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
+    g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
 
     quvi_script_get(q, t, QUVI_SCRIPT_PROPERTY_SHA1+1, &s);
-    g_assert_cmpint(qerr(q), ==, QUVI_ERROR_INVALID_ARG);
+    g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_INVALID_ARG);
   }
 
   quvi_free(q);
