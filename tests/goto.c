@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -26,12 +26,13 @@
 
 #include "tests.h"
 
-/* academicearth.lua uses the "goto_url" instruction. */
+/* media/ted.lua uses the "goto_url" instruction. */
 
 static const gchar URL[] =
-  "http://www.academicearth.org/lectures/intro-roman-architecture";
+  "http://www.ted.com/talks/paul_lewis_crowdsourcing_the_news.html";
 
-static const gchar TITLE[] = "1. Introduction to Roman Architecture";
+static const gchar TITLE[] =
+  "TEDxThessaloniki - Paul Lewis - Citizen Journalism";
 
 static void test_goto_url()
 {
