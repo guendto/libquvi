@@ -39,7 +39,7 @@ static QuviError _set(_quvi_t q, const QuviOption o, va_list arg)
 
     case QUVI_OPTION_USER_AGENT:
       /* Save for later use: c_reset will reuse this value. */
-      g_string_assign(q->opt.user_agent, va_arg(arg, char*));
+      g_string_assign(q->opt.user_agent, va_arg(arg, gchar*));
       /* Apply for immediate effect. */
       curl_easy_setopt(q->handle.curl, CURLOPT_USERAGENT,
                        q->opt.user_agent->str);
