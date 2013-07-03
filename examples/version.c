@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -26,9 +26,10 @@
 gint main(gint argc, gchar **argv)
 {
   g_print("libquvi %s\n", quvi_version(QUVI_VERSION));
-  g_print("  built on %s for %s\n",
+  g_print("  built on %s for %s\n    with %s\n",
           quvi_version(QUVI_VERSION_BUILD_TIME),
-          quvi_version(QUVI_VERSION_BUILD_TARGET));
+          quvi_version(QUVI_VERSION_BUILD_TARGET),
+          quvi_version(QUVI_VERSION_BUILD_CC_CFLAGS));
   g_print("libquvi-scripts %s\n", quvi_version(QUVI_VERSION_SCRIPTS));
   g_print("configuration:\n  %s\n",
           quvi_version(QUVI_VERSION_CONFIGURATION));

@@ -57,6 +57,9 @@ LT_PREREQ([2.2.6])
 AC_PROG_CC
 AM_PROG_CC_C_O
 
+AC_DEFINE_UNQUOTED([CFLAGS], "$CFLAGS", [Define to compiler flags])
+AC_DEFINE_UNQUOTED([CC], "$CC", [Define to compiler])
+
 AC_PATH_PROG([DOXYGEN], [doxygen], [no])
 AM_CONDITIONAL([HAVE_DOXYGEN], [test x"$DOXYGEN" != "xno"])
 AC_SUBST([DOXYGEN])

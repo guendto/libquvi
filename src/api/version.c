@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -36,7 +36,9 @@ static const gchar *_version[] =
 #else
   PACKAGE_VERSION
 #endif
-  , BUILD_OPTS,
+  ,
+  BUILD_OPTS,
+  CC ", " CFLAGS,
   CANONICAL_TARGET,
   BUILD_TIME
 };
@@ -74,6 +76,7 @@ const char *quvi_version(QuviVersion version)
       return (read_scripts_version());
 
     case QUVI_VERSION_CONFIGURATION:
+    case QUVI_VERSION_BUILD_CC_CFLAGS:
     case QUVI_VERSION_BUILD_TARGET:
     case QUVI_VERSION_BUILD_TIME:
       return (_version[version]);
