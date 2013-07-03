@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -28,6 +28,7 @@ typedef enum
 {
   QUVI_VERSION,
   QUVI_VERSION_CONFIGURATION,
+  QUVI_VERSION_BUILD_CC_CFLAGS,
   QUVI_VERSION_BUILD_TARGET,
   QUVI_VERSION_BUILD_TIME,
   QUVI_VERSION_SCRIPTS  /**< libquvi-scripts version */
