@@ -27,10 +27,13 @@ libquvi_0_9_la_CPPFLAGS=\
   $(AM_CPPFLAGS)
 
 libquvi_0_9_la_CFLAGS=$(AM_CFLAGS)
+libquvi_0_9_la_LDFLAGS=$(AM_LDFLAGS)
 
-libquvi_0_9_la_LDFLAGS=\
-  -version-info $(LT_CUR):$(LT_REV):$(LT_AGE)\
-  $(AM_LDFLAGS)
+# Use -release with the unstable (frequent API/ABI changes) releases.
+libquvi_0_9_la_LDFLAGS+=-release $(VERSION)
+
+# Use -version-info with the stable releases.
+#libquvi_0_9_la_LDFLAGS+=-version-info $(LT_CUR):$(LT_REV):$(LT_AGE)
 
 libquvi_0_9_la_LIBADD=\
   $(top_builddir)/src/gcrypt/libconvenience_gcrypt.la\
