@@ -1,3 +1,20 @@
+v0.9.2  [2013-07-16]
+
+Bastien Nocera:
+  - FIX: declaration of quvi_new() [91375fd]
+  - Require a2x when building from git [6cdebfd]
+Toni Gundogdu:
+  - API: Add quvi_errcode [c9d1ca1]
+  - API: quvi_get: Remove QUVI_INFO_ERROR_CODE support [5f98b90]
+  - FIX: configure.ac: AS_IF for date(1) [cfc17fd]
+  - LDFLAGS: libtool: Use -release with unstable 0.9 releases [20b1ee3]
+  - quvi_set: Add support for QUVI_OPTION_CALLBACK_STATUS_USERDATA [587958b]
+  - quvi_version: Add support for QUVI_VERSION_BUILD_CC_CFLAGS [c93ce12]
+  - Redefine quvi_callback_status with userdata parameter [5b3cebb]
+
+ 40 files changed, 317 insertions(+), 225 deletions(-)
+
+
 v0.9.1  [2013-05-20]
 
 This is the first official release of the 0.9 of libquvi. The typical
