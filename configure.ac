@@ -157,6 +157,12 @@ AC_ARG_WITH([manual],
   [with_manual=yes])
 AM_CONDITIONAL([WITH_MANUAL], [test x"$with_manual" != "xno"])
 
+# 'quvi-object' is currently a globally accessible module. Lua 5.2
+# discourages this practice by removing the luaL_register (and adds the
+# luaL_setfuncs) call from the C API. We'll dismiss that (for now) with:
+AC_DEFINE([LUA_COMPAT_MODULE], [1],
+  [Define for backwards-compatibility with Lua 5.1])
+
 AC_CONFIG_FILES([
   Makefile
   doc/man3/Makefile
