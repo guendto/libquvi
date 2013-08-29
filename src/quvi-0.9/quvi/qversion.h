@@ -31,6 +31,7 @@ typedef enum
   QUVI_VERSION_BUILD_CC_CFLAGS,
   QUVI_VERSION_BUILD_TARGET,
   QUVI_VERSION_BUILD_TIME,
+  QUVI_VERSION_SCRIPTS_CONFIGURATION, /**< libquvi-scripts build options */
   QUVI_VERSION_SCRIPTS  /**< libquvi-scripts version */
 } QuviVersion;
 
