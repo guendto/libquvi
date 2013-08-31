@@ -29,6 +29,51 @@
 /* -- */
 #include "_quvi_s.h"
 
+static void kval(GKeyFile *f, const gchar *k, gchar *dst,
+                 const gsize dst_size)
+{
+  gchar *r = g_key_file_get_string(f, "libquvi-scripts", k, NULL);
+  if (r != NULL)
+    {
+      gchar *s = g_strescape(g_strstrip(r), NULL);
+      g_snprintf(dst, dst_size, "%s", s);
+      g_free(s);
+      g_free(r);
+    }
+}
+
+struct scripts_version_s
+{
+  gchar configuration[128];
+  gchar version[32];
+};
+
+typedef struct scripts_version_s *scripts_version_t;
+
+static void scripts_version_read(scripts_version_t v)
+{
+  GKeyFile *f = g_key_file_new();
+  v->configuration[0]= '\0';
+  v->version[0]= '\0';
+  if (g_key_file_load_from_file(f, VERSIONFILE, G_KEY_FILE_NONE, NULL)==TRUE)
+    {
+      kval(f, "configuration", v->configuration, sizeof(v->configuration));
+      kval(f, "version", v->version, sizeof(v->version));
+    }
+  g_key_file_free(f);
+}
+
+static struct scripts_version_s sv;
+
+static const gchar *read_scripts_version(const QuviVersion qv)
+{
+  scripts_version_read(&sv);
+  if (qv == QUVI_VERSION_SCRIPTS_CONFIGURATION)
+    return (sv.configuration);
+  else
+    return (sv.version);
+}
+
 static const gchar *_version[] =
 {
 #ifdef VN
@@ -43,27 +88,6 @@ static const gchar *_version[] =
   BUILD_TIME
 };
 
-static gchar version_scripts[32];
-
-static const gchar *read_scripts_version()
-{
-  gchar *c = NULL;
-  if (g_file_get_contents(VERSIONFILE, &c, NULL, NULL) == TRUE)
-    {
-      gchar *s = g_strescape(g_strstrip(c), NULL);
-      g_snprintf(version_scripts, sizeof(version_scripts), "%s", s);
-
-      g_free(s);
-      s = NULL;
-
-      g_free(c);
-      c = NULL;
-    }
-  else
-    version_scripts[0] = '\0';
-  return (version_scripts);
-}
-
 /** @return NULL-terminated version string
 @note Do not attempt to free the returned string
 @ingroup convenience
@@ -72,8 +96,9 @@ const char *quvi_version(QuviVersion version)
 {
   switch (version)
     {
+    case QUVI_VERSION_SCRIPTS_CONFIGURATION:
     case QUVI_VERSION_SCRIPTS:
-      return (read_scripts_version());
+      return (read_scripts_version(version));
 
     case QUVI_VERSION_CONFIGURATION:
     case QUVI_VERSION_BUILD_CC_CFLAGS:

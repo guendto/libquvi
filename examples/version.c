@@ -30,7 +30,10 @@ gint main(gint argc, gchar **argv)
           quvi_version(QUVI_VERSION_BUILD_TIME),
           quvi_version(QUVI_VERSION_BUILD_TARGET),
           quvi_version(QUVI_VERSION_BUILD_CC_CFLAGS));
-  g_print("libquvi-scripts %s\n", quvi_version(QUVI_VERSION_SCRIPTS));
+  g_print("libquvi-scripts %s\n"
+          "  configuration: %s\n",
+          quvi_version(QUVI_VERSION_SCRIPTS),
+          quvi_version(QUVI_VERSION_SCRIPTS_CONFIGURATION));
   g_print("configuration:\n  %s\n",
           quvi_version(QUVI_VERSION_CONFIGURATION));
   return (0);

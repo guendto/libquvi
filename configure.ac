@@ -124,7 +124,7 @@ AS_IF([ ! test -f "$versionfile"], [
 AC_DEFINE_UNQUOTED([SCRIPTSDIR], ["$scriptsdir"], [We have scriptsdir])
 AC_DEFINE_UNQUOTED([VERSIONFILE], ["$versionfile"], [We have versionfile])
 
-scriptsver=`head -n1 "$versionfile" 2>/dev/null`
+scriptsver=`grep <"$versionfile" "version ="|awk '{print $3}' 2>/dev/null`
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdint.h string.h locale.h])
