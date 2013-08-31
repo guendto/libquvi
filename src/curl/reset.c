@@ -44,7 +44,6 @@ glong c_reset_headers(_quvi_t q)
 gint c_reset(_quvi_t q)
 {
   CURL *c = q->handle.curl;
-
 #ifdef _1
   /*
    * If a program re-using the libquvi's curl session handle sets the
@@ -59,11 +58,14 @@ gint c_reset(_quvi_t q)
                    : "Mozilla/5.0");
 
   curl_easy_setopt(c, CURLOPT_FOLLOWLOCATION, 1L);
-  curl_easy_setopt(c, CURLOPT_COOKIELIST, "ALL"); /* clear, enable cookies */
+  curl_easy_setopt(c, CURLOPT_NOBODY, 0L);
+
+  if (q->opt.allow_cookies == QUVI_TRUE)  /* clear cookies in memory */
+    curl_easy_setopt(c, CURLOPT_COOKIELIST, "ALL");
+
 #ifdef _1 /* Use whatever libcurl defaults to. */
   curl_easy_setopt(c, CURLOPT_MAXREDIRS, 5L); /* http://is.gd/kFsvE4 */
 #endif
-  curl_easy_setopt(c, CURLOPT_NOBODY, 0L);
 
   return (QUVI_OK);
 }
