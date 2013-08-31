@@ -8,10 +8,13 @@ libcURL sets most of the initial values for the handle when it is
 created by calling curl_easy_init(3). libquvi will, additionally, make
 the following changes to the handle when @ref quvi_new is called:
 
-- CURLOPT_USERAGENT is set to "Mozilla/5.0"
-- CURLOPT_FOLLOWLOCATION is set to 1L (enabled)
-- CURLOPT_COOKIELIST is set to "ALL" (clear and enable cookies)
+- CURLOPT_COOKIELIST is set to "ALL" (clear cookies in memory -- *when* @ref
+  QUVI_OPTION_ALLOW_COOKIES is QUVI_TRUE)
+- CURLOPT_COOKIEFILE is set to "" (enable cookies -- *when* @ref
+  QUVI_OPTION_ALLOW_COOKIES is QUVI_TRUE)
 - CURLOPT_HTTPHEADER is set to NULL (clear custom headers)
+- CURLOPT_FOLLOWLOCATION is set to 1L (enabled)
+- CURLOPT_USERAGENT is set to "Mozilla/5.0"
 - CURLOPT_NOBODY is set to 0L (disabled)
 
 The scripts (e.g. @ref m_script) may modify the cookie and HTTP header
