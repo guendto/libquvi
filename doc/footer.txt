@@ -1,9 +1,17 @@
 FURTHER RESOURCES
 -----------------
-The latest C API reference documentation may be viewed at
-`http://quvi.sf.net/doc/`.  The development code may be cloned from
-`git://repo.or.cz/libquvi.git`. The gitweb is accessible at
-`http://repo.or.cz/w/libquvi.git`.
+Home::
+  `http://quvi.sourceforge.net/`
+
+Development code::
+  `git://repo.or.cz/libquvi.git`
+
+gitweb::
+  `http://repo.or.cz/w/libquvi.git`
+
+C API reference::
+  The latest C API reference documentation may be viewed online at
+  `http://quvi.sf.net/doc/`.
 
 GLib::
   http://developer.gnome.org/glib/stable/glib-Base64-Encoding.html
