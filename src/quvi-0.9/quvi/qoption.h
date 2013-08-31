@@ -31,7 +31,22 @@ typedef enum
   QUVI_OPTION_CALLBACK_STATUS,
   /** Default: None */
   QUVI_OPTION_CALLBACK_STATUS_USERDATA,
-  /** Identify as the user-agent to the HTTP servers
+  /** Enable cookies for libcurl handle.
+   * Default: QUVI_FALSE. When enabled (QUVI_TRUE), libcurl will
+   * parse the received cookies and use them in the subsequent HTTP
+   * requests.
+   * @note
+   *  When disabled, quvi.http.cookie (of the quvi-object(7)) is also
+   *  disabled
+   * @sa
+   * http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTCOOKIEFILE
+   * @sa
+   * http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTCOOKIELIST
+   * @sa
+   * http://curl.haxx.se/libcurl/c/curl_easy_setopt.html#CURLOPTCOOKIEJAR
+   */
+  QUVI_OPTION_ALLOW_COOKIES,
+  /** Identify as the user-agent to the HTTP servers.
    * Default: "Mozilla/5.0".
    * @note
    *    libquvi scripts may override this setting at any time. The

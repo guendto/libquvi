@@ -40,6 +40,7 @@ struct _quvi_s
   } cb;
   struct
   {
+    gboolean allow_cookies;
     GString *user_agent;
     gboolean autoproxy;
   } opt;

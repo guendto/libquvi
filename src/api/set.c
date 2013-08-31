@@ -33,6 +33,10 @@ static QuviError _set(_quvi_t q, const QuviOption o, va_list arg)
 {
   switch (o)
     {
+    case QUVI_OPTION_ALLOW_COOKIES:
+      q->opt.allow_cookies = (gboolean) va_arg(arg, glong) >0;
+      break;
+
     case QUVI_OPTION_AUTOPROXY:
       q->opt.autoproxy = (gboolean) va_arg(arg, glong) >0;
       break;

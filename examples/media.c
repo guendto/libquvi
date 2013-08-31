@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -31,6 +31,7 @@
 struct _opts_s
 {
   gboolean autoproxy;
+  gboolean cookies;
   gboolean verbose;
   gboolean best;
   gchar *stream;
@@ -56,6 +57,10 @@ static const GOptionEntry entries[] =
   {
     "verbose", 'v', 0, G_OPTION_ARG_NONE, &opts.verbose,
     "Verbose libcurl output", NULL
+  },
+  {
+    "cookies", 'c', 0, G_OPTION_ARG_NONE, &opts.cookies,
+    "Parse and use HTTP cookies", NULL
   },
   {
     G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, &opts.url, "URL"
@@ -145,6 +150,9 @@ gint main(gint argc, gchar **argv)
 
   if (opts.autoproxy == TRUE)
     examples_enable_autoproxy();
+
+  if (opts.cookies == TRUE)
+    examples_enable_cookies();
 
   if (opts.verbose == TRUE)
     examples_enable_verbose();

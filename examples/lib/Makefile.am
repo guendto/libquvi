@@ -2,6 +2,7 @@ src=\
   chk.c\
   cleanup.c\
   enable_autoproxy.c\
+  enable_cookies.c\
   enable_verbose.c\
   exit_if_error.c\
   status.c\

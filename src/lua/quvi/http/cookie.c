@@ -34,6 +34,14 @@
 #include "lua/setfield.h"
 #include "lua/def.h"
 
+static gint _ret(lua_State *l, const _quvi_t q)
+{
+  lua_newtable(l); /* Return a table of results. */
+  l_setfield_s(l, QO_ERROR_MESSAGE, q->status.errmsg->str, -1);
+  l_setfield_n(l, QO_QUVI_CODE, q->status.rc);
+  return (1); /* no. of returned values (a table) */
+}
+
 struct _cookie_opts_s
 {
   const gchar *s;
@@ -68,14 +76,7 @@ static gint _setopt(lua_State *l, const _quvi_t q, const CURLoption copt,
       if (croak_if_error == TRUE)
         luaL_error(l, "%s", q->status.errmsg->str);
     }
-
-  /* Return a table of results. */
-
-  lua_newtable(l);
-  l_setfield_s(l, QO_ERROR_MESSAGE, q->status.errmsg->str, -1);
-  l_setfield_n(l, QO_QUVI_CODE, q->status.rc);
-
-  return (1); /* no. of returned values (a table) */
+  return (_ret(l, q));
 }
 
 static void _chk_cookie_opts(lua_State *l, GSList *opts, _cookie_opts_t co)
@@ -103,10 +104,12 @@ gint l_quvi_http_cookie(lua_State *l)
   q = (_quvi_t) l_get_reg_userdata(l, USERDATA_QUVI_T);
   g_assert(q != NULL);
 
-  memset(&co, 0, sizeof(struct _cookie_opts_s));
+  if (q->opt.allow_cookies == QUVI_FALSE)
+    return (_ret(l, q)); /* Do nothing if cookies have been disabled. */
 
   /* arg1 */
 
+  memset(&co, 0, sizeof(struct _cookie_opts_s));
   co.s = luaL_checkstring(l, 1);
   lua_pop(l, 1);
 

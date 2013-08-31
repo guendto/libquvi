@@ -201,9 +201,12 @@ quvi.http.cookie(<VALUE>,<qoo>)::
   +
   This function will not return any additional values in the dictionary.
 
-NOTE: Cookies are always enabled for the current libcurl session handle,
-      meaning that libcurl will parse the received cookies and use them
-      in the subsequent HTTP requests
+NOTE: libquvi will ignore any calls to quvi.http.cookie unless
+      QUVI_OPTION_ALLOW_COOKIES is QUVI_TRUE
+
+NOTE: libcurl will parse the received cookies and use them in the
+      subsequent HTTP requests only if libquvi QUVI_OPTION_ALLOW_COOKIES
+      is QUVI_TRUE
 
 quvi.http.fetch(<URL>[,qoo])::
   Fetch an URL over an HTTP connection.
