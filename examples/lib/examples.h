@@ -31,6 +31,7 @@ extern quvi_t q;
 
 QuviError examples_status(glong, gpointer, gpointer);
 void examples_enable_autoproxy();
+void examples_enable_cookies();
 void examples_enable_verbose();
 void examples_exit_if_error();
 void examples_cleanup();
