@@ -37,6 +37,9 @@ QuviError c_init(_quvi_t q)
   if (q->handle.curl == NULL)
     return (QUVI_ERROR_CURL_INIT);
 
+  if (q->opt.allow_cookies == QUVI_TRUE) /* Enable cookies */
+    curl_easy_setopt(q->handle.curl, CURLOPT_COOKIEFILE, "");
+
   return (c_reset(q));
 }
 
