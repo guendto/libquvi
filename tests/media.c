@@ -332,7 +332,7 @@ static void test_media_starttime()
 static void test_media_escaped_url()
 {
   static gchar URL[] =
-    "http://youtube.com/watch%3Fv%3DG4evlxq34og%23t%3D3m20s";
+    "http%3A//www.liveleak.com/view%3Fi%3D77f_1378178228";
 
   quvi_media_t qm;
   quvi_t q;
