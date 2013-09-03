@@ -32,7 +32,6 @@
 #include "_quvi_script_s.h"
 /* -- */
 #include "misc/match_subtitle_script.h"
-#include "misc/unescape.h"
 #include "misc/resolve.h"
 #include "misc/subtitle.h"
 #include "net/handle.h"
@@ -58,14 +57,12 @@ QuviError m_match_subtitle_script(_quvi_t q, _quvi_subtitle_t *qsub,
 
   if (resolve_flag == TRUE) /* Resolve URL redirection. */
     {
-      m_resolve(q, url, (*qsub)->url.input);
+      m_resolve(q, (*qsub)->url.input);
       if (quvi_ok(q) == QUVI_FALSE)
         return (q->status.rc);
     }
 
-  m_unescape_url((*qsub)->url.input);
   rc = l_match_url_to_subtitle_script(*qsub, &s);
-
   if (rc == QUVI_ERROR_NO_SUPPORT)
     {
       g_string_printf(q->status.errmsg,

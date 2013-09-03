@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -27,6 +27,7 @@
 #include "_quvi_s.h"
 #include "_quvi_playlist_s.h"
 /* -- */
+#include "misc/unescape.h"
 #include "misc/playlist.h"
 #include "misc/slst.h"
 
@@ -36,6 +37,7 @@ gpointer m_playlist_new(_quvi_t q, const gchar *url)
   /* URL */
   qp->url.thumbnail = g_string_new(NULL);
   qp->url.input = g_string_new(url);
+  m_unescape_url(qp->url.input);
   /* ID */
   qp->id.playlist = g_string_new(NULL);
   /* Handle */

@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -33,7 +33,6 @@
 /* -- */
 #include "misc/match_playlist_script.h"
 #include "misc/playlist.h"
-#include "misc/unescape.h"
 #include "misc/resolve.h"
 #include "net/handle.h"
 #include "lua/exec.h"
@@ -58,14 +57,12 @@ QuviError m_match_playlist_script(_quvi_t q, _quvi_playlist_t *p,
 
   if (resolve_flag == TRUE) /* Resolve URL redirection. */
     {
-      m_resolve(q, url, (*p)->url.input);
+      m_resolve(q, (*p)->url.input);
       if (quvi_ok(q) == QUVI_FALSE)
         return (q->status.rc);
     }
 
-  m_unescape_url((*p)->url.input);
   rc = l_match_url_to_playlist_script(*p, &s);
-
   if (rc == QUVI_ERROR_NO_SUPPORT)
     {
       static const gchar *_E =
