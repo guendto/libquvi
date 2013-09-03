@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -50,8 +50,7 @@ quvi_resolve_t quvi_resolve_new(quvi_t handle, const char *url)
   q = (_quvi_t) handle;
   r = n_resolve_new(q, url);
 
-  m_resolve(q, url, r->url.dst);
-
+  m_resolve_url(q, url, r->url.dst);
   return (r);
 }
 
