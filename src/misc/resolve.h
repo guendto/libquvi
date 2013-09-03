@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -21,7 +21,8 @@
 #ifndef m_resolve_h
 #define m_resolve_h
 
-void m_resolve(_quvi_t, const gchar*, GString*);
+void m_resolve_url(_quvi_t, const gchar*, GString*);
+void m_resolve(_quvi_t, GString*);
 
 #endif /* m_resolve_h */
 

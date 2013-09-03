@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -28,17 +28,31 @@
 
 extern gchar *l_exec_util_resolve_redirections(_quvi_t, const gchar*);
 
-/* Caller should always check the q->status.rc value after calling this. */
-void m_resolve(_quvi_t q, const gchar *url, GString *dst)
+/*
+ * The caller should always check the q->status.rc value after calling
+ * these functions.
+ */
+
+void m_resolve_url(_quvi_t q, const gchar *url, GString *dst)
 {
-  gchar *r = l_exec_util_resolve_redirections(q, url);
+  gchar *r;
   g_assert(dst != NULL);
+  r = l_exec_util_resolve_redirections(q, url);
   if (r != NULL)
-  {
-    g_string_assign(dst, r);
-    g_free(r);
-    r = NULL;
-  }
+    {
+      g_string_assign(dst, r);
+      g_free(r);
+    }
+}
+
+/* Identical to the above but reuses the GString. */
+void m_resolve(_quvi_t q, GString *dst)
+{
+  gchar *u;
+  g_assert(dst != NULL);
+  u = g_strdup(dst->str);
+  m_resolve_url(q, u, dst);
+  g_free(u);
 }
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */
