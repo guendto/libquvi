@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -108,7 +108,7 @@ static void test_media_core()
 static void test_media_multi()
 {
   static const gchar URL[] =
-    "http://www.dailymotion.com/video/xm8t99_king-kong-vs-godzilla_shortfilms";
+    "http://www.spiegel.de/video/64-jaehrige-schwimmt-von-kuba-richtung-florida-video-1293301.html";
 
   quvi_media_t qm;
   GString *b;
@@ -174,12 +174,12 @@ static void test_media_multi()
 static void test_media_select()
 {
   static const gchar URL[] =
-    "http://www.dailymotion.com/video/xm8t99_king-kong-vs-godzilla_shortfilms";
+    "http://www.spiegel.de/video/64-jaehrige-schwimmt-von-kuba-richtung-florida-video-1293301.html";
 
   quvi_media_t qm;
+  gchar *s, *best;
   GSList *curr;
   GSList *ids;
-  gchar *s;
   quvi_t q;
 
   if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
@@ -203,9 +203,11 @@ static void test_media_select()
     }
   ids = g_slist_reverse(ids);
 
-  /* Default stream. This should also advance the current list pointer,
+  /*
+   * Default stream. This should also advance the current list pointer,
    * so that when quvi_media_stream_next is called the next time, it
-   * should return the 2nd stream in the list, not the first one. */
+   * should return the 2nd stream in the list, not the first one.
+   */
 
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
   curr = g_slist_nth(ids, 0);
@@ -223,20 +225,21 @@ static void test_media_select()
   curr = g_slist_nth(ids, 0);
   g_assert_cmpstr(curr->data, ==, s);
 
-  /* Best stream. Assumes this to be the last. */
+  /* The best stream -- anything but the default (first) stream. */
 
   quvi_media_stream_choose_best(qm);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
-  curr = g_slist_last(ids);
-  g_assert_cmpstr(curr->data, ==, s);
+  curr = g_slist_nth(ids, 0);
+  g_assert_cmpstr(curr->data, !=, s);
+  best = g_strdup(s);
 
   /* Select. */
 
   quvi_media_stream_select(qm, "foo,bar,baz,best,croak");
   g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
-  curr = g_slist_last(ids); /* Assumes the best is the last. */
-  g_assert_cmpstr(curr->data, ==, s);
+  g_assert_cmpstr(s, ==, best);
+  g_free(best);
 
   quvi_media_stream_select(qm, "foo,bar,baz,croak");
   g_assert_cmpint(quvi_errcode(q), ==, QUVI_ERROR_KEYWORD_CROAK);
@@ -250,17 +253,15 @@ static void test_media_select()
   curr = g_slist_nth(ids, 0); /* Should be the default stream (first) */
   g_assert_cmpstr(curr->data, ==, s);
 
-  quvi_media_stream_select(qm, "^\\w\\w_\\w+_\\w+_\\d40p$,bar,baz,croak");
+  quvi_media_stream_select(qm, "^\\w\\w\\d_\\w+_40\\dk_\\d20p$,bar,baz,croak");
   g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
-  curr = g_slist_nth(ids, 0); /* Should be "ld_mp4_h264_240p". */
-  g_assert_cmpstr(curr->data, ==, s);
+  g_assert_cmpstr(s, ==, "mp4_mpeg4_404k_320p");
 
-  quvi_media_stream_select(qm, "foo,^\\w\\w_\\w+_\\w+_\\d+4p$,baz,croak");
+  quvi_media_stream_select(qm, "foo,^\\w\\w\\d_\\w+_14\\d+k_\\d+6p$,baz,croak");
   g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
-  curr = g_slist_nth(ids, 1); /* Should be "sd_mp4_h264_384p". */
-  g_assert_cmpstr(curr->data, ==, s);
+  g_assert_cmpstr(s, ==, "mp4_h264_1400k_576p");
 
   quvi_media_free(qm);
   quvi_free(q);
