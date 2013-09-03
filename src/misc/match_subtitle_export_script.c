@@ -53,8 +53,6 @@ _match_format_to_subtitle_export_script(_quvi_subtitle_export_t qse,
   return (QUVI_ERROR_NO_SUPPORT);
 }
 
-/* vim: set ts=2 sw=2 tw=72 expandtab: */
-
 QuviError
 m_match_subtitle_export_script(_quvi_t q, _quvi_subtitle_export_t *dst,
                                _quvi_subtitle_lang_t qsl,
