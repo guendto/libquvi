@@ -11,7 +11,7 @@ gitweb::
 
 C API reference::
   The latest C API reference documentation may be viewed online at
-  `http://quvi.sf.net/doc/`.
+  `http://quvi.sourceforge.net/r/api/0.9/`.
 
 GLib::
   http://developer.gnome.org/glib/stable/glib-Base64-Encoding.html
