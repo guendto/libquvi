@@ -29,19 +29,31 @@
 /* -- */
 #include "misc/media.h"
 #include "misc/slst.h"
+#include "misc/url.h"
 
 gpointer m_media_new(_quvi_t q, const gchar *url)
 {
-  _quvi_media_t qm = g_new0(struct _quvi_media_s, 1);
-  /* URL */
+  _quvi_media_t qm;
+  gchar *u;
+
+  qm = g_new0(struct _quvi_media_s, 1);
+
   qm->url.redirect_to = g_string_new(NULL);
   qm->url.thumbnail = g_string_new(NULL);
-  qm->url.input = g_string_new(url);
-  /* Handle */
-  qm->handle.quvi = q;
-  /* Other */
+
+  /*
+   * Store the input URL in the unescaped form which is what the `ident'
+   * functions of the scripts expect when the support check is run
+   * offline.
+   */
+  u = m_url_unescaped_form(url);
+  qm->url.input = g_string_new(u);
+  g_free(u);
+
   qm->title = g_string_new(NULL);
   qm->id = g_string_new(NULL);
+  qm->handle.quvi = q;
+
   return (qm);
 }
 
