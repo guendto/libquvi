@@ -29,19 +29,30 @@
 /* -- */
 #include "misc/playlist.h"
 #include "misc/slst.h"
+#include "misc/url.h"
 
 gpointer m_playlist_new(_quvi_t q, const gchar *url)
 {
-  _quvi_playlist_t qp = g_new0(struct _quvi_playlist_s, 1);
-  /* URL */
+  _quvi_playlist_t qp;
+  gchar *u;
+
+  qp = g_new0(struct _quvi_playlist_s, 1);
+
   qp->url.thumbnail = g_string_new(NULL);
-  qp->url.input = g_string_new(url);
-  /* ID */
   qp->id.playlist = g_string_new(NULL);
-  /* Handle */
-  qp->handle.quvi = q;
-  /* Other */
+
+  /*
+   * Store the input URL in the unescaped form which is what the `ident'
+   * functions of the scripts expect when the support check is run
+   * offline.
+   */
+  u = m_url_unescaped_form(url);
+  qp->url.input = g_string_new(u);
+  g_free(u);
+
   qp->title = g_string_new(NULL);
+  qp->handle.quvi = q;
+
   return (qp);
 }
 
