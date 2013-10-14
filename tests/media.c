@@ -107,8 +107,7 @@ static void test_media_core()
 
 static void test_media_multi()
 {
-  static const gchar URL[] =
-    "http://www.spiegel.de/video/64-jaehrige-schwimmt-von-kuba-richtung-florida-video-1293301.html";
+  static const gchar URL[] = "http://www.youtube.com/watch?v=G4evlxq34og";
 
   quvi_media_t qm;
   GString *b;
@@ -151,15 +150,17 @@ static void test_media_multi()
 
       if (b->len >0) /* Make sure each media stream URL is unique */
         g_assert_cmpstr(b->str, !=, s);
-
       g_string_assign(b, s);
 
-      chk_len(QUVI_MEDIA_STREAM_PROPERTY_VIDEO_ENCODING);
       chk_len(QUVI_MEDIA_STREAM_PROPERTY_CONTAINER);
+      quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_CONTAINER, &s);
+      g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
-      chk_val(QUVI_MEDIA_STREAM_PROPERTY_VIDEO_HEIGHT);
-      chk_val(QUVI_MEDIA_STREAM_PROPERTY_VIDEO_WIDTH);
-
+      if (strstr(s, "flv") ==NULL) /* FLVs do not come with these */
+        {
+          chk_len(QUVI_MEDIA_STREAM_PROPERTY_VIDEO_ENCODING);
+          chk_len(QUVI_MEDIA_STREAM_PROPERTY_AUDIO_ENCODING);
+        }
       ++i;
     }
   g_assert_cmpint(i, >, 1);
