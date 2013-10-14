@@ -27,7 +27,6 @@
 #include "_quvi_s.h"
 #include "_quvi_media_s.h"
 /* -- */
-#include "misc/unescape.h"
 #include "misc/media.h"
 #include "misc/slst.h"
 
@@ -38,7 +37,6 @@ gpointer m_media_new(_quvi_t q, const gchar *url)
   qm->url.redirect_to = g_string_new(NULL);
   qm->url.thumbnail = g_string_new(NULL);
   qm->url.input = g_string_new(url);
-  m_unescape_url(qm->url.input);
   /* Handle */
   qm->handle.quvi = q;
   /* Other */

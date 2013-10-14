@@ -27,7 +27,6 @@
 #include "_quvi_s.h"
 #include "_quvi_subtitle_s.h"
 /* -- */
-#include "misc/unescape.h"
 #include "misc/subtitle.h"
 #include "misc/slst.h"
 
@@ -36,7 +35,6 @@ gpointer m_subtitle_new(_quvi_t q, const gchar *url)
   _quvi_subtitle_t qsub = g_new0(struct _quvi_subtitle_s, 1);
   /* URL */
   qsub->url.input = g_string_new(url);
-  m_unescape_url(qsub->url.input);
   /* Handle */
   qsub->handle.quvi = q;
   return (qsub);
