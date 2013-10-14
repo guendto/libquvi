@@ -1,5 +1,5 @@
 /* libquvi
- * Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2012,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of libquvi <http://quvi.sourceforge.net/>.
  *
@@ -30,6 +30,20 @@
 #include "_quvi_net_resolve_s.h"
 /* -- */
 #include "net/handle.h"
+#include "misc/url.h"
+
+static GString *_escaped(const gchar *url)
+{
+  GString *r;
+  gchar *e;
+
+  /* Pass the URL in escaped form to libcurl. */
+  e = m_url_escaped_form(url);
+  r = g_string_new(e);
+  g_free(e);
+
+  return (r);
+}
 
 gpointer n_new(_quvi_t q, const gchar *url)
 {
@@ -37,7 +51,7 @@ gpointer n_new(_quvi_t q, const gchar *url)
   n->http_metainfo.content_type = g_string_new(NULL);
   n->status.errmsg = g_string_new(NULL);
   n->fetch.content = g_string_new(NULL);
-  n->url.addr = g_string_new(url);
+  n->url.addr = _escaped(url);
   n->handle.quvi = q;
   return (n);
 }
@@ -69,8 +83,8 @@ gpointer n_resolve_new(_quvi_t q, const gchar *url)
 {
   _quvi_net_resolve_t r = g_new0(struct _quvi_net_resolve_s, 1);
   r->status.errmsg = g_string_new(NULL);
-  r->url.addr = g_string_new(url);
   r->url.dst  = g_string_new(NULL);
+  r->url.addr = _escaped(url);
   r->handle.quvi = q;
   return (r);
 }
