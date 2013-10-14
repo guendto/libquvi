@@ -50,8 +50,7 @@ static void chk_results(quvi_scan_t qs)
 static void test_scan_core()
 {
   static const gchar URL[] =
-    "http://www.fangoria.com/index.php/home/all-news/1-latest-news/"
-    "6981-new-qprometheusq-trailer-has-landed";
+    "http://screenrant.com/superman-man-steel-trailer/";
 
   quvi_scan_t qs;
   quvi_t q;
