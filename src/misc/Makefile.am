@@ -15,7 +15,8 @@ src=\
   subtitle.c\
   subtitle_export.c\
   to_utf8.c\
-  trim.c
+  trim.c\
+  url.c
 
 hdr=\
   match_media_script.h\
@@ -30,7 +31,8 @@ hdr=\
   script_free.h\
   slst.h\
   subtitle_export.h\
-  subtitle.h
+  subtitle.h\
+  url.h
 
 noinst_LTLIBRARIES=libconvenience_misc.la
 libconvenience_misc_la_SOURCES=$(src) $(hdr)
