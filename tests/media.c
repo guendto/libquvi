@@ -174,8 +174,7 @@ static void test_media_multi()
 
 static void test_media_select()
 {
-  static const gchar URL[] =
-    "http://www.spiegel.de/video/64-jaehrige-schwimmt-von-kuba-richtung-florida-video-1293301.html";
+  static const gchar URL[] = "http://www.youtube.com/watch?v=G4evlxq34og";
 
   quvi_media_t qm;
   gchar *s, *best;
@@ -226,12 +225,12 @@ static void test_media_select()
   curr = g_slist_nth(ids, 0);
   g_assert_cmpstr(curr->data, ==, s);
 
-  /* The best stream -- anything but the default (first) stream. */
+  /* The best stream, same as the first stream. */
 
   quvi_media_stream_choose_best(qm);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
   curr = g_slist_nth(ids, 0);
-  g_assert_cmpstr(curr->data, !=, s);
+  g_assert_cmpstr(curr->data, ==, s);
   best = g_strdup(s);
 
   /* Select. */
@@ -254,15 +253,15 @@ static void test_media_select()
   curr = g_slist_nth(ids, 0); /* Should be the default stream (first) */
   g_assert_cmpstr(curr->data, ==, s);
 
-  quvi_media_stream_select(qm, "^\\w\\w\\d_\\w+_40\\dk_\\d20p$,bar,baz,croak");
+  quvi_media_stream_select(qm, "^\\w+_\\w+_i\\d+_\\d40p$,bar,baz,croak");
   g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
-  g_assert_cmpstr(s, ==, "mp4_mpeg4_404k_320p");
+  g_assert_cmpstr(s, ==, "medium_webm_i43_240p");
 
-  quvi_media_stream_select(qm, "foo,^\\w\\w\\d_\\w+_14\\d+k_\\d+6p$,baz,croak");
+  quvi_media_stream_select(qm, "foo,144p$,baz,croak");
   g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
-  g_assert_cmpstr(s, ==, "mp4_h264_1400k_576p");
+  g_assert_cmpstr(s, ==, "small_3gpp_i17_144p");
 
   quvi_media_free(qm);
   quvi_free(q);
