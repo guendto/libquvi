@@ -27,18 +27,27 @@
 #include "_quvi_s.h"
 #include "_quvi_subtitle_s.h"
 /* -- */
-#include "misc/unescape.h"
 #include "misc/subtitle.h"
 #include "misc/slst.h"
+#include "misc/url.h"
 
 gpointer m_subtitle_new(_quvi_t q, const gchar *url)
 {
-  _quvi_subtitle_t qsub = g_new0(struct _quvi_subtitle_s, 1);
-  /* URL */
-  qsub->url.input = g_string_new(url);
-  m_unescape_url(qsub->url.input);
-  /* Handle */
+  _quvi_subtitle_t qsub;
+  gchar *u;
+
+  qsub = g_new0(struct _quvi_subtitle_s, 1);
   qsub->handle.quvi = q;
+
+  /*
+   * Store the input URL in the unescaped form which is what the `ident'
+   * functions of the scripts expect when the support check is run
+   * offline.
+   */
+  u = m_url_unescaped_form(url);
+  qsub->url.input = g_string_new(u);
+  g_free(u);
+
   return (qsub);
 }
 

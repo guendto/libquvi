@@ -107,8 +107,7 @@ static void test_media_core()
 
 static void test_media_multi()
 {
-  static const gchar URL[] =
-    "http://www.spiegel.de/video/64-jaehrige-schwimmt-von-kuba-richtung-florida-video-1293301.html";
+  static const gchar URL[] = "http://www.youtube.com/watch?v=G4evlxq34og";
 
   quvi_media_t qm;
   GString *b;
@@ -151,15 +150,17 @@ static void test_media_multi()
 
       if (b->len >0) /* Make sure each media stream URL is unique */
         g_assert_cmpstr(b->str, !=, s);
-
       g_string_assign(b, s);
 
-      chk_len(QUVI_MEDIA_STREAM_PROPERTY_VIDEO_ENCODING);
       chk_len(QUVI_MEDIA_STREAM_PROPERTY_CONTAINER);
+      quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_CONTAINER, &s);
+      g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
 
-      chk_val(QUVI_MEDIA_STREAM_PROPERTY_VIDEO_HEIGHT);
-      chk_val(QUVI_MEDIA_STREAM_PROPERTY_VIDEO_WIDTH);
-
+      if (strstr(s, "flv") ==NULL) /* FLVs do not come with these */
+        {
+          chk_len(QUVI_MEDIA_STREAM_PROPERTY_VIDEO_ENCODING);
+          chk_len(QUVI_MEDIA_STREAM_PROPERTY_AUDIO_ENCODING);
+        }
       ++i;
     }
   g_assert_cmpint(i, >, 1);
@@ -173,8 +174,7 @@ static void test_media_multi()
 
 static void test_media_select()
 {
-  static const gchar URL[] =
-    "http://www.spiegel.de/video/64-jaehrige-schwimmt-von-kuba-richtung-florida-video-1293301.html";
+  static const gchar URL[] = "http://www.youtube.com/watch?v=G4evlxq34og";
 
   quvi_media_t qm;
   gchar *s, *best;
@@ -225,12 +225,12 @@ static void test_media_select()
   curr = g_slist_nth(ids, 0);
   g_assert_cmpstr(curr->data, ==, s);
 
-  /* The best stream -- anything but the default (first) stream. */
+  /* The best stream, same as the first stream. */
 
   quvi_media_stream_choose_best(qm);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
   curr = g_slist_nth(ids, 0);
-  g_assert_cmpstr(curr->data, !=, s);
+  g_assert_cmpstr(curr->data, ==, s);
   best = g_strdup(s);
 
   /* Select. */
@@ -253,15 +253,15 @@ static void test_media_select()
   curr = g_slist_nth(ids, 0); /* Should be the default stream (first) */
   g_assert_cmpstr(curr->data, ==, s);
 
-  quvi_media_stream_select(qm, "^\\w\\w\\d_\\w+_40\\dk_\\d20p$,bar,baz,croak");
+  quvi_media_stream_select(qm, "^\\w+_\\w+_i\\d+_\\d40p$,bar,baz,croak");
   g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
-  g_assert_cmpstr(s, ==, "mp4_mpeg4_404k_320p");
+  g_assert_cmpstr(s, ==, "medium_webm_i43_240p");
 
-  quvi_media_stream_select(qm, "foo,^\\w\\w\\d_\\w+_14\\d+k_\\d+6p$,baz,croak");
+  quvi_media_stream_select(qm, "foo,144p$,baz,croak");
   g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
   quvi_media_get(qm, QUVI_MEDIA_STREAM_PROPERTY_ID, &s);
-  g_assert_cmpstr(s, ==, "mp4_h264_1400k_576p");
+  g_assert_cmpstr(s, ==, "small_3gpp_i17_144p");
 
   quvi_media_free(qm);
   quvi_free(q);
@@ -332,7 +332,32 @@ static void test_media_starttime()
 static void test_media_escaped_url()
 {
   static gchar URL[] =
-    "http%3A//www.liveleak.com/view%3Fi%3D77f_1378178228";
+    "http%3A//www.youtube.com/watch%3Fv%3DLWxTGJ3TK1U%23t%3D2m22s";
+
+  quvi_media_t qm;
+  quvi_t q;
+
+  if (chk_internet() == FALSE || chk_skip(__func__) == TRUE)
+    return;
+
+  q = quvi_new();
+  g_assert(q != NULL);
+  g_assert_cmpint(quvi_errcode(q), ==, QUVI_OK);
+
+  chk_verbose(q);
+
+  qm = quvi_media_new(q, URL);
+  g_assert_cmpint(qerr_m(q, URL), ==, QUVI_OK);
+  g_assert(qm != NULL);
+
+  quvi_media_free(qm);
+  quvi_free(q);
+}
+
+static void test_media_escaped_utf8_url()
+{
+  static gchar URL[] =
+    "http://flix.tapuz.co.il/v/watch-4323227-%D7%9C%D7%A2%D7%A7%D7%95%D7%A8%20%D7%A9%D7%9F%20%D7%9C%D7%98%D7%99%D7%92%D7%A8%D7%99%D7%A1.html";
 
   quvi_media_t qm;
   quvi_t q;
@@ -423,6 +448,8 @@ gint main(gint argc, gchar **argv)
   g_test_add_func("/quvi/media (select)", test_media_select);
   g_test_add_func("/quvi/media (short)", test_media_short);
   g_test_add_func("/quvi/media (escaped URL)", test_media_escaped_url);
+  g_test_add_func("/quvi/media (escaped UTF8 URL)",
+                  test_media_escaped_utf8_url);
   g_test_add_func("/quvi/media (nosupport)", test_media_nosupport);
   g_test_add_func("/quvi/media (start_time)", test_media_starttime);
   g_test_add_func("/quvi/media (same handle)", test_media_same_q);
