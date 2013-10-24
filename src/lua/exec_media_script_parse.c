@@ -52,7 +52,7 @@ static void _foreach_video_property(lua_State *l, _quvi_media_t qm,
   while (lua_next(l, LI_KEY))
     {
       l_chk_assign_n(l, MSS_VIDEO_BITRATE_KBIT_S, &qms->video.bitrate_kbit_s);
-      l_chk_assign_s(l, MSS_VIDEO_ENCODING, qms->video.encoding, TRUE);
+      l_chk_assign_s(l, MSS_VIDEO_ENCODING, qms->video.encoding, TRUE, FALSE);
       l_chk_assign_n(l, MSS_VIDEO_HEIGHT, &qms->video.height);
       l_chk_assign_n(l, MSS_VIDEO_WIDTH, &qms->video.width);
       lua_pop(l, 1);
@@ -66,7 +66,7 @@ static void _foreach_audio_property(lua_State *l, _quvi_media_t qm,
   while (lua_next(l, LI_KEY))
     {
       l_chk_assign_n(l, MSS_AUDIO_BITRATE_KBIT_S, &qms->audio.bitrate_kbit_s);
-      l_chk_assign_s(l, MSS_AUDIO_ENCODING, qms->audio.encoding, TRUE);
+      l_chk_assign_s(l, MSS_AUDIO_ENCODING, qms->audio.encoding, TRUE, FALSE);
       lua_pop(l, 1);
     }
 }
@@ -130,9 +130,9 @@ static _quvi_media_stream_t _new_stream(lua_State *l, _quvi_media_t qm,
       _chk_stream_sublevel(MSS_VIDEO, l, qm, qms, _foreach_video_property);
       _chk_stream_sublevel(MSS_AUDIO, l, qm, qms, _foreach_audio_property);
       _chk_stream_sublevel(MSS_FLAGS, l, qm, qms, _foreach_flag_property);
-      l_chk_assign_s(l, MSS_CONTAINER, qms->container, TRUE);
-      l_chk_assign_s(l, MSS_URL, qms->url, TRUE);
-      l_chk_assign_s(l, MSS_ID, qms->id, TRUE);
+      l_chk_assign_s(l, MSS_CONTAINER, qms->container, TRUE, FALSE);
+      l_chk_assign_s(l, MSS_URL, qms->url, TRUE, TRUE);
+      l_chk_assign_s(l, MSS_ID, qms->id, TRUE, FALSE);
       lua_pop(l, 1);
     }
   _has_stream_url(l, qms, script_path, i);
@@ -219,9 +219,9 @@ static void _chk_optional(lua_State *l, _quvi_media_t qm)
     {
       l_chk_assign_n(l, MS_START_TIME_MS, &qm->start_time_ms);
       l_chk_assign_n(l, MS_DURATION_MS, &qm->duration_ms);
-      l_chk_assign_s(l, MS_THUMB_URL, qm->url.thumbnail, TRUE);
-      l_chk_assign_s(l, MS_TITLE, qm->title, TRUE);
-      l_chk_assign_s(l, MS_ID, qm->id, TRUE);
+      l_chk_assign_s(l, MS_THUMB_URL, qm->url.thumbnail, TRUE, TRUE);
+      l_chk_assign_s(l, MS_TITLE, qm->title, TRUE, FALSE);
+      l_chk_assign_s(l, MS_ID, qm->id, TRUE, FALSE);
       lua_pop(l, 1);
     }
 }
@@ -232,7 +232,7 @@ static gboolean _chk_goto_instr(lua_State *l, _quvi_media_t qm)
   lua_pushnil(l);
   while (lua_next(l, LI_KEY))
     {
-      l_chk_assign_s(l, MS_GOTO_URL, qm->url.redirect_to, TRUE);
+      l_chk_assign_s(l, MS_GOTO_URL, qm->url.redirect_to, TRUE, TRUE);
       lua_pop(l, 1);
     }
   return ((qm->url.redirect_to->len >0) ? TRUE:FALSE);

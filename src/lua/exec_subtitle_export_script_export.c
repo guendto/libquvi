@@ -52,7 +52,7 @@ static QuviError _chk_result(lua_State *l, _quvi_subtitle_export_t qse,
   lua_pushnil(l);
   while (lua_next(l, LI_KEY))
     {
-      l_chk_assign_s(l, SUES_DATA, qse->data, FALSE);
+      l_chk_assign_s(l, SUES_DATA, qse->data, FALSE, FALSE);
       lua_pop(l, 1);
     }
 

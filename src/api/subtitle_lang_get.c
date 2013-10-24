@@ -113,6 +113,7 @@ static QuviError _get(_quvi_subtitle_lang_t qsl,
 /** @brief Return a subtitle property
 @sa @ref parse_subtitle
 @ingroup subprop
+@note URLs will be returned in the escaped form
 */
 void quvi_subtitle_lang_get(quvi_subtitle_lang_t handle,
                             QuviSubtitleLangProperty n, ...)

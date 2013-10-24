@@ -130,11 +130,11 @@ static _quvi_subtitle_lang_t _new_lang(lua_State *l, const gchar *script_path,
   lua_pushnil(l);
   while (lua_next(l, LI_KEY))
     {
-      l_chk_assign_s(l, SUSSL_TRANSLATED, qsl->translated, TRUE);
-      l_chk_assign_s(l, SUSSL_ORIGINAL, qsl->original, TRUE);
-      l_chk_assign_s(l, SUSSL_CODE, qsl->code, TRUE);
-      l_chk_assign_s(l, SUSSL_URL, qsl->url, TRUE);
-      l_chk_assign_s(l, SUSSL_ID, qsl->id, TRUE);
+      l_chk_assign_s(l, SUSSL_TRANSLATED, qsl->translated, TRUE, FALSE);
+      l_chk_assign_s(l, SUSSL_ORIGINAL, qsl->original, TRUE, FALSE);
+      l_chk_assign_s(l, SUSSL_CODE, qsl->code, TRUE, FALSE);
+      l_chk_assign_s(l, SUSSL_URL, qsl->url, TRUE, TRUE);
+      l_chk_assign_s(l, SUSSL_ID, qsl->id, TRUE, FALSE);
       lua_pop(l, 1);
     }
   return (_chk_url(l, script_path, qsl, i));

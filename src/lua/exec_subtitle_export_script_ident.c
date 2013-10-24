@@ -51,7 +51,7 @@ static QuviError _chk_results(lua_State *l, _quvi_script_t qs)
   lua_pushnil(l);
   while (lua_next(l, LI_KEY))
     {
-      l_chk_assign_s(l, SUES_EXPORT_FORMAT, qs->export.format, TRUE);
+      l_chk_assign_s(l, SUES_EXPORT_FORMAT, qs->export.format, TRUE, FALSE);
       l_chk_assign_b(l, SUES_CAN_EXPORT_DATA, &r);
       lua_pop(l, 1);
     }

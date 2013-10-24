@@ -160,11 +160,13 @@ static QuviError _media_get(_quvi_media_t qm, const QuviMediaProperty n, ...)
 /** @brief Return a media property
 @sa @ref parse_media
 @ingroup mediaprop
-@note Accessing any of the QUVI_MEDIA_STREAM_PROPERTY_* values using
-this function will cause the library to advance to the first stream
-in the list, this will conflict with @ref quvi_media_stream_next,
-causing @ref quvi_media_stream_next to advance from the second stream,
-not the first stream
+@note
+  - Accessing any of the QUVI_MEDIA_STREAM_PROPERTY_* values using this
+    function will cause the library to advance to the first stream in
+    the list, this will conflict with @ref quvi_media_stream_next,
+    causing @ref quvi_media_stream_next to advance from the second
+    stream, not the first stream
+  - URLs will be returned in the escaped form
 */
 void quvi_media_get(quvi_media_t handle, QuviMediaProperty property, ...)
 {

@@ -63,8 +63,8 @@ static gboolean _new_media(lua_State *l, _quvi_playlist_t qp,
   while (lua_next(l, LI_KEY)) /* For each qargs.media */
     {
       l_chk_assign_n(l, PSM_DURATION_MS, &(*qpm)->duration_ms);
-      l_chk_assign_s(l, PSM_TITLE, (*qpm)->title, TRUE);
-      l_chk_assign_s(l, PSM_URL, (*qpm)->url, TRUE);
+      l_chk_assign_s(l, PSM_TITLE, (*qpm)->title, TRUE, FALSE);
+      l_chk_assign_s(l, PSM_URL, (*qpm)->url, TRUE, TRUE);
       lua_pop(l, 1);
     }
 
@@ -122,9 +122,9 @@ static void _chk_optional(lua_State *l, _quvi_playlist_t qp)
   lua_pushnil(l);
   while (lua_next(l, LI_KEY))
     {
-      l_chk_assign_s(l, PS_THUMB_URL, qp->url.thumbnail, TRUE);
-      l_chk_assign_s(l, PS_ID, qp->id.playlist, TRUE);
-      l_chk_assign_s(l, PS_TITLE, qp->title, TRUE);
+      l_chk_assign_s(l, PS_THUMB_URL, qp->url.thumbnail, TRUE, TRUE);
+      l_chk_assign_s(l, PS_ID, qp->id.playlist, TRUE, FALSE);
+      l_chk_assign_s(l, PS_TITLE, qp->title, TRUE, FALSE);
       lua_pop(l, 1);
     }
 }

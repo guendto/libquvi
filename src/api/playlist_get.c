@@ -146,6 +146,7 @@ static QuviError _playlist_get(_quvi_playlist_t qp,
 /** @brief Return a playlist property
 @sa @ref parse_playlist
 @ingroup playlistprop
+@note URLs will be returned in the escaped form
 */
 void quvi_playlist_get(quvi_playlist_t handle,
                        QuviPlaylistProperty property, ...)
