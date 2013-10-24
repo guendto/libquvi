@@ -40,6 +40,8 @@ gchar *m_url_unescaped_form(const gchar *s)
   do
     {
       gchar *u = g_uri_unescape_string(r, NULL);
+      if (u == NULL)
+        break;
       g_free(r);
       r = u;
     }
