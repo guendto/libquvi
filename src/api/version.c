@@ -42,6 +42,7 @@ static void kval(GKeyFile *f, const gchar *k, gchar *dst,
     }
 }
 
+/** @cond NODOC */
 struct scripts_version_s
 {
   gchar configuration[128];
@@ -49,6 +50,7 @@ struct scripts_version_s
 };
 
 typedef struct scripts_version_s *scripts_version_t;
+/** @endcond */
 
 static void scripts_version_read(scripts_version_t v)
 {
