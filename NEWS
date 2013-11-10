@@ -1,3 +1,12 @@
+v0.9.4  [2013-11-10]
+
+Toni Gundogdu:
+  - API: Return URLs in escaped (percent-encoded) form [b79b467]
+  - FIX: m_url_unescaped_form: Check if g_uri_unescape_string fails [8e23664]
+
+ 23 files changed, 255 insertions(+), 145 deletions(-)
+
+
 v0.9.3  [2013-09-03]
 
 Toni Gundogdu:
